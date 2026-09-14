@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "hero": true,
+    "cronologia": true,
+    "patrimonio": true,
+    "puntos": true,
+    "galeria": true,
+    "horarios": true,
+    "agenda": true,
+    "reservas": true,
+    "contacto": true
+  },
+  "content": {
+    "site_title": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
+    "site_tagline": "Un viaje al corazón sagrado de la cultura íbera y el esplendor monumental de Sierra Mágina",
+    "hero_cta": "Planifica tu Visita",
+    "hero_desc": "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el singular patrimonio de la Iglesia de la Inmaculada Concepción en Huelma, Jaén.",
+    "tel": "(+34) 953 39 00 10",
+    "email": "turismo@elpajarillo.es",
+    "ayto": "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
+    "horario_atencion": "Lunes a Viernes de 9:00 a 14:00 h",
+    "horario_invierno": "Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00",
+    "horario_verano": "Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30",
+    "tarifa_general": "3,00 €",
+    "tarifa_reducida": "1,50 € (Jubilados, estudiantes y grupos >10 personas)",
+    "tarifa_gratuita": "Menores de 12 años, empadronados en Huelma y domingos tarde"
+  }
+}

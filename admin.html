@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma de Gestión (SaaS MVP) | Santuario Ibérico del Pajarillo</title>
+
+  <!-- Google Fonts: Inter y Barlow Condensed -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- QRCode JS CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- SortableJS para Drag & Drop de paneles (como en Jódar) -->
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+  <!-- Chart.js para analíticas visuales de visitantes -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <link rel="stylesheet" href="./css/admin.css">
+</head>
+<body>
+
+  <!-- Barra Superior del Panel -->
+  <header class="admin-navbar">
+    <div class="admin-brand-wrap">
+      <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="admin-logo-img" style="height: 52px; width: auto; background: rgba(255,255,255,0.95); padding: 4px 10px; border-radius: 8px;">
+      <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" style="height: 48px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+      <div class="admin-brand-info">
+        <h1>Plataforma de Gestión SaaS MVP</h1>
+        <p>Ayuntamiento de Huelma · Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
+      </div>
+    </div>
+
+    <div class="admin-user-pill">
+      <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="font-size: 0.8rem;">
+        🌐 Ver Portal Público
+      </a>
+      <div id="user-info-badge" class="user-badge hidden">
+        👤 <span id="logged-user-name">Gestor Municipal</span>
+      </div>
+      <button id="btn-logout" class="btn-admin btn-admin-danger hidden" style="padding: 6px 12px; font-size: 0.8rem;">
+        Cerrar Sesión
+      </button>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       VISTA 1: LOGIN Y REGISTRO RÁPIDO
+       ═══════════════════════════════════════════ -->
+  <!-- ═══════════════════════════════════════════
+       VISTA 1: LOGIN Y REGISTRO RÁPIDO
+       ═══════════════════════════════════════════ -->
+  <div id="login-view">
+    <div class="login-screen">
+      <div class="login-header-icon">🔒</div>
+      <h2>Acceso a Gestión Municipal</h2>
+      <p>Introduce las credenciales del Ayuntamiento para gestionar contenidos, secciones y analíticas</p>
+
+      <!-- Botón de Acceso Directo Inmediato (1 Clic) -->
+      <button type="button" id="btn-quick-login" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; background: #2E7D32; border-color: #2E7D32; font-size: 0.95rem; padding: 12px; margin-bottom: 1.25rem; font-weight: 700; box-shadow: 0 3px 8px rgba(46,125,50,0.25);">
+        ⚡ Acceso Directo de Administrador (1 Clic)
+      </button>
+
+      <!-- Pestañas de Login o Registro -->
+      <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem;">
+        <button id="tab-btn-login" class="btn-admin btn-admin-primary" style="padding: 6px 16px; font-size: 0.82rem;">Iniciar Sesión</button>
+        <button id="tab-btn-register" class="btn-admin btn-admin-outline" style="padding: 6px 16px; font-size: 0.82rem;">Registro Rápido (MVP)</button>
+      </div>
+
+      <!-- Formulario de Login -->
+      <form id="admin-login-form">
+        <div class="admin-form-group" style="text-align: left;">
+          <label>Usuario</label>
+          <input type="text" id="login-user" class="admin-input" placeholder="admin" value="admin">
+        </div>
+        <div class="admin-form-group" style="text-align: left;">
+          <label>Contraseña</label>
+          <input type="password" id="login-pass" class="admin-input" required placeholder="pajarillo" value="pajarillo">
+        </div>
+        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          Acceder al Panel de Control
+        </button>
+      </form>
+
+      <!-- Credenciales Disponibles Clickables -->
+      <div style="background: rgba(56, 79, 62, 0.08); border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 14px; margin-top: 1.25rem; font-size: 0.8rem; text-align: left;">
+        <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">🔑 Clic para rellenar credenciales oficiales:</strong>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <button type="button" class="btn-cred-fill" data-u="admin" data-p="pajarillo" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+            👤 admin / 🔒 pajarillo
+          </button>
+          <button type="button" class="btn-cred-fill" data-u="admin" data-p="admin" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+            👤 admin / 🔒 admin
+          </button>
+          <button type="button" class="btn-cred-fill" data-u="ayuntamiento" data-p="huelma2026" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
+            🏛️ ayuntamiento / 🔒 huelma2026
+          </button>
+        </div>
+      </div>
+
+      <!-- Formulario de Registro Rápido MVP -->
+      <form id="admin-register-form" class="hidden">
+        <div class="admin-form-group" style="text-align: left;">
+          <label>Nombre del Gestor / Técnico</label>
+          <input type="text" id="reg-name" class="admin-input" required placeholder="Ej. Juan Pérez">
+        </div>
+        <div class="admin-form-group" style="text-align: left;">
+          <label>Nuevo Usuario</label>
+          <input type="text" id="reg-user" class="admin-input" required placeholder="tecnico_turismo">
+        </div>
+        <div class="admin-form-group" style="text-align: left;">
+          <label>Contraseña</label>
+          <input type="password" id="reg-pass" class="admin-input" required placeholder="••••••••">
+        </div>
+        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+          Crear Usuario y Entrar
+        </button>
+      </form>
+
+      <p id="login-error-msg" class="hidden" style="color: var(--admin-danger); font-size: 0.85rem; font-weight: 700; margin-top: 1rem;"></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       VISTA 2: PANEL DE CONTROL PRINCIPAL (DASHBOARD)
+       ═══════════════════════════════════════════ -->
+  <div id="dashboard-view" class="admin-layout hidden">
+    <!-- Sidebar de Navegación del SaaS -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-heading">Módulos del SaaS</div>
+
+      <button class="sidebar-btn active" data-view="analytics">
+        <span>📊</span>
+        <span>Analítica de Uso</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="sections">
+        <span>🎛️</span>
+        <span>Secciones de la Web</span>
+        <span class="badge-counter" id="sections-active-badge">9/9</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="contents">
+        <span>✏️</span>
+        <span>Textos y Contenidos</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="panels">
+        <span>📋</span>
+        <span>Puntos & Paneles QR</span>
+        <span class="badge-counter" id="panels-count-badge">5</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="agenda">
+        <span>📅</span>
+        <span>Agenda Cultural</span>
+        <span class="badge-counter" id="agenda-count-badge">4</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="gallery">
+        <span>🖼️</span>
+        <span>Galería y Recursos</span>
+        <span class="badge-counter" id="gallery-count-badge">7</span>
+      </button>
+
+      <button class="sidebar-btn" data-view="bookings">
+        <span>🎟️</span>
+        <span>Reservas de Visitas</span>
+        <span class="badge-counter" id="bookings-count-badge">3</span>
+      </button>
+
+      <div class="sidebar-heading" style="margin-top: 1rem;">Administración</div>
+
+      <button class="sidebar-btn" data-view="settings">
+        <span>⚙️</span>
+        <span>Ajustes & Usuarios</span>
+      </button>
+    </aside>
+
+    <!-- Contenido Central Dinámico -->
+    <main class="admin-content">
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: ANALÍTICA DE VISITANTES
+           ────────────────────────────────────────── -->
+      <section id="subview-analytics" class="admin-subview">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Analítica de Visitantes y Datos de Uso
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Métricas consolidadas de visitas, interacción con audioguías y escaneo de códigos QR.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btn-export-csv" class="btn-admin btn-admin-outline">
+              📥 Exportar Métricas (CSV)
+            </button>
+            <button id="btn-print-report" class="btn-admin btn-admin-primary" style="background: var(--admin-accent-purple);">
+              🖨️ Imprimir / Guardar Informe PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjetas de KPIs -->
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-label">Visitas Totales</div>
+            <div class="kpi-value" id="kpi-total-visits">14.280</div>
+            <div class="kpi-trend">↗ +18.4% este mes</div>
+          </div>
+          <div class="kpi-card gold">
+            <div class="kpi-label">Visitantes Únicos</div>
+            <div class="kpi-value" id="kpi-unique-visitors">9.840</div>
+            <div class="kpi-trend">↗ +12.1% nuevos</div>
+          </div>
+          <div class="kpi-card purple">
+            <div class="kpi-label">Escaneos Códigos QR</div>
+            <div class="kpi-value" id="kpi-qr-scans">3.415</div>
+            <div class="kpi-trend">↗ 62% in situ</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-label">Reservas Guiadas</div>
+            <div class="kpi-value" id="kpi-bookings">184</div>
+            <div class="kpi-trend">↗ 94% confirmadas</div>
+          </div>
+        </div>
+
+        <!-- Gráficos Interactivos -->
+        <div class="grid-2col">
+          <!-- Gráfica de evolución mensual -->
+          <div class="admin-card">
+            <div class="card-title-row">
+              <h3>Evolución de Visitas y Escaneos QR</h3>
+            </div>
+            <div style="height: 260px; position: relative;">
+              <canvas id="chart-monthly-trend"></canvas>
+            </div>
+          </div>
+
+          <!-- Gráfica de distribución por idioma -->
+          <div class="admin-card">
+            <div class="card-title-row">
+              <h3>Distribución de Idiomas (ES / EN / FR)</h3>
+            </div>
+            <div style="margin-bottom: 1.5rem;">
+              <div class="lang-bar-group">
+                <div class="lang-bar-label">
+                  <span>🇪🇸 Español (Castellano)</span>
+                  <span id="lang-pct-es">66.0% (9.420)</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill" id="fill-es" style="width: 66%;"></div></div>
+              </div>
+              <div class="lang-bar-group">
+                <div class="lang-bar-label">
+                  <span>🇬🇧 Inglés (English)</span>
+                  <span id="lang-pct-en">21.8% (3.110)</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill gold" id="fill-en" style="width: 21.8%;"></div></div>
+              </div>
+              <div class="lang-bar-group">
+                <div class="lang-bar-label">
+                  <span>🇫🇷 Francés (Français)</span>
+                  <span id="lang-pct-fr">12.2% (1.750)</span>
+                </div>
+                <div class="progress-track"><div class="progress-fill purple" id="fill-fr" style="width: 12.2%;"></div></div>
+              </div>
+            </div>
+            <div style="height: 120px; position: relative;">
+              <canvas id="chart-languages-doughnut"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabla de Eventos Recientes de Visitantes -->
+        <div class="admin-card">
+          <div class="card-title-row">
+            <h3>Registro en Tiempo Real de Actividad</h3>
+            <span style="font-size: 0.8rem; color: var(--admin-muted);">Datos disociados conforme a RGPD</span>
+          </div>
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Fecha y Hora</th>
+                <th>Tipo de Evento</th>
+                <th>Detalle / Recurso</th>
+                <th>Idioma</th>
+                <th>Dispositivo</th>
+              </tr>
+            </thead>
+            <tbody id="analytics-events-tbody">
+              <!-- Inyectado por admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: GESTOR DE SECCIONES DE LA WEB (ON/OFF)
+           ────────────────────────────────────────── -->
+      <section id="subview-sections" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Gestor y Visibilidad de Secciones de la Web
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Habilita o deshabilita en tiempo real cualquier bloque del portal público. Los cambios se sincronizan al instante en la web.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button id="btn-save-sections" class="btn-admin btn-admin-primary">
+              💾 Guardar Estado de Secciones
+            </button>
+            <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="text-decoration: none;">
+              👁️ Ver Web Pública
+            </a>
+            <button id="btn-enable-all-sections" class="btn-admin btn-admin-outline">
+              Restablecer Todas a Activo
+            </button>
+          </div>
+        </div>
+
+        <div id="sections-list-container" style="margin-top: 1.5rem;">
+          <!-- 1. Hero -->
+          <div class="section-card-row" data-sec-key="hero">
+            <div class="section-card-info">
+              <div class="section-icon-box">🌟</div>
+              <div class="section-text">
+                <h4>Portada Principal (Hero)</h4>
+                <p>Cabecera inmersiva con titular principal, lema institucional, botón de llamada a la acción y tarjeta del Lobo Ibérico.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-hero">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="hero" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 2. Hitos Cronológicos -->
+          <div class="section-card-row" data-sec-key="cronologia">
+            <div class="section-card-info">
+              <div class="section-icon-box">⏳</div>
+              <div class="section-text">
+                <h4>Hitos Cronológicos del Conjunto</h4>
+                <p>Línea temporal histórica interactiva con los 6 hitos principales desde el siglo IV a.C. hasta la digitalización actual.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-cronologia">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="cronologia" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 3. Patrimonio Milenario -->
+          <div class="section-card-row" data-sec-key="patrimonio">
+            <div class="section-card-info">
+              <div class="section-icon-box">🏛️</div>
+              <div class="section-text">
+                <h4>Patrimonio Milenario (Pestañas Históricas)</h4>
+                <p>Bloque de tres pestañas temáticas interactivas: Santuario Ibérico, Iglesia Inmaculada Concepción y Escultura Ibérica.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-patrimonio">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="patrimonio" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 4. Recorrido Interpretativo / Puntos QR -->
+          <div class="section-card-row" data-sec-key="puntos">
+            <div class="section-card-info">
+              <div class="section-icon-box">📱</div>
+              <div class="section-text">
+                <h4>Recorrido Interpretativo (Puntos QR y Paneles)</h4>
+                <p>Cuadrícula de piezas clave y salas con códigos QR oficiales para visitantes, audioguía y modelos tridimensionales.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-puntos">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="puntos" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 5. Fondo Audiovisual y Galería -->
+          <div class="section-card-row" data-sec-key="galeria">
+            <div class="section-card-info">
+              <div class="section-icon-box">🎬</div>
+              <div class="section-text">
+                <h4>Fondo Audiovisual y Recursos Multimedia</h4>
+                <p>Galería fotográfica HD, visor Lightbox interactivo, documentales y fichas didácticas descargables en PDF.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-galeria">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="galeria" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 6. Horarios y Tarifas -->
+          <div class="section-card-row" data-sec-key="horarios">
+            <div class="section-card-info">
+              <div class="section-icon-box">⏰</div>
+              <div class="section-text">
+                <h4>Horarios, Tarifas y Localización</h4>
+                <p>Información de visitas según temporada (invierno/verano), precios de entradas y mapa interactivo de acceso a Huelma.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-horarios">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="horarios" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 7. Agenda Cultural -->
+          <div class="section-card-row" data-sec-key="agenda">
+            <div class="section-card-info">
+              <div class="section-icon-box">📅</div>
+              <div class="section-text">
+                <h4>Agenda Cultural y Actividades</h4>
+                <p>Programación de talleres infantiles, conferencias de arqueología y visitas teatralizadas con aforo en tiempo real.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-agenda">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="agenda" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 8. Reservas Online -->
+          <div class="section-card-row" data-sec-key="reservas">
+            <div class="section-card-info">
+              <div class="section-icon-box">🎟️</div>
+              <div class="section-text">
+                <h4>Módulo de Reservas Online</h4>
+                <p>Formulario para que turistas y grupos reserven turnos guiados, plazas e idioma de visita.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-reservas">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="reservas" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 9. Contacto e Información Municipal -->
+          <div class="section-card-row" data-sec-key="contacto">
+            <div class="section-card-info">
+              <div class="section-icon-box">📞</div>
+              <div class="section-text">
+                <h4>Contacto e Información Municipal</h4>
+                <p>Formulario de consulta ciudadana y datos de atención de la Concejalía de Patrimonio y Turismo de Huelma.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-contacto">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="contacto" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: EDITOR DE CONTENIDOS Y TEXTOS DEL SITIO
+           ────────────────────────────────────────── -->
+      <section id="subview-contents" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Editor de Textos y Contenidos del Portal
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Personaliza en tiempo real los textos informativos, horarios, tarifas y datos de contacto oficiales del Centro.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btn-save-content" class="btn-admin btn-admin-primary">
+              💾 Guardar Todos los Contenidos
+            </button>
+            <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="text-decoration: none;">
+              👁️ Previsualizar Web
+            </a>
+          </div>
+        </div>
+
+        <form id="form-site-content" style="margin-top: 1.5rem;">
+          <div class="grid-2col" style="align-items: start;">
+            <!-- Bloque 1: Identidad y Hero -->
+            <div class="admin-card">
+              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
+                <span>🌟</span> Identidad y Portada (Hero)
+              </h3>
+              <div class="admin-form-group">
+                <label>Nombre Oficial del Centro</label>
+                <input type="text" id="cnt-site-title" class="admin-input" value="Centro de Interpretación Santuario Ibérico de “El Pajarillo”">
+              </div>
+              <div class="admin-form-group">
+                <label>Lema / Subtítulo Institucional</label>
+                <textarea id="cnt-site-tagline" class="admin-textarea" rows="2">Un viaje al corazón sagrado de la cultura íbera y el esplendor monumental de Sierra Mágina</textarea>
+              </div>
+              <div class="admin-form-group">
+                <label>Texto Botón de Acción Principal (CTA)</label>
+                <input type="text" id="cnt-hero-cta" class="admin-input" value="Planifica tu Visita">
+              </div>
+              <div class="admin-form-group">
+                <label>Descripción Tarjeta Destacada (Cabeza de Lobo)</label>
+                <textarea id="cnt-hero-desc" class="admin-textarea" rows="3">Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el singular patrimonio de la Iglesia de la Inmaculada Concepción en Huelma, Jaén.</textarea>
+              </div>
+            </div>
+
+            <!-- Bloque 2: Contacto y Atención Municipal -->
+            <div class="admin-card">
+              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
+                <span>📞</span> Datos de Contacto y Atención
+              </h3>
+              <div class="admin-form-group">
+                <label>Teléfono Oficial de Turismo</label>
+                <input type="text" id="cnt-tel" class="admin-input" value="(+34) 953 39 00 10">
+              </div>
+              <div class="admin-form-group">
+                <label>Correo Electrónico Oficial</label>
+                <input type="email" id="cnt-email" class="admin-input" value="turismo@elpajarillo.es">
+              </div>
+              <div class="admin-form-group">
+                <label>Entidad Gestora</label>
+                <input type="text" id="cnt-ayto" class="admin-input" value="Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo">
+              </div>
+              <div class="admin-form-group">
+                <label>Horario de Atención Telefónica</label>
+                <input type="text" id="cnt-horario-atencion" class="admin-input" value="Lunes a Viernes de 9:00 a 14:00 h">
+              </div>
+            </div>
+
+            <!-- Bloque 3: Horarios y Precios -->
+            <div class="admin-card">
+              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
+                <span>⏰</span> Horarios de Visita y Tarifas
+              </h3>
+              <div class="admin-form-group">
+                <label>Horario Temporada Invierno</label>
+                <input type="text" id="cnt-horario-invierno" class="admin-input" value="Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00">
+              </div>
+              <div class="admin-form-group">
+                <label>Horario Temporada Verano</label>
+                <input type="text" id="cnt-horario-verano" class="admin-input" value="Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30">
+              </div>
+              <div class="admin-form-group">
+                <label>Tarifa General</label>
+                <input type="text" id="cnt-tarifa-general" class="admin-input" value="3,00 €">
+              </div>
+              <div class="admin-form-group">
+                <label>Tarifa Reducida</label>
+                <input type="text" id="cnt-tarifa-reducida" class="admin-input" value="1,50 € (Jubilados, estudiantes y grupos >10)">
+              </div>
+              <div class="admin-form-group">
+                <label>Entrada Gratuita</label>
+                <input type="text" id="cnt-tarifa-gratuita" class="admin-input" value="Menores de 12 años, empadronados en Huelma y domingos tarde">
+              </div>
+            </div>
+
+            <!-- Bloque 4: Resumen de Sincronización -->
+            <div class="admin-card" style="background: var(--admin-bg);">
+              <h3 style="margin-bottom: 1rem; color: var(--admin-primary);">⚡ Sincronización Inmediata</h3>
+              <p style="font-size: 0.85rem; color: var(--admin-muted); line-height: 1.6;">
+                Todos los datos que guardes se sincronizan tanto en el archivo maestro de configuración (<code style="background: white; padding: 2px 6px; border-radius: 4px;">data/site_config.json</code>) como en la persistencia local de tu navegador para que los veas aplicados en tiempo real.
+              </p>
+              <div style="margin-top: 1.25rem;">
+                <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
+                  💾 Aplicar y Guardar Todos los Cambios
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: PUNTOS Y PANELES QR (ESTILO JÓDAR)
+           ────────────────────────────────────────── -->
+      <section id="subview-panels" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Gestión de Puntos y Paneles de Exposición
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Edita textos bilingües/trilingües, sube audios e imágenes y genera códigos QR institucionales.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2col" style="align-items: start;">
+          <!-- Formulario de Crear / Editar Panel -->
+          <div class="admin-card">
+            <h3 id="panel-form-title" style="margin-bottom: 1.25rem; color: var(--admin-primary);">
+              Añadir / Editar Panel
+            </h3>
+
+            <form id="form-panel-edit">
+              <input type="hidden" id="panel-edit-id">
+
+              <div class="admin-form-group">
+                <label>Categoría / Tipo de Punto</label>
+                <select id="panel-edit-tag" class="admin-select">
+                  <option value="escultura">Escultura e Iconografía</option>
+                  <option value="arquelogia">Yacimiento y Arqueología</option>
+                  <option value="arquitectura">Arquitectura e Iglesia</option>
+                </select>
+              </div>
+
+              <!-- Idioma Español -->
+              <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong style="font-size: 0.85rem; color: var(--admin-primary);">🇪🇸 Contenido en Español *</strong>
+                <div class="admin-form-group" style="margin-top: 0.5rem;">
+                  <label>Título (ES)</label>
+                  <input type="text" id="panel-title-es" class="admin-input" required placeholder="Ej. La Cabeza de Lobo">
+                </div>
+                <div class="admin-form-group">
+                  <label>Subtítulo / Cronología</label>
+                  <input type="text" id="panel-sub-es" class="admin-input" placeholder="Siglo IV a.C.">
+                </div>
+                <div class="admin-form-group">
+                  <label>Descripción detallada (HTML admitido)</label>
+                  <textarea id="panel-desc-es" class="admin-textarea" rows="3" required></textarea>
+                </div>
+              </div>
+
+              <!-- Idioma Inglés -->
+              <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong style="font-size: 0.85rem; color: var(--admin-primary);">🇬🇧 Contenido en Inglés</strong>
+                <div class="admin-form-group" style="margin-top: 0.5rem;">
+                  <label>Title (EN)</label>
+                  <input type="text" id="panel-title-en" class="admin-input" placeholder="The Wolf's Head">
+                </div>
+                <div class="admin-form-group">
+                  <label>Description (EN)</label>
+                  <textarea id="panel-desc-en" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+
+              <!-- Idioma Francés -->
+              <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong style="font-size: 0.85rem; color: var(--admin-primary);">🇫🇷 Contenido en Francés</strong>
+                <div class="admin-form-group" style="margin-top: 0.5rem;">
+                  <label>Titre (FR)</label>
+                  <input type="text" id="panel-title-fr" class="admin-input" placeholder="La Tête de Loup">
+                </div>
+                <div class="admin-form-group">
+                  <label>Description (FR)</label>
+                  <textarea id="panel-desc-fr" class="admin-textarea" rows="2"></textarea>
+                </div>
+              </div>
+
+              <!-- Imagen del Panel -->
+              <div class="admin-form-group">
+                <label>Imagen Representativa</label>
+                <div class="admin-dropzone" id="drop-panel-image">
+                  <input type="file" id="panel-file-img" accept="image/*">
+                  <div style="font-size: 1.8rem;">🖼️</div>
+                  <p style="font-size: 0.85rem; color: var(--admin-muted);">
+                    Arrastra una imagen o <strong>haz clic para examinar</strong>
+                  </p>
+                </div>
+                <input type="hidden" id="panel-current-img-url">
+                <div id="panel-img-preview-box" style="margin-top: 0.75rem; display: none;">
+                  <img id="panel-img-preview" src="" alt="Vista previa" style="max-height: 120px; border-radius: 6px; border: 1px solid var(--admin-border);">
+                </div>
+              </div>
+
+              <!-- Vídeo / Recurso 3D Opcional (Nuevo) -->
+              <div class="admin-form-group">
+                <label>Vídeo Asociado / Recurso 3D (Opcional)</label>
+                <input type="url" id="panel-video-url" class="admin-input" placeholder="https://.../video.mp4 o enlace YouTube/Vimeo">
+                <small style="color: var(--admin-muted); font-size: 0.75rem;">Permite reproducir un audiovisual o reconstrucción 3D cuando el visitante consulte este punto.</small>
+              </div>
+
+              <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                <button type="submit" class="btn-admin btn-admin-primary" style="flex: 1; justify-content: center;">
+                  Guardar Punto / Panel
+                </button>
+                <button type="button" id="btn-cancel-panel-edit" class="btn-admin btn-admin-outline hidden">
+                  Cancelar
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Lista de Paneles Ordenables con SortableJS -->
+          <div class="admin-card">
+            <div class="card-title-row">
+              <h3>Paneles Activos (Arrastra para reordenar)</h3>
+            </div>
+            <ul id="admin-panels-sortable-list" class="panel-admin-list">
+              <!-- Inyectado por admin.js -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: AGENDA CULTURAL
+           ────────────────────────────────────────── -->
+      <section id="subview-agenda" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Gestión de Actividades en Agenda
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Programa nuevas visitas teatralizadas, talleres infantiles o conferencias científicas.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2col" style="align-items: start;">
+          <!-- Formulario de Actividad -->
+          <div class="admin-card">
+            <h3 id="act-form-title" style="margin-bottom: 1.25rem;">Añadir Actividad</h3>
+            <form id="form-activity-edit">
+              <input type="hidden" id="act-id">
+
+              <div class="admin-form-group">
+                <label>Título de la actividad (ES) *</label>
+                <input type="text" id="act-title-es" class="admin-input" required placeholder="Ej. Taller Infantil de Cerámica Íbera">
+              </div>
+
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Fecha</label>
+                  <input type="date" id="act-date" class="admin-input" required>
+                </div>
+                <div class="admin-form-group">
+                  <label>Hora</label>
+                  <input type="time" id="act-time" class="admin-input" value="11:30" required>
+                </div>
+              </div>
+
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Categoría</label>
+                  <select id="act-cat" class="admin-select">
+                    <option value="visitas">Visitas Guiadas</option>
+                    <option value="talleres">Talleres Didácticos</option>
+                    <option value="arqueologia">Arqueología & Ciencia</option>
+                  </select>
+                </div>
+                <div class="admin-form-group">
+                  <label>Plazas Totales</label>
+                  <input type="number" id="act-spots" class="admin-input" value="25" min="1">
+                </div>
+              </div>
+
+              <div class="admin-form-group">
+                <label>Descripción divulgativa</label>
+                <textarea id="act-desc-es" class="admin-textarea" rows="3" required></textarea>
+              </div>
+
+              <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
+                Guardar Actividad
+              </button>
+            </form>
+          </div>
+
+          <!-- Listado de Actividades Activas -->
+          <div class="admin-card">
+            <h3 style="margin-bottom: 1.25rem;">Actividades Programadas</h3>
+            <ul id="admin-agenda-list" class="panel-admin-list">
+              <!-- Inyectado por admin.js -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: GALERÍA Y FONDOS MULTIMEDIA
+           ────────────────────────────────────────── -->
+      <section id="subview-gallery" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Gestión de Galería y Recursos Digitales
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Administra las piezas fotográficas del santuario y los documentos científicos/didácticos descargables en PDF.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2col" style="align-items: start;">
+          <div class="admin-card">
+            <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary);">Fotografías en Catálogo</h3>
+            <ul id="admin-gallery-list" class="panel-admin-list">
+              <!-- Inyectado dinámicamente por admin.js -->
+            </ul>
+          </div>
+
+          <div class="admin-card">
+            <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary);">Fichas y Recursos Didácticos (PDF)</h3>
+            <ul id="admin-resources-list" class="panel-admin-list">
+              <!-- Inyectado dinámicamente por admin.js -->
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: GESTIÓN DE RESERVAS DE VISITAS
+           ────────────────────────────────────────── -->
+      <section id="subview-bookings" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Bandeja de Reservas de Visitas Guiadas
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Solicitudes recibidas desde el portal público pendientes de confirmación o confirmadas.
+            </p>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fecha Visita</th>
+                <th>Turno</th>
+                <th>Visitante</th>
+                <th>Personas</th>
+                <th>Idioma</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="admin-bookings-tbody">
+              <!-- Inyectado por admin.js -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: AJUSTES & USUARIOS DEL SAAS
+           ────────────────────────────────────────── -->
+      <section id="subview-settings" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Configuración y Usuarios del SaaS MVP
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Gestión de credenciales de acceso municipal, identidad visual y backups.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2col">
+          <div class="admin-card">
+            <h3>Identidad del Centro</h3>
+            <div style="margin-top: 1rem; font-size: 0.9rem; line-height: 1.7;">
+              <p><strong>Entidad:</strong> Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
+              <p><strong>Monumento anexo:</strong> Iglesia de la Inmaculada Concepción</p>
+              <p><strong>Organismo Gestor:</strong> Ayuntamiento de Huelma (Jaén)</p>
+              <p><strong>Versión Plataforma:</strong> SaaS MVP 1.2 Pro</p>
+              <p><strong>Manual de Identidad:</strong> Aplicado (#384F3E, #52725D, #DCDCD6, #3D2A40)</p>
+            </div>
+          </div>
+
+          <div class="admin-card">
+            <h3>Gestión de Usuarios Autorizados</h3>
+            <div style="margin-top: 1rem;">
+              <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1rem;">
+                Usuarios con privilegios para modificar la agenda, responder reservas y consultar analíticas de uso.
+              </p>
+              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
+                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
+                  👑 <strong>admin</strong> — Administrador Municipal
+                </li>
+                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
+                  🏛️ <strong>ayuntamiento</strong> — Concejalía de Turismo
+                </li>
+                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
+                  🎫 <strong>turismo</strong> — Mediador Cultural de Sala
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Generador de Códigos QR (Estilo Jódar Pro) -->
+  <div id="admin-qr-modal" class="qr-modal-overlay hidden">
+    <div class="qr-modal-card">
+      <h3 id="admin-qr-title" style="font-family: var(--font-condensed); font-size: 1.5rem; color: var(--admin-primary); margin-bottom: 0.5rem;">
+        Código QR Oficial
+      </h3>
+      <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+        Código en color verde institucional para la señalética del Centro de Interpretación.
+      </p>
+
+      <div id="admin-qrcode-box" style="display: inline-block; padding: 14px; background: white; border: 1.5px solid var(--admin-border); border-radius: 10px; margin-bottom: 1rem;"></div>
+
+      <div style="background: var(--admin-bg); border: 1px solid var(--admin-border); border-radius: 6px; padding: 0.5rem 0.75rem; margin-bottom: 1.25rem; font-size: 0.75rem; color: var(--admin-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <span id="admin-qr-url-text"></span>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; justify-content: center;">
+        <button id="btn-admin-download-qr" class="btn-admin btn-admin-primary">
+          ⬇ Descargar PNG
+        </button>
+        <button id="btn-admin-close-qr" class="btn-admin btn-admin-outline">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notificación Toast -->
+  <div id="admin-toast" class="admin-toast"></div>
+
+  <script type="module" src="./js/admin.js"></script>
+</body>
+</html>

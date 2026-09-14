@@ -1,0 +1,124 @@
+{
+  "panels": [
+    {
+      "id": 1,
+      "tag": "escultura",
+      "image": "./assets/images/lobo.png",
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "audio": null,
+      "content": {
+        "es": {
+          "title": "La Cabeza de Lobo",
+          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
+          "description": "<p>Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.</p><p>Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.</p><p>En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización.</p>"
+        },
+        "en": {
+          "title": "The Wolf's Head",
+          "subtitle": "Pinnacle sculpture of El Pajarillo Sanctuary · 4th c. BC",
+          "description": "<p>Carved from local white limestone over 2,400 years ago, the Wolf's Head represents a high watermark of ancient Iberian stone sculpture.</p><p>Depicting a snarling wolf larger than life, with open jaws revealing intricately chiselled fangs, alert eyes, and folded ears in an aggressive stance.</p><p>Originally positioned on the monument's summit terrace, it formed part of a mythic struggle where a noble youth faced the savage beast to achieve heroic apotheosis.</p>"
+        },
+        "fr": {
+          "title": "La Tête de Loup",
+          "subtitle": "Chef-d'œuvre du sanctuaire d'El Pajarillo · IVe s. av. J.-C.",
+          "description": "<p>Sculptée dans le calcaire il y a plus de 2 400 ans, la Tête de Loup constitue l'un des sommets de l'art ibérique antique.</p><p>Elle figure un loup grandeur nature aux babines retroussées, dévoilant des crocs acérés et des oreilles dressées vers l'arrière dans una posture de combat.</p><p>Elle incarnait l'adversaire mythique terrassé par le prince héroïsé pour légitimer son prestige divinisé.</p>"
+        }
+      }
+    },
+    {
+      "id": 2,
+      "tag": "arquelogia",
+      "image": "./assets/images/gallery/arqueologia.jpg",
+      "video": null,
+      "audio": null,
+      "content": {
+        "es": {
+          "title": "El Monumento Heroico Escalonado",
+          "subtitle": "Estructura arquitectónica y ceremonial · Yacimiento",
+          "description": "<p>Las excavaciones arqueológicas sacaron a la luz una imponente estructura en gradas construida en una loma dominante sobre el curso del río Jandulilla.</p><p>El monumento medía más de 30 metros de longitud, organizado en tres terrazas sucesivas reforzadas con muros de mampostería y sillares. En la plataforma superior se emplazaba la escenografía escultórica completa.</p><p>Era un hito visual en el paisaje oretano que marcaba la frontera y consolidaba la memoria dinástica del clan gobernante.</p>"
+        },
+        "en": {
+          "title": "The Stepped Heroic Monument",
+          "subtitle": "Architectural and ceremonial sanctuary layout",
+          "description": "<p>Archaeological digs uncovered a monumental stepped terrace raised on a promontory overlooking the Jandulilla valley.</p><p>Measuring over 30 metres across three staggered platforms supported by stone ashlar revetments, the highest level hosted the heroic sculptural group.</p><p>It served as a sacred landmark signifying territorial authority and immortal aristocratic memory.</p>"
+        },
+        "fr": {
+          "title": "Le Monument Héroïque Étagé",
+          "subtitle": "Structure architecturale et cérémonielle du sanctuaire",
+          "description": "<p>Les fouilles ont mis au jour une vaste architecture étagée en terrasses dominant la plaine fluviale de la Jandulilla.</p><p>Bâti sur trois niveaux renforcés de murs en pierre de taille, le sommet accueillait le groupe sculpté de l'affrontement rituel.</p><p>Le sanctuaire marquait le paysage sacré et pérennisait la mémoire héroïque des élites régionales.</p>"
+        }
+      }
+    },
+    {
+      "id": 3,
+      "tag": "arquitectura",
+      "image": "./assets/images/gallery/exterior.jpg",
+      "video": null,
+      "audio": null,
+      "content": {
+        "es": {
+          "title": "Iglesia de la Inmaculada Concepción",
+          "subtitle": "Fábrica renacentista y barroca · S. XVI–XVIII",
+          "description": "<p>Templo emblemático que preside el conjunto monumental, construido a partir del siglo XVI y ampliado durante los siglos XVII y XVIII.</p><p>Destaca su equilibrada fachada de sillería de cantería dorada, su torre campanario coronada con chapitel y su portada clásica decorada con motivos geométricos y veneras marianas.</p><p>El interior de nave única con capillas hornacinas conserva una atmósfera de solemnidad reforzada por su techumbre y cúpula central sobre pechinas.</p>"
+        },
+        "en": {
+          "title": "Church of the Immaculate Conception",
+          "subtitle": "Renaissance and Baroque temple · 16th–18th c.",
+          "description": "<p>The monumental church dominating the historical enclave, erected from the 16th century onwards and enlarged across the Baroque era.</p><p>Featuring a fine ashlar stone facade, an elegant bell tower crowned by a spire, and a classical portal adorned with Marian emblems.</p><p>The interior aisle with lateral chapels and central dome offers visitors an authentic space of spiritual reflection and historical continuity.</p>"
+        },
+        "fr": {
+          "title": "Église de l'Immaculée Conception",
+          "subtitle": "Édifice Renaissance et Baroque · XVIe–XVIIIe s.",
+          "description": "<p>L'église principale qui domine le complexe historique, érigée à partir du XVIe siècle puis embellie au cours de la période baroque.</p><p>Remarquable par sa façade de pierre blonde, son clocher ajouré et son portail classique orné de motifs marials.</p><p>L'intérieur abrite une vaste nef sous coupole ornée de retables et de chapelles latérales.</p>"
+        }
+      }
+    },
+    {
+      "id": 4,
+      "tag": "arquitectura",
+      "image": "./assets/images/gallery/claustro.jpg",
+      "video": null,
+      "audio": null,
+      "content": {
+        "es": {
+          "title": "El Claustro Conventual",
+          "subtitle": "Espacio de recogimiento y vida monástica",
+          "description": "<p>Adosado a los muros de la iglesia, el claustro del antiguo convento se abre en torno a un apacible patio central con vegetación mediterránea y fuente de piedra.</p><p>Sus galerías con arquerías de medio punto sobre columnas toscanas reflejan la sobriedad monástica que caracterizó a las órdenes religiosas de la comarca.</p><p>Hoy rehabilitado, constituye un espacio de descanso y tránsito dentro del recorrido turístico.</p>"
+        },
+        "en": {
+          "title": "The Monastic Cloister",
+          "subtitle": "Place of contemplation and monastic order",
+          "description": "<p>Adjoining the church walls, the historical cloister frames an evocative inner courtyard filled with orange trees and a central fountain.</p><p>Its semicircular arcades supported by Tuscan columns demonstrate the sober elegance of Renaissance religious architecture.</p><p>Now restored, it provides visitors with a serene space connecting the church with the interpretation galleries.</p>"
+        },
+        "fr": {
+          "title": "Le Cloître Conventuel",
+          "subtitle": "Lieu de recueillement et de sérénité",
+          "description": "<p>Attenant à l'église, le cloître conventuel s'organise autour d'une cour lumineuse agrémentée d'orangers et d'un bassin de pierre.</p><p>Ses galeries d'arcades en plein cintre et ses colonnes toscanes incarnent la pureté de la vie monastique.</p><p>Parfaitement restauré, il offre une halte paisible dans le circuit de visite.</p>"
+        }
+      }
+    },
+    {
+      "id": 5,
+      "tag": "escultura",
+      "image": "./assets/images/gallery/retablo.jpg",
+      "video": null,
+      "audio": null,
+      "content": {
+        "es": {
+          "title": "El Retablo Mayor Barroco",
+          "subtitle": "Joya dorada de la liturgia comarcal · S. XVII",
+          "description": "<p>Presidiendo el presbiterio de la iglesia, el retablo mayor es una magistral obra de talla en madera policromada y dorada al pan de oro.</p><p>Organizado en tres calles y dos cuerpos rematados por ático curvo, alberga hornacinas con tallas marianas y apostólicas, rodeadas de frondosa hojarasca, columnas salomónicas y querubines.</p><p>Es el punto culminante de la visita artística al templo histórico.</p>"
+        },
+        "en": {
+          "title": "The Baroque Gilded Altarpiece",
+          "subtitle": "Golden liturgical masterpiece · 17th century",
+          "description": "<p>Dominating the church chancel, the high retablo is a masterpiece of carved, polychromed, and gilded woodwork.</p><p>Structured in three vertical bays with Solomonic columns, acanthus leaves, and winged cherubs surrounding central devotional niches.</p><p>It marks the artistic climax of the sacred tour through the monumental church.</p>"
+        },
+        "fr": {
+          "title": "Le Retable Majeur Baroque",
+          "subtitle": "Joyau doré de la liturgie régionale · XVIIe siècle",
+          "description": "<p>Dominant le chœur de l'église, le retable majeur est un somptueux ensemble en bois sculpté et doré à la feuille d'or.</p><p>Composé de colonnes torses salomoniques, d'entrelacs végétaux et d'angelots entourant les niches des saints protecteurs.</p><p>Il constitue le point d'orgue de la découverte patrimoniale du sanctuaire et de l'église.</p>"
+        }
+      }
+    }
+  ]
+}

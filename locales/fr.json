@@ -1,0 +1,216 @@
+{
+  "lang": "fr",
+  "dir": "ltr",
+  "brand": {
+    "name": "Sanctuaire Ibérique d'El Pajarillo",
+    "subname": "Centre d'Interprétation",
+    "entity": "Centre d'Interprétation du Sanctuaire Ibérique d'« El Pajarillo »"
+  },
+  "nav": {
+    "historia": "Histoire et Art",
+    "puntos": "Points de Visite",
+    "horarios": "Horaires et Visite",
+    "agenda": "Agenda Culturel",
+    "galeria": "Galerie et Ressources",
+    "contacto": "Contact",
+    "reservar": "Réserver une Visite",
+    "admin": "Espace Gestion",
+    "skip": "Aller au contenu"
+  },
+  "hero": {
+    "eyebrow": "Patrimoine Monumental et Archéologique · IVe s. av. J.-C. – XVIIIe s.",
+    "title": "Centre d'Interprétation du Sanctuaire Ibérique d'« El Pajarillo »",
+    "subtitle": "Découvrez le légendaire ensemble sculptural ibérique du Héros et du Loup, aux côtés de l'Église de l'Immaculée Conception et de son précieux héritage.",
+    "cta_primary": "Préparez votre visite",
+    "cta_secondary": "Explorer le sanctuaire et le temple",
+    "scroll": "Découvrir plus",
+    "card_title": "La Tête de Loup",
+    "card_sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+  },
+  "historia": {
+    "section_label": "Patrimoine Millénaire",
+    "title": "Histoire, Architecture et Art",
+    "subtitle": "Un site exceptionnel où se rencontrent les rituels héroïques ibériques du IVe siècle avant J.-C. et l'architecture sacrée de l'Église de l'Immaculée Conception.",
+    "tab_iberico": "Sanctuaire Ibérique",
+    "tab_iglesia": "Église Immaculée",
+    "tab_arte": "Ensemble Sculptural",
+    "iberico_content": {
+      "title": "Le Sanctuaire Héroïque d'El Pajarillo (IVe s. av. J.-C.)",
+      "body": "Dominant la vallée fertile de la rivière Jandulilla, le Sanctuaire Ibérique d'El Pajarillo compte parmi les découvertes archéologiques majeures de la péninsule ibérique. Érigé vers le milieu du IVe siècle avant notre ère, ce sanctuaire monumental formait une grande terrasse étagée dédiée à l'héroïsation d'un prince aristocrate ibère.\n\nÀ son sommet trônait le célèbre groupe sculptural illustrant le combat mythique entre un jeune héros et un grand prédateur : la redoutable Tête de Loup sculptée en calcaire, escortée de lions protecteurs et de sphinx ailés, symboles de vaillance, d'honneur et d'immortalité."
+    },
+    "iglesia_content": {
+      "title": "L'Église de l'Immaculée Conception et le Couvent",
+      "body": "Voisine du cadre paysager du sanctuaire, l'Église de l'Immaculée Conception a été édifiée entre les XVIe et XVIIIe siècles. L'édifice adopte un plan en croix latine avec des chapelles latérales, de nobles arcs de pierre taillée et une coupole élégante sur pendentifs à la croisée du transept.\n\nLes vestiges conventuels attenants conservent les traces du cloître toscan, témoignant de siècles de ferveur et de vie monastique qui ont façonné le tissu culturel de la région de Sierra Mágina."
+    },
+    "arte_content": {
+      "title": "Trésors Sculpturaux et Richesse Artistique",
+      "body": "Taillé dans la pierre calcaire blanche par des maîtres sculpteurs ibères, le monument d'El Pajarillo combine influences méditerranéennes classiques et symbolisme indigène. L'expression farouche de la Tête de Loup — babines retroussées, crocs acérés et oreilles dressées — est un chef-d'œuvre absolu de la sculpture antique.\n\nÀ l'intérieur de l'église, le retable majeur baroque en bois doré, la statuaire liturgique et les peintures pieuses complètent une visite d'une rare intensité culturelle."
+    },
+    "timeline": {
+      "section_label": "Évolution Historique",
+      "title": "Repères Chronologiques du Site",
+      "subtitle": "Une traversée de plus de deux millénaires d'histoire, du sanctuaire héroïque oretan du IVe siècle av. J.-C. jusqu'à nos jours.",
+      "events": [
+        { "year": "v. 350 av. J.-C.", "text": "Édification du sanctuaire monumental héroïque d'El Pajarillo en l'honneur du prince oretan." },
+        { "year": "IIe s. av. J.-C.", "text": "Présence romaine républicaine et reconfiguration rituelle de la vallée du Jandulilla." },
+        { "year": "XVIe s.", "text": "Fondation initiale de l'Église de l'Immaculée Conception et des bâtiments conventuels." },
+        { "year": "XVIIe–XVIIIe s.", "text": "Construction de la coupole centrale, du retable baroque doré et du cloître toscan." },
+        { "year": "1994", "text": "Fouilles archéologiques méthodiques par l'Institut Universitaire d'Archéologie Ibérique." },
+        { "year": "Aujourd'hui", "text": "Inauguration du Centre d'Interprétation numérique, accessible et trilingue." }
+      ]
+    }
+  },
+  "puntos": {
+    "section_label": "Parcours d'Interprétation",
+    "title": "Points Clés et Œuvres Majeures",
+    "subtitle": "Scannez les QR codes disséminés dans les salles et sur le site pour écouter l'audioguide et examiner les modèles 3D.",
+    "listen_audio": "Audioguide disponible",
+    "view_qr": "Code QR",
+    "tag_arquelogia": "Archéologie",
+    "tag_escultura": "Sculpture",
+    "tag_arquitectura": "Architecture"
+  },
+  "horarios": {
+    "section_label": "Préparer votre visite",
+    "title": "Horaires, Tarifs et Accès",
+    "subtitle": "Toutes les indications pratiques pour planifier votre découverte du monument.",
+    "horarios_title": "🕒 Horaires d'Ouverture",
+    "temporada_alta": "Saison d'Été (Juin–Sept)",
+    "temporada_baja": "Saison d'Hiver (Oct–Mai)",
+    "cerrado": "Fermé",
+    "alta_dias": "Mardi au Samedi : 10h00 – 14h00 et 17h30 – 20h30",
+    "alta_dom": "Dimanches et jours fériés : 10h00 – 14h30",
+    "baja_dias": "Mardi au Samedi : 10h00 – 14h00 et 16h00 – 18h30",
+    "baja_dom": "Dimanches et jours fériés : 10h00 – 14h00",
+    "aviso_lunes": "⚠️ Fermé le lundi pour entretien et conservation (sauf fériés)",
+    "tarifas_title": "Tarifs d'Entrée",
+    "tarifa_general": "Tarif Général",
+    "tarifa_general_price": "3,00 €",
+    "tarifa_general_desc": "Comprend l'accès au Centre d'Interprétation, à l'église et l'audioguide numérique.",
+    "tarifa_reducida": "Tarif Réduit",
+    "tarifa_reducida_price": "1,50 €",
+    "tarifa_reducida_desc": "Plus de 65 ans, étudiants de moins de 25 ans, groupes de plus de 10 personnes.",
+    "tarifa_gratuita": "Entrée Gratuite",
+    "tarifa_gratuita_price": "0,00 €",
+    "tarifa_gratuita_desc": "Enfants de moins de 12 ans, personnes en situation de handicap et résidents locaux.",
+    "localizacion_title": "🗺️ Comment venir",
+    "direccion_label": "Adresse :",
+    "direccion_val": "Zone archéologique d'El Pajarillo · Route Huelma-Cabra, Jaén, Espagne",
+    "parking_label": "Stationnement :",
+    "parking_val": "Parking gratuit aménagé pour véhicules légers et autocars de tourisme.",
+    "accesibilidad_label": "Accessibilité :",
+    "accesibilidad_val": "Parcours accessible aux personnes à mobilité réduite et panneaux en braille.",
+    "abrir_mapa": "Ouvrir dans Google Maps"
+  },
+  "agenda": {
+    "section_label": "Agenda Culturel",
+    "title": "Activités et Événements Programmés",
+    "subtitle": "Retrouvez les ateliers pédagogiques, visites guidées et cycles de conférences organisés par la municipalité.",
+    "filtro_todos": "Toutes",
+    "filtro_visitas": "Visites Guidées",
+    "filtro_talleres": "Ateliers Pédagogiques",
+    "filtro_arqueologia": "Archéologie & Sciences",
+    "plazas_disponibles": "places disponibles",
+    "precio_gratis": "Activité Gratuite",
+    "reservar_btn": "Demander une place",
+    "no_events": "Aucun événement prévu dans cette catégorie."
+  },
+  "galeria": {
+    "section_label": "Fonds Audiovisuel",
+    "title": "Galerie Médias et Ressources Numériques",
+    "subtitle": "Photographies haute résolution, restitutions en 3D, vidéos documentaires et fiches scientifiques.",
+    "tab_fotos": "Photos HD",
+    "tab_recursos": "Ressources Numériques et 3D",
+    "tab_videos": "Vidéos et Documentaires",
+    "open_lightbox": "Agrandir l'image",
+    "download_resource": "Télécharger la ressource (PDF/Fiche)",
+    "download_btn": "⬇ Télécharger",
+    "categories": {
+      "Escultura": "Sculpture",
+      "Arquitectura": "Architecture",
+      "Yacimiento": "Site Archéologique",
+      "Entorno": "Environnement",
+      "Convento": "Couvent",
+      "Interior": "Intérieur",
+      "Arte Sacro": "Art Sacré"
+    },
+    "badges": {
+      "Publicación Oficial": "Publication Officielle",
+      "Cartografía": "Cartographie",
+      "Didáctica": "Pédagogique"
+    }
+  },
+  "reservas": {
+    "section_label": "Module de Réservation",
+    "title": "Réservation en Ligne de Visites Guidées",
+    "subtitle": "Outil numérique intégré pour la planification des visites individuelles, scolaires et de groupes.",
+    "badge_mvp": "SaaS MVP Intégré",
+    "info_title": "Visites Guidées Officielles",
+    "info_desc": "Accompagné de médiateurs culturels et d'archéologues, percez les secrets du sanctuaire ibère et la magnificence de l'Église de l'Immaculée Conception.",
+    "perk_1": "Accès exclusif aux secteurs réservés du site archéologique",
+    "perk_2": "Audioguide numérique multilingue inclus",
+    "perk_3": "Petits groupes (maximum 25 participants par créneau)",
+    "perk_4": "Parcours adapté à 100% aux personnes à mobilité réduite",
+    "info_note": "Pour les groupes scolaires ou les délégations de plus de 30 personnes, veuillez contacter directement l'office de tourisme municipal.",
+    "form_nombre": "Nom et prénom",
+    "form_email": "Courriel",
+    "form_telefono": "Numéro de téléphone",
+    "form_fecha": "Date souhaitée",
+    "form_hora": "Créneau horaire",
+    "time_morning_1": "Matin · 10h30",
+    "time_morning_2": "Matin · 12h00",
+    "time_afternoon_1": "Après-midi · 17h00",
+    "time_afternoon_2": "Après-midi · 18h30",
+    "form_personas": "Nombre de personnes",
+    "form_idioma": "Langue de la visite guidée",
+    "form_notas": "Remarques ou besoins d'accessibilité",
+    "form_submit": "Demander la Réservation",
+    "success_title": "Demande enregistrée avec succès !",
+    "success_desc": "Notre équipe municipale confirmera votre réservation par courriel sous 24 heures ouvrées."
+  },
+  "contacto": {
+    "section_label": "Service aux Visiteurs",
+    "title": "Contact et Renseignements",
+    "subtitle": "Une question ou un projet de visite scolaire ? Contactez notre équipe de médiation culturelle.",
+    "oficina_title": "Office du Tourisme et du Patrimoine",
+    "form_asunto": "Objet du message",
+    "form_mensaje": "Votre message...",
+    "form_enviar": "Envoyer le Message",
+    "alert_success": "Merci pour votre message. Le service tourisme vous répondra dans les meilleurs délais.",
+    "tel_label": "Standard téléphonique",
+    "tel_val": "(+34) 953 39 00 10",
+    "email_label": "Courrier électronique",
+    "email_val": "turismo@elpajarillo.es",
+    "ayto_label": "Administration",
+    "ayto_val": "Mairie de Huelma · Direction du Patrimoine et du Tourisme",
+    "horario_atencion": "Accueil téléphonique : du lundi au vendredi de 9h00 à 14h00"
+  },
+  "footer": {
+    "about": "Centre d'Interprétation du Sanctuaire Ibérique d'El Pajarillo. Référence patrimoniale et archéologique en Sierra Mágina, Jaén.",
+    "links_title": "Navigation",
+    "legal_title": "Légal et Qualité",
+    "aviso": "Mentions Légales",
+    "privacidad": "Politique de Confidentialité",
+    "cookies": "Politique de Cookies",
+    "accesibilidad": "Déclaration d'Accessibilité",
+    "saas_title": "Plateforme SaaS",
+    "saas_desc": "Tableau de bord municipal pour la gestion des contenus, des événements et de la fréquentation touristique.",
+    "panel_enlace": "Accès Espace Gestion (Mairie)",
+    "copy": "© 2026 Centre d'Interprétation Santuario Ibérico de El Pajarillo. Tous droits réservés.",
+    "cofinanciado": "Projet financé pour la numérisation et la gestion durable du patrimoine culturel et touristique."
+  },
+  "qr_modal": {
+    "title": "Code QR",
+    "desc": "Scannez ce code avec votre smartphone ou téléchargez-le pour la signalétique.",
+    "btn_download": "⬇ Télécharger en PNG",
+    "btn_copy": "Copier le lien",
+    "btn_close": "Fermer",
+    "copied": "Lien copié dans le presse-papiers !"
+  },
+  "analytics_banner": {
+    "msg": "Nous utilisons des cookies analytiques anonymes pour mesurer la fréquentation et enrichir votre visite.",
+    "accept": "Accepter",
+    "reject": "Refuser",
+    "info": "En savoir plus"
+  }
+}

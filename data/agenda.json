@@ -1,0 +1,88 @@
+{
+  "activities": [
+    {
+      "id": 1,
+      "category": "visitas",
+      "date": "2026-10-10",
+      "time": "11:30",
+      "duration": "90 min",
+      "free": true,
+      "spotsTotal": 25,
+      "spotsLeft": 8,
+      "image": "./assets/images/gallery/exterior.jpg",
+      "title": {
+        "es": "Visita Guiada Especial: El Mito del Héroe y el Lobo",
+        "en": "Special Guided Tour: The Myth of the Hero and the Wolf",
+        "fr": "Visite Guidée Spéciale : Le Mythe du Héros et du Loup"
+      },
+      "description": {
+        "es": "Recorrido interpretativo por el santuario y el centro con arqueólogos especialistas, explicando el significado ritual del monumento funerario y heroico.",
+        "en": "Interpretive tour through the sanctuary and centre with expert archaeologists, unravelling the ritual meaning of the heroic monument.",
+        "fr": "Parcours commenté dans le sanctuaire et le centre avec des archéologues spécialistes pour décrypter la dimension rituelle du monument."
+      }
+    },
+    {
+      "id": 2,
+      "category": "talleres",
+      "date": "2026-10-17",
+      "time": "17:00",
+      "duration": "120 min",
+      "free": true,
+      "spotsTotal": 20,
+      "spotsLeft": 5,
+      "image": "./assets/images/lobo.png",
+      "title": {
+        "es": "Taller Infantil: 'Modela tu Cabeza de Lobo Íbero'",
+        "en": "Children's Workshop: 'Model your Iberian Wolf Head'",
+        "fr": "Atelier Enfants : « Façonne ta Tête de Loup Ibère »"
+      },
+      "description": {
+        "es": "Actividad didáctica familiar donde niños y niñas descubren el trabajo de los escultores íberos modelando arcilla a partir de la pieza original.",
+        "en": "Family educational activity where children discover the craftsmanship of ancient Iberian sculptors by modeling clay wolves.",
+        "fr": "Activité pédagogique familiale où petits et grands s'initient aux techniques des sculpteurs ibères en modelant l'argile."
+      }
+    },
+    {
+      "id": 3,
+      "category": "arqueologia",
+      "date": "2026-10-24",
+      "time": "19:00",
+      "duration": "60 min",
+      "free": true,
+      "spotsTotal": 50,
+      "spotsLeft": 22,
+      "image": "./assets/images/gallery/arqueologia.jpg",
+      "title": {
+        "es": "Conferencia: Treinta años de investigaciones en El Pajarillo",
+        "en": "Lecture: Thirty Years of Archaeological Research at El Pajarillo",
+        "fr": "Conférence : Trente ans de recherches archéologiques à El Pajarillo"
+      },
+      "description": {
+        "es": "Ponencia divulgativa sobre el impacto científico internacional del monumento escultórico y las futuras campañas de prospección.",
+        "en": "Scientific outreach talk addressing the global impact of the monument and upcoming archaeological survey campaigns.",
+        "fr": "Conférence scientifique sur le rayonnement international du site et les futures campagnes de prospection."
+      }
+    },
+    {
+      "id": 4,
+      "category": "visitas",
+      "date": "2026-11-07",
+      "time": "18:00",
+      "duration": "75 min",
+      "free": true,
+      "spotsTotal": 30,
+      "spotsLeft": 14,
+      "image": "./assets/images/gallery/interior.jpg",
+      "title": {
+        "es": "Noche en la Iglesia: Luces y Sombras de la Inmaculada Concepción",
+        "en": "Night at the Church: Lights & Shadows of the Immaculate Conception",
+        "fr": "Nuit à l'Église : Ombres et Lumières de l'Immaculée Conception"
+      },
+      "description": {
+        "es": "Visita nocturna con iluminación tenue y ambientación sonora, centrada en el retablo barroco, la sacristía y los enigmas del convento.",
+        "en": "Evening visit under ambient lighting exploring the gilded Baroque retablo, sacristy, and conventual mysteries.",
+        "fr": "Visite crépusculaire à la lueur des projecteurs pour explorer le retable baroque, la sacristie et l'histoire conventuelle."
+      }
+    }
+  ]
+}

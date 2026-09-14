@@ -1,0 +1,216 @@
+{
+  "lang": "es",
+  "dir": "ltr",
+  "brand": {
+    "name": "Santuario Ibérico del Pajarillo",
+    "subname": "Centro de Interpretación",
+    "entity": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”"
+  },
+  "nav": {
+    "historia": "Historia y Arte",
+    "puntos": "Puntos de Visita",
+    "horarios": "Horarios y Visita",
+    "agenda": "Agenda Cultural",
+    "galeria": "Galería y Recursos",
+    "contacto": "Contacto",
+    "reservar": "Reservar Visita",
+    "admin": "Acceso Gestión",
+    "skip": "Saltar al contenido"
+  },
+  "hero": {
+    "eyebrow": "Conjunto Monumental y Arqueológico · Siglos IV a.C. – XVIII d.C.",
+    "title": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
+    "subtitle": "Descubre el legendario monumento escultórico ibérico del Héroe y el Lobo, junto a la Iglesia de la Inmaculada Concepción y su legado histórico.",
+    "cta_primary": "Planifica tu visita",
+    "cta_secondary": "Explorar yacimiento y templo",
+    "scroll": "Descubrir más",
+    "card_title": "La Cabeza de Lobo",
+    "card_sub": "Escultura ibérica en caliza · Siglo IV a.C."
+  },
+  "historia": {
+    "section_label": "Patrimonio Milenario",
+    "title": "Historia, Arquitectura y Arte",
+    "subtitle": "Un enclave excepcional donde confluyen la espiritualidad íbera del siglo IV a.C. y la arquitectura renacentista y barroca de la Iglesia de la Inmaculada Concepción.",
+    "tab_iberico": "Santuario Ibérico",
+    "tab_iglesia": "Iglesia Inmaculada",
+    "tab_arte": "Conjunto Escultórico",
+    "iberico_content": {
+      "title": "El Santuario Heroico de El Pajarillo (S. IV a.C.)",
+      "body": "Ubicado estratégicamente sobre el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular. Datado a mediados del siglo IV a.C., el monumento conmemorativo fue concebido como un gran escenario escalonado para la apoteosis o heroización de un príncipe o aristócrata íbero.\n\nEn su cima se alzaba el célebre conjunto escultórico que escenificaba el combate mítico entre un joven aristócrata y un imponente carnívoro salvaje: la portentosa Cabeza de Lobo, escoltada por leones protectores y grifos alados, símbolo de poder, valor y trascendencia de la cultura oretana."
+    },
+    "iglesia_content": {
+      "title": "Iglesia de la Inmaculada Concepción y Convento",
+      "body": "Próxima al entorno patrimonial del santuario, la Iglesia de la Inmaculada Concepción erige su sobria fábrica entre los siglos XVI y XVIII. El templo presenta una estructura de cruz latina con capillas laterales, esbeltos arcos de sillería labrada y una hermosa cúpula sobre pechinas en el crucero.\n\nEl conjunto anexo conserva restos de las antiguas dependencias conventuales y claustro de orden toscano, reflejo de la devoción y el orden monástico que vertebró la vida de la comarca durante la Edad Moderna, articulando un diálogo único con los vestigios arqueológicos subyacentes."
+    },
+    "arte_content": {
+      "title": "Tesoro Escultórico y Recursos Artísticos",
+      "body": "El corpus escultórico de El Pajarillo, tallado en caliza blanca local por maestros canteros íberos, muestra influencias mediterráneas de época clásica y helenística adaptadas a la cosmovisión autóctona. La expresividad feroz de la Cabeza de Lobo —con sus fauces abiertas, colmillos amenazantes y orejas en tensión— es una obra maestra del arte ibérico.\n\nEn el interior de la iglesia, el retablo mayor dorado, la imaginería procesional barroca y las pinturas devocionales completan un patrimonio integral que el Centro de Interpretación pone hoy al alcance del visitante con técnicas museográficas de vanguardia."
+    },
+    "timeline": {
+      "section_label": "Evolución Histórica",
+      "title": "Hitos Cronológicos del Conjunto",
+      "subtitle": "Un recorrido por más de dos milenios de historia, desde el santuario heroico oretano del siglo IV a.C. hasta la actualidad.",
+      "events": [
+        { "year": "c. 350 a.C.", "text": "Construcción del monumento escultórico del Santuario Ibérico de El Pajarillo en honor al héroe oretano." },
+        { "year": "S. II a.C.", "text": "Presencia romana republicana y transformación del paisaje ritual en el valle del Jandulilla." },
+        { "year": "S. XVI", "text": "Construcción inicial del templo de la Inmaculada Concepción y dependencias conventuales." },
+        { "year": "S. XVII–XVIII", "text": "Erección de la cúpula central, retablo mayor barroco y claustro de orden toscano." },
+        { "year": "1994", "text": "Excavaciones arqueológicas sistemáticas dirigidas por el Instituto Universitario de Arqueología Ibérica." },
+        { "year": "Actualidad", "text": "Apertura del Centro de Interpretación digitalizado, accesible y multilingüe." }
+      ]
+    }
+  },
+  "puntos": {
+    "section_label": "Recorrido Interpretativo",
+    "title": "Puntos de Información y Piezas Clave",
+    "subtitle": "Escanea los códigos QR situados en las salas y en el yacimiento para escuchar la audioguía y visualizar los modelos digitales.",
+    "listen_audio": "Audioguía disponible",
+    "view_qr": "Código QR",
+    "tag_arquelogia": "Arqueología",
+    "tag_escultura": "Escultura",
+    "tag_arquitectura": "Arquitectura"
+  },
+  "horarios": {
+    "section_label": "Planifica tu visita",
+    "title": "Horarios, Tarifas y Localización",
+    "subtitle": "Toda la información necesaria para preparar tu experiencia turística y cultural.",
+    "horarios_title": "🕒 Horarios de Apertura",
+    "temporada_alta": "Horario de Verano (Jun–Sep)",
+    "temporada_baja": "Horario de Invierno (Oct–May)",
+    "cerrado": "Cerrado",
+    "alta_dias": "Martes a Sábado: 10:00 – 14:00 h y 17:30 – 20:30 h",
+    "alta_dom": "Domingos y festivos: 10:00 – 14:30 h",
+    "baja_dias": "Martes a Sábado: 10:00 – 14:00 h y 16:00 – 18:30 h",
+    "baja_dom": "Domingos y festivos: 10:00 – 14:00 h",
+    "aviso_lunes": "⚠️ Lunes cerrado por mantenimiento (excepto festivos)",
+    "tarifas_title": "Tarifas de Entrada",
+    "tarifa_general": "Entrada General",
+    "tarifa_general_price": "3,00 €",
+    "tarifa_general_desc": "Incluye acceso al Centro de Interpretación, templo y audioguía digital.",
+    "tarifa_reducida": "Entrada Reducida",
+    "tarifa_reducida_price": "1,50 €",
+    "tarifa_reducida_desc": "Jubilados, estudiantes menores de 25 años, grupos >10 personas.",
+    "tarifa_gratuita": "Entrada Gratuita",
+    "tarifa_gratuita_price": "0,00 €",
+    "tarifa_gratuita_desc": "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
+    "localizacion_title": "🗺️ Cómo llegar",
+    "direccion_label": "Dirección:",
+    "direccion_val": "Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén",
+    "parking_label": "Aparcamiento:",
+    "parking_val": "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
+    "accesibilidad_label": "Accesibilidad:",
+    "accesibilidad_val": "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
+    "abrir_mapa": "Abrir en Google Maps"
+  },
+  "agenda": {
+    "section_label": "Agenda Dinámica",
+    "title": "Actividades y Eventos Programados",
+    "subtitle": "Conoce los talleres didácticos, visitas teatralizadas y conferencias organizadas por el Ayuntamiento.",
+    "filtro_todos": "Todas",
+    "filtro_visitas": "Visitas Guiadas",
+    "filtro_talleres": "Talleres Didácticos",
+    "filtro_arqueologia": "Arqueología y Ciencia",
+    "plazas_disponibles": "Plazas disponibles",
+    "precio_gratis": "Actividad Gratuita",
+    "reservar_btn": "Solicitar plaza",
+    "no_events": "No se encontraron actividades en esta categoría."
+  },
+  "galeria": {
+    "section_label": "Fondo Audiovisual",
+    "title": "Galería Multimedia y Recursos Digitales",
+    "subtitle": "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
+    "tab_fotos": "Fotografías HD",
+    "tab_recursos": "Recursos Digitales e Interactivos",
+    "tab_videos": "Audiovisuales",
+    "open_lightbox": "Ampliar imagen",
+    "download_resource": "Descargar recurso informativo (PDF/Ficha)",
+    "download_btn": "⬇ Descargar",
+    "categories": {
+      "Escultura": "Escultura",
+      "Arquitectura": "Arquitectura",
+      "Yacimiento": "Yacimiento",
+      "Entorno": "Entorno",
+      "Convento": "Convento",
+      "Interior": "Interior",
+      "Arte Sacro": "Arte Sacro"
+    },
+    "badges": {
+      "Publicación Oficial": "Publicación Oficial",
+      "Cartografía": "Cartografía",
+      "Didáctica": "Didáctica"
+    }
+  },
+  "reservas": {
+    "section_label": "Módulo de Reservas",
+    "title": "Reserva Online para Visitas Guiadas",
+    "subtitle": "Plataforma digital integrada para la gestión anticipada de visitas de particulares y grupos.",
+    "badge_mvp": "SaaS MVP Integrado",
+    "info_title": "Visitas Guiadas Oficiales",
+    "info_desc": "Acompañado por mediadores culturales y arqueólogos, descubre los secretos del monumento íbero y el esplendor de la Iglesia de la Inmaculada Concepción.",
+    "perk_1": "Acceso exclusivo a zonas restringidas del yacimiento",
+    "perk_2": "Dispositivo o audioguía digital multilingüe incluido",
+    "perk_3": "Grupos reducidos (máximo 25 personas por turno)",
+    "perk_4": "Recorrido 100% adaptado a personas con movilidad reducida",
+    "info_note": "Para visitas de centros educativos o grupos de más de 30 personas, contacta directamente con el área de turismo municipal.",
+    "form_nombre": "Nombre completo",
+    "form_email": "Correo electrónico",
+    "form_telefono": "Teléfono de contacto",
+    "form_fecha": "Fecha preferida",
+    "form_hora": "Turno horario",
+    "time_morning_1": "Mañana · 10:30 h",
+    "time_morning_2": "Mañana · 12:00 h",
+    "time_afternoon_1": "Tarde · 17:00 h",
+    "time_afternoon_2": "Tarde · 18:30 h",
+    "form_personas": "Número de visitantes",
+    "form_idioma": "Idioma de la visita guiada",
+    "form_notas": "Observaciones o necesidades de accesibilidad",
+    "form_submit": "Solicitar Reserva de Visita",
+    "success_title": "¡Solicitud registrada correctamente!",
+    "success_desc": "El equipo del Centro de Interpretación confirmará tu reserva por correo electrónico en menos de 24 horas laborables."
+  },
+  "contacto": {
+    "section_label": "Atención al Visitante",
+    "title": "Contacto e Información Institucional",
+    "subtitle": "¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.",
+    "oficina_title": "Oficina de Turismo y Patrimonio",
+    "form_asunto": "Asunto de la consulta",
+    "form_mensaje": "Escribe tu mensaje...",
+    "form_enviar": "Enviar Consulta",
+    "alert_success": "Gracias por tu mensaje. El área de turismo te responderá a la brevedad.",
+    "tel_label": "Teléfono de atención",
+    "tel_val": "(+34) 953 39 00 10",
+    "email_label": "Correo electrónico",
+    "email_val": "turismo@elpajarillo.es",
+    "ayto_label": "Gestión",
+    "ayto_val": "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
+    "horario_atencion": "Horario de atención telefónica: Lunes a Viernes de 9:00 a 14:00 h"
+  },
+  "footer": {
+    "about": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”. Espacio patrimonial y arqueológico de referencia en Sierra Mágina, Jaén.",
+    "links_title": "Navegación",
+    "legal_title": "Legal y Calidad",
+    "aviso": "Aviso Legal",
+    "privacidad": "Política de Privacidad",
+    "cookies": "Política de Cookies",
+    "accesibilidad": "Declaración de Accesibilidad",
+    "saas_title": "Plataforma SaaS",
+    "saas_desc": "Panel de control municipal para la gestión de contenidos, eventos y analítica de visitantes.",
+    "panel_enlace": "Acceso Plataforma de Gestión (Ayto)",
+    "copy": "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Todos los derechos reservados.",
+    "cofinanciado": "Proyecto financiado para la digitalización y gestión del patrimonio cultural y turístico."
+  },
+  "qr_modal": {
+    "title": "Código QR",
+    "desc": "Escanea este código con tu dispositivo móvil o descárgalo para señalética.",
+    "btn_download": "⬇ Descargar PNG",
+    "btn_copy": "Copiar enlace",
+    "btn_close": "Cerrar",
+    "copied": "¡Enlace copiado al portapapeles!"
+  },
+  "analytics_banner": {
+    "msg": "Utilizamos cookies analíticas estrictamente anónimas para mejorar la experiencia turística y medir el interés del conjunto monumental.",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "info": "Más información"
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "lang": "en",
+  "dir": "ltr",
+  "brand": {
+    "name": "Iberian Sanctuary of El Pajarillo",
+    "subname": "Interpretation Centre",
+    "entity": "Interpretation Centre of the Iberian Sanctuary of “El Pajarillo”"
+  },
+  "nav": {
+    "historia": "History & Art",
+    "puntos": "Visit Points",
+    "horarios": "Hours & Visit",
+    "agenda": "Cultural Agenda",
+    "galeria": "Gallery & Resources",
+    "contacto": "Contact",
+    "reservar": "Book a Tour",
+    "admin": "Admin Portal",
+    "skip": "Skip to content"
+  },
+  "hero": {
+    "eyebrow": "Monumental & Archaeological Heritage · 4th Century BC – 18th Century AD",
+    "title": "Interpretation Centre of the Iberian Sanctuary of “El Pajarillo”",
+    "subtitle": "Discover the legendary Iberian sculptural monument of the Hero and the Wolf, alongside the Church of the Immaculate Conception and its timeless legacy.",
+    "cta_primary": "Plan Your Visit",
+    "cta_secondary": "Explore Sanctuary & Temple",
+    "scroll": "Explore more",
+    "card_title": "The Wolf's Head",
+    "card_sub": "Iberian limestone sculpture · 4th century BC"
+  },
+  "historia": {
+    "section_label": "Millenary Heritage",
+    "title": "History, Architecture and Art",
+    "subtitle": "An exceptional archaeological and spiritual site uniting 4th-century BC Iberian rituals with Renaissance and Baroque temple architecture.",
+    "tab_iberico": "Iberian Sanctuary",
+    "tab_iglesia": "Immaculate Church",
+    "tab_arte": "Sculptural Ensemble",
+    "iberico_content": {
+      "title": "The Heroic Sanctuary of El Pajarillo (4th c. BC)",
+      "body": "Strategically overlooking the Jandulilla river valley, the Iberian Sanctuary of El Pajarillo is one of the most remarkable archaeological discoveries in the Iberian Peninsula. Dating to the mid-4th century BC, this monumental sanctuary was conceived as a stepped ceremonial terrace for the heroic apotheosis of an Iberian prince or chieftain.\n\nAt its summit stood the celebrated sculptural monument portraying a mythical combat between a young aristocratic warrior and an imposing wild beast: the fierce Iberian Wolf Head, flanked by guardian lions and winged sphinxes, embodying power, valor, and sacred memory."
+    },
+    "iglesia_content": {
+      "title": "Church of the Immaculate Conception and Convent",
+      "body": "Standing close to the sanctuary's landscape, the Church of the Immaculate Conception was built between the 16th and 18th centuries. The church exhibits a Latin cross layout with side chapels, carved ashlar masonry arches, and an elegant cupola over pendentives above the transept.\n\nThe adjoining conventual remains preserve traces of the Tuscan cloister, documenting centuries of monastic devotion that shaped regional society and creating an inspiring visual dialogue with the ancient archaeological substratum."
+    },
+    "arte_content": {
+      "title": "Sculptural Treasures & Artistic Heritage",
+      "body": "Carved from local white limestone by Iberian master sculptors, the artwork of El Pajarillo reveals classical Mediterranean aesthetics harmonized with native religious values. The dramatic intensity of the Wolf's Head — with bared teeth, alert ears, and snarling muzzle — is a recognized masterpiece of ancient European art.\n\nInside the church, the gilded Baroque altarpiece, sacred imagery, and historical devotional canvases complete a unified cultural ensemble accessible today through interactive digital media."
+    },
+    "timeline": {
+      "section_label": "Historical Evolution",
+      "title": "Chronological Milestones of the Site",
+      "subtitle": "A journey across more than two millennia of history, from the 4th-century BC Oretan heroic sanctuary to the present day.",
+      "events": [
+        { "year": "c. 350 BC", "text": "Construction of the heroic Iberian Sanctuary monument at El Pajarillo in honor of the Oretan hero." },
+        { "year": "2nd c. BC", "text": "Roman Republican presence and ritual transformation of the Jandulilla river valley." },
+        { "year": "16th c.", "text": "Initial construction of the Church of the Immaculate Conception and monastic buildings." },
+        { "year": "17th–18th c.", "text": "Erection of the central cupola, Baroque gilded altarpiece, and Tuscan cloister." },
+        { "year": "1994", "text": "Systematic excavations led by the University Institute of Iberian Archaeology." },
+        { "year": "Present", "text": "Opening of the modernized, multilingual and fully accessible digital Interpretation Centre." }
+      ]
+    }
+  },
+  "puntos": {
+    "section_label": "Interpretive Itinerary",
+    "title": "Key Exhibition Points & Masterpieces",
+    "subtitle": "Scan the on-site QR codes to access narrated audio guides and 3D digital artifacts.",
+    "listen_audio": "Audio guide available",
+    "view_qr": "QR Code",
+    "tag_arquelogia": "Archaeology",
+    "tag_escultura": "Sculpture",
+    "tag_arquitectura": "Architecture"
+  },
+  "horarios": {
+    "section_label": "Plan Your Visit",
+    "title": "Opening Hours, Tickets and Location",
+    "subtitle": "All essential information to prepare your visit comfortably.",
+    "horarios_title": "🕒 Opening Hours",
+    "temporada_alta": "Summer Season (Jun–Sep)",
+    "temporada_baja": "Winter Season (Oct–May)",
+    "cerrado": "Closed",
+    "alta_dias": "Tuesday to Saturday: 10:00 AM – 2:00 PM & 5:30 PM – 8:30 PM",
+    "alta_dom": "Sundays & Public Holidays: 10:00 AM – 2:30 PM",
+    "baja_dias": "Tuesday to Saturday: 10:00 AM – 2:00 PM & 4:00 PM – 6:30 PM",
+    "baja_dom": "Sundays & Public Holidays: 10:00 AM – 2:00 PM",
+    "aviso_lunes": "⚠️ Closed on Mondays for preservation maintenance (except holidays)",
+    "tarifas_title": "Admission Fees",
+    "tarifa_general": "General Admission",
+    "tarifa_general_price": "€3.00",
+    "tarifa_general_desc": "Includes access to the Interpretation Centre, church, and digital audio guide.",
+    "tarifa_reducida": "Reduced Admission",
+    "tarifa_reducida_price": "€1.50",
+    "tarifa_reducida_desc": "Seniors (65+), students under 25, groups of 10+ visitors.",
+    "tarifa_gratuita": "Free Admission",
+    "tarifa_gratuita_price": "€0.00",
+    "tarifa_gratuita_desc": "Children under 12, visitors with certified disabilities, and local residents.",
+    "localizacion_title": "🗺️ How to Get Here",
+    "direccion_label": "Address:",
+    "direccion_val": "El Pajarillo Archaeological Area · Huelma-Cabra Road, Jaén, Spain",
+    "parking_label": "Parking:",
+    "parking_val": "Free visitor parking available for passenger cars and tourist coaches.",
+    "accesibilidad_label": "Accessibility:",
+    "accesibilidad_val": "Fully accessible paths for visitors with reduced mobility; braille interpretive panels.",
+    "abrir_mapa": "Open in Google Maps"
+  },
+  "agenda": {
+    "section_label": "Cultural Agenda",
+    "title": "Scheduled Activities & Events",
+    "subtitle": "Discover family workshops, specialized lectures, and guided dramatized tours.",
+    "filtro_todos": "All Events",
+    "filtro_visitas": "Guided Tours",
+    "filtro_talleres": "Educational Workshops",
+    "filtro_arqueologia": "Archaeology & Science",
+    "plazas_disponibles": "places available",
+    "precio_gratis": "Free Activity",
+    "reservar_btn": "Request place",
+    "no_events": "No activities scheduled for this category."
+  },
+  "galeria": {
+    "section_label": "Media Gallery",
+    "title": "Photo Archive & Digital Resources",
+    "subtitle": "High-definition photography, 3D reconstructions, video guides, and downloadable research sheets.",
+    "tab_fotos": "HD Photos",
+    "tab_recursos": "Digital & Interactive Assets",
+    "tab_videos": "Documentaries & Videos",
+    "open_lightbox": "View full size",
+    "download_resource": "Download resource (PDF / Fact Sheet)",
+    "download_btn": "⬇ Download",
+    "categories": {
+      "Escultura": "Sculpture",
+      "Arquitectura": "Architecture",
+      "Yacimiento": "Archaeological Site",
+      "Entorno": "Surroundings",
+      "Convento": "Monastery",
+      "Interior": "Interior",
+      "Arte Sacro": "Sacred Art"
+    },
+    "badges": {
+      "Publicación Oficial": "Official Publication",
+      "Cartografía": "Cartography",
+      "Didáctica": "Educational"
+    }
+  },
+  "reservas": {
+    "section_label": "Booking Module",
+    "title": "Online Guided Tour Reservations",
+    "subtitle": "Digital management portal for individual visitors, academic groups, and travel agencies.",
+    "badge_mvp": "Integrated SaaS MVP",
+    "info_title": "Official Guided Tours",
+    "info_desc": "Accompanied by cultural mediators and archaeologists, discover the secrets of the Iberian monument and the beauty of the Church of the Immaculate Conception.",
+    "perk_1": "Exclusive access to restricted areas of the archaeological site",
+    "perk_2": "Multilingual digital audio guide or device included",
+    "perk_3": "Small group sizes (maximum 25 visitors per session)",
+    "perk_4": "100% accessible itinerary for visitors with reduced mobility",
+    "info_note": "For educational institutions or groups of over 30 visitors, please contact the municipal tourism office directly.",
+    "form_nombre": "Full name",
+    "form_email": "Email address",
+    "form_telefono": "Phone number",
+    "form_fecha": "Preferred date",
+    "form_hora": "Time slot",
+    "time_morning_1": "Morning · 10:30 AM",
+    "time_morning_2": "Morning · 12:00 PM",
+    "time_afternoon_1": "Afternoon · 5:00 PM",
+    "time_afternoon_2": "Afternoon · 6:30 PM",
+    "form_personas": "Number of visitors",
+    "form_idioma": "Tour language",
+    "form_notas": "Special requests or accessibility needs",
+    "form_submit": "Submit Tour Reservation",
+    "success_title": "Reservation successfully received!",
+    "success_desc": "Our team will confirm your booking via email within 24 working hours."
+  },
+  "contacto": {
+    "section_label": "Visitor Services",
+    "title": "Contact & Institutional Information",
+    "subtitle": "Have questions or planning a specialized group visit? Get in touch with our curatorial team.",
+    "oficina_title": "Tourism and Heritage Office",
+    "form_asunto": "Inquiry subject",
+    "form_mensaje": "Your message...",
+    "form_enviar": "Send Message",
+    "alert_success": "Thank you for your message. The tourism department will reply shortly.",
+    "tel_label": "Phone inquiry",
+    "tel_val": "(+34) 953 39 00 10",
+    "email_label": "Email address",
+    "email_val": "turismo@elpajarillo.es",
+    "ayto_label": "Administration",
+    "ayto_val": "Town Hall of Huelma · Department of Culture & Heritage",
+    "horario_atencion": "Phone service: Monday to Friday, 9:00 AM – 2:00 PM CET"
+  },
+  "footer": {
+    "about": "Interpretation Centre of the Iberian Sanctuary of El Pajarillo. Leading cultural and archaeological beacon in Sierra Mágina, Jaén.",
+    "links_title": "Navigation",
+    "legal_title": "Legal & Quality",
+    "aviso": "Legal Notice",
+    "privacidad": "Privacy Policy",
+    "cookies": "Cookie Policy",
+    "accesibilidad": "Accessibility Statement",
+    "saas_title": "SaaS Platform",
+    "saas_desc": "Municipal management dashboard for content, cultural events, and visitor analytics.",
+    "panel_enlace": "Town Hall Management Portal",
+    "copy": "© 2026 Interpretation Centre Santuario Ibérico de El Pajarillo. All rights reserved.",
+    "cofinanciado": "Project funded for the digital modernization and sustainable management of regional cultural heritage."
+  },
+  "qr_modal": {
+    "title": "QR Code",
+    "desc": "Scan this code with your smartphone or download it for physical signage.",
+    "btn_download": "⬇ Download PNG",
+    "btn_copy": "Copy link",
+    "btn_close": "Close",
+    "copied": "Link copied to clipboard!"
+  },
+  "analytics_banner": {
+    "msg": "We use anonymous analytical data to improve visitor experience and monitor exhibition popularity.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "info": "Learn more"
+  }
+}

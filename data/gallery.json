@@ -1,0 +1,180 @@
+{
+  "media": [
+    {
+      "id": "foto_1",
+      "type": "photo",
+      "src": "./assets/images/lobo.png",
+      "thumb": "./assets/images/lobo.png",
+      "caption": {
+        "es": "Cabeza de Lobo Ibérico de El Pajarillo (Siglo IV a.C.)",
+        "en": "Iberian Wolf Head of El Pajarillo (4th Century BC)",
+        "fr": "Tête de Loup Ibérique d'El Pajarillo (IVe siècle av. J.-C.)"
+      },
+      "author": "Centro de Interpretación",
+      "category": "Escultura"
+    },
+    {
+      "id": "foto_2",
+      "type": "photo",
+      "src": "./assets/images/hero/hero.jpg",
+      "thumb": "./assets/images/hero/hero.jpg",
+      "caption": {
+        "es": "Vista nocturna monumental de la fachada y torre campanario",
+        "en": "Night view of the monumental facade and bell tower",
+        "fr": "Vue crépusculaire de la façade et du clocher"
+      },
+      "author": "Archivo Municipal",
+      "category": "Arquitectura"
+    },
+    {
+      "id": "foto_3",
+      "type": "photo",
+      "src": "./assets/images/gallery/arqueologia.jpg",
+      "thumb": "./assets/images/gallery/arqueologia.jpg",
+      "caption": {
+        "es": "Excavaciones y terrazas arqueológicas en el Santuario de El Pajarillo",
+        "en": "Archaeological excavation terraces at El Pajarillo Sanctuary",
+        "fr": "Terrasses et fouilles archéologiques du sanctuaire d'El Pajarillo"
+      },
+      "author": "Instituto Arqueológico",
+      "category": "Yacimiento"
+    },
+    {
+      "id": "foto_4",
+      "type": "photo",
+      "src": "./assets/images/gallery/exterior.jpg",
+      "thumb": "./assets/images/gallery/exterior.jpg",
+      "caption": {
+        "es": "Plaza exterior y acceso al Centro de Interpretación e Iglesia",
+        "en": "Public square and entrance to the Interpretation Centre & Church",
+        "fr": "Place et parvis du Centre d'Interprétation et de l'Église"
+      },
+      "author": "Turismo",
+      "category": "Entorno"
+    },
+    {
+      "id": "foto_5",
+      "type": "photo",
+      "src": "./assets/images/gallery/claustro.jpg",
+      "thumb": "./assets/images/gallery/claustro.jpg",
+      "caption": {
+        "es": "Patio y galerías del claustro conventual restaurado",
+        "en": "Courtyard and arcades of the restored monastic cloister",
+        "fr": "Cour intérieure et arcades du cloître restauré"
+      },
+      "author": "Patrimonio",
+      "category": "Convento"
+    },
+    {
+      "id": "foto_6",
+      "type": "photo",
+      "src": "./assets/images/gallery/interior.jpg",
+      "thumb": "./assets/images/gallery/interior.jpg",
+      "caption": {
+        "es": "Nave central y bóvedas de la Iglesia de la Inmaculada Concepción",
+        "en": "Central nave and ribbed vaults of the Church of the Immaculate Conception",
+        "fr": "Nef et voûtes de l'Église de l'Immaculée Conception"
+      },
+      "author": "Patrimonio",
+      "category": "Interior"
+    },
+    {
+      "id": "foto_7",
+      "type": "photo",
+      "src": "./assets/images/gallery/retablo.jpg",
+      "thumb": "./assets/images/gallery/retablo.jpg",
+      "caption": {
+        "es": "Detalle de talla dorada y policromada del retablo mayor barroco",
+        "en": "Gilded woodcarving detail of the Baroque main retablo",
+        "fr": "Détail de boiserie dorée du retable majeur baroque"
+      },
+      "author": "Patrimonio",
+      "category": "Arte Sacro"
+    }
+  ],
+  "resources": [
+    {
+      "id": "res_1",
+      "title": {
+        "es": "Ficha Científica: La Cabeza de Lobo de El Pajarillo",
+        "en": "Scientific Factsheet: The Wolf Head of El Pajarillo",
+        "fr": "Fiche Scientifique : La Tête de Loup d'El Pajarillo"
+      },
+      "format": "PDF / 4.2 MB",
+      "icon": "📄",
+      "badge": "Publicación Oficial",
+      "description": {
+        "es": "Estudio iconográfico, metrología y análisis petrológico de la caliza del monumento.",
+        "en": "Iconographic study, metrology, and petrological analysis of the monument's limestone.",
+        "fr": "Étude iconographique, analyse pétrologique et contexte archéologique."
+      },
+      "url": "#"
+    },
+    {
+      "id": "res_2",
+      "title": {
+        "es": "Plano Topográfico y Guía del Yacimiento Arqueológico",
+        "en": "Topographic Map & Archaeological Site Guide",
+        "fr": "Plan Topographique et Guide du Site Archéologique"
+      },
+      "format": "PDF / 3.1 MB",
+      "icon": "🗺️",
+      "badge": "Cartografía",
+      "description": {
+        "es": "Planimetría detallada de las terrazas, accesos rituales y restos conventuales.",
+        "en": "Detailed survey plans of the terraces, ceremonial paths, and monastic remains.",
+        "fr": "Cartographie des terrasses cérémonielles et des vestiges conventuels."
+      },
+      "url": "#"
+    },
+    {
+      "id": "res_3",
+      "title": {
+        "es": "Cuaderno Didáctico para Escolares y Familias",
+        "en": "Educational Booklet for Schools & Families",
+        "fr": "Cahier Pédagogique pour Écoles et Familles"
+      },
+      "format": "PDF / 6.8 MB",
+      "icon": "🎒",
+      "badge": "Didáctica",
+      "description": {
+        "es": "Actividades lúdicas, recortables del lobo íbero y juegos de pistas para la visita.",
+        "en": "Engaging activities, Iberian wolf papercrafts, and treasure-hunt clues for children.",
+        "fr": "Jeux d'observation, coloriages et énigmes pour explorer le musée en famille."
+      },
+      "url": "#"
+    }
+  ],
+  "videos": [
+    {
+      "id": "vid_1",
+      "title": {
+        "es": "Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo",
+        "en": "3D Virtual Reconstruction: Combat of the Hero and the Wolf",
+        "fr": "Restitution Virtuelle 3D : Le Combat du Héros et du Loup"
+      },
+      "duration": "04:15",
+      "thumb": "./assets/images/gallery/lobo.png",
+      "description": {
+        "es": "Recreación fotorrealista de cómo se erigía el conjunto escultórico en lo alto del santuario en el año 350 a.C.",
+        "en": "Photorealistic 3D visualization of the monumental sculptural terrace in 350 BC.",
+        "fr": "Reconstitution 3D de l'apothéose héroïque et de la terrasse monumentale au IVe s. av. J.-C."
+      }
+    },
+    {
+      "id": "vid_2",
+      "title": {
+        "es": "Documental: La Huella Íbera y Cristiana en Sierra Mágina",
+        "en": "Documentary: Iberian and Christian Heritage in Sierra Mágina",
+        "fr": "Documentaire : L'Empreinte Ibère et Chrétienne en Sierra Mágina"
+      },
+      "duration": "12:30",
+      "thumb": "./assets/images/hero/hero.jpg",
+      "description": {
+        "es": "Un viaje audiovisual por la historia del santuario, la Iglesia de la Inmaculada Concepción y las investigaciones arqueológicas.",
+        "en": "An immersive journey across the history of the sanctuary, the church, and modern excavations.",
+        "fr": "Une traversée documentaire de l'histoire du sanctuaire, de l'église et des découvertes récentes."
+      }
+    }
+  ]
+}

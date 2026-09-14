@@ -1,0 +1,43 @@
+{
+  "bookings": [
+    {
+      "id": 101,
+      "date": "2026-10-12",
+      "time": "11:00",
+      "name": "María González Rivas",
+      "email": "maria.gonzalez@ejemplo.es",
+      "phone": "+34 612 34 56 78",
+      "people": 4,
+      "lang": "es",
+      "notes": "Visita familiar con dos menores de 10 años.",
+      "status": "confirmed",
+      "createdAt": "2026-09-12 11:20"
+    },
+    {
+      "id": 102,
+      "date": "2026-10-17",
+      "time": "16:30",
+      "name": "Jean-Pierre Laurent",
+      "email": "jp.laurent@archeo-paris.fr",
+      "phone": "+33 6 88 44 22 11",
+      "people": 2,
+      "lang": "fr",
+      "notes": "Intérêt spécifique pour la sculpture ibérique et la tête de loup.",
+      "status": "pending",
+      "createdAt": "2026-09-13 15:45"
+    },
+    {
+      "id": 103,
+      "date": "2026-10-24",
+      "time": "10:30",
+      "name": "Colegio San Isidro",
+      "email": "secretaria@colegiosanisidro.org",
+      "phone": "+34 953 22 11 00",
+      "people": 24,
+      "lang": "es",
+      "notes": "Grupo escolar de 1º de ESO con 2 profesores acompañantes.",
+      "status": "confirmed",
+      "createdAt": "2026-09-14 09:10"
+    }
+  ]
+}

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Centro de Interpretación Santuario Ibérico de “El Pajarillo”</title>
+  
+  <meta name="description" content="Centro de Interpretación Santuario Ibérico de El Pajarillo. Descubre el célebre monumento del Héroe y el Lobo.">
+  <meta name="keywords" content="El Pajarillo, Santuario Ibérico, Huelma, Jaén, Cabeza de Lobo, Arqueología Ibérica, Turismo Sierra Mágina">
+
+  <!-- Google Fonts: Barlow Condensed (estilo DIN Condensed corporativo) & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- QRCode JS CDN para generación de códigos in situ -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Estilos del Manual Corporativo -->
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body>
+
+  <!-- Cabecera Principal -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="#hero" class="brand-logo-link" title="Centro de Interpretación Santuario Ibérico de “El Pajarillo”">
+        <img src="./assets/images/logo-pajarillo.png" alt="Logo Santuario Ibérico del Pajarillo" class="header-logo-svg" style="height: 58px; width: auto;">
+      </a>
+
+      <!-- Navegación -->
+      <nav>
+        <ul class="nav-menu" id="nav-menu">
+          <li><a href="#historia" class="nav-link" data-i18n="nav.historia">Historia y Arte</a></li>
+          <li><a href="#puntos" class="nav-link" data-i18n="nav.puntos">Puntos de Visita</a></li>
+          <li><a href="#galeria" class="nav-link" data-i18n="nav.galeria">Galería y Recursos</a></li>
+          <li><a href="#horarios" class="nav-link" data-i18n="nav.horarios">Horarios y Visita</a></li>
+          <li><a href="#agenda" class="nav-link" data-i18n="nav.agenda">Agenda Cultural</a></li>
+          <li><a href="#contacto" class="nav-link" data-i18n="nav.contacto">Contacto</a></li>
+        </ul>
+      </nav>
+
+      <!-- Selector de Idioma & CTA -->
+      <div class="header-actions">
+        <div class="lang-switcher" aria-label="Seleccionar idioma / Select language">
+          <button class="lang-btn active" data-lang="es">ES</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="fr">FR</button>
+        </div>
+
+        <a href="#reservas" class="btn-book-nav">
+          <span>🎟️</span>
+          <span data-i18n="nav.reservar">Reservar Visita</span>
+        </a>
+
+        <button class="menu-toggle-btn" id="menu-toggle" aria-label="Abrir menú">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ═══════════════════════════════════════════
+         HERO SECTION
+         ═══════════════════════════════════════════ -->
+    <section class="hero-section" id="hero" aria-label="Portada y presentación">
+      <div class="hero-bg-media">
+        <img src="./assets/images/hero/hero.jpg" alt="Conjunto monumental del Santuario e Iglesia iluminado" class="hero-bg-img">
+      </div>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <div>
+          <span class="hero-badge" data-i18n="hero.eyebrow">Conjunto Monumental y Arqueológico · Siglos IV a.C. – XVIII d.C.</span>
+          <h1 class="hero-title" data-i18n="hero.title">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</h1>
+          <p class="hero-subtitle" data-i18n="hero.subtitle">
+            Descubre el legendario monumento escultórico ibérico del Héroe y el Lobo, junto a la Iglesia de la Inmaculada Concepción y su legado histórico.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#horarios" class="btn-cta-gold">
+              <span>📍</span>
+              <span data-i18n="hero.cta_primary">Planifica tu visita</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Tarjeta destacada: Cabeza de Lobo -->
+        <div class="hero-card-featured">
+          <div class="hero-wolf-img-wrap">
+            <img src="./assets/images/lobo.png" alt="Escultura Cabeza de Lobo de El Pajarillo" class="hero-wolf-img">
+          </div>
+          <h3 class="hero-card-title" data-i18n="hero.card_title">La Cabeza de Lobo</h3>
+          <p class="hero-card-sub" data-i18n="hero.card_sub">Escultura ibérica en caliza · Siglo IV a.C.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 1: HISTORIA, ARQUITECTURA Y ARTE
+         ═══════════════════════════════════════════ -->
+    <section class="section" id="historia" aria-label="Historia, arquitectura y arte">
+      <div class="container">
+        <!-- Hitos cronológicos del conjunto (Primero) -->
+        <div id="sec-cronologia">
+          <div class="section-header">
+            <span class="section-label" data-i18n="historia.timeline.section_label">Evolución Histórica</span>
+            <h2 class="section-title" data-i18n="historia.timeline.title">Hitos Cronológicos del Conjunto</h2>
+            <p class="section-subtitle" data-i18n="historia.timeline.subtitle">
+              Un recorrido por más de dos milenios de historia, desde el santuario heroico oretano del siglo IV a.C. hasta la actualidad.
+            </p>
+          </div>
+
+          <div class="timeline-wrap" style="margin-top: 1.5rem; margin-bottom: 4rem;">
+            <div class="timeline-grid">
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.0.year">c. 350 a.C.</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.0.text">Construcción del monumento escultórico del Santuario Ibérico de El Pajarillo en honor al héroe oretano.</div>
+              </div>
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.1.year">S. II a.C.</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.1.text">Presencia romana republicana y transformación del paisaje ritual en el valle del Jandulilla.</div>
+              </div>
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.2.year">S. XVI</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.2.text">Construcción inicial del templo de la Inmaculada Concepción y dependencias conventuales.</div>
+              </div>
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.3.year">S. XVII–XVIII</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.3.text">Erección de la cúpula central, retablo mayor barroco y claustro de orden toscano.</div>
+              </div>
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.4.year">1994</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.4.text">Excavaciones arqueológicas sistemáticas dirigidas por el Instituto Universitario de Arqueología Ibérica.</div>
+              </div>
+              <div class="timeline-card">
+                <div class="timeline-year" data-i18n="historia.timeline.events.5.year">Actualidad</div>
+                <div class="timeline-desc" data-i18n="historia.timeline.events.5.text">Apertura del Centro de Interpretación digitalizado, accesible y multilingüe.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Patrimonio Milenario: Historia, Arquitectura y Arte (A continuación) -->
+        <div id="sec-patrimonio">
+          <div class="section-header">
+            <span class="section-label" data-i18n="historia.section_label">Patrimonio Milenario</span>
+            <h2 class="section-title" data-i18n="historia.title">Historia, Arquitectura y Arte</h2>
+            <p class="section-subtitle" data-i18n="historia.subtitle">
+              Un enclave excepcional donde confluyen la espiritualidad íbera del siglo IV a.C. y la arquitectura renacentista y barroca de la Iglesia de la Inmaculada Concepción.
+            </p>
+          </div>
+
+          <!-- Pestañas temáticas -->
+          <div class="tabs-nav history-tabs">
+            <button class="tab-btn active" data-tab="iberico" data-i18n="historia.tab_iberico">Santuario Ibérico</button>
+            <button class="tab-btn" data-tab="iglesia" data-i18n="historia.tab_iglesia">Iglesia Inmaculada</button>
+            <button class="tab-btn" data-tab="arte" data-i18n="historia.tab_arte">Conjunto Escultórico</button>
+          </div>
+
+          <!-- Tab 1: Santuario Ibérico -->
+          <div class="tab-content history-pane active" id="tab-iberico">
+            <div class="story-grid">
+              <div class="story-text">
+                <h3 data-i18n="historia.iberico_content.title">El Santuario Heroico de El Pajarillo (S. IV a.C.)</h3>
+                <p data-i18n="historia.iberico_content.body">
+                  Ubicado estratégicamente sobre el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular. Datado a mediados del siglo IV a.C., el monumento conmemorativo fue concebido como un gran escenario escalonado para la apoteosis o heroización de un príncipe o aristócrata íbero.
+                </p>
+              </div>
+              <div class="story-media">
+                <img src="./assets/images/gallery/arqueologia.jpg" alt="Yacimiento arqueológico de El Pajarillo">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Iglesia de la Inmaculada Concepción y Convento -->
+          <div class="tab-content history-pane" id="tab-iglesia">
+            <div class="story-grid">
+              <div class="story-text">
+                <h3 data-i18n="historia.iglesia_content.title">Iglesia de la Inmaculada Concepción y Convento</h3>
+                <p data-i18n="historia.iglesia_content.body">
+                  Próxima al entorno patrimonial del santuario, la Iglesia de la Inmaculada Concepción erige su sobria fábrica entre los siglos XVI y XVIII. El templo presenta una estructura de cruz latina con capillas laterales, esbeltos arcos de sillería labrada y una hermosa cúpula sobre pechinas en el crucero.
+                </p>
+              </div>
+              <div class="story-media">
+                <img src="./assets/images/gallery/exterior.jpg" alt="Fachada de la Iglesia de la Inmaculada Concepción">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Arte y Escultura -->
+          <div class="tab-content history-pane" id="tab-arte">
+            <div class="story-grid">
+              <div class="story-text">
+                <h3 data-i18n="historia.arte_content.title">Tesoro Escultórico y Recursos Artísticos</h3>
+                <p data-i18n="historia.arte_content.body">
+                  El corpus escultórico de El Pajarillo, tallado en caliza blanca local por maestros canteros íberos, muestra influencias mediterráneas de época clásica y helenística adaptadas a la cosmovisión autóctona. La expresividad feroz de la Cabeza de Lobo es una obra maestra del arte ibérico.
+                </p>
+              </div>
+              <div class="story-media">
+                <img src="./assets/images/gallery/retablo.jpg" alt="Detalle del retablo y talla barroca">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 2: PUNTOS DE VISITA & QR (ESTILO JÓDAR)
+         ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="puntos" aria-label="Puntos de información y exposición">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="puntos.section_label">Recorrido Interpretativo</span>
+          <h2 class="section-title" data-i18n="puntos.title">Puntos de Información y Piezas Clave</h2>
+          <p class="section-subtitle" data-i18n="puntos.subtitle">
+            Escanea los códigos QR situados en las salas y en el yacimiento para escuchar la audioguía y visualizar los modelos digitales.
+          </p>
+        </div>
+
+        <!-- Renderizado dinámico desde data/paneles.json -->
+        <div class="panels-grid" id="panels-container">
+          <!-- Inyectado por app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 3: GALERÍA Y RECURSOS DIGITALES (FONDO AUDIOVISUAL)
+         ═══════════════════════════════════════════ -->
+    <section class="section" id="galeria" aria-label="Galería y recursos multimedia">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="galeria.section_label">Fondo Audiovisual</span>
+          <h2 class="section-title" data-i18n="galeria.title">Galería Multimedia y Recursos Digitales</h2>
+          <p class="section-subtitle" data-i18n="galeria.subtitle">
+            Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.
+          </p>
+        </div>
+
+        <!-- Tabs de galería -->
+        <div class="tabs-nav gallery-tabs">
+          <button class="tab-btn active" data-tab="fotos" data-i18n="galeria.tab_fotos">Fotografías HD</button>
+          <button class="tab-btn" data-tab="recursos" data-i18n="galeria.tab_recursos">Recursos Digitales e Interactivos</button>
+          <button class="tab-btn" data-tab="videos" data-i18n="galeria.tab_videos">Audiovisuales</button>
+        </div>
+
+        <!-- Paneles de Galería -->
+        <div class="gallery-pane active" id="tab-fotos">
+          <div class="gallery-grid" id="gallery-photos"></div>
+        </div>
+
+        <div class="gallery-pane" id="tab-recursos">
+          <div class="resources-grid" id="gallery-resources"></div>
+        </div>
+
+        <div class="gallery-pane" id="tab-videos">
+          <div class="agenda-grid" id="gallery-videos"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 4: HORARIOS, TARIFAS Y LOCALIZACIÓN
+         ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="horarios" aria-label="Horarios y localización">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="horarios.section_label">Planifica tu visita</span>
+          <h2 class="section-title" data-i18n="horarios.title">Horarios, Tarifas y Localización</h2>
+          <p class="section-subtitle" data-i18n="horarios.subtitle">
+            Toda la información necesaria para preparar tu experiencia turística y cultural.
+          </p>
+        </div>
+
+        <div class="visit-grid">
+          <!-- Columna 1: Horarios y Tarifas -->
+          <div class="visit-card">
+            <h3 class="visit-card-title" data-i18n="horarios.horarios_title">🕒 Horarios de Apertura</h3>
+            
+            <div class="hours-block">
+              <h4 data-i18n="horarios.temporada_alta">Horario de Verano (Jun–Sep)</h4>
+              <div class="hours-row">
+                <span data-i18n="horarios.alta_dias">Martes a Sábado: 10:00 – 14:00 h y 17:30 – 20:30 h</span>
+              </div>
+              <div class="hours-row">
+                <span data-i18n="horarios.alta_dom">Domingos y festivos: 10:00 – 14:30 h</span>
+              </div>
+            </div>
+
+            <div class="hours-block">
+              <h4 data-i18n="horarios.temporada_baja">Horario de Invierno (Oct–May)</h4>
+              <div class="hours-row">
+                <span data-i18n="horarios.baja_dias">Martes a Sábado: 10:00 – 14:00 h y 16:00 – 18:30 h</span>
+              </div>
+              <div class="hours-row">
+                <span data-i18n="horarios.baja_dom">Domingos y festivos: 10:00 – 14:00 h</span>
+              </div>
+            </div>
+
+            <p style="font-size: 0.82rem; color: var(--c-accent-purple); font-weight: 600; margin-bottom: 1.5rem;" data-i18n="horarios.aviso_lunes">
+              ⚠️ Lunes cerrado por mantenimiento (excepto festivos)
+            </p>
+
+            <h3 class="visit-card-title" style="margin-top: 1rem;" data-i18n="horarios.tarifas_title">Tarifas de Entrada</h3>
+            
+            <div class="tarifa-item">
+              <div class="tarifa-info">
+                <h5 data-i18n="horarios.tarifa_general">Entrada General</h5>
+                <p data-i18n="horarios.tarifa_general_desc">Incluye acceso al Centro de Interpretación, templo y audioguía digital.</p>
+              </div>
+              <div class="tarifa-price" data-i18n="horarios.tarifa_general_price">3,00 €</div>
+            </div>
+
+            <div class="tarifa-item">
+              <div class="tarifa-info">
+                <h5 data-i18n="horarios.tarifa_reducida">Entrada Reducida</h5>
+                <p data-i18n="horarios.tarifa_reducida_desc">Jubilados, estudiantes menores de 25 años, grupos >10 personas.</p>
+              </div>
+              <div class="tarifa-price" data-i18n="horarios.tarifa_reducida_price">1,50 €</div>
+            </div>
+
+            <div class="tarifa-item">
+              <div class="tarifa-info">
+                <h5 data-i18n="horarios.tarifa_gratuita">Entrada Gratuita</h5>
+                <p data-i18n="horarios.tarifa_gratuita_desc">Menores de 12 años, personas con discapacidad acreditada y empadronados.</p>
+              </div>
+              <div class="tarifa-price" data-i18n="horarios.tarifa_gratuita_price">0,00 €</div>
+            </div>
+          </div>
+
+          <!-- Columna 2: Localización y Cómo Llegar -->
+          <div class="visit-card">
+            <h3 class="visit-card-title" data-i18n="horarios.localizacion_title">🗺️ Cómo llegar</h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
+              <div>
+                <strong style="color: var(--c-primary); display: block;" data-i18n="horarios.direccion_label">Dirección:</strong>
+                <span data-i18n="horarios.direccion_val">Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén</span>
+              </div>
+              <div>
+                <strong style="color: var(--c-primary); display: block;" data-i18n="horarios.parking_label">Aparcamiento:</strong>
+                <span data-i18n="horarios.parking_val">Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.</span>
+              </div>
+              <div>
+                <strong style="color: var(--c-primary); display: block;" data-i18n="horarios.accesibilidad_label">Accesibilidad:</strong>
+                <span data-i18n="horarios.accesibilidad_val">Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.</span>
+              </div>
+            </div>
+
+            <!-- Mapa Interactivo Integrado (OpenStreetMap / Carto) -->
+            <div class="map-card-wrapper">
+              <iframe 
+                title="Mapa de localización de El Pajarillo"
+                width="100%" 
+                height="100%" 
+                frameborder="0" 
+                scrolling="no" 
+                marginheight="0" 
+                marginwidth="0" 
+                src="https://www.openstreetmap.org/export/embed.html?bbox=-3.50%2C37.60%2C-3.40%2C37.70&amp;layer=mapnik&amp;marker=37.65%2C-3.45" 
+                style="border: 0; width: 100%; height: 100%;">
+              </iframe>
+            </div>
+
+            <div style="text-align: center; margin-top: 1.25rem;">
+              <a href="https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma" target="_blank" rel="noopener" class="btn-cta-outline" style="background: var(--c-primary); color: white; display: inline-block;">
+                📍 <span data-i18n="horarios.abrir_mapa">Abrir en Google Maps</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 5: AGENDA DE ACTIVIDADES
+         ═══════════════════════════════════════════ -->
+    <section class="section" id="agenda" aria-label="Agenda de actividades programadas">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="agenda.section_label">Agenda Dinámica</span>
+          <h2 class="section-title" data-i18n="agenda.title">Actividades y Eventos Programados</h2>
+          <p class="section-subtitle" data-i18n="agenda.subtitle">
+            Conoce los talleres didácticos, visitas teatralizadas y conferencias organizadas por el Ayuntamiento.
+          </p>
+        </div>
+
+        <!-- Filtros de categoría -->
+        <div class="agenda-filters">
+          <button class="filter-btn active" data-filter="todos" data-i18n="agenda.filtro_todos">Todas</button>
+          <button class="filter-btn" data-filter="visitas" data-i18n="agenda.filtro_visitas">Visitas Guiadas</button>
+          <button class="filter-btn" data-filter="talleres" data-i18n="agenda.filtro_talleres">Talleres Didácticos</button>
+          <button class="filter-btn" data-filter="arqueologia" data-i18n="agenda.filtro_arqueologia">Arqueología y Ciencia</button>
+        </div>
+
+        <!-- Listado dinámico de actividades -->
+        <div class="agenda-grid" id="agenda-container">
+          <!-- Inyectado por agenda.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 6: MÓDULO DE RESERVAS ONLINE (SaaS MVP)
+         ═══════════════════════════════════════════ -->
+    <section class="section section-alt" id="reservas" aria-label="Reservas online para visitas guiadas">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="reservas.section_label">Módulo de Reservas</span>
+          <h2 class="section-title" data-i18n="reservas.title">Reserva Online para Visitas Guiadas</h2>
+          <p class="section-subtitle" data-i18n="reservas.subtitle">
+            Plataforma digital integrada para la gestión anticipada de visitas de particulares y grupos.
+          </p>
+        </div>
+
+        <div class="booking-container">
+          <!-- Columna Izquierda: Información y ventajas -->
+          <div class="booking-hero-pane">
+            <div>
+              <span style="background: var(--c-accent-gold); color: #19231D; font-size: 0.72rem; font-weight: 800; padding: 4px 10px; border-radius: 999px; text-transform: uppercase;" data-i18n="reservas.badge_mvp">SaaS MVP Integrado</span>
+              <h3 style="margin-top: 1rem;" data-i18n="reservas.info_title">Visitas Guiadas Oficiales</h3>
+              <p style="color: #DCDCD6; font-size: 0.95rem; line-height: 1.6;" data-i18n="reservas.info_desc">
+                Acompañado por mediadores culturales y arqueólogos, descubre los secretos del monumento íbero y el esplendor de la Iglesia de la Inmaculada Concepción.
+              </p>
+
+              <ul class="booking-perks">
+                <li class="booking-perk-item">
+                  <span>🏛️</span>
+                  <span data-i18n="reservas.perk_1">Acceso exclusivo a zonas restringidas del yacimiento</span>
+                </li>
+                <li class="booking-perk-item">
+                  <span>🎧</span>
+                  <span data-i18n="reservas.perk_2">Dispositivo o audioguía digital multilingüe incluido</span>
+                </li>
+                <li class="booking-perk-item">
+                  <span>👥</span>
+                  <span data-i18n="reservas.perk_3">Grupos reducidos (máximo 25 personas por turno)</span>
+                </li>
+                <li class="booking-perk-item">
+                  <span>♿</span>
+                  <span data-i18n="reservas.perk_4">Recorrido 100% adaptado a personas con movilidad reducida</span>
+                </li>
+              </ul>
+            </div>
+
+            <div style="font-size: 0.8rem; color: #A3B5AA;" data-i18n="reservas.info_note">
+              Para visitas de centros educativos o grupos de más de 30 personas, contacta directamente con el área de turismo municipal.
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Formulario de reserva -->
+          <div class="booking-form-pane">
+            <form id="tour-booking-form">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="b-name" data-i18n="reservas.form_nombre">Nombre completo</label>
+                  <input type="text" id="b-name" class="form-input" required placeholder="Ej. Carmen Navarro">
+                </div>
+                <div class="form-field">
+                  <label for="b-email" data-i18n="reservas.form_email">Correo electrónico</label>
+                  <input type="email" id="b-email" class="form-input" required placeholder="carmen@ejemplo.com">
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="b-phone" data-i18n="reservas.form_telefono">Teléfono de contacto</label>
+                  <input type="tel" id="b-phone" class="form-input" required placeholder="+34 600 000 000">
+                </div>
+                <div class="form-field">
+                  <label for="b-people" data-i18n="reservas.form_personas">Número de visitantes</label>
+                  <input type="number" id="b-people" class="form-input" min="1" max="25" value="2" required>
+                </div>
+              </div>
+
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label for="b-date" data-i18n="reservas.form_fecha">Fecha preferida</label>
+                  <input type="date" id="b-date" class="form-input" required>
+                </div>
+                <div class="form-field">
+                  <label for="b-time" data-i18n="reservas.form_hora">Turno horario</label>
+                  <select id="b-time" class="form-select">
+                    <option value="10:30" data-i18n="reservas.time_morning_1">Mañana · 10:30 h</option>
+                    <option value="12:00" data-i18n="reservas.time_morning_2">Mañana · 12:00 h</option>
+                    <option value="17:00" data-i18n="reservas.time_afternoon_1">Tarde · 17:00 h</option>
+                    <option value="18:30" data-i18n="reservas.time_afternoon_2">Tarde · 18:30 h</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="b-lang" data-i18n="reservas.form_idioma">Idioma de la visita</label>
+                <select id="b-lang" class="form-select">
+                  <option value="es">Español (Castellano)</option>
+                  <option value="en">English (Inglés)</option>
+                  <option value="fr">Français (Francés)</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="b-notes" data-i18n="reservas.form_notas">Observaciones o necesidades especiales</label>
+                <textarea id="b-notes" class="form-textarea" rows="2" placeholder="Silla de ruedas, carritos, etc."></textarea>
+              </div>
+
+              <button type="submit" class="btn-submit-booking" data-i18n="reservas.form_submit">
+                Solicitar Reserva de Visita
+              </button>
+            </form>
+
+            <div id="booking-success-msg" style="display: none; text-align: center; padding: 2rem; background: #E8F5E9; border-radius: var(--radius-md); border: 1.5px solid var(--c-success);">
+              <span style="font-size: 2.5rem;">✅</span>
+              <h4 style="color: var(--c-success); font-size: 1.4rem; margin: 0.5rem 0;" data-i18n="reservas.success_title">¡Solicitud registrada correctamente!</h4>
+              <p style="color: var(--c-text-dark); font-size: 0.92rem;" data-i18n="reservas.success_desc">
+                El equipo del Centro de Interpretación confirmará tu reserva por correo electrónico en menos de 24 horas laborables.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════
+         SECCIÓN 7: CONTACTO E INFORMACIÓN
+         ═══════════════════════════════════════════ -->
+    <section class="section" id="contacto" aria-label="Contacto e información institucional">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-label" data-i18n="contacto.section_label">Atención al Visitante</span>
+          <h2 class="section-title" data-i18n="contacto.title">Contacto e Información Institucional</h2>
+          <p class="section-subtitle" data-i18n="contacto.subtitle">
+            ¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Formulario de Contacto -->
+          <div class="contact-card">
+            <form onsubmit="event.preventDefault(); alert('Gracias por tu mensaje. El área de turismo te responderá a la brevedad.'); this.reset();">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label data-i18n="reservas.form_nombre">Nombre completo</label>
+                  <input type="text" class="form-input" required placeholder="Tu nombre">
+                </div>
+                <div class="form-field">
+                  <label data-i18n="reservas.form_email">Correo electrónico</label>
+                  <input type="email" class="form-input" required placeholder="tu@correo.com">
+                </div>
+              </div>
+              <div class="form-field">
+                <label data-i18n="contacto.form_asunto">Asunto de la consulta</label>
+                <input type="text" class="form-input" required placeholder="Ej. Consulta para visita de grupo">
+              </div>
+              <div class="form-field">
+                <label data-i18n="contacto.form_mensaje">Mensaje</label>
+                <textarea class="form-textarea" rows="4" required placeholder="Escribe tu mensaje..."></textarea>
+              </div>
+              <button type="submit" class="btn-cta-gold" style="width: 100%; justify-content: center;" data-i18n="contacto.form_enviar">
+                Enviar Consulta
+              </button>
+            </form>
+          </div>
+
+          <!-- Datos Institucionales -->
+          <div class="contact-card" style="background: var(--c-stone-warm);">
+            <h3 style="font-family: var(--font-condensed); font-size: 1.6rem; color: var(--c-primary); margin-bottom: 1.5rem;" data-i18n="contacto.oficina_title">
+              Oficina de Turismo y Patrimonio
+            </h3>
+
+            <ul class="contact-info-list">
+              <li class="contact-item">
+                <div class="contact-icon">📞</div>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.tel_label">Teléfono de atención</strong>
+                  <a href="tel:+34953390010" style="font-size: 1.1rem; font-weight: 700; color: var(--c-primary);" data-i18n="contacto.tel_val">(+34) 953 39 00 10</a>
+                </div>
+              </li>
+              <li class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.email_label">Correo electrónico</strong>
+                  <a href="mailto:turismo@elpajarillo.es" style="font-size: 1rem; font-weight: 700; color: var(--c-primary);" data-i18n="contacto.email_val">turismo@elpajarillo.es</a>
+                </div>
+              </li>
+              <li class="contact-item">
+                <div class="contact-icon">🏛️</div>
+                <div>
+                  <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.ayto_label">Gestión</strong>
+                  <span style="font-size: 0.95rem; font-weight: 600;" data-i18n="contacto.ayto_val">Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo</span>
+                </div>
+              </li>
+            </ul>
+
+            <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); font-size: 0.82rem; color: var(--c-text-muted);" data-i18n="contacto.horario_atencion">
+              Horario de atención telefónica: Lunes a Viernes de 9:00 a 14:00 h
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER INSTITUCIONAL
+       ═══════════════════════════════════════════ -->
+  <footer class="site-footer">
+    <div class="footer-top-grid">
+      <div class="footer-brand">
+        <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap; margin-bottom: 1.25rem;">
+          <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" style="height: 54px; width: auto; background: rgba(255,255,255,0.92); padding: 5px 12px; border-radius: 8px;">
+          <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" style="height: 52px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+        </div>
+        <p data-i18n="footer.about">
+          Centro de Interpretación Santuario Ibérico de “El Pajarillo”. Espacio patrimonial y arqueológico de referencia en Sierra Mágina, Jaén.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer.links_title">Navegación</h4>
+        <ul class="footer-links">
+          <li><a href="#historia" data-i18n="nav.historia">Historia y Arte</a></li>
+          <li><a href="#puntos" data-i18n="nav.puntos">Puntos de Visita</a></li>
+          <li><a href="#galeria" data-i18n="nav.galeria">Galería y Recursos</a></li>
+          <li><a href="#horarios" data-i18n="nav.horarios">Horarios y Tarifas</a></li>
+          <li><a href="#agenda" data-i18n="nav.agenda">Agenda Cultural</a></li>
+          <li><a href="#reservas" data-i18n="nav.reservar">Reservar Visita</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer.legal_title">Legal y Calidad</h4>
+        <ul class="footer-links">
+          <li><a href="./legal.html#aviso" data-i18n="footer.aviso">Aviso Legal</a></li>
+          <li><a href="./legal.html#privacidad" data-i18n="footer.privacidad">Política de Privacidad</a></li>
+          <li><a href="./legal.html#cookies" data-i18n="footer.cookies">Política de Cookies</a></li>
+          <li><a href="./legal.html#accesibilidad" data-i18n="footer.accesibilidad">Declaración de Accesibilidad</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 data-i18n="footer.saas_title">Plataforma SaaS</h4>
+        <p style="font-size: 0.85rem; color: #A3B5AA; margin-bottom: 1rem;" data-i18n="footer.saas_desc">
+          Panel de control municipal para la gestión de contenidos, eventos y analítica de visitantes.
+        </p>
+        <a href="./admin.html" class="admin-link-badge">
+          <span>🔒</span>
+          <span data-i18n="footer.panel_enlace">Acceso Plataforma de Gestión (Ayto)</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Logotipos de Cofinanciación / Subvención Institucional -->
+    <div class="footer-funding">
+      <img src="./assets/images/logos-subvencion.png" alt="Cofinanciado por la Unión Europea, Fondos Europeos, Junta de Andalucía y Consejería de Turismo y Andalucía Exterior">
+    </div>
+
+    <div class="footer-bottom">
+      <div data-i18n="footer.copy">
+        © 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Todos los derechos reservados.
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <span style="font-size: 0.78rem; color: #8A9E92;">Ayuntamiento de Huelma</span>
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Escudo Ayuntamiento de Huelma" style="height: 32px; width: auto; opacity: 0.85;">
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════════════
+       MODAL DE CÓDIGO QR (ESTILO JÓDAR)
+       ═══════════════════════════════════════════ -->
+  <div id="qr-modal" class="qr-modal-overlay hidden">
+    <div class="qr-modal-card">
+      <h3 id="qr-modal-title" style="font-family: var(--font-condensed); font-size: 1.6rem; color: var(--c-primary); margin-bottom: 0.25rem;" data-i18n="qr_modal.title">
+        Código QR
+      </h3>
+      <p style="font-size: 0.85rem; color: var(--c-text-muted); margin-bottom: 1.25rem;" data-i18n="qr_modal.desc">
+        Escanea este código con tu dispositivo móvil o descárgalo para señalética.
+      </p>
+
+      <div id="qrcode-container" style="display: inline-block; padding: 12px; background: white; border: 1.5px solid var(--c-border); border-radius: var(--radius-sm); margin-bottom: 1rem;"></div>
+
+      <div style="background: var(--c-stone-light); border: 1px solid var(--c-border); border-radius: var(--radius-sm); padding: 0.5rem 0.75rem; margin-bottom: 1.25rem; font-size: 0.75rem; color: var(--c-text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <span id="qr-link-text"></span>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; justify-content: center;">
+        <button id="btn-download-qr" class="btn-point-action" style="background: var(--c-primary); color: white;" data-i18n="qr_modal.btn_download">
+          ⬇ Descargar PNG
+        </button>
+        <button id="btn-copy-qr-link" class="btn-point-action" style="background: var(--c-stone-warm); color: var(--c-primary);" data-i18n="qr_modal.btn_copy">
+          Copiar enlace
+        </button>
+        <button id="btn-close-qr" class="btn-point-action" style="border: 1px solid var(--c-border);" data-i18n="qr_modal.btn_close">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MODAL LIGHTBOX FOTOGRAFÍA
+       ═══════════════════════════════════════════ -->
+  <div id="gallery-lightbox" class="qr-modal-overlay hidden">
+    <div style="position: relative; max-width: 900px; width: 100%;">
+      <button id="lightbox-close" style="position: absolute; top: -45px; right: 0; color: white; font-size: 2rem; background: none;">✕</button>
+      <img id="lightbox-img" src="" alt="Vista ampliada" style="width: 100%; max-height: 80vh; object-fit: contain; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+      <p id="lightbox-caption" style="color: white; text-align: center; margin-top: 1rem; font-size: 1rem;"></p>
+      
+      <button id="lightbox-prev" style="position: absolute; left: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none;">‹</button>
+      <button id="lightbox-next" style="position: absolute; right: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none;">›</button>
+    </div>
+  </div>
+
+  <!-- Banner Informativo de Cookies (Conforme a Guía AEPD) -->
+  <div class="cookie-banner" id="analytics-banner">
+    <span data-i18n="analytics_banner.msg">Utilizamos cookies analíticas estrictamente anónimas para mejorar la experiencia turística y medir el interés del conjunto monumental.</span>
+    <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+      <a href="./legal.html#cookies" style="color: var(--c-stone-light); font-size: 0.8rem; text-decoration: underline; margin-right: 0.25rem;" data-i18n="analytics_banner.info">Más información</a>
+      <button class="btn-point-action" style="background: rgba(255,255,255,0.15); color: white; border-radius: 999px; padding: 4px 12px; border: 1px solid rgba(255,255,255,0.3);" onclick="document.getElementById('analytics-banner').style.display='none'" data-i18n="analytics_banner.reject">
+        Rechazar
+      </button>
+      <button class="btn-point-action" style="background: var(--c-primary-light); color: white; border-radius: 999px; padding: 4px 14px;" onclick="document.getElementById('analytics-banner').style.display='none'" data-i18n="analytics_banner.accept">
+        Aceptar
+      </button>
+    </div>
+  </div>
+
+  <!-- Lógica Principal -->
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>

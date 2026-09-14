@@ -1,0 +1,45 @@
+{
+  "summary": {
+    "totalVisits": 14280,
+    "uniqueVisitors": 9840,
+    "qrScans": 3415,
+    "tourBookings": 184,
+    "audioListens": 2890,
+    "downloads": 1120
+  },
+  "languages": {
+    "es": 9420,
+    "en": 3110,
+    "fr": 1750
+  },
+  "topSections": [
+    { "id": "historia", "name": "Historia y Arte", "views": 11840 },
+    { "id": "puntos", "name": "Puntos de Visita y QR", "views": 9620 },
+    { "id": "horarios", "name": "Horarios y Localización", "views": 8940 },
+    { "id": "galeria", "name": "Galería y Recursos 3D", "views": 7530 },
+    { "id": "agenda", "name": "Agenda de Actividades", "views": 5890 },
+    { "id": "reservas", "name": "Módulo de Reservas", "views": 3950 }
+  ],
+  "topPanels": [
+    { "id": 1, "title": "La Cabeza de Lobo", "scans": 1450, "audios": 1280 },
+    { "id": 2, "title": "El Monumento Heroico", "scans": 920, "audios": 710 },
+    { "id": 3, "title": "Iglesia Inmaculada Concepción", "scans": 530, "audios": 440 },
+    { "id": 4, "title": "Claustro Conventual", "scans": 295, "audios": 240 },
+    { "id": 5, "title": "Retablo Mayor Barroco", "scans": 220, "audios": 220 }
+  ],
+  "monthlyTrend": [
+    { "month": "Abr", "visits": 1650, "qr": 410 },
+    { "month": "May", "visits": 2100, "qr": 520 },
+    { "month": "Jun", "visits": 2840, "qr": 690 },
+    { "month": "Jul", "visits": 3390, "qr": 815 },
+    { "month": "Ago", "visits": 2980, "qr": 650 },
+    { "month": "Sep", "visits": 1320, "qr": 330 }
+  ],
+  "recentEvents": [
+    { "time": "2026-09-14 18:42", "type": "view", "section": "puntos", "lang": "es", "device": "Móvil (iOS)" },
+    { "time": "2026-09-14 17:15", "type": "qr_scan", "panel": "La Cabeza de Lobo", "lang": "en", "device": "Móvil (Android)" },
+    { "time": "2026-09-14 16:30", "type": "booking_request", "people": 4, "lang": "es", "device": "Escritorio" },
+    { "time": "2026-09-14 15:02", "type": "download", "file": "Ficha Científica Lobo", "lang": "fr", "device": "Móvil (Android)" },
+    { "time": "2026-09-14 13:20", "type": "audio_play", "panel": "La Cabeza de Lobo", "lang": "es", "device": "Móvil (iOS)" }
+  ]
+}

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aviso Legal, Privacidad, Cookies y Accesibilidad | Centro de Interpretación Santuario Ibérico de “El Pajarillo”</title>
+  <meta name="description" content="Información legal, política de privacidad conforme a RGPD, política de cookies según AEPD y declaración de accesibilidad conforme a RD 1112/2018 del Centro de Interpretación Santuario Ibérico de El Pajarillo (Ayuntamiento de Huelma).">
+
+  <!-- Tipografías Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/main.css">
+  <style>
+    .legal-page-header {
+      background: var(--c-primary);
+      color: white;
+      padding: 3rem 1.5rem 2.5rem;
+      border-bottom: 3px solid var(--c-accent-gold);
+    }
+    .legal-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .legal-container {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem 1rem 3rem;
+      }
+      .legal-sidebar {
+        position: static;
+        padding: 1rem;
+      }
+      .legal-page-header {
+        padding: 2rem 1rem 1.5rem;
+      }
+      .legal-page-header h1 {
+        font-size: 1.8rem;
+      }
+      .legal-article {
+        padding: 1.5rem 1.15rem;
+      }
+      .legal-title {
+        font-size: 1.5rem;
+      }
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 1.5rem 0;
+    }
+    .legal-sidebar {
+      position: sticky;
+      top: 90px;
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    .legal-sidebar h3 {
+      font-family: var(--font-condensed);
+      font-size: 1.25rem;
+      color: var(--c-primary);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .legal-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .legal-nav-link {
+      display: block;
+      padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-sm);
+      color: var(--c-text-dark);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+    .legal-nav-link:hover,
+    .legal-nav-link.active {
+      background: var(--c-stone-warm);
+      color: var(--c-primary);
+      border-left-color: var(--c-accent-gold);
+      font-weight: 700;
+    }
+    .legal-article {
+      background: var(--c-white);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      margin-bottom: 3rem;
+      box-shadow: var(--shadow-sm);
+    }
+    @media (max-width: 600px) {
+      .legal-article {
+        padding: 1.5rem;
+      }
+    }
+    .legal-section-tag {
+      display: inline-block;
+      background: var(--c-stone-warm);
+      color: var(--c-primary);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    .legal-title {
+      font-family: var(--font-condensed);
+      font-size: 2.2rem;
+      color: var(--c-primary);
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+    }
+    .legal-article h3 {
+      font-family: var(--font-condensed);
+      font-size: 1.4rem;
+      color: var(--c-accent-purple);
+      margin: 2rem 0 0.75rem;
+      border-bottom: 1.5px solid var(--c-border);
+      padding-bottom: 0.4rem;
+    }
+    .legal-article p {
+      margin-bottom: 1rem;
+      color: var(--c-text-dark);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .legal-article ul {
+      margin: 0 0 1.25rem 1.5rem;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .legal-article li {
+      margin-bottom: 0.4rem;
+    }
+    .legal-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.88rem;
+    }
+    .legal-table th,
+    .legal-table td {
+      border: 1px solid var(--c-border);
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    .legal-table th {
+      background: var(--c-stone-warm);
+      color: var(--c-primary);
+      font-weight: 700;
+    }
+    .legal-badge-ok {
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    .legal-alert {
+      background: #FDFBF7;
+      border-left: 4px solid var(--c-accent-gold);
+      padding: 1rem 1.25rem;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 1.5rem 0;
+      font-size: 0.9rem;
+      color: var(--c-text-dark);
+    }
+    .back-btn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: var(--transition);
+      margin-bottom: 1rem;
+    }
+    .back-btn-pill:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateX(-3px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabecera Superior -->
+  <header class="legal-page-header">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <a href="./index.html" class="back-btn-pill">
+        ← Volver al Portal Turístico
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;">
+        <img src="./assets/images/logo-pajarillo.png" alt="Logo El Pajarillo" style="height: 54px; width: auto; background: rgba(255,255,255,0.92); padding: 4px 10px; border-radius: 8px;">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" style="height: 50px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+        <div>
+          <h1 style="font-family: var(--font-condensed); font-size: 2rem; letter-spacing: 0.5px;">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</h1>
+          <p style="color: #DCDCD6; font-size: 0.95rem;">Ayuntamiento de Huelma · Información Institucional, Términos Legales y Transparencia</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal con Menú Lateral -->
+  <div class="legal-container">
+
+    <!-- Navegación lateral sticky -->
+    <aside class="legal-sidebar">
+      <h3>Índice Normativo</h3>
+      <nav>
+        <ul class="legal-nav-list">
+          <li><a href="#aviso" class="legal-nav-link active">🏛️ Aviso Legal</a></li>
+          <li><a href="#privacidad" class="legal-nav-link">🔒 Política de Privacidad</a></li>
+          <li><a href="#cookies" class="legal-nav-link">🍪 Política de Cookies</a></li>
+          <li><a href="#accesibilidad" class="legal-nav-link">♿ Declaración de Accesibilidad</a></li>
+        </ul>
+      </nav>
+
+      <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); font-size: 0.8rem; color: var(--c-text-muted);">
+        <p><strong>Última actualización:</strong></p>
+        <p>Septiembre de 2026</p>
+        <p style="margin-top: 0.5rem;"><strong>Marco legal:</strong></p>
+        <p>LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018</p>
+      </div>
+    </aside>
+
+    <!-- Contenido Detallado -->
+    <main>
+
+      <!-- ═══════════════════════════════════════════════════════
+           1. AVISO LEGAL
+           ═══════════════════════════════════════════════════════ -->
+      <article class="legal-article" id="aviso">
+        <span class="legal-section-tag">Conforme a la Ley 34/2002 (LSSI-CE)</span>
+        <h2 class="legal-title">1. Aviso Legal</h2>
+
+        <p>
+          En cumplimiento del artículo 10 de la <strong>Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE)</strong>, se informa a los usuarios de los datos identificativos y de contacto de la entidad titular de este portal web:
+        </p>
+
+        <div class="legal-alert">
+          <ul style="margin: 0; list-style: none;">
+            <li><strong>Titular del portal:</strong> Excmo. Ayuntamiento de Huelma</li>
+            <li><strong>Área de gestión:</strong> Concejalía de Patrimonio Histórico, Cultura y Turismo</li>
+            <li><strong>C.I.F.:</strong> P2304400B</li>
+            <li><strong>Sede Institucional:</strong> Plaza de España, 1, C.P. 23110 Huelma (Jaén), España</li>
+            <li><strong>Teléfono de atención:</strong> (+34) 953 39 00 10</li>
+            <li><strong>Correo electrónico de contacto:</strong> <a href="mailto:turismo@elpajarillo.es">turismo@elpajarillo.es</a> / <a href="mailto:ayuntamiento@huelma.es">ayuntamiento@huelma.es</a></li>
+            <li><strong>Sede Electrónica oficial:</strong> <a href="https://huelma.sedelectronica.es" target="_blank" rel="noopener">https://huelma.sedelectronica.es</a></li>
+          </ul>
+        </div>
+
+        <h3>1.1. Objeto del Sitio Web</h3>
+        <p>
+          El presente portal digital oficial tiene por objeto difundir el conocimiento arqueológico, histórico y artístico del <strong>Centro de Interpretación Santuario Ibérico de “El Pajarillo”</strong> y del conjunto monumental anexo, facilitar a la ciudadanía y a los turistas la consulta de horarios, tarifas, localización y agenda cultural, así como posibilitar la solicitud telemática de reservas guiadas y el acceso a recursos didácticos y códigos QR interpretativos.
+        </p>
+
+        <h3>1.2. Condiciones Generales de Uso</h3>
+        <p>
+          El acceso y navegación por este portal atribuye la condición de usuario, implicando la aceptación plena y sin reservas de las presentes disposiciones. El usuario se compromete a:
+        </p>
+        <ul>
+          <li>Hacer un uso adecuado de los contenidos, herramientas interactivas y formularios de reserva, absteniéndose de emplearlos para actividades ilícitas, fraudulentas o lesivas de los derechos de terceros.</li>
+          <li>No introducir ni difundir virus informáticos ni utilizar sistemas susceptibles de provocar daños en los servidores o redes que dan soporte al portal y a la plataforma SaaS MVP.</li>
+          <li>Proporcionar información veraz en los formularios de reserva de visitas guiadas y consultas institucionales.</li>
+        </ul>
+
+        <h3>1.3. Propiedad Intelectual e Industrial</h3>
+        <p>
+          Todos los elementos que integran este sitio web —incluyendo de forma no taxativa el diseño gráfico, el código fuente HTML/CSS/JS, el imagotipo institucional de la Cabeza de Lobo, los textos históricos, las fotografías en alta definición de las piezas escultóricas, las reconstrucciones tridimensionales 3D, las fichas científicas y la cartografía topográfica— son titularidad exclusiva del <strong>Ayuntamiento de Huelma</strong> o de sus autores legítimos y entidades colaboradoras (como el Instituto Universitario de Arqueología Ibérica), estando protegidos por la legislación española e internacional sobre propiedad intelectual e industrial.
+        </p>
+        <p>
+          Se autoriza la visualización, descarga para uso personal o educativo y la cita académica de los contenidos, siempre que se mencione de forma expresa la fuente oficial (<em>Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Ayuntamiento de Huelma</em>) y no se persiga ningún fin lucrativo ni comercial. Queda expresamente prohibida su transformación, reproducción masiva o distribución no autorizada.
+        </p>
+
+        <h3>1.4. Exclusión de Responsabilidades</h3>
+        <p>
+          El Ayuntamiento de Huelma procura la máxima veracidad y actualización de la información contenida en el portal. No obstante, no se responsabiliza de posibles errores tipográficos o desactualizaciones coyunturales de horarios o eventos debidas a causas de fuerza mayor, climatología o necesidades de conservación del yacimiento arqueológico.
+        </p>
+        <p>
+          El portal incluye enlaces a sitios de terceros (como OpenStreetMap o Google Maps). El Ayuntamiento de Huelma no asume responsabilidad alguna respecto a las políticas de privacidad o contenidos de dichos servidores externos.
+        </p>
+
+        <h3>1.5. Legislación y Fuero Aplicable</h3>
+        <p>
+          Las relaciones entre el usuario y la entidad titular se regirán por la normativa administrativa y civil española vigente. Para cualquier controversia derivada del uso del portal, ambas partes se someten expresamente a la jurisdicción de los Juzgados y Tribunales de la provincia de Jaén.
+        </p>
+      </article>
+
+      <!-- ═══════════════════════════════════════════════════════
+           2. POLÍTICA DE PRIVACIDAD
+           ═══════════════════════════════════════════════════════ -->
+      <article class="legal-article" id="privacidad">
+        <span class="legal-section-tag">Conforme a RGPD (UE 2016/679) y LOPDGDD (LO 3/2018)</span>
+        <h2 class="legal-title">2. Política de Privacidad</h2>
+
+        <p>
+          El Ayuntamiento de Huelma garantiza la protección de los datos de carácter personal de conformidad con el <strong>Reglamento General de Protección de Datos (RGPD UE 2016/679)</strong> y la <strong>Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD)</strong>.
+        </p>
+
+        <h3>2.1. Responsable del Tratamiento y DPD</h3>
+        <ul>
+          <li><strong>Responsable:</strong> Ayuntamiento de Huelma (Área de Turismo y Patrimonio).</li>
+          <li><strong>NIF:</strong> P2304400B.</li>
+          <li><strong>Dirección Postal:</strong> Plaza de España, 1, 23110 Huelma (Jaén).</li>
+          <li><strong>Contacto del Delegado de Protección de Datos (DPD):</strong> <a href="mailto:dpd@huelma.es">dpd@huelma.es</a>.</li>
+        </ul>
+
+        <h3>2.2. Finalidades del Tratamiento y Bases Jurídicas</h3>
+        <p>Los datos personales recabados a través del portal se tratan para las siguientes finalidades específicas:</p>
+
+        <div class="table-responsive">
+          <table class="legal-table">
+            <thead>
+              <tr>
+                <th>Actividad de Tratamiento</th>
+                <th>Datos Recabados</th>
+                <th>Base Jurídica (Legitimación)</th>
+                <th>Plazo de Conservación</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Gestión de Reservas Online para Visitas Guiadas</strong></td>
+                <td>Nombre, apellidos, correo electrónico, teléfono, fecha/turno deseado, número de personas y notas de accesibilidad.</td>
+                <td><strong>Consentimiento del interesado</strong> (art. 6.1.a RGPD) y cumplimiento de misión de interés público de promoción cultural (art. 6.1.e RGPD).</td>
+                <td>Hasta la conclusión de la visita y los plazos administrativos de liquidación o posibles reclamaciones.</td>
+              </tr>
+              <tr>
+                <td><strong>Atención de Consultas Ciudadanas y Formulario de Contacto</strong></td>
+                <td>Nombre, correo electrónico, asunto y mensaje remitido.</td>
+                <td><strong>Consentimiento del interesado</strong> al enviar el formulario (art. 6.1.a RGPD).</td>
+                <td>Tiempo necesario para responder a la consulta y máximo 1 año para control de calidad.</td>
+              </tr>
+              <tr>
+                <td><strong>Analítica de Visitantes del Centro y Escaneos QR</strong></td>
+                <td>Métricas disociadas: idioma preferido, tipología de dispositivo genérico, número de escaneos. <em>No se almacenan direcciones IP ni identificadores personales.</em></td>
+                <td><strong>Interés público municipal</strong> para la optimización de los servicios turísticos locales.</td>
+                <td>Datos agregados históricos anuales para justificaciones técnicas y memorias de actuación.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>2.3. Destinatarios y Transferencias Internacionales</h3>
+        <p>
+          Los datos no serán comunicados ni cedidos a terceras empresas o entidades privadas, salvo obligación legal expresa o requerimiento de los órganos jurisdiccionales competentes. No se realizan transferencias internacionales de datos fuera del Espacio Económico Europeo (EEE).
+        </p>
+
+        <h3>2.4. Derechos de las Personas Interesadas (ARCO-POL)</h3>
+        <p>Cualquier ciudadano tiene derecho a obtener confirmación sobre si el Ayuntamiento de Huelma está tratando sus datos personales y puede ejercer los siguientes derechos:</p>
+        <ul>
+          <li><strong>Acceso:</strong> Consultar qué datos personales conserva la entidad.</li>
+          <li><strong>Rectificación:</strong> Solicitar la corrección de datos inexactos o incompletos.</li>
+          <li><strong>Supresión ("Derecho al Olvido"):</strong> Solicitar que se eliminen sus datos cuando ya no sean necesarios para los fines que fueron recabados.</li>
+          <li><strong>Limitación del Tratamiento:</strong> Solicitar la paralización cautelar del uso de sus datos en los supuestos previstos por la ley.</li>
+          <li><strong>Portabilidad:</strong> Recibir sus datos en formato digital interoperable.</li>
+          <li><strong>Oposición:</strong> Oponerse al tratamiento por motivos derivados de su situación particular.</li>
+        </ul>
+
+        <p>
+          Para ejercer estos derechos, el usuario puede enviar una solicitud escrita adjuntando copia de su DNI/NIE a través de la <strong>Sede Electrónica del Ayuntamiento de Huelma</strong> (<a href="https://huelma.sedelectronica.es" target="_blank" rel="noopener">huelma.sedelectronica.es</a>) o mediante correo electrónico a <a href="mailto:dpd@huelma.es">dpd@huelma.es</a> o <a href="mailto:turismo@elpajarillo.es">turismo@elpajarillo.es</a> con el asunto <em>"Protección de Datos - El Pajarillo"</em>.
+        </p>
+        <p>
+          Asimismo, si considera que sus derechos no han sido debidamente atendidos, tiene derecho a presentar una reclamación ante la <strong>Agencia Española de Protección de Datos (AEPD)</strong> a través de su sede electrónica en <a href="https://www.aepd.es" target="_blank" rel="noopener">www.aepd.es</a>.
+        </p>
+      </article>
+
+      <!-- ═══════════════════════════════════════════════════════
+           3. POLÍTICA DE COOKIES
+           ═══════════════════════════════════════════════════════ -->
+      <article class="legal-article" id="cookies">
+        <span class="legal-section-tag">Conforme a la Guía sobre el uso de cookies de la AEPD</span>
+        <h2 class="legal-title">3. Política de Cookies</h2>
+
+        <p>
+          Este portal web utiliza cookies y tecnologías de almacenamiento local para garantizar la correcta operativa del sitio, recordar las preferencias lingüísticas del visitante y elaborar estadísticas anónimas de afluencia, en estricto cumplimiento del artículo 22.2 de la LSSI-CE y las directrices de la <strong>Agencia Española de Protección de Datos (AEPD)</strong>.
+        </p>
+
+        <h3>3.1. ¿Qué son las cookies?</h3>
+        <p>
+          Una cookie es un pequeño archivo de texto o identificador que los sitios web descargan en su dispositivo (ordenador, tableta o smartphone) al navegar por ellos. Permiten recordar acciones y preferencias del usuario (idioma de lectura, tamaño de visualización, etc.) durante un periodo determinado.
+        </p>
+
+        <h3>3.2. Clasificación de Cookies Utilizadas en este Portal</h3>
+        <p>
+          Este sitio web <strong>NO utiliza cookies publicitarias, ni redes de seguimiento publicitario cruzado, ni mecanismos de perfilado comercial</strong>. Las cookies y mecanismos de persistencia utilizados se clasifican en:
+        </p>
+
+        <div class="table-responsive">
+          <table class="legal-table">
+            <thead>
+              <tr>
+                <th>Nombre / Clave</th>
+                <th>Emisor / Proveedor</th>
+                <th>Tipología</th>
+                <th>Finalidad</th>
+                <th>Caducidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>pajarillo_lang</code></td>
+                <td>Propia (Local)</td>
+                <td>Técnica / Preferencias <span class="legal-badge-ok">Exenta</span></td>
+                <td>Almacena el idioma seleccionado por el usuario (Español, Inglés o Francés) para mantener la traducción activa durante toda la navegación.</td>
+                <td>1 año (LocalStorage)</td>
+              </tr>
+              <tr>
+                <td><code>pajarillo_session</code></td>
+                <td>Propia (Panel SaaS)</td>
+                <td>Técnica / Sesión <span class="legal-badge-ok">Exenta</span></td>
+                <td>Gestiona la autenticación segura y temporal de los técnicos municipales en el panel administrativo.</td>
+                <td>Sesión de navegación</td>
+              </tr>
+              <tr>
+                <td><code>pajarillo_analytics</code></td>
+                <td>Propia (Local)</td>
+                <td>Analítica Anónima</td>
+                <td>Computa el número de consultas a piezas clave y puntos QR para la optimización de los recorridos turísticos municipales, de forma totalmente disociada y sin recopilar direcciones IP identificables.</td>
+                <td>6 meses</td>
+              </tr>
+              <tr>
+                <td><code>cookies_accepted</code></td>
+                <td>Propia (Local)</td>
+                <td>Técnica</td>
+                <td>Registra la decisión del visitante respecto a la aceptación o rechazo del aviso informativo de cookies.</td>
+                <td>1 año</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>3.3. Cómo Modificar, Bloquear o Eliminar las Cookies</h3>
+        <p>
+          El usuario puede revocar su consentimiento en cualquier momento o configurar su navegador web para ser avisado de la recepción de cookies y rechazar su instalación. Puede gestionar sus opciones en los siguientes enlaces oficiales de los navegadores más utilizados:
+        </p>
+        <ul>
+          <li><strong>Google Chrome:</strong> Configuración > Privacidad y seguridad > Cookies y otros datos de sitios.</li>
+          <li><strong>Mozilla Firefox:</strong> Opciones > Privacidad y seguridad > Cookies y datos del sitio.</li>
+          <li><strong>Apple Safari:</strong> Preferencias > Privacidad > Bloquear todas las cookies.</li>
+          <li><strong>Microsoft Edge:</strong> Configuración > Privacidad, búsqueda y servicios > Cookies y permisos de sitio.</li>
+        </ul>
+      </article>
+
+      <!-- ═══════════════════════════════════════════════════════
+           4. DECLARACIÓN DE ACCESIBILIDAD
+           ═══════════════════════════════════════════════════════ -->
+      <article class="legal-article" id="accesibilidad">
+        <span class="legal-section-tag">Conforme al Real Decreto 1112/2018</span>
+        <h2 class="legal-title">4. Declaración de Accesibilidad</h2>
+
+        <p>
+          El <strong>Ayuntamiento de Huelma</strong> se ha comprometido a hacer accesible este sitio web institucional de conformidad con el <strong>Real Decreto 1112/2018, de 7 de septiembre</strong>, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público, por el que se traspone la <strong>Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo</strong>.
+        </p>
+        <p>
+          La presente declaración de accesibilidad se aplica al sitio web oficial del <strong>Centro de Interpretación Santuario Ibérico de “El Pajarillo”</strong>: <code>https://elpajarillo.huelma.es</code> (y dominios equivalentes del proyecto).
+        </p>
+
+        <h3>4.1. Situación de Cumplimiento</h3>
+        <p>
+          Este sitio web es <strong>parcialmente conforme</strong> con los requisitos de la <strong>Norma UNE-EN 301 549:2021</strong> («Requisitos de accesibilidad para productos y servicios TIC») y con las <strong>Pautas de Accesibilidad para el Contenido Web (WCAG 2.1) en su nivel Doble-A (AA)</strong>, debido a las excepciones y a la falta de conformidad de los aspectos que se detallan a continuación.
+        </p>
+
+        <h3>4.2. Contenido No Accesible</h3>
+        <p>El contenido que se recoge a continuación no es accesible por las siguientes razones:</p>
+        <ul>
+          <li>
+            <strong>Falta de conformidad con el RD 1112/2018:</strong>
+            <br>
+            - Algunos documentos ofimáticos históricos en formato PDF (como publicaciones científicas de prospecciones arqueológicas anteriores a 2018) pueden carecer de estructura de encabezados correcta o de etiquetado accesible completo [criterio 1.3.1 de WCAG 2.1].
+            <br>
+            - Ciertas piezas videográficas documentales históricas pueden carecer de audiodescripción sincronizada [criterio 1.2.5 de WCAG 2.1].
+          </li>
+          <li>
+            <strong>Carga desproporcionada:</strong>
+            <br>
+            No aplica con carácter general a los desarrollos modernos de la plataforma, habiendo sido diseñados todos los formularios y módulos bajo criterios de diseño universal.
+          </li>
+          <li>
+            <strong>Contenidos fuera del ámbito de la legislación aplicable:</strong>
+            <br>
+            Archivos ofimáticos y cartografías históricas publicados con anterioridad al 20 de septiembre de 2018 que no resulten indispensables para procedimientos administrativos activos.
+          </li>
+        </ul>
+
+        <h3>4.3. Preparación de la Presente Declaración de Accesibilidad</h3>
+        <p>
+          La presente declaración fue preparada el <strong>14 de septiembre de 2026</strong>.
+        </p>
+        <p>
+          El método empleado para preparar la declaración ha sido una <strong>autoevaluación interna</strong> realizada por el equipo de desarrollo técnico y los servicios de digitalización municipal, contrastada mediante herramientas automáticas de validación del código (W3C Markup Validation, Wave Accessibility Tool y criterios de la Herramienta IRA del Observatorio de Accesibilidad Web del Ministerio de Transformación Digital y Función Pública).
+        </p>
+
+        <h3>4.4. Mecanismos de Comunicación y Observaciones</h3>
+        <p>
+          Cualquier persona física o jurídica puede realizar comunicaciones sobre requisitos de accesibilidad (artículo 10.2.a del RD 1112/2018), tales como:
+        </p>
+        <ul>
+          <li>Informar sobre cualquier posible incumplimiento por parte de este sitio web.</li>
+          <li>Transmitir otras dificultades de acceso al contenido.</li>
+          <li>Formular cualquier consulta o sugerencia de mejora relativa a la accesibilidad del sitio web.</li>
+        </ul>
+        <p>
+          Las comunicaciones se pueden remitir a través de los siguientes canales:
+        </p>
+        <div class="legal-alert">
+          <ul style="margin: 0; list-style: none;">
+            <li><strong>Correo electrónico específico:</strong> <a href="mailto:accesibilidad@huelma.es">accesibilidad@huelma.es</a> / <a href="mailto:turismo@elpajarillo.es">turismo@elpajarillo.es</a></li>
+            <li><strong>Teléfono de atención:</strong> (+34) 953 39 00 10</li>
+            <li><strong>Presencial / Registro:</strong> Oficina de Atención a la Ciudadanía, Ayuntamiento de Huelma, Plaza de España, 1, 23110 Huelma (Jaén).</li>
+            <li><strong>Sede electrónica:</strong> <a href="https://huelma.sedelectronica.es" target="_blank" rel="noopener">https://huelma.sedelectronica.es</a></li>
+          </ul>
+        </div>
+        <p>
+          Las comunicaciones serán recibidas y tratadas por la <strong>Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma</strong>.
+        </p>
+
+        <h3>4.5. Procedimiento de Aplicación y Reclamaciones</h3>
+        <p>
+          Si una vez realizada una solicitud de información accesible o queja, ésta hubiera sido desestimada, no se estuviera de acuerdo con la decisión adoptada, o la respuesta no cumpliera los requisitos contemplados en el artículo 12.5 del RD 1112/2018, la persona interesada podrá iniciar una <strong>reclamación</strong>.
+        </p>
+        <p>
+          La reclamación puede ser presentada a través de la Sede Electrónica del Ayuntamiento de Huelma o mediante las vías establecidas en la Ley 39/2015, de 1 de octubre, del Procedimiento Administrativo Común de las Administraciones Públicas, e irá dirigida a la Unidad Responsable de Accesibilidad de este Ayuntamiento.
+        </p>
+      </article>
+
+    </main>
+  </div>
+
+  <!-- Pie de página unificado -->
+  <footer class="site-footer" style="padding: 2.5rem 1.5rem 2rem;">
+    <div style="max-width: 1200px; margin: 0 auto; text-align: center; color: #A3B5AA; font-size: 0.85rem;">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 1.5rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+        <img src="./assets/images/logo-pajarillo.png" alt="Logo El Pajarillo" style="height: 48px; width: auto; background: rgba(255,255,255,0.92); padding: 4px 10px; border-radius: 8px;">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" style="height: 46px; width: auto; opacity: 0.95;">
+      </div>
+      <div class="footer-funding" style="max-width: 900px; margin: 1.5rem auto 1.5rem;">
+        <img src="./assets/images/logos-subvencion.png" alt="Cofinanciado por la Unión Europea, Fondos Europeos, Junta de Andalucía y Consejería de Turismo y Andalucía Exterior">
+      </div>
+      <p style="margin-bottom: 0.5rem; color: white; font-weight: 600;">
+        © 2026 Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Excmo. Ayuntamiento de Huelma (Jaén)
+      </p>
+      <p>
+        Documentación jurídica y técnica elaborada para la garantía de derechos ciudadanos, transparencia pública y acceso universal a la cultura.
+      </p>
+      <div style="margin-top: 1.25rem;">
+        <a href="./index.html" style="color: var(--c-accent-gold); text-decoration: none; font-weight: 700; margin: 0 0.75rem;">Portal Turístico</a>
+        <a href="./admin.html" style="color: #DCDCD6; text-decoration: none; margin: 0 0.75rem;">Panel de Gestión (Ayto)</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Resaltar enlace activo del sidebar al hacer scroll
+    const sections = document.querySelectorAll('.legal-article');
+    const navLinks = document.querySelectorAll('.legal-nav-link');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          current = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

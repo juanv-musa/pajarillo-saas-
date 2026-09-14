@@ -1,0 +1,11 @@
+# Sistema Operativo y Metadatos
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+
+# Temporales de subida
+uploads/temp_*
+
+# Logs
+*.log
