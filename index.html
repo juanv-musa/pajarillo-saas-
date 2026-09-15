@@ -241,6 +241,7 @@
         <!-- Tabs de galería -->
         <div class="tabs-nav gallery-tabs">
           <button class="tab-btn active" data-tab="fotos" data-i18n="galeria.tab_fotos">Fotografías HD</button>
+          <button class="tab-btn" data-tab="modelo3d">🏛️ Modelo 3D Interactivo</button>
           <button class="tab-btn" data-tab="recursos" data-i18n="galeria.tab_recursos">Recursos Digitales e Interactivos</button>
           <button class="tab-btn" data-tab="videos" data-i18n="galeria.tab_videos">Audiovisuales</button>
         </div>
@@ -248,6 +249,60 @@
         <!-- Paneles de Galería -->
         <div class="gallery-pane active" id="tab-fotos">
           <div class="gallery-grid" id="gallery-photos"></div>
+        </div>
+
+        <!-- Panel Modelo 3D Interactivo (Sketchfab) -->
+        <div class="gallery-pane" id="tab-modelo3d">
+          <div class="sketchfab-viewer-card" style="background: var(--c-white); border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--c-border); box-shadow: var(--shadow-md);">
+            <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--c-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: var(--c-stone-light);">
+              <div>
+                <span style="background: rgba(56, 79, 62, 0.12); color: var(--c-primary); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
+                  🏛️ Digitalización 3D Oficial
+                </span>
+                <h3 style="font-family: var(--font-condensed); font-size: 1.7rem; color: var(--c-primary); margin-top: 0.4rem; font-weight: 800;">
+                  Santuario Heroico de El Pajarillo (Huelma, Jaén)
+                </h3>
+                <p style="font-size: 0.88rem; color: var(--c-text-muted); margin: 0;">
+                  Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.
+                </p>
+              </div>
+              <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <span style="font-size: 0.82rem; color: var(--c-primary-light); font-weight: 700; background: var(--c-white); border: 1px solid var(--c-border); padding: 6px 14px; border-radius: 999px;">
+                  🖱️ Ratón · 📱 Táctil · 🥽 Realidad Virtual
+                </span>
+              </div>
+            </div>
+
+            <!-- Contenedor del visor Sketchfab -->
+            <div class="sketchfab-embed-wrapper" style="position: relative; width: 100%; height: 580px; max-height: 75vh; background: #0b100d;">
+              <iframe 
+                title="Santuario heroico de El Pajarillo (Huelma, Jaén)" 
+                style="width: 100%; height: 100%; border: none;"
+                frameborder="0" 
+                allowfullscreen 
+                mozallowfullscreen="true" 
+                webkitallowfullscreen="true" 
+                allow="autoplay; fullscreen; xr-spatial-tracking" 
+                xr-spatial-tracking 
+                execution-while-out-of-viewport 
+                execution-while-not-rendered 
+                web-share 
+                loading="lazy"
+                src="https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark">
+              </iframe>
+            </div>
+
+            <div style="padding: 1rem 2rem; background: var(--c-stone-warm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--c-text-muted);">
+              <div>
+                Digitalización 3D oficial de <a href="https://sketchfab.com/El_Pajarillo" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary); text-decoration: underline;">El_Pajarillo</a> · Ayuntamiento de Huelma
+              </div>
+              <div>
+                <a href="https://sketchfab.com/3d-models/santuario-heroico-de-el-pajarillo-huelma-jaen-402ba73cf7bd40ec9d5b03d17206387e" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary-light); text-decoration: underline;">
+                  Ver modelo original en Sketchfab ↗
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="gallery-pane" id="tab-recursos">

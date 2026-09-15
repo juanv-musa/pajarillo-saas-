@@ -27,7 +27,9 @@
   <header class="admin-navbar">
     <div class="admin-brand-wrap">
       <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="admin-logo-img" style="height: 52px; width: auto; aspect-ratio: 343 / 275; object-fit: contain; flex-shrink: 0; background: rgba(255,255,255,0.95); padding: 4px 10px; border-radius: 8px;">
-      <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" style="height: 48px; width: auto; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+      <div style="background: #2E3E33; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center;">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" id="admin-header-logo-ayto" style="height: 44px; width: auto; object-fit: contain; flex-shrink: 0;">
+      </div>
       <div class="admin-brand-info">
         <h1>Plataforma de Gestión SaaS MVP</h1>
         <p>Ayuntamiento de Huelma · Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
@@ -206,36 +208,69 @@
           </div>
         </div>
 
-        <!-- Tarjetas de KPIs -->
+        <!-- Cabecera Oficial para Informe PDF Imprimible -->
+        <div class="print-header-report">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <div>
+              <h1 style="font-size: 1.5rem; color: #384F3E; margin-bottom: 4px;">Informe Oficial de Analítica y Uso Turístico</h1>
+              <p style="font-size: 0.9rem; color: #555;">Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Ayuntamiento de Huelma</p>
+            </div>
+            <div style="text-align: right; font-size: 0.8rem; color: #666;">
+              <p>Fecha de emisión: <strong id="print-date">15/09/2026</strong></p>
+              <p>Periodo auditado: <strong id="print-period-label">Año 2026</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filtros de Periodo Temporal (Días, Meses, Años) -->
+        <div class="analytics-filter-bar" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; background: var(--admin-surface); padding: 0.85rem 1.25rem; border: 1px solid var(--admin-border); border-radius: var(--admin-radius);">
+          <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <span style="font-weight: 700; font-size: 0.88rem; color: var(--admin-primary); display: flex; align-items: center; gap: 6px;">
+              <span>📅</span> Periodo:
+            </span>
+            <div class="btn-group-toggle" id="analytics-period-selector">
+              <button type="button" class="btn-filter-period active" data-period="hoy">Hoy (Horas)</button>
+              <button type="button" class="btn-filter-period" data-period="7d">Últimos 7 Días</button>
+              <button type="button" class="btn-filter-period" data-period="30d">Últimos 30 Días</button>
+              <button type="button" class="btn-filter-period" data-period="meses">Año 2026 (Meses)</button>
+              <button type="button" class="btn-filter-period" data-period="anos">Comparativa Años</button>
+            </div>
+          </div>
+          <div id="analytics-period-badge" style="font-size: 0.82rem; font-weight: 600; color: var(--admin-muted); background: var(--admin-bg); padding: 5px 12px; border-radius: 999px; border: 1px solid var(--admin-border);">
+            Periodo activo: <strong id="current-period-text" style="color: var(--admin-primary);">Hoy (Últimas 24h)</strong>
+          </div>
+        </div>
+
+        <!-- Tarjetas de KPIs Dinámicas -->
         <div class="kpi-grid">
           <div class="kpi-card">
             <div class="kpi-label">Visitas Totales</div>
-            <div class="kpi-value" id="kpi-total-visits">14.280</div>
-            <div class="kpi-trend">↗ +18.4% este mes</div>
+            <div class="kpi-value" id="kpi-total-visits">342</div>
+            <div class="kpi-trend" id="kpi-trend-visits">↗ +14% vs periodo ant.</div>
           </div>
           <div class="kpi-card gold">
             <div class="kpi-label">Visitantes Únicos</div>
-            <div class="kpi-value" id="kpi-unique-visitors">9.840</div>
-            <div class="kpi-trend">↗ +12.1% nuevos</div>
+            <div class="kpi-value" id="kpi-unique-visitors">289</div>
+            <div class="kpi-trend" id="kpi-trend-unique">↗ +9% recurrencia</div>
           </div>
           <div class="kpi-card purple">
             <div class="kpi-label">Escaneos Códigos QR</div>
-            <div class="kpi-value" id="kpi-qr-scans">3.415</div>
-            <div class="kpi-trend">↗ 62% in situ</div>
+            <div class="kpi-value" id="kpi-qr-scans">118</div>
+            <div class="kpi-trend" id="kpi-trend-qr">↗ 58% en sala</div>
           </div>
           <div class="kpi-card">
             <div class="kpi-label">Reservas Guiadas</div>
-            <div class="kpi-value" id="kpi-bookings">184</div>
-            <div class="kpi-trend">↗ 94% confirmadas</div>
+            <div class="kpi-value" id="kpi-bookings">12</div>
+            <div class="kpi-trend" id="kpi-trend-bookings">↗ 100% cubiertas</div>
           </div>
         </div>
 
         <!-- Gráficos Interactivos -->
         <div class="grid-2col">
-          <!-- Gráfica de evolución mensual -->
+          <!-- Gráfica de evolución según periodo -->
           <div class="admin-card">
             <div class="card-title-row">
-              <h3>Evolución de Visitas y Escaneos QR</h3>
+              <h3 id="chart-evolution-title">Evolución de Visitas y Escaneos QR</h3>
             </div>
             <div style="height: 260px; position: relative;">
               <canvas id="chart-monthly-trend"></canvas>
@@ -251,23 +286,23 @@
               <div class="lang-bar-group">
                 <div class="lang-bar-label">
                   <span>🇪🇸 Español (Castellano)</span>
-                  <span id="lang-pct-es">66.0% (9.420)</span>
+                  <span id="lang-pct-es">68.0% (232)</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill" id="fill-es" style="width: 66%;"></div></div>
+                <div class="progress-track"><div class="progress-fill" id="fill-es" style="width: 68%;"></div></div>
               </div>
               <div class="lang-bar-group">
                 <div class="lang-bar-label">
                   <span>🇬🇧 Inglés (English)</span>
-                  <span id="lang-pct-en">21.8% (3.110)</span>
+                  <span id="lang-pct-en">21.0% (72)</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill gold" id="fill-en" style="width: 21.8%;"></div></div>
+                <div class="progress-track"><div class="progress-fill gold" id="fill-en" style="width: 21%;"></div></div>
               </div>
               <div class="lang-bar-group">
                 <div class="lang-bar-label">
                   <span>🇫🇷 Francés (Français)</span>
-                  <span id="lang-pct-fr">12.2% (1.750)</span>
+                  <span id="lang-pct-fr">11.0% (38)</span>
                 </div>
-                <div class="progress-track"><div class="progress-fill purple" id="fill-fr" style="width: 12.2%;"></div></div>
+                <div class="progress-track"><div class="progress-fill purple" id="fill-fr" style="width: 11%;"></div></div>
               </div>
             </div>
             <div style="height: 120px; position: relative;">
@@ -276,24 +311,33 @@
           </div>
         </div>
 
-        <!-- Tabla de Eventos Recientes de Visitantes -->
+        <!-- Desglose Estadístico Consolidado del Periodo Seleccionado -->
         <div class="admin-card">
           <div class="card-title-row">
-            <h3>Registro en Tiempo Real de Actividad</h3>
-            <span style="font-size: 0.8rem; color: var(--admin-muted);">Datos disociados conforme a RGPD</span>
+            <div>
+              <h3 id="analytics-breakdown-title" style="color: var(--admin-primary);">Desglose Estadístico Consolidado</h3>
+              <p id="analytics-breakdown-subtitle" style="font-size: 0.82rem; color: var(--admin-muted); margin-top: 2px;">
+                Métricas oficiales por intervalo para auditoría municipal y descarga en PDF/CSV.
+              </p>
+            </div>
+            <span class="badge-counter" id="analytics-rows-count" style="background: var(--admin-primary); color: white; padding: 4px 10px; border-radius: 999px; font-size: 0.78rem;">
+              Intervalos activos
+            </span>
           </div>
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Fecha y Hora</th>
-                <th>Tipo de Evento</th>
-                <th>Detalle / Recurso</th>
-                <th>Idioma</th>
-                <th>Dispositivo</th>
+                <th id="th-period-label">Intervalo</th>
+                <th>Visitas Totales</th>
+                <th>Visitantes Únicos</th>
+                <th>Escaneos QR</th>
+                <th>Audioguías</th>
+                <th>Reservas</th>
+                <th>Idiomas</th>
               </tr>
             </thead>
-            <tbody id="analytics-events-tbody">
-              <!-- Inyectado por admin.js -->
+            <tbody id="analytics-summary-tbody">
+              <!-- Inyectado dinámicamente según el periodo por admin.js -->
             </tbody>
           </table>
         </div>
@@ -491,7 +535,7 @@
       </section>
 
       <!-- ──────────────────────────────────────────
-           SUBVISTA: EDITOR DE CONTENIDOS Y TEXTOS DEL SITIO
+           SUBVISTA: EDITOR DE CONTENIDOS Y TEXTOS DEL SITIO (MULTILINGÜE ES/EN/FR)
            ────────────────────────────────────────── -->
       <section id="subview-contents" class="admin-subview hidden">
         <div class="card-title-row">
@@ -500,12 +544,12 @@
               Editor de Textos y Contenidos del Portal
             </h2>
             <p style="color: var(--admin-muted); font-size: 0.88rem;">
-              Personaliza en tiempo real los textos informativos, horarios, tarifas y datos de contacto oficiales del Centro.
+              Personaliza en tiempo real todos los textos de la web pública en <strong>Español, Inglés y Francés</strong>. Los cambios se guardan al instante.
             </p>
           </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="btn-save-content" class="btn-admin btn-admin-primary">
-              💾 Guardar Todos los Contenidos
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button id="btn-save-content" type="button" class="btn-admin btn-admin-primary">
+              💾 Guardar Contenidos (<span id="btn-lang-indicator">ES</span>)
             </button>
             <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="text-decoration: none;">
               👁️ Previsualizar Web
@@ -513,93 +557,274 @@
           </div>
         </div>
 
-        <form id="form-site-content" style="margin-top: 1.5rem;">
-          <div class="grid-2col" style="align-items: start;">
-            <!-- Bloque 1: Identidad y Hero -->
-            <div class="admin-card">
-              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
-                <span>🌟</span> Identidad y Portada (Hero)
-              </h3>
-              <div class="admin-form-group">
-                <label>Nombre Oficial del Centro</label>
-                <input type="text" id="cnt-site-title" class="admin-input" value="Centro de Interpretación Santuario Ibérico de “El Pajarillo”">
+        <!-- Selector de Idioma para el CMS -->
+        <div class="cms-lang-tabs" id="cms-lang-selector">
+          <button type="button" class="cms-lang-pill active" data-cms-lang="es">
+            <span>🇪🇸</span> Español (Castellano)
+          </button>
+          <button type="button" class="cms-lang-pill" data-cms-lang="en">
+            <span>🇬🇧</span> English (Inglés)
+          </button>
+          <button type="button" class="cms-lang-pill" data-cms-lang="fr">
+            <span>🇫🇷</span> Français (Francés)
+          </button>
+        </div>
+
+        <div style="background: rgba(56,79,62,0.06); border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--admin-primary); display: flex; align-items: center; justify-content: space-between;">
+          <span>🌐 Editando textos actualmente en: <strong id="cms-active-lang-name">🇪🇸 Español (Castellano)</strong></span>
+          <span style="font-size: 0.78rem; color: var(--admin-muted);">Todos los cambios se propagan a la web en tiempo real</span>
+        </div>
+
+        <form id="form-site-content">
+          <!-- 1. Portada y Hero -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>🌟 1. Portada Principal (Hero)</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Titular, lema, llamada a la acción</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Nombre Oficial del Centro (Título Principal)</label>
+                  <input type="text" id="cnt-site-title" class="admin-input" required>
+                </div>
+                <div class="admin-form-group">
+                  <label>Texto Botón de Acción Principal (CTA)</label>
+                  <input type="text" id="cnt-hero-cta" class="admin-input" required>
+                </div>
               </div>
               <div class="admin-form-group">
                 <label>Lema / Subtítulo Institucional</label>
-                <textarea id="cnt-site-tagline" class="admin-textarea" rows="2">Un viaje al corazón sagrado de la cultura íbera y el esplendor monumental de Sierra Mágina</textarea>
+                <textarea id="cnt-site-tagline" class="admin-textarea" rows="2" required></textarea>
               </div>
               <div class="admin-form-group">
-                <label>Texto Botón de Acción Principal (CTA)</label>
-                <input type="text" id="cnt-hero-cta" class="admin-input" value="Planifica tu Visita">
-              </div>
-              <div class="admin-form-group">
-                <label>Descripción Tarjeta Destacada (Cabeza de Lobo)</label>
-                <textarea id="cnt-hero-desc" class="admin-textarea" rows="3">Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el singular patrimonio de la Iglesia de la Inmaculada Concepción en Huelma, Jaén.</textarea>
+                <label>Descripción Tarjeta Destacada (Cabeza de Lobo e Introducción)</label>
+                <textarea id="cnt-hero-desc" class="admin-textarea" rows="3" required></textarea>
               </div>
             </div>
+          </div>
 
-            <!-- Bloque 2: Contacto y Atención Municipal -->
-            <div class="admin-card">
-              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
-                <span>📞</span> Datos de Contacto y Atención
-              </h3>
-              <div class="admin-form-group">
-                <label>Teléfono Oficial de Turismo</label>
-                <input type="text" id="cnt-tel" class="admin-input" value="(+34) 953 39 00 10">
-              </div>
-              <div class="admin-form-group">
-                <label>Correo Electrónico Oficial</label>
-                <input type="email" id="cnt-email" class="admin-input" value="turismo@elpajarillo.es">
-              </div>
-              <div class="admin-form-group">
-                <label>Entidad Gestora</label>
-                <input type="text" id="cnt-ayto" class="admin-input" value="Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo">
-              </div>
-              <div class="admin-form-group">
-                <label>Horario de Atención Telefónica</label>
-                <input type="text" id="cnt-horario-atencion" class="admin-input" value="Lunes a Viernes de 9:00 a 14:00 h">
+          <!-- 2. Cronología e Hitos Históricos -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>⏳ 2. Cronología e Hitos del Conjunto Histórico</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">6 hitos de la línea de tiempo</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 1 · Siglo IV a.C.</strong>
+                  <label style="margin-top: 6px;">Título Hito 1</label>
+                  <input type="text" id="cnt-hito1-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 1</label>
+                  <textarea id="cnt-hito1-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 2 · 1985 (Descubrimiento)</strong>
+                  <label style="margin-top: 6px;">Título Hito 2</label>
+                  <input type="text" id="cnt-hito2-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 2</label>
+                  <textarea id="cnt-hito2-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 3 · Siglo XVI (Iglesia)</strong>
+                  <label style="margin-top: 6px;">Título Hito 3</label>
+                  <input type="text" id="cnt-hito3-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 3</label>
+                  <textarea id="cnt-hito3-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 4 · 1998 (Monumento BIC)</strong>
+                  <label style="margin-top: 6px;">Título Hito 4</label>
+                  <input type="text" id="cnt-hito4-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 4</label>
+                  <textarea id="cnt-hito4-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 5 · 2025 (Centro de Interpretación)</strong>
+                  <label style="margin-top: 6px;">Título Hito 5</label>
+                  <input type="text" id="cnt-hito5-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 5</label>
+                  <textarea id="cnt-hito5-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
+                <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
+                  <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 6 · 2026 (Digitalización & 3D)</strong>
+                  <label style="margin-top: 6px;">Título Hito 6</label>
+                  <input type="text" id="cnt-hito6-title" class="admin-input">
+                  <label style="margin-top: 6px;">Descripción Hito 6</label>
+                  <textarea id="cnt-hito6-desc" class="admin-textarea" rows="2"></textarea>
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- Bloque 3: Horarios y Precios -->
-            <div class="admin-card">
-              <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
-                <span>⏰</span> Horarios de Visita y Tarifas
-              </h3>
-              <div class="admin-form-group">
-                <label>Horario Temporada Invierno</label>
-                <input type="text" id="cnt-horario-invierno" class="admin-input" value="Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00">
+          <!-- 3. Patrimonio Milenario -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>🏛️ 3. Patrimonio Milenario (Bloques Temáticos)</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Santuario, Iglesia y Escultura</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Título Sección Patrimonio</label>
+                  <input type="text" id="cnt-patrimonio-title" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Subtítulo Sección Patrimonio</label>
+                  <input type="text" id="cnt-patrimonio-subtitle" class="admin-input">
+                </div>
               </div>
-              <div class="admin-form-group">
-                <label>Horario Temporada Verano</label>
-                <input type="text" id="cnt-horario-verano" class="admin-input" value="Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30">
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
+                <label><strong>Pestaña 1 · El Santuario Ibérico Heroico</strong></label>
+                <textarea id="cnt-patrimonio-tab1" class="admin-textarea" rows="3"></textarea>
               </div>
-              <div class="admin-form-group">
-                <label>Tarifa General</label>
-                <input type="text" id="cnt-tarifa-general" class="admin-input" value="3,00 €">
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
+                <label><strong>Pestaña 2 · Iglesia de la Inmaculada Concepción</strong></label>
+                <textarea id="cnt-patrimonio-tab2" class="admin-textarea" rows="3"></textarea>
               </div>
-              <div class="admin-form-group">
-                <label>Tarifa Reducida</label>
-                <input type="text" id="cnt-tarifa-reducida" class="admin-input" value="1,50 € (Jubilados, estudiantes y grupos >10)">
-              </div>
-              <div class="admin-form-group">
-                <label>Entrada Gratuita</label>
-                <input type="text" id="cnt-tarifa-gratuita" class="admin-input" value="Menores de 12 años, empadronados en Huelma y domingos tarde">
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
+                <label><strong>Pestaña 3 · Escultura Ibérica & Cabeza de Lobo</strong></label>
+                <textarea id="cnt-patrimonio-tab3" class="admin-textarea" rows="3"></textarea>
               </div>
             </div>
+          </div>
 
-            <!-- Bloque 4: Resumen de Sincronización -->
-            <div class="admin-card" style="background: var(--admin-bg);">
-              <h3 style="margin-bottom: 1rem; color: var(--admin-primary);">⚡ Sincronización Inmediata</h3>
-              <p style="font-size: 0.85rem; color: var(--admin-muted); line-height: 1.6;">
-                Todos los datos que guardes se sincronizan tanto en el archivo maestro de configuración (<code style="background: white; padding: 2px 6px; border-radius: 4px;">data/site_config.json</code>) como en la persistencia local de tu navegador para que los veas aplicados en tiempo real.
-              </p>
-              <div style="margin-top: 1.25rem;">
-                <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
-                  💾 Aplicar y Guardar Todos los Cambios
-                </button>
+          <!-- 4. Fondo Audiovisual y Modelo 3D -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>🎬 4. Fondo Audiovisual & Modelo 3D Interactivo</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Textos de la galería y visor 3D Sketchfab</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Título Sección Audiovisual</label>
+                  <input type="text" id="cnt-galeria-title" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Subtítulo Sección Audiovisual</label>
+                  <input type="text" id="cnt-galeria-subtitle" class="admin-input">
+                </div>
+              </div>
+              <div class="admin-form-group">
+                <label>Descripción del Visor 3D Interactivo (Santuario y Escultura)</label>
+                <textarea id="cnt-3d-desc" class="admin-textarea" rows="3"></textarea>
               </div>
             </div>
+          </div>
+
+          <!-- 5. Horarios y Tarifas -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>⏰ 5. Horarios de Visita y Tarifas</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Temporadas y precios</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Horario Temporada Invierno</label>
+                  <input type="text" id="cnt-horario-invierno" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Horario Temporada Verano</label>
+                  <input type="text" id="cnt-horario-verano" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Tarifa General</label>
+                  <input type="text" id="cnt-tarifa-general" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Tarifa Reducida</label>
+                  <input type="text" id="cnt-tarifa-reducida" class="admin-input">
+                </div>
+              </div>
+              <div class="admin-form-group">
+                <label>Condiciones de Gratuidad</label>
+                <input type="text" id="cnt-tarifa-gratuita" class="admin-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. Agenda Cultural y Reservas -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>📅 6. Agenda Cultural y Reservas Online</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Titulares y mensajes informativos</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Título Sección Agenda</label>
+                  <input type="text" id="cnt-agenda-title" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Subtítulo Sección Agenda</label>
+                  <input type="text" id="cnt-agenda-subtitle" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Título Sección Reservas</label>
+                  <input type="text" id="cnt-reservas-title" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Subtítulo Sección Reservas</label>
+                  <input type="text" id="cnt-reservas-subtitle" class="admin-input">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Contacto e Información Municipal -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>📞 7. Contacto e Información Municipal</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Teléfono, email, entidad gestora</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="grid-2col">
+                <div class="admin-form-group">
+                  <label>Teléfono Oficial de Turismo</label>
+                  <input type="text" id="cnt-tel" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Correo Electrónico Oficial</label>
+                  <input type="email" id="cnt-email" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Entidad Gestora</label>
+                  <input type="text" id="cnt-ayto" class="admin-input">
+                </div>
+                <div class="admin-form-group">
+                  <label>Horario de Atención Telefónica</label>
+                  <input type="text" id="cnt-horario-atencion" class="admin-input">
+                </div>
+              </div>
+              <div class="admin-form-group">
+                <label>Dirección y Localización del Centro</label>
+                <input type="text" id="cnt-direccion" class="admin-input" value="Plaza de España, 1 · 23140 Huelma (Jaén)">
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. Pie de Página (Footer) -->
+          <div class="cms-section-accordion">
+            <div class="cms-accordion-header">
+              <span>📜 8. Pie de Página Oficial (Footer)</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Texto legal de Copyright</span>
+            </div>
+            <div class="cms-accordion-body">
+              <div class="admin-form-group">
+                <label>Texto Legal de Copyright</label>
+                <textarea id="cnt-footer-copy" class="admin-textarea" rows="2">© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados.</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de Guardar Fijado -->
+          <div style="margin-top: 1.5rem; display: flex; gap: 1rem; align-items: center;">
+            <button type="submit" class="btn-admin btn-admin-primary" style="flex: 1; justify-content: center; padding: 14px; font-size: 1rem;">
+              💾 Guardar Todos los Contenidos (<span id="btn-lang-submit-indicator">Español</span>)
+            </button>
           </div>
         </form>
       </section>
@@ -802,34 +1027,34 @@
       </section>
 
       <!-- ──────────────────────────────────────────
-           SUBVISTA: GALERÍA Y FONDOS MULTIMEDIA
+           SUBVISTA: GALERÍA Y FONDOS MULTIMEDIA (CRUD COMPLETO)
            ────────────────────────────────────────── -->
       <section id="subview-gallery" class="admin-subview hidden">
         <div class="card-title-row">
           <div>
             <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
-              Gestión de Galería y Recursos Digitales
+              Gestión de Galería y Recursos Multimedia
             </h2>
             <p style="color: var(--admin-muted); font-size: 0.88rem;">
-              Administra las piezas fotográficas del santuario y los documentos científicos/didácticos descargables en PDF.
+              Sube, modifica o elimina fotografías, fichas didácticas descargables en PDF y enlaces a vídeos o reconstrucciones 3D.
             </p>
           </div>
+          <button id="btn-add-gallery-item" type="button" class="btn-admin btn-admin-primary">
+            ➕ Añadir Nuevo Contenido
+          </button>
         </div>
 
-        <div class="grid-2col" style="align-items: start;">
-          <div class="admin-card">
-            <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary);">Fotografías en Catálogo</h3>
-            <ul id="admin-gallery-list" class="panel-admin-list">
-              <!-- Inyectado dinámicamente por admin.js -->
-            </ul>
-          </div>
+        <!-- Barra de Filtros de la Galería -->
+        <div style="display: flex; gap: 8px; margin-top: 1rem; margin-bottom: 1.25rem; flex-wrap: wrap;">
+          <button type="button" class="btn-filter-period active" data-gallery-filter="all">📁 Todos (<span id="count-all-gallery">0</span>)</button>
+          <button type="button" class="btn-filter-period" data-gallery-filter="foto">🖼️ Fotografías (<span id="count-foto-gallery">0</span>)</button>
+          <button type="button" class="btn-filter-period" data-gallery-filter="pdf">📄 Fichas PDF (<span id="count-pdf-gallery">0</span>)</button>
+          <button type="button" class="btn-filter-period" data-gallery-filter="video">🎬 Vídeos y 3D (<span id="count-video-gallery">0</span>)</button>
+        </div>
 
-          <div class="admin-card">
-            <h3 style="margin-bottom: 1.25rem; color: var(--admin-primary);">Fichas y Recursos Didácticos (PDF)</h3>
-            <ul id="admin-resources-list" class="panel-admin-list">
-              <!-- Inyectado dinámicamente por admin.js -->
-            </ul>
-          </div>
+        <!-- Cuadrícula Dinámica de Elementos de Galería -->
+        <div id="admin-gallery-items-grid" class="gallery-admin-grid">
+          <!-- Inyectado dinámicamente por admin.js -->
         </div>
       </section>
 
@@ -919,6 +1144,81 @@
       </section>
 
     </main>
+  </div>
+
+  <!-- Modal Añadir / Editar Elemento de Galería -->
+  <div id="modal-gallery-item" class="qr-modal-overlay hidden">
+    <div class="qr-modal-card" style="max-width: 520px; width: 92%; text-align: left; max-height: 90vh; overflow-y: auto;">
+      <h3 id="modal-gallery-title" style="font-family: var(--font-condensed); font-size: 1.5rem; color: var(--admin-primary); margin-bottom: 0.3rem;">
+        ➕ Añadir Nuevo Recurso
+      </h3>
+      <p style="font-size: 0.82rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+        Completa los campos para publicar un recurso en la galería del centro o ficha descargable.
+      </p>
+
+      <form id="form-gallery-item">
+        <input type="hidden" id="gallery-item-id">
+
+        <div class="admin-form-group">
+          <label>Tipo de Contenido *</label>
+          <select id="gallery-item-type" class="admin-select" required>
+            <option value="foto">🖼️ Fotografía en Alta Resolución</option>
+            <option value="pdf">📄 Ficha Didáctica / Documento (PDF)</option>
+            <option value="video">🎬 Enlace a Vídeo / Documental</option>
+            <option value="3d">🏛️ Modelo 3D Interactivo</option>
+          </select>
+        </div>
+
+        <div class="admin-form-group">
+          <label>Título del Recurso *</label>
+          <input type="text" id="gallery-item-title" class="admin-input" required placeholder="Ej. Detalle Cabeza de Lobo">
+        </div>
+
+        <div class="admin-form-group">
+          <label>Categoría / Etiqueta</label>
+          <input type="text" id="gallery-item-category" class="admin-input" placeholder="Ej. Escultura, Yacimiento, Didáctica...">
+        </div>
+
+        <!-- Archivo o Imagen con Dropzone y Preview -->
+        <div class="admin-form-group">
+          <label>Archivo / Imagen de Portada</label>
+          <div class="admin-dropzone" id="drop-gallery-file" style="padding: 1rem; border: 2px dashed var(--admin-border); border-radius: 8px; text-align: center; cursor: pointer; background: var(--admin-bg);">
+            <input type="file" id="gallery-file-input" accept="image/*,.pdf" style="display: none;">
+            <div style="font-size: 1.8rem; margin-bottom: 4px;">📤</div>
+            <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0;">
+              Haz clic para seleccionar o arrastra una imagen o PDF
+            </p>
+          </div>
+          <div id="gallery-preview-wrap" style="display: none; margin-top: 0.75rem; text-align: center;">
+            <img id="gallery-preview-img" src="" alt="Vista previa" style="max-height: 140px; border-radius: 6px; border: 1px solid var(--admin-border); object-fit: contain;">
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label>URL o Ruta del Recurso (Imagen, Vídeo o PDF) *</label>
+          <input type="text" id="gallery-item-url" class="admin-input" required placeholder="./assets/images/foto.jpg o https://...">
+        </div>
+
+        <div class="admin-form-group" id="group-download-url">
+          <label>Enlace de Descarga o Modelo 3D (Opcional)</label>
+          <input type="text" id="gallery-item-download-url" class="admin-input" placeholder="https://sketchfab.com/... o enlace de descarga">
+        </div>
+
+        <div class="admin-form-group">
+          <label>Descripción Breve</label>
+          <textarea id="gallery-item-desc" class="admin-textarea" rows="2" placeholder="Breve explicación divulgativa para el visitante..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+          <button type="submit" class="btn-admin btn-admin-primary" style="flex: 1; justify-content: center;">
+            💾 Guardar Recurso
+          </button>
+          <button type="button" id="btn-close-gallery-modal" class="btn-admin btn-admin-outline">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 
   <!-- Modal Generador de Códigos QR (Estilo Jódar Pro) -->

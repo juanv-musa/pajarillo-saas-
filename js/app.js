@@ -43,10 +43,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // Escuchar cambios de configuración desde otras pestañas (Panel de Control)
   window.addEventListener('storage', (e) => {
-    if (e.key === 'pajarillo_site_config') {
+    if (e.key === 'pajarillo_site_config' || e.key === 'pajarillo_locales') {
       try {
-        const newConfig = JSON.parse(e.newValue);
-        applySiteConfig(newConfig);
+        initSiteConfig();
       } catch(err) {}
     }
   });
@@ -56,6 +55,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
+  const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || 'es';
   let config = null;
   const local = localStorage.getItem('pajarillo_site_config');
   if (local) {
@@ -69,6 +69,19 @@ async function initSiteConfig() {
       }
     } catch(e) {}
   }
+
+  // Integrar traducciones personalizadas guardadas en el CMS multilingüe
+  const savedLocales = localStorage.getItem('pajarillo_locales');
+  if (savedLocales) {
+    try {
+      const locales = JSON.parse(savedLocales);
+      if (locales[currentLang]) {
+        if (!config) config = { sections: {}, content: {} };
+        config.content = { ...config.content, ...locales[currentLang] };
+      }
+    } catch(e) {}
+  }
+
   if (config) {
     applySiteConfig(config);
   }
@@ -186,6 +199,35 @@ function applySiteConfig(config) {
   if (c.tarifa_gratuita) {
     document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_desc"]').forEach(el => {
       el.textContent = c.tarifa_gratuita;
+    });
+  }
+  if (c.footer_copy) {
+    document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => {
+      el.textContent = c.footer_copy;
+    });
+  }
+  if (c.desc_3d) {
+    const desc3dEl = document.querySelector('#tab-modelo3d p');
+    if (desc3dEl) desc3dEl.textContent = c.desc_3d;
+  }
+  if (c.agenda_title) {
+    document.querySelectorAll('[data-i18n="agenda.title"]').forEach(el => {
+      el.textContent = c.agenda_title;
+    });
+  }
+  if (c.agenda_subtitle) {
+    document.querySelectorAll('[data-i18n="agenda.subtitle"]').forEach(el => {
+      el.textContent = c.agenda_subtitle;
+    });
+  }
+  if (c.reservas_title) {
+    document.querySelectorAll('[data-i18n="reservas.title"]').forEach(el => {
+      el.textContent = c.reservas_title;
+    });
+  }
+  if (c.reservas_subtitle) {
+    document.querySelectorAll('[data-i18n="reservas.subtitle"]').forEach(el => {
+      el.textContent = c.reservas_subtitle;
     });
   }
 }

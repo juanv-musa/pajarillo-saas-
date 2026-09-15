@@ -30,6 +30,12 @@ export class GalleryManager {
     this.i18n.onLanguageChange(() => {
       this.render();
     });
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'pajarillo_gallery_data') {
+        this.loadData().then(() => this.render());
+      }
+    });
   }
 
   async loadData() {
@@ -39,6 +45,32 @@ export class GalleryManager {
     } catch (err) {
       console.warn('Error cargando datos de galería:', err);
     }
+
+    try {
+      const custom = localStorage.getItem('pajarillo_gallery_data');
+      if (custom) {
+        const items = JSON.parse(custom);
+        const photos = items.filter(i => i.type === 'foto').map(i => ({
+          id: 'custom_' + i.id,
+          type: 'photo',
+          src: i.full,
+          thumb: i.thumb || i.full,
+          caption: { es: i.title, en: i.title, fr: i.title },
+          author: i.category || 'Centro de Interpretación',
+          category: i.category || 'Fototeca'
+        }));
+        const resources = items.filter(i => i.type === 'pdf').map(i => ({
+          id: 'res_' + i.id,
+          title: { es: i.title, en: i.title, fr: i.title },
+          desc: { es: i.desc, en: i.desc, fr: i.desc },
+          badge: i.category || 'PDF Oficial',
+          file: i.file || i.full,
+          icon: '📄'
+        }));
+        if (photos.length > 0) this.data.media = photos;
+        if (resources.length > 0) this.data.resources = resources;
+      }
+    } catch (e) {}
   }
 
   bindTabs() {

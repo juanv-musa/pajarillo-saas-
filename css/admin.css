@@ -854,3 +854,202 @@ input:checked + .slider:before {
   background: var(--admin-primary) !important;
   color: white !important;
 }
+
+/* ═══════════════════════════════════════════
+   FILTROS TEMPORALES DE ANALÍTICA
+   ═══════════════════════════════════════════ */
+.btn-group-toggle {
+  display: inline-flex;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-border);
+  border-radius: 999px;
+  padding: 3px;
+  gap: 3px;
+}
+
+.btn-filter-period {
+  background: transparent;
+  border: none;
+  font-family: var(--admin-font);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--admin-muted);
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-filter-period.active {
+  background: var(--admin-primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(56, 79, 62, 0.25);
+}
+
+.btn-filter-period:hover:not(.active) {
+  background: rgba(56, 79, 62, 0.08);
+  color: var(--admin-primary);
+}
+
+/* ═══════════════════════════════════════════
+   PESTAÑAS DE IDIOMA EN EDITOR DE CONTENIDOS
+   ═══════════════════════════════════════════ */
+.cms-lang-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.5rem;
+  padding: 6px;
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.cms-lang-pill {
+  border: none;
+  background: transparent;
+  font-family: var(--admin-font);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--admin-muted);
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.cms-lang-pill.active {
+  background: var(--admin-primary);
+  color: white;
+  box-shadow: 0 2px 8px rgba(56, 79, 62, 0.25);
+}
+
+.cms-lang-pill:hover:not(.active) {
+  background: rgba(56, 79, 62, 0.08);
+  color: var(--admin-primary);
+}
+
+.cms-section-accordion {
+  margin-bottom: 1.25rem;
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--admin-card-bg);
+}
+
+.cms-accordion-header {
+  padding: 1rem 1.4rem;
+  background: var(--admin-surface);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  color: var(--admin-primary);
+  font-size: 1.05rem;
+  border-bottom: 1px solid transparent;
+  transition: background 0.2s;
+}
+
+.cms-accordion-header:hover {
+  background: rgba(56, 79, 62, 0.05);
+}
+
+.cms-accordion-body {
+  padding: 1.5rem;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════
+   MODAL Y GESTIÓN DE GALERÍA
+   ═══════════════════════════════════════════ */
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.gallery-admin-card {
+  background: var(--admin-card-bg);
+  border: 1px solid var(--admin-border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.gallery-admin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.gallery-admin-thumb {
+  height: 160px;
+  width: 100%;
+  object-fit: cover;
+  background: #000;
+}
+
+.gallery-admin-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.gallery-admin-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 0.85rem;
+  border-top: 1px solid var(--admin-border);
+  padding-top: 0.75rem;
+}
+
+/* ═══════════════════════════════════════════
+   ESTILOS DE IMPRESIÓN PARA INFORME PDF OFICIAL
+   ═══════════════════════════════════════════ */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+  }
+  .admin-navbar,
+  .admin-sidebar,
+  .card-title-row button,
+  .card-title-row a,
+  .analytics-filter-bar,
+  #login-view {
+    display: none !important;
+  }
+  .admin-layout {
+    display: block !important;
+  }
+  .admin-content {
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+  .admin-card {
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+    page-break-inside: avoid;
+    margin-bottom: 1.5rem !important;
+  }
+  .print-header-report {
+    display: block !important;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #384F3E;
+  }
+}
+
+.print-header-report {
+  display: none;
+}
+
