@@ -1173,16 +1173,6 @@
           </select>
         </div>
 
-        <div class="admin-form-group">
-          <label>Título del Recurso *</label>
-          <input type="text" id="gallery-item-title" class="admin-input" required placeholder="Ej. Detalle Cabeza de Lobo">
-        </div>
-
-        <div class="admin-form-group">
-          <label>Categoría / Etiqueta</label>
-          <input type="text" id="gallery-item-category" class="admin-input" placeholder="Ej. Escultura, Yacimiento, Didáctica...">
-        </div>
-
         <!-- Archivo o Imagen con Dropzone y Preview -->
         <div class="admin-form-group">
           <label>Archivo / Imagen de Portada</label>
@@ -1208,9 +1198,73 @@
           <input type="text" id="gallery-item-download-url" class="admin-input" placeholder="https://sketchfab.com/... o enlace de descarga">
         </div>
 
-        <div class="admin-form-group">
-          <label>Descripción Breve</label>
-          <textarea id="gallery-item-desc" class="admin-textarea" rows="2" placeholder="Breve explicación divulgativa para el visitante..."></textarea>
+        <!-- Selector de Idioma para los Textos del Recurso -->
+        <div style="margin-top: 1.25rem; margin-bottom: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+            <label style="margin: 0; font-weight: 700; color: var(--admin-primary); font-size: 0.85rem;">
+              🌐 Textos Multilingües del Recurso
+            </label>
+            <span style="font-size: 0.75rem; color: var(--admin-muted);">Disponible en ES, EN y FR</span>
+          </div>
+          <div class="cms-lang-tabs" id="gallery-modal-lang-tabs" style="margin-bottom: 0.75rem;">
+            <button type="button" class="cms-lang-pill active" data-gallery-modal-lang="es">
+              <span>🇪🇸</span> Español (ES)
+            </button>
+            <button type="button" class="cms-lang-pill" data-gallery-modal-lang="en">
+              <span>🇬🇧</span> English (EN)
+            </button>
+            <button type="button" class="cms-lang-pill" data-gallery-modal-lang="fr">
+              <span>🇫🇷</span> Français (FR)
+            </button>
+          </div>
+        </div>
+
+        <!-- Panel Español (ES) -->
+        <div id="gallery-panel-lang-es" class="gallery-lang-panel">
+          <div class="admin-form-group">
+            <label>Título del Recurso (Español) *</label>
+            <input type="text" id="gallery-item-title-es" class="admin-input" required placeholder="Ej. Detalle Cabeza de Lobo">
+          </div>
+          <div class="admin-form-group">
+            <label>Categoría / Etiqueta (Español)</label>
+            <input type="text" id="gallery-item-category-es" class="admin-input" placeholder="Ej. Escultura, Yacimiento, Didáctica...">
+          </div>
+          <div class="admin-form-group">
+            <label>Descripción Breve (Español)</label>
+            <textarea id="gallery-item-desc-es" class="admin-textarea" rows="2" placeholder="Breve explicación divulgativa para el visitante en español..."></textarea>
+          </div>
+        </div>
+
+        <!-- Panel Inglés (EN) -->
+        <div id="gallery-panel-lang-en" class="gallery-lang-panel hidden">
+          <div class="admin-form-group">
+            <label>Resource Title (English 🇬🇧)</label>
+            <input type="text" id="gallery-item-title-en" class="admin-input" placeholder="e.g. Wolf Head Detail">
+          </div>
+          <div class="admin-form-group">
+            <label>Category / Tag (English)</label>
+            <input type="text" id="gallery-item-category-en" class="admin-input" placeholder="e.g. Sculpture, Archaeological Site...">
+          </div>
+          <div class="admin-form-group">
+            <label>Short Description (English)</label>
+            <textarea id="gallery-item-desc-en" class="admin-textarea" rows="2" placeholder="Brief informative summary in English..."></textarea>
+          </div>
+        </div>
+
+        <!-- Panel Francés (FR) -->
+        <div id="gallery-panel-lang-fr" class="gallery-lang-panel hidden">
+          <div class="admin-form-group">
+            <label>Titre du Recours (Français 🇫🇷)</label>
+            <input type="text" id="gallery-item-title-fr" class="admin-input" placeholder="ex. Détail Tête de Loup Ibérique">
+          </div>
+          <div class="admin-form-group">
+            <label>Catégorie / Étiquette (Français)</label>
+            <input type="text" id="gallery-item-category-fr" class="admin-input" placeholder="ex. Sculpture, Site archéologique...">
+          </div>
+          <div class="admin-form-group">
+            <label>Description Courte (Français)</label>
+            <textarea id="gallery-item-desc-fr" class="admin-textarea" rows="2" placeholder="Brève explication informative en français..."></textarea>
+          </div>
         </div>
 
         <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">

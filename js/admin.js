@@ -1803,82 +1803,178 @@ const INITIAL_GALLERY_ITEMS = [
   {
     id: 1,
     type: 'foto',
-    title: 'Cabeza de Lobo Ibérico de El Pajarillo',
-    category: 'Escultura',
+    title: {
+      es: 'Cabeza de Lobo Ibérico de El Pajarillo',
+      en: 'Iberian Wolf Head of El Pajarillo',
+      fr: 'Tête de Loup Ibérique d\'El Pajarillo'
+    },
+    category: {
+      es: 'Escultura',
+      en: 'Sculpture',
+      fr: 'Sculpture'
+    },
     full: './assets/images/lobo.png',
     thumb: './assets/images/lobo.png',
     file: './assets/images/lobo.png',
-    desc: 'Escultura cumbre del siglo IV a.C. tallada en caliza, hallada en el santuario heroico.'
+    desc: {
+      es: 'Escultura cumbre del siglo IV a.C. tallada en caliza, hallada en el santuario heroico.',
+      en: 'Masterpiece sculpture from the 4th century BC carved in limestone, found at the sanctuary.',
+      fr: 'Chef-d\'œuvre sculpté au IVe siècle av. J.-C. en calcaire, découvert au sanctuaire.'
+    }
   },
   {
     id: 2,
     type: 'foto',
-    title: 'Vista Nocturna y Campanario',
-    category: 'Arquitectura',
+    title: {
+      es: 'Vista Nocturna y Campanario',
+      en: 'Monumental Night View & Bell Tower',
+      fr: 'Vue Nocturne Monumentale et Clocher'
+    },
+    category: {
+      es: 'Arquitectura',
+      en: 'Architecture',
+      fr: 'Architecture'
+    },
     full: './assets/images/hero/hero.jpg',
     thumb: './assets/images/hero/hero.jpg',
     file: './assets/images/hero/hero.jpg',
-    desc: 'Perspectiva monumental nocturna de la fachada y torre de la Iglesia de la Inmaculada Concepción.'
+    desc: {
+      es: 'Perspectiva monumental nocturna de la fachada y torre de la Iglesia de la Inmaculada Concepción.',
+      en: 'Monumental night view of the facade and tower of the Church of the Immaculate Conception.',
+      fr: 'Perspective nocturne de la façade et de la tour de l\'Église de l\'Immaculée Conception.'
+    }
   },
   {
     id: 3,
     type: 'foto',
-    title: 'Yacimiento Arqueológico y Terrazas',
-    category: 'Yacimiento',
+    title: {
+      es: 'Yacimiento Arqueológico y Terrazas',
+      en: 'Archaeological Excavation Terraces',
+      fr: 'Terrasses et Fouilles Archéologiques'
+    },
+    category: {
+      es: 'Yacimiento',
+      en: 'Site',
+      fr: 'Site'
+    },
     full: './assets/images/gallery/arqueologia.jpg',
     thumb: './assets/images/gallery/arqueologia.jpg',
     file: './assets/images/gallery/arqueologia.jpg',
-    desc: 'Terrazas ceremoniales excavadas en la vega del Jandulilla donde se emplazaba el monumento.'
+    desc: {
+      es: 'Terrazas ceremoniales excavadas en la vega del Jandulilla donde se emplazaba el monumento.',
+      en: 'Ceremonial terraces excavated in the Jandulilla valley where the monument was erected.',
+      fr: 'Terrasses cérémonielles fouillées dans la vallée du Jandulilla abritant le monument.'
+    }
   },
   {
     id: 4,
     type: 'foto',
-    title: 'Claustro Conventual Restaurado',
-    category: 'Convento',
+    title: {
+      es: 'Claustro Conventual Restaurado',
+      en: 'Restored Monastic Cloister & Courtyard',
+      fr: 'Cour et Cloître Conventuel Restauré'
+    },
+    category: {
+      es: 'Convento',
+      en: 'Monastery',
+      fr: 'Couvent'
+    },
     full: './assets/images/gallery/claustro.jpg',
     thumb: './assets/images/gallery/claustro.jpg',
     file: './assets/images/gallery/claustro.jpg',
-    desc: 'Patio y arcadas históricas que acogen el Centro de Interpretación Municipal.'
+    desc: {
+      es: 'Patio y arcadas históricas que acogen el Centro de Interpretación Municipal.',
+      en: 'Historic courtyard and arcades hosting the Municipal Interpretation Centre.',
+      fr: 'Cour intérieure et arcades historiques abritant le Centre d\'Interprétation Municipal.'
+    }
   },
   {
     id: 5,
     type: 'pdf',
-    title: 'Ficha Científica: El Lobo Ibérico de El Pajarillo',
-    category: 'Documentación',
+    title: {
+      es: 'Ficha Científica: El Lobo Ibérico de El Pajarillo',
+      en: 'Scientific Factsheet: Iberian Wolf of El Pajarillo',
+      fr: 'Fiche Scientifique : Le Loup Ibérique d\'El Pajarillo'
+    },
+    category: {
+      es: 'Documentación',
+      en: 'Documentation',
+      fr: 'Documentation'
+    },
     full: './assets/docs/ficha_cientifica_pajarillo.pdf',
     thumb: './assets/images/lobo.png',
     file: './assets/docs/ficha_cientifica_pajarillo.pdf',
-    desc: 'Estudio iconográfico, arqueométrico y cronológico elaborado por el equipo de investigación.'
+    desc: {
+      es: 'Estudio iconográfico, arqueométrico y cronológico elaborado por el equipo de investigación.',
+      en: 'Iconographic, archaeometric, and chronological research study by the scientific team.',
+      fr: 'Étude iconographique, archéométrique et chronologique par l\'équipe de recherche.'
+    }
   },
   {
     id: 6,
     type: 'pdf',
-    title: 'Guía de Visita Autónoma y Mapa del Recorrido',
-    category: 'Didáctica',
+    title: {
+      es: 'Guía de Visita Autónoma y Mapa del Recorrido',
+      en: 'Self-Guided Tour & Itinerary Map',
+      fr: 'Guide de Visite Autonome et Plan du Parcours'
+    },
+    category: {
+      es: 'Didáctica',
+      en: 'Didactics',
+      fr: 'Didactique'
+    },
     full: './assets/docs/guia_visita_pajarillo.pdf',
     thumb: './assets/images/gallery/exterior.jpg',
     file: './assets/docs/guia_visita_pajarillo.pdf',
-    desc: 'Itinerario de salas, puntos de interés, códigos QR y claves pedagógicas de la visita.'
+    desc: {
+      es: 'Itinerario de salas, puntos de interés, códigos QR y claves pedagógicas de la visita.',
+      en: 'Room layout, points of interest, QR codes, and educational insights for visitors.',
+      fr: 'Parcours des salles, points d\'intérêt, codes QR et repères pédagogiques de la visite.'
+    }
   },
   {
     id: 7,
     type: '3d',
-    title: 'Reconstrucción 3D Interactiva del Santuario y Escultura',
-    category: 'Modelo 3D',
+    title: {
+      es: 'Reconstrucción 3D Interactiva del Santuario y Escultura',
+      en: 'Interactive 3D Reconstruction of the Sanctuary & Sculpture',
+      fr: 'Restitution 3D Interactive du Sanctuaire et de la Sculpture'
+    },
+    category: {
+      es: 'Modelo 3D',
+      en: '3D Model',
+      fr: 'Modèle 3D'
+    },
     full: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
     thumb: './assets/images/lobo.png',
     file: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
-    desc: 'Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.'
+    desc: {
+      es: 'Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.',
+      en: 'Official Sketchfab model with orbital orbit controls and VR exploration.',
+      fr: 'Modèle officiel Sketchfab avec commandes orbitales et réalité virtuelle du sanctuaire orétan.'
+    }
   },
   {
     id: 8,
     type: 'video',
-    title: 'Fondo Audiovisual Kiosco TV (audiovisual_p0)',
-    category: 'Audiovisual',
+    title: {
+      es: 'Fondo Audiovisual Kiosco TV (audiovisual_p0)',
+      en: 'Audiovisual Kiosk TV (audiovisual_p0)',
+      fr: 'Kiosque Audiovisuel TV (audiovisual_p0)'
+    },
+    category: {
+      es: 'Audiovisual',
+      en: 'Audiovisual',
+      fr: 'Audiovisuel'
+    },
     full: './audiovisual_p0.html',
     thumb: './assets/images/gallery/interior.jpg',
     file: './audiovisual_p0.html',
-    desc: 'Interfaz interactiva a pantalla completa para salas de exposición y TV de 65 pulgadas.'
+    desc: {
+      es: 'Interfaz interactiva a pantalla completa para salas de exposición y TV de 65 pulgadas.',
+      en: 'Interactive fullscreen display interface designed for exhibition halls and 65" TV screens.',
+      fr: 'Interface interactive plein écran dédiée aux salles d\'exposition et écrans TV 65 pouces.'
+    }
   }
 ];
 
@@ -1905,6 +2001,20 @@ function setupGalleryManager() {
       if (e.target === modal) closeGalleryModal();
     });
   }
+
+  // Selector de idioma dentro del modal de galería
+  const galleryLangPills = document.querySelectorAll('.cms-lang-pill[data-gallery-modal-lang]');
+  galleryLangPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const targetLang = pill.dataset.galleryModalLang;
+      galleryLangPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      document.querySelectorAll('.gallery-lang-panel').forEach(panel => {
+        panel.classList.toggle('hidden', panel.id !== `gallery-panel-lang-${targetLang}`);
+      });
+    });
+  });
 
   // Tecla Escape para cerrar modales abiertos
   document.addEventListener('keydown', (e) => {
@@ -1972,7 +2082,6 @@ function handleGalleryFile(file) {
   if (file.type.startsWith('image/')) {
     reader.readAsDataURL(file);
   } else {
-    // Para PDF o archivos genéricos
     const urlInput = document.getElementById('gallery-item-url');
     if (urlInput) urlInput.value = `./assets/docs/${file.name}`;
     showToast(`📄 Documento seleccionado: ${file.name}`);
@@ -1983,7 +2092,20 @@ function loadGalleryData() {
   try {
     const saved = localStorage.getItem('pajarillo_gallery_data');
     if (saved) {
-      galleryItems = JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      // Normalizar elementos previos para asegurar que sean multilingües
+      galleryItems = parsed.map(item => {
+        if (typeof item.title === 'string') {
+          item.title = { es: item.title, en: item.title, fr: item.title };
+        }
+        if (typeof item.category === 'string') {
+          item.category = { es: item.category, en: item.category, fr: item.category };
+        }
+        if (typeof item.desc === 'string') {
+          item.desc = { es: item.desc, en: item.desc, fr: item.desc };
+        }
+        return item;
+      });
     } else {
       galleryItems = [...INITIAL_GALLERY_ITEMS];
       localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
@@ -2025,8 +2147,10 @@ function renderGalleryGrid(filter = 'all') {
 
   if (filtered.length === 0) {
     grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--admin-card-bg); border-radius: 12px; border: 1px dashed var(--admin-border);">
-        <p style="font-size: 1.1rem; color: var(--admin-muted);">No hay contenidos en esta categoría.</p>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--admin-surface); border: 1px dashed var(--admin-border); border-radius: var(--admin-radius);">
+        <p style="font-size: 2rem; margin-bottom: 0.5rem;">📂</p>
+        <h4 style="color: var(--admin-primary); font-weight: 700;">No hay recursos en esta categoría</h4>
+        <p style="color: var(--admin-muted); font-size: 0.85rem;">Puedes añadir fotografías, documentos PDF, vídeos o modelos 3D con traducciones.</p>
         <button type="button" class="btn-admin btn-admin-primary" onclick="openGalleryModal()" style="margin-top: 1rem;">
           ➕ Añadir el Primer Recurso
         </button>
@@ -2045,8 +2169,15 @@ function renderGalleryGrid(filter = 'all') {
   grid.innerHTML = filtered.map(item => {
     const isImage = item.type === 'foto' || (item.thumb && !item.thumb.endsWith('.pdf'));
     const thumbHtml = isImage
-      ? `<img src="${item.thumb || item.full}" alt="${item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`
+      ? `<img src="${item.thumb || item.full}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`
       : `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
+
+    const title = typeof item.title === 'object' ? (item.title.es || item.title.en || '') : item.title;
+    const desc = typeof item.desc === 'object' ? (item.desc.es || item.desc.en || '') : item.desc;
+    const cat = typeof item.category === 'object' ? (item.category.es || item.category.en || '') : (item.category || 'General');
+
+    const hasEn = typeof item.title === 'object' && Boolean(item.title.en && item.title.en !== item.title.es);
+    const hasFr = typeof item.title === 'object' && Boolean(item.title.fr && item.title.fr !== item.title.es);
 
     return `
       <div class="gallery-admin-card" data-id="${item.id}">
@@ -2055,14 +2186,20 @@ function renderGalleryGrid(filter = 'all') {
           <div>
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
               <span class="status-pill active" style="font-size: 0.72rem;">${typeLabels[item.type] || item.type}</span>
-              <small style="color: var(--admin-muted); font-weight: 600;">${item.category || 'General'}</small>
+              <small style="color: var(--admin-muted); font-weight: 600;">${cat}</small>
             </div>
             <h4 style="font-size: 0.98rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 6px; line-height: 1.3;">
-              ${item.title}
+              ${title}
             </h4>
             <p style="font-size: 0.8rem; color: var(--admin-muted); line-height: 1.4; margin-bottom: 8px;">
-              ${item.desc || 'Sin descripción adicional.'}
+              ${desc || 'Sin descripción adicional.'}
             </p>
+            <div style="display: flex; align-items: center; gap: 4px; font-size: 0.72rem; margin-bottom: 8px;">
+              <span style="font-size: 0.7rem; color: var(--admin-muted);">Idiomas:</span>
+              <span title="Español disponible">🇪🇸</span>
+              <span title="${hasEn ? 'Inglés disponible' : 'Traducción inglesa pendiente'}" style="opacity: ${hasEn ? '1' : '0.35'};">🇬🇧</span>
+              <span title="${hasFr ? 'Francés disponible' : 'Traducción francesa pendiente'}" style="opacity: ${hasFr ? '1' : '0.35'};">🇫🇷</span>
+            </div>
           </div>
           <div class="gallery-admin-actions">
             <a href="${item.full || item.file}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 10px; font-size: 0.78rem; text-decoration: none;">
@@ -2089,7 +2226,7 @@ window.editGalleryItem = function(id) {
 
 window.deleteGalleryItem = function(id) {
   const item = galleryItems.find(i => i.id === id);
-  const title = item ? item.title : 'este contenido';
+  const title = item ? (typeof item.title === 'object' ? item.title.es : item.title) : 'este contenido';
   if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente "${title}"?`)) return;
 
   galleryItems = galleryItems.filter(i => i.id !== id);
@@ -2104,25 +2241,56 @@ function openGalleryModal(item = null) {
   const titleEl = document.getElementById('modal-gallery-title');
   const idInput = document.getElementById('gallery-item-id');
   const typeSelect = document.getElementById('gallery-item-type');
-  const titleInput = document.getElementById('gallery-item-title');
-  const catInput = document.getElementById('gallery-item-category');
   const urlInput = document.getElementById('gallery-item-url');
   const dlInput = document.getElementById('gallery-item-download-url');
-  const descInput = document.getElementById('gallery-item-desc');
   const previewWrap = document.getElementById('gallery-preview-wrap');
   const previewImg = document.getElementById('gallery-preview-img');
 
+  const titleEs = document.getElementById('gallery-item-title-es');
+  const titleEn = document.getElementById('gallery-item-title-en');
+  const titleFr = document.getElementById('gallery-item-title-fr');
+
+  const catEs = document.getElementById('gallery-item-category-es');
+  const catEn = document.getElementById('gallery-item-category-en');
+  const catFr = document.getElementById('gallery-item-category-fr');
+
+  const descEs = document.getElementById('gallery-item-desc-es');
+  const descEn = document.getElementById('gallery-item-desc-en');
+  const descFr = document.getElementById('gallery-item-desc-fr');
+
   if (!modal) return;
 
+  // Restablecer pestañas a Español por defecto
+  const galleryLangPills = document.querySelectorAll('.cms-lang-pill[data-gallery-modal-lang]');
+  galleryLangPills.forEach(p => p.classList.toggle('active', p.dataset.galleryModalLang === 'es'));
+  document.querySelectorAll('.gallery-lang-panel').forEach(panel => {
+    panel.classList.toggle('hidden', panel.id !== 'gallery-panel-lang-es');
+  });
+
+  const getLoc = (val, lang) => {
+    if (!val) return '';
+    if (typeof val === 'object') return val[lang] || '';
+    return lang === 'es' ? val : '';
+  };
+
   if (item) {
-    if (titleEl) titleEl.textContent = '✏️ Modificar Recurso';
+    if (titleEl) titleEl.textContent = '✏️ Modificar Recurso Multilingüe';
     if (idInput) idInput.value = item.id;
     if (typeSelect) typeSelect.value = item.type || 'foto';
-    if (titleInput) titleInput.value = item.title || '';
-    if (catInput) catInput.value = item.category || '';
     if (urlInput) urlInput.value = item.full || item.src || '';
     if (dlInput) dlInput.value = item.file || item.downloadUrl || '';
-    if (descInput) descInput.value = item.desc || '';
+
+    if (titleEs) titleEs.value = getLoc(item.title, 'es');
+    if (titleEn) titleEn.value = getLoc(item.title, 'en');
+    if (titleFr) titleFr.value = getLoc(item.title, 'fr');
+
+    if (catEs) catEs.value = getLoc(item.category, 'es');
+    if (catEn) catEn.value = getLoc(item.category, 'en');
+    if (catFr) catFr.value = getLoc(item.category, 'fr');
+
+    if (descEs) descEs.value = getLoc(item.desc, 'es');
+    if (descEn) descEn.value = getLoc(item.desc, 'en');
+    if (descFr) descFr.value = getLoc(item.desc, 'fr');
 
     if (previewImg && (item.thumb || item.full)) {
       previewImg.src = item.thumb || item.full;
@@ -2132,11 +2300,21 @@ function openGalleryModal(item = null) {
     if (titleEl) titleEl.textContent = '➕ Añadir Nuevo Recurso';
     if (idInput) idInput.value = '';
     if (typeSelect) typeSelect.value = 'foto';
-    if (titleInput) titleInput.value = '';
-    if (catInput) catInput.value = '';
     if (urlInput) urlInput.value = '';
     if (dlInput) dlInput.value = '';
-    if (descInput) descInput.value = '';
+
+    if (titleEs) titleEs.value = '';
+    if (titleEn) titleEn.value = '';
+    if (titleFr) titleFr.value = '';
+
+    if (catEs) catEs.value = '';
+    if (catEn) catEn.value = '';
+    if (catFr) catFr.value = '';
+
+    if (descEs) descEs.value = '';
+    if (descEn) descEn.value = '';
+    if (descFr) descFr.value = '';
+
     if (previewWrap) previewWrap.style.display = 'none';
   }
 
@@ -2152,31 +2330,40 @@ function handleSaveGalleryItem(e) {
   e.preventDefault();
   const idInput = document.getElementById('gallery-item-id');
   const typeSelect = document.getElementById('gallery-item-type');
-  const titleInput = document.getElementById('gallery-item-title');
-  const catInput = document.getElementById('gallery-item-category');
   const urlInput = document.getElementById('gallery-item-url');
   const dlInput = document.getElementById('gallery-item-download-url');
-  const descInput = document.getElementById('gallery-item-desc');
+
+  const titleEs = document.getElementById('gallery-item-title-es')?.value.trim() || 'Sin título';
+  const titleEn = document.getElementById('gallery-item-title-en')?.value.trim() || titleEs;
+  const titleFr = document.getElementById('gallery-item-title-fr')?.value.trim() || titleEs;
+
+  const catEs = document.getElementById('gallery-item-category-es')?.value.trim() || 'General';
+  const catEn = document.getElementById('gallery-item-category-en')?.value.trim() || catEs;
+  const catFr = document.getElementById('gallery-item-category-fr')?.value.trim() || catEs;
+
+  const descEs = document.getElementById('gallery-item-desc-es')?.value.trim() || '';
+  const descEn = document.getElementById('gallery-item-desc-en')?.value.trim() || descEs;
+  const descFr = document.getElementById('gallery-item-desc-fr')?.value.trim() || descEs;
 
   const id = idInput && idInput.value ? Number(idInput.value) : Date.now();
   const newItem = {
     id: id,
     type: typeSelect ? typeSelect.value : 'foto',
-    title: titleInput ? titleInput.value.trim() : 'Sin título',
-    category: catInput && catInput.value.trim() ? catInput.value.trim() : 'General',
+    title: { es: titleEs, en: titleEn, fr: titleFr },
+    category: { es: catEs, en: catEn, fr: catFr },
     full: urlInput ? urlInput.value.trim() : './assets/images/lobo.png',
     thumb: urlInput ? urlInput.value.trim() : './assets/images/lobo.png',
     file: dlInput && dlInput.value.trim() ? dlInput.value.trim() : (urlInput ? urlInput.value.trim() : ''),
-    desc: descInput ? descInput.value.trim() : ''
+    desc: { es: descEs, en: descEn, fr: descFr }
   };
 
   const existingIdx = galleryItems.findIndex(i => i.id === id);
   if (existingIdx >= 0) {
     galleryItems[existingIdx] = newItem;
-    showToast('✅ Recurso actualizado correctamente');
+    showToast('✅ Recurso multilingüe actualizado correctamente');
   } else {
     galleryItems.unshift(newItem);
-    showToast('✅ Nuevo recurso publicado en la galería');
+    showToast('✅ Nuevo recurso multilingüe publicado en la galería');
   }
 
   localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));

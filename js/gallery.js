@@ -50,25 +50,50 @@ export class GalleryManager {
       const custom = localStorage.getItem('pajarillo_gallery_data');
       if (custom) {
         const items = JSON.parse(custom);
+        const toLocObj = (val) => {
+          if (!val) return { es: '', en: '', fr: '' };
+          if (typeof val === 'object') {
+            const es = val.es || '';
+            const en = val.en || es;
+            const fr = val.fr || es;
+            return { es, en, fr };
+          }
+          return { es: String(val), en: String(val), fr: String(val) };
+        };
+
         const photos = items.filter(i => i.type === 'foto').map(i => ({
           id: 'custom_' + i.id,
           type: 'photo',
           src: i.full,
           thumb: i.thumb || i.full,
-          caption: { es: i.title, en: i.title, fr: i.title },
-          author: i.category || 'Centro de Interpretación',
-          category: i.category || 'Fototeca'
+          caption: toLocObj(i.title),
+          author: typeof i.category === 'object' ? (i.category.es || 'Centro de Interpretación') : (i.category || 'Centro de Interpretación'),
+          category: typeof i.category === 'object' ? (i.category.es || 'Fototeca') : (i.category || 'Fototeca')
         }));
+
         const resources = items.filter(i => i.type === 'pdf').map(i => ({
           id: 'res_' + i.id,
-          title: { es: i.title, en: i.title, fr: i.title },
-          desc: { es: i.desc, en: i.desc, fr: i.desc },
-          badge: i.category || 'PDF Oficial',
+          title: toLocObj(i.title),
+          description: toLocObj(i.desc),
+          badge: typeof i.category === 'object' ? (i.category.es || 'PDF Oficial') : (i.category || 'PDF Oficial'),
           file: i.file || i.full,
+          format: 'PDF / Digital',
           icon: '📄'
         }));
+
+        const videos = items.filter(i => i.type === 'video' || i.type === '3d').map(i => ({
+          id: 'vid_' + i.id,
+          category: typeof i.category === 'object' ? (i.category.es || (i.type === '3d' ? 'Modelo 3D' : 'Audiovisual')) : (i.category || 'Audiovisual'),
+          title: toLocObj(i.title),
+          description: toLocObj(i.desc),
+          duration: i.duration || (i.type === '3d' ? '3D' : '05:00'),
+          thumb: i.thumb || i.full,
+          videoUrl: i.file || i.full
+        }));
+
         if (photos.length > 0) this.data.media = photos;
         if (resources.length > 0) this.data.resources = resources;
+        if (videos.length > 0) this.data.videos = videos;
       }
     } catch (e) {}
   }
@@ -116,8 +141,14 @@ export class GalleryManager {
     const item = this.data.media[index];
     if (!item) return;
 
-    const lang = this.i18n.currentLang;
-    const caption = item.caption[lang] || item.caption.es;
+    const lang = this.i18n.currentLang || 'es';
+    const getLang = (obj, fallback = '') => {
+      if (!obj) return fallback;
+      if (typeof obj === 'string') return obj;
+      return obj[lang] || obj.es || obj.en || obj.fr || fallback;
+    };
+
+    const caption = getLang(item.caption, 'Fotografía');
 
     this.lightboxImg.src = item.src;
     this.lightboxCaption.textContent = caption;
@@ -147,13 +178,21 @@ export class GalleryManager {
   }
 
   render() {
-    const lang = this.i18n.currentLang;
+    const lang = this.i18n.currentLang || 'es';
+    const getLang = (obj, fallback = '') => {
+      if (!obj) return fallback;
+      if (typeof obj === 'string') return obj;
+      return obj[lang] || obj.es || obj.en || obj.fr || fallback;
+    };
 
     // 1. Fotos
     if (this.photosContainer && this.data.media) {
       this.photosContainer.innerHTML = this.data.media.map((item, idx) => {
-        const caption = item.caption[lang] || item.caption.es;
-        const catLabel = this.i18n.t(`galeria.categories.${item.category}`) || item.category;
+        const caption = getLang(item.caption, 'Fotografía');
+        const cat = getLang(item.category, 'Patrimonio');
+        const catLabel = this.i18n.t(`galeria.categories.${cat}`) !== `galeria.categories.${cat}`
+          ? this.i18n.t(`galeria.categories.${cat}`)
+          : cat;
         return `
           <button type="button" class="gallery-card" aria-label="${caption}" onclick="window.galleryInstance.openLightbox(${idx})">
             <img src="${item.thumb}" alt="${caption}" loading="lazy">
@@ -170,18 +209,21 @@ export class GalleryManager {
     if (this.resourcesContainer && this.data.resources) {
       const downloadLabel = this.i18n.t('galeria.download_btn') || '⬇ Descargar';
       this.resourcesContainer.innerHTML = this.data.resources.map(res => {
-        const title = res.title[lang] || res.title.es;
-        const desc = res.description[lang] || res.description.es;
-        const badgeLabel = this.i18n.t(`galeria.badges.${res.badge}`) || res.badge;
+        const title = getLang(res.title, 'Documento');
+        const desc = getLang(res.description || res.desc, '');
+        const badge = getLang(res.badge || res.category, 'Publicación Oficial');
+        const badgeLabel = this.i18n.t(`galeria.badges.${badge}`) !== `galeria.badges.${badge}`
+          ? this.i18n.t(`galeria.badges.${badge}`)
+          : badge;
         return `
           <div class="resource-card">
-            <div class="resource-icon">${res.icon}</div>
+            <div class="resource-icon">${res.icon || '📄'}</div>
             <div class="resource-content">
               <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">${badgeLabel}</span>
               <h3 style="margin-top: 6px;">${title}</h3>
               <p>${desc}</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${res.format}</span>
+                <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${res.format || 'PDF / Digital'}</span>
                 <button class="btn-point-action btn-point-qr" onclick="downloadResource('${title.replace(/'/g, "\\'")}')">
                   ${downloadLabel}
                 </button>
@@ -195,8 +237,8 @@ export class GalleryManager {
     // 3. Vídeos y 3D
     if (this.videosContainer && this.data.videos) {
       this.videosContainer.innerHTML = this.data.videos.map(vid => {
-        const title = vid.title[lang] || vid.title.es;
-        const desc = vid.description[lang] || vid.description.es;
+        const title = getLang(vid.title, 'Audiovisual');
+        const desc = getLang(vid.description || vid.desc, '');
         return `
           <div class="event-card" style="border: 1.5px solid var(--c-border); cursor: pointer;" onclick="window.open('./audiovisual_p0.html', '_blank')">
             <div style="position: relative; height: 220px; overflow: hidden; background: #000;">
@@ -206,7 +248,7 @@ export class GalleryManager {
                   ▶
                 </button>
               </div>
-              <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${vid.duration}</span>
+              <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${vid.duration || '05:00'}</span>
             </div>
             <div class="event-body">
               <h3 class="event-title" style="font-size: 1.3rem;">${title}</h3>
