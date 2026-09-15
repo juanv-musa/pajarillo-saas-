@@ -217,7 +217,7 @@ export class GalleryManager {
           : badge;
         return `
           <div class="resource-card">
-            <div class="resource-icon">${res.icon || '📄'}</div>
+            <div class="resource-icon"><img src="./assets/icons/icon-document.png" alt="" class="custom-icon-img" style="width: 44px; height: 44px; object-fit: contain;"></div>
             <div class="resource-content">
               <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">${badgeLabel}</span>
               <h3 style="margin-top: 6px;">${title}</h3>

@@ -38,10 +38,10 @@
 
     <div class="admin-user-pill">
       <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="font-size: 0.8rem;">
-        🌐 Ver Portal Público
+        <img src="./assets/icons/icon-globe.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Ver Portal Público
       </a>
       <div id="user-info-badge" class="user-badge hidden">
-        👤 <span id="logged-user-name">Gestor Municipal</span>
+        <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> <span id="logged-user-name">Gestor Municipal</span>
       </div>
       <button id="btn-logout" class="btn-admin btn-admin-danger hidden" style="padding: 6px 12px; font-size: 0.8rem;">
         Cerrar Sesión
@@ -52,18 +52,15 @@
   <!-- ═══════════════════════════════════════════
        VISTA 1: LOGIN Y REGISTRO RÁPIDO
        ═══════════════════════════════════════════ -->
-  <!-- ═══════════════════════════════════════════
-       VISTA 1: LOGIN Y REGISTRO RÁPIDO
-       ═══════════════════════════════════════════ -->
   <div id="login-view">
     <div class="login-screen">
-      <div class="login-header-icon">🔒</div>
+      <div class="login-header-icon"><img src="./assets/icons/icon-lock.png" alt="" style="width: 48px; height: 48px; object-fit: contain;"></div>
       <h2>Acceso a Gestión Municipal</h2>
       <p>Introduce las credenciales del Ayuntamiento para gestionar contenidos, secciones y analíticas</p>
 
       <!-- Botón de Acceso Directo Inmediato (1 Clic) -->
       <button type="button" id="btn-quick-login" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; background: #2E7D32; border-color: #2E7D32; font-size: 0.95rem; padding: 12px; margin-bottom: 1.25rem; font-weight: 700; box-shadow: 0 3px 8px rgba(46,125,50,0.25);">
-        ⚡ Acceso Directo de Administrador (1 Clic)
+        <img src="./assets/icons/icon-lightning.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Acceso Directo de Administrador (1 Clic)
       </button>
 
       <!-- Pestañas de Login o Registro -->
@@ -89,16 +86,16 @@
 
       <!-- Credenciales Disponibles Clickables -->
       <div style="background: rgba(56, 79, 62, 0.08); border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 14px; margin-top: 1.25rem; font-size: 0.8rem; text-align: left;">
-        <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">🔑 Clic para rellenar credenciales oficiales:</strong>
+        <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;"><img src="./assets/icons/icon-key.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Clic para rellenar credenciales oficiales:</strong>
         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
           <button type="button" class="btn-cred-fill" data-u="admin" data-p="pajarillo" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            👤 admin / 🔒 pajarillo
+            <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> pajarillo
           </button>
           <button type="button" class="btn-cred-fill" data-u="admin" data-p="admin" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            👤 admin / 🔒 admin
+            <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin
           </button>
           <button type="button" class="btn-cred-fill" data-u="ayuntamiento" data-p="huelma2026" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            🏛️ ayuntamiento / 🔒 huelma2026
+            <img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> ayuntamiento / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> huelma2026
           </button>
         </div>
       </div>
@@ -135,41 +132,41 @@
       <div class="sidebar-heading">Módulos del SaaS</div>
 
       <button class="sidebar-btn active" data-view="analytics">
-        <span>📊</span>
+        <img src="./assets/icons/icon-chart.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Analítica de Uso</span>
       </button>
 
       <button class="sidebar-btn" data-view="sections">
-        <span>🎛️</span>
+        <img src="./assets/icons/icon-grid.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Secciones de la Web</span>
         <span class="badge-counter" id="sections-active-badge">9/9</span>
       </button>
 
       <button class="sidebar-btn" data-view="contents">
-        <span>✏️</span>
+        <img src="./assets/icons/icon-edit.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Textos y Contenidos</span>
       </button>
 
       <button class="sidebar-btn" data-view="panels">
-        <span>📋</span>
+        <img src="./assets/icons/icon-mobile.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Puntos & Paneles QR</span>
         <span class="badge-counter" id="panels-count-badge">5</span>
       </button>
 
       <button class="sidebar-btn" data-view="agenda">
-        <span>📅</span>
+        <img src="./assets/icons/icon-calendar.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Agenda Cultural</span>
         <span class="badge-counter" id="agenda-count-badge">4</span>
       </button>
 
       <button class="sidebar-btn" data-view="gallery">
-        <span>🖼️</span>
+        <img src="./assets/icons/icon-photo.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Galería y Recursos</span>
         <span class="badge-counter" id="gallery-count-badge">7</span>
       </button>
 
       <button class="sidebar-btn" data-view="bookings">
-        <span>🎟️</span>
+        <img src="./assets/icons/icon-ticket.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Reservas de Visitas</span>
         <span class="badge-counter" id="bookings-count-badge">3</span>
       </button>
@@ -177,7 +174,7 @@
       <div class="sidebar-heading" style="margin-top: 1rem;">Administración</div>
 
       <button class="sidebar-btn" data-view="settings">
-        <span>⚙️</span>
+        <img src="./assets/icons/icon-settings.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Ajustes & Usuarios</span>
       </button>
     </aside>
@@ -200,13 +197,13 @@
           </div>
           <div style="display: flex; gap: 8px; flex-wrap: wrap;">
             <button id="btn-reset-analytics" class="btn-admin btn-admin-outline" style="border-color: #dc3545; color: #dc3545;" title="Reiniciar contadores a 0">
-              🔄 Poner Contadores a 0
+              <img src="./assets/icons/icon-refresh.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Poner Contadores a 0
             </button>
             <button id="btn-export-csv" class="btn-admin btn-admin-outline">
-              📥 Exportar Métricas (CSV)
+              <img src="./assets/icons/icon-document.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Exportar Métricas (CSV)
             </button>
             <button id="btn-print-report" class="btn-admin btn-admin-primary" style="background: var(--admin-accent-purple);">
-              🖨️ Imprimir / Guardar Informe PDF
+              <img src="./assets/icons/icon-printer.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Imprimir / Guardar Informe PDF
             </button>
           </div>
         </div>

@@ -1137,3 +1137,16 @@ input:checked + .slider:before {
   display: none;
 }
 
+/* Iconos personalizados del cliente (siempre proporcionales al texto) */
+.btn-icon-custom,
+.icon-inline {
+  width: 1.15em !important;
+  height: 1.15em !important;
+  max-width: 1.15em !important;
+  max-height: 1.15em !important;
+  object-fit: contain !important;
+  vertical-align: -0.15em !important;
+  display: inline-block !important;
+  flex-shrink: 0 !important;
+}
+

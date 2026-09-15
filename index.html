@@ -50,7 +50,7 @@
         </div>
 
         <a href="#reservas" class="btn-book-nav">
-          <span>🎟️</span>
+          <img src="./assets/icons/icon-ticket.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
           <span data-i18n="nav.reservar">Reservar Visita</span>
         </a>
 
@@ -242,7 +242,7 @@
         <!-- Tabs de galería -->
         <div class="tabs-nav gallery-tabs">
           <button class="tab-btn active" data-tab="fotos" data-i18n="galeria.tab_fotos">Fotografías HD</button>
-          <button class="tab-btn" data-tab="modelo3d">🏛️ Modelo 3D Interactivo</button>
+          <button class="tab-btn" data-tab="modelo3d"><img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Modelo 3D Interactivo</button>
           <button class="tab-btn" data-tab="recursos" data-i18n="galeria.tab_recursos">Recursos Digitales e Interactivos</button>
           <button class="tab-btn" data-tab="videos" data-i18n="galeria.tab_videos">Audiovisuales</button>
         </div>
@@ -350,7 +350,7 @@
         <div class="visit-grid">
           <!-- Columna 1: Horarios y Tarifas -->
           <div class="visit-card">
-            <h3 class="visit-card-title" data-i18n="horarios.horarios_title">🕒 Horarios de Apertura</h3>
+            <h3 class="visit-card-title"><img src="./assets/icons/icon-clock.png" alt="" class="title-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> <span data-i18n="horarios.horarios_title">Horarios de Apertura</span></h3>
             
             <div class="hours-block">
               <h4 data-i18n="horarios.temporada_alta">Horario de Verano (Jun–Sep)</h4>
@@ -405,7 +405,7 @@
 
           <!-- Columna 2: Localización y Cómo Llegar -->
           <div class="visit-card">
-            <h3 class="visit-card-title" data-i18n="horarios.localizacion_title">🗺️ Cómo llegar</h3>
+            <h3 class="visit-card-title"><img src="./assets/icons/icon-map.png" alt="" class="title-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> <span data-i18n="horarios.localizacion_title">Cómo llegar</span></h3>
             
             <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;">
               <div>
@@ -501,19 +501,19 @@
 
               <ul class="booking-perks">
                 <li class="booking-perk-item">
-                  <span>🏛️</span>
+                  <img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
                   <span data-i18n="reservas.perk_1">Acceso exclusivo a zonas restringidas del yacimiento</span>
                 </li>
                 <li class="booking-perk-item">
-                  <span>🎧</span>
+                  <img src="./assets/icons/icon-audioguide.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
                   <span data-i18n="reservas.perk_2">Dispositivo o audioguía digital multilingüe incluido</span>
                 </li>
                 <li class="booking-perk-item">
-                  <span>👥</span>
+                  <img src="./assets/icons/icon-groups.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
                   <span data-i18n="reservas.perk_3">Grupos reducidos (máximo 25 personas por turno)</span>
                 </li>
                 <li class="booking-perk-item">
-                  <span>♿</span>
+                  <img src="./assets/icons/icon-accessible.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
                   <span data-i18n="reservas.perk_4">Recorrido 100% adaptado a personas con movilidad reducida</span>
                 </li>
               </ul>
@@ -631,8 +631,9 @@
                 <label for="contact-message" data-i18n="contacto.form_mensaje">Mensaje</label>
                 <textarea id="contact-message" name="message" class="form-textarea" rows="4" required placeholder="Escribe tu mensaje..."></textarea>
               </div>
-              <button type="submit" class="btn-cta-gold" style="width: 100%; justify-content: center;" data-i18n="contacto.form_enviar">
-                Enviar Consulta
+              <button type="submit" class="btn-cta-gold" style="width: 100%; justify-content: center;">
+                <img src="./assets/icons/icon-send.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
+                <span data-i18n="contacto.form_enviar">Enviar Consulta</span>
               </button>
             </form>
           </div>
@@ -645,21 +646,21 @@
 
             <ul class="contact-info-list">
               <li class="contact-item">
-                <div class="contact-icon">📞</div>
+                <div class="contact-icon"><img src="./assets/icons/icon-phone.png" alt="Teléfono"></div>
                 <div>
                   <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.tel_label">Teléfono de atención</strong>
                   <a href="tel:+34953390010" style="font-size: 1.1rem; font-weight: 700; color: var(--c-primary);" data-i18n="contacto.tel_val">(+34) 953 39 00 10</a>
                 </div>
               </li>
               <li class="contact-item">
-                <div class="contact-icon">✉️</div>
+                <div class="contact-icon"><img src="./assets/icons/icon-email.png" alt="Email"></div>
                 <div>
                   <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.email_label">Correo electrónico</strong>
                   <a href="mailto:turismo@elpajarillo.es" style="font-size: 1rem; font-weight: 700; color: var(--c-primary);" data-i18n="contacto.email_val">turismo@elpajarillo.es</a>
                 </div>
               </li>
               <li class="contact-item">
-                <div class="contact-icon">🏛️</div>
+                <div class="contact-icon"><img src="./assets/icons/icon-temple.png" alt="Gestión"></div>
                 <div>
                   <strong style="display: block; font-size: 0.85rem; color: var(--c-text-muted);" data-i18n="contacto.ayto_label">Gestión</strong>
                   <span style="font-size: 0.95rem; font-weight: 600;" data-i18n="contacto.ayto_val">Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo</span>
@@ -719,7 +720,7 @@
           Panel de control municipal para la gestión de contenidos, eventos y analítica de visitantes.
         </p>
         <a href="./admin.html" class="admin-link-badge">
-          <span>🔒</span>
+          <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">
           <span data-i18n="footer.panel_enlace">Acceso Plataforma de Gestión (Ayto)</span>
         </a>
       </div>

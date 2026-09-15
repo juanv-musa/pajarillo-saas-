@@ -274,11 +274,11 @@ async function loadExhibitionPoints(i18n) {
             <div class="point-description">${content.description}</div>
             <div class="point-footer">
               <button class="btn-point-action btn-point-qr" onclick="openPanelQR(${panel.id}, '${safeTitle}')">
-                📱 ${viewQrLabel}
+                <img src="./assets/icons/icon-mobile.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> ${viewQrLabel}
               </button>
               ${content.audio ? `
                 <button class="btn-point-action btn-point-qr" style="background: var(--c-accent-purple); color: white;" onclick="playAudio('${content.audio}')">
-                  🔊 Audio
+                  <img src="./assets/icons/icon-audioguide.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Audio
                 </button>
               ` : ''}
             </div>
