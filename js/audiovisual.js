@@ -13,8 +13,6 @@ class AudiovisualKiosk {
     // Elementos DOM
     this.dom = {
       grid: document.getElementById('tv-video-grid'),
-      clock: document.getElementById('tv-clock'),
-      btnFullscreen: document.getElementById('btn-fullscreen'),
       playerModal: document.getElementById('tv-player-modal'),
       videoElement: document.getElementById('tv-video'),
       playingTitle: document.getElementById('tv-playing-title'),
@@ -32,26 +30,37 @@ class AudiovisualKiosk {
   }
 
   async init() {
-    this.startClock();
     this.bindEvents();
+    this.setupAutoFullscreen();
     await this.loadVideos();
     this.renderCards();
     this.setupKioskInactivity();
   }
 
-  startClock() {
-    const update = () => {
-      if (this.dom.clock) {
-        const now = new Date();
-        this.dom.clock.textContent = now.toLocaleTimeString('es-ES', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        });
+  setupAutoFullscreen() {
+    // Intentar iniciar a pantalla completa de inmediato
+    const tryFullscreen = () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
       }
     };
-    update();
-    setInterval(update, 1000);
+
+    // Intento inmediato al cargar
+    tryFullscreen();
+
+    // Como los navegadores exigen interacción del usuario, activar automáticamente al primer toque o clic
+    const onFirstUserAction = () => {
+      tryFullscreen();
+      window.removeEventListener('click', onFirstUserAction);
+      window.removeEventListener('touchstart', onFirstUserAction);
+      window.removeEventListener('pointerdown', onFirstUserAction);
+      window.removeEventListener('keydown', onFirstUserAction);
+    };
+
+    window.addEventListener('click', onFirstUserAction, { passive: true });
+    window.addEventListener('touchstart', onFirstUserAction, { passive: true });
+    window.addEventListener('pointerdown', onFirstUserAction, { passive: true });
+    window.addEventListener('keydown', onFirstUserAction, { passive: true });
   }
 
   async loadVideos() {
@@ -94,12 +103,7 @@ class AudiovisualKiosk {
   }
 
   bindEvents() {
-    // Botón Pantalla Completa
-    if (this.dom.btnFullscreen) {
-      this.dom.btnFullscreen.addEventListener('click', () => this.toggleFullscreen());
-    }
-
-    // Botón Volver
+    // Botón Volver al menú
     if (this.dom.btnBack) {
       this.dom.btnBack.addEventListener('click', () => this.closePlayer());
     }
@@ -131,8 +135,7 @@ class AudiovisualKiosk {
     if (this.dom.videoElement) {
       this.dom.videoElement.addEventListener('timeupdate', () => this.onTimeUpdate());
       this.dom.videoElement.addEventListener('ended', () => {
-        // Al finalizar el vídeo, regresar tras 2 segundos al menú
-        setTimeout(() => this.closePlayer(), 2500);
+        setTimeout(() => this.closePlayer(), 2000);
       });
       this.dom.videoElement.addEventListener('play', () => {
         if (this.dom.btnPlayPause) this.dom.btnPlayPause.textContent = '⏸';
@@ -151,7 +154,7 @@ class AudiovisualKiosk {
       });
     }
 
-    // Ocultar controles automáticamente en modo reproducción
+    // Ocultar controles automáticamente tras 4 segundos en modo reproducción
     const resetControlsVisibility = () => {
       if (this.dom.topbar) this.dom.topbar.classList.remove('hidden-controls');
       if (this.dom.controlsBar) this.dom.controlsBar.classList.remove('hidden-controls');
@@ -170,11 +173,9 @@ class AudiovisualKiosk {
       this.dom.playerModal.addEventListener('click', resetControlsVisibility);
     }
 
-    // Teclas de acceso rápido (Mando o Teclado)
+    // Control por teclado (mando TV o atajos)
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'f' || e.key === 'F') {
-        this.toggleFullscreen();
-      } else if (e.key === 'Escape' || e.key === 'Backspace') {
+      if (e.key === 'Escape' || e.key === 'Backspace') {
         if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) {
           this.closePlayer();
         }
@@ -183,21 +184,16 @@ class AudiovisualKiosk {
         this.togglePlayPause();
       }
     });
-
-    // Detectar cambios de fullscreen externos
-    document.addEventListener('fullscreenchange', () => {
-      const isFs = !!document.fullscreenElement;
-      if (this.dom.btnFullscreen) {
-        this.dom.btnFullscreen.innerHTML = isFs 
-          ? '🗗 <span>Salir Pantalla Completa</span>' 
-          : '⛶ <span>Pantalla Completa</span>';
-      }
-    });
   }
 
   playVideo(index) {
     const vid = this.videos[index];
     if (!vid || !this.dom.videoElement) return;
+
+    // Asegurar pantalla completa activa al seleccionar cualquier vídeo
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
 
     this.activeVideoIndex = index;
     const title = vid.title.es || vid.title;
@@ -213,7 +209,6 @@ class AudiovisualKiosk {
     const playPromise = this.dom.videoElement.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {
-        // En algunos navegadores si bloquea el autoplay con sonido, se silencia
         this.dom.videoElement.muted = true;
         this.dom.videoElement.play();
         if (this.dom.btnMute) this.dom.btnMute.textContent = '🔇';
@@ -265,16 +260,6 @@ class AudiovisualKiosk {
     const m = Math.floor(sec / 60);
     const s = Math.floor(sec % 60);
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-  }
-
-  toggleFullscreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(() => {});
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen().catch(() => {});
-      }
-    }
   }
 
   setupKioskInactivity() {
