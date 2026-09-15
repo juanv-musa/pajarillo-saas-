@@ -722,6 +722,13 @@ window.editPanel = function(id) {
 
   DOM.panelFormTitle.textContent = 'Editar Panel Nº 0' + panel.id;
   DOM.btnCancelPanelEdit.classList.remove('hidden');
+
+  DOM.panelForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const card = DOM.panelForm.closest('.admin-card');
+  if (card) {
+    card.classList.add('editing-highlight');
+    setTimeout(() => card.classList.remove('editing-highlight'), 1800);
+  }
 };
 
 DOM.btnCancelPanelEdit.addEventListener('click', resetPanelForm);
@@ -775,19 +782,48 @@ function renderAgendaList() {
     li.className = 'panel-admin-item';
     li.innerHTML = `
       <div class="panel-admin-details">
-        <h4>${act.title.es}</h4>
-        <p>📅 ${act.date} · ⏰ ${act.time} h · 🎟️ ${act.spotsLeft} plazas · <strong>${act.category}</strong></p>
+        <h4>${act.title.es || act.title}</h4>
+        <p>📅 ${act.date} · ⏰ ${act.time} h · 🎟️ ${act.spotsLeft || act.spotsTotal || 25} plazas · <strong>${act.category || 'General'}</strong></p>
       </div>
-      <button class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="deleteActivity(${act.id})">🗑️</button>
+      <div class="panel-actions-group">
+        <button type="button" class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="window.editActivity(${act.id})" title="Editar">✏️</button>
+        <button type="button" class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="window.deleteActivity(${act.id})" title="Eliminar">🗑️</button>
+      </div>
     `;
     DOM.agendaList.appendChild(li);
   });
 }
 
+window.editActivity = function(id) {
+  const act = agendaData.find(a => a.id === id);
+  if (!act) return;
+  document.getElementById('act-id').value = act.id;
+  document.getElementById('act-title-es').value = act.title.es || act.title || '';
+  document.getElementById('act-date').value = act.date || '';
+  document.getElementById('act-time').value = act.time || '11:30';
+  document.getElementById('act-cat').value = act.category || 'visitas';
+  document.getElementById('act-spots').value = act.spotsTotal || act.spotsLeft || 25;
+  document.getElementById('act-desc-es').value = (act.description && act.description.es) || act.description || '';
+
+  const titleEl = document.getElementById('act-form-title');
+  if (titleEl) titleEl.textContent = '✏️ Modificar Actividad';
+
+  DOM.agendaForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const card = DOM.agendaForm.closest('.admin-card');
+  if (card) {
+    card.classList.add('editing-highlight');
+    setTimeout(() => card.classList.remove('editing-highlight'), 1800);
+  }
+};
+
 DOM.agendaForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const actIdVal = document.getElementById('act-id').value;
+  const isEditing = Boolean(actIdVal);
+  const targetId = isEditing ? Number(actIdVal) : Date.now();
+
   const newAct = {
-    id: Date.now(),
+    id: targetId,
     date: document.getElementById('act-date').value,
     time: document.getElementById('act-time').value,
     category: document.getElementById('act-cat').value,
@@ -807,10 +843,20 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
     });
   } catch (err) {}
 
-  agendaData.push(newAct);
+  if (isEditing) {
+    const idx = agendaData.findIndex(a => a.id === targetId);
+    if (idx >= 0) agendaData[idx] = newAct;
+    showToast('✅ Actividad actualizada correctamente');
+  } else {
+    agendaData.push(newAct);
+    showToast('✅ Nueva actividad agregada a la agenda');
+  }
+
   renderAgendaList();
   DOM.agendaForm.reset();
-  showToast('✅ Actividad agregada a la agenda');
+  document.getElementById('act-id').value = '';
+  const titleEl = document.getElementById('act-form-title');
+  if (titleEl) titleEl.textContent = 'Añadir Actividad';
 });
 
 window.deleteActivity = async function(id) {
@@ -905,18 +951,30 @@ let adminQrInstance = null;
 let currentAdminQrUrl = '';
 
 function setupQrModalEvents() {
-  DOM.btnAdminCloseQr.addEventListener('click', () => {
-    DOM.adminQrModal.classList.add('hidden');
+  const closeBtn = document.getElementById('btn-admin-close-qr');
+  const closeIcon = document.getElementById('btn-close-qr-icon');
+  const downloadBtn = document.getElementById('btn-admin-download-qr');
+
+  if (closeBtn) closeBtn.addEventListener('click', () => DOM.adminQrModal.classList.add('hidden'));
+  if (closeIcon) closeIcon.addEventListener('click', () => DOM.adminQrModal.classList.add('hidden'));
+
+  // Cerrar al hacer clic en el fondo oscuro
+  DOM.adminQrModal.addEventListener('click', (e) => {
+    if (e.target === DOM.adminQrModal) {
+      DOM.adminQrModal.classList.add('hidden');
+    }
   });
 
-  DOM.btnAdminDownloadQr.addEventListener('click', () => {
-    const img = DOM.adminQrcodeBox.querySelector('img');
-    if (!img) return;
-    const a = document.createElement('a');
-    a.href = img.src;
-    a.download = `QR_Oficial_Pajarillo_${Date.now()}.png`;
-    a.click();
-  });
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', () => {
+      const img = DOM.adminQrcodeBox.querySelector('img');
+      if (!img) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = `QR_Oficial_Pajarillo_${Date.now()}.png`;
+      a.click();
+    });
+  }
 }
 
 window.openAdminQR = function(id, title) {
@@ -1598,9 +1656,28 @@ function setupGalleryManager() {
   }
 
   const btnClose = document.getElementById('btn-close-gallery-modal');
+  const btnCloseIcon = document.getElementById('btn-close-gallery-icon');
+  const modal = document.getElementById('modal-gallery-item');
+
   if (btnClose) {
     btnClose.addEventListener('click', () => closeGalleryModal());
   }
+  if (btnCloseIcon) {
+    btnCloseIcon.addEventListener('click', () => closeGalleryModal());
+  }
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeGalleryModal();
+    });
+  }
+
+  // Tecla Escape para cerrar modales abiertos
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeGalleryModal();
+      if (DOM.adminQrModal) DOM.adminQrModal.classList.add('hidden');
+    }
+  });
 
   const form = document.getElementById('form-gallery-item');
   if (form) {
