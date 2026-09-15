@@ -1,41 +1,63 @@
 /**
  * Estilos del Widget de Accesibilidad Universal (WCAG 2.1 Nivel AA)
  * Centro de Interpretación Santuario Ibérico de "El Pajarillo" · Excmo. Ayuntamiento de Huelma
+ * Posición en medio a la derecha, botón colapsable/desplegable, e inversión cromática aislada.
  */
 
+/* Raíz del widget para aislamiento de estilos y filtros */
+#acc-widget-root,
+.acc-widget-root {
+  position: fixed !important;
+  z-index: 999999 !important;
+  filter: none !important;
+  font-family: var(--font-base, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+}
+
 /* ═══════════════════════════════════════════
-   1. BOTÓN FLOTANTE TRIGGER
+   1. BOTÓN PESTAÑA LATERAL (MEDIO A LA DERECHA)
    ═══════════════════════════════════════════ */
-.acc-floating-btn {
+.acc-tab-wrapper {
   position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 99990;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #1B3624;
-  color: #FFFFFF;
-  border: 2.5px solid #B59A57;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 999990;
   display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+}
+
+.acc-floating-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #1B3624;
+  color: #FFFFFF;
+  border: 2px solid #B59A57;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  padding: 10px 14px 10px 12px;
+  box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.35);
   cursor: pointer;
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, background-color 0.2s ease;
+  font-family: var(--font-condensed, 'Barlow Condensed', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   outline: none;
+  transition: background-color 0.2s ease, padding-left 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  user-select: none;
 }
 
 .acc-floating-btn:hover {
-  transform: scale(1.08);
-  background: #254b32;
-  box-shadow: 0 8px 24px rgba(181, 154, 87, 0.45);
+  background: #254B32;
+  box-shadow: -6px 8px 24px rgba(181, 154, 87, 0.45);
+  padding-left: 18px;
 }
 
 .acc-floating-btn:focus-visible {
   outline: 3px solid #FFD700;
-  outline-offset: 3px;
+  outline-offset: 2px;
 }
 
 .acc-floating-btn.active {
@@ -43,10 +65,18 @@
   color: #1B3624;
 }
 
+.acc-tab-icon {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.acc-tab-label {
+  font-size: 0.92rem;
+  white-space: nowrap;
+}
+
+/* Badge de contadores de ajustes activos */
 .acc-floating-btn-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
   background: #E53E3E;
   color: #FFFFFF;
   font-size: 0.68rem;
@@ -58,10 +88,48 @@
   align-items: center;
   justify-content: center;
   border: 1.5px solid #FFFFFF;
+  margin-left: 2px;
 }
 
 .acc-floating-btn-badge.visible {
   display: flex;
+}
+
+/* Pestañita pequeña para esconder / revelar */
+.acc-hide-handle-btn {
+  background: #14281b;
+  color: #FFDE82;
+  border: 1px solid #B59A57;
+  border-right: none;
+  border-left: 1px solid rgba(255, 255, 255, 0.15);
+  width: 20px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.72rem;
+  transition: background 0.15s ease, color 0.15s ease;
+  outline: none;
+}
+
+.acc-hide-handle-btn:hover {
+  background: #1B3624;
+  color: #FFFFFF;
+}
+
+/* Estado Minimizado / Escondido a la derecha */
+.acc-tab-wrapper.is-hidden {
+  transform: translateY(-50%) translateX(calc(100% - 32px));
+}
+
+.acc-tab-wrapper.is-hidden:hover {
+  transform: translateY(-50%) translateX(0);
+}
+
+.acc-tab-wrapper.is-hidden .acc-hide-handle-btn span {
+  display: inline-block;
+  transform: rotate(180deg);
 }
 
 /* ═══════════════════════════════════════════
@@ -72,7 +140,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(4px);
-  z-index: 99994;
+  z-index: 999994;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s ease;
@@ -85,28 +153,30 @@
 
 .acc-panel {
   position: fixed;
-  bottom: 86px;
-  left: 24px;
-  width: 375px;
-  max-width: calc(100vw - 32px);
-  max-height: calc(88vh - 40px);
+  top: 50%;
+  right: 20px;
+  left: auto;
+  bottom: auto;
+  width: 380px;
+  max-width: calc(100vw - 36px);
+  max-height: calc(90vh - 20px);
   background: #FFFFFF;
   color: #1A202C;
   border: 2px solid #B59A57;
   border-radius: 16px;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
-  z-index: 99995;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  z-index: 999995;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform: translateY(16px) scale(0.96);
+  transform: translateY(-50%) scale(0.95);
   opacity: 0;
   pointer-events: none;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
 }
 
 .acc-panel.open {
-  transform: translateY(0) scale(1);
+  transform: translateY(-50%) scale(1);
   opacity: 1;
   pointer-events: auto;
 }
@@ -357,6 +427,22 @@
   border-color: #FEB2B2;
 }
 
+.acc-hide-panel-btn {
+  padding: 8px 12px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #4A5568;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.acc-hide-panel-btn:hover {
+  background: #EDF2F7;
+}
+
 /* Barra Guía de Lectura */
 .acc-reading-guide-bar {
   display: none;
@@ -368,7 +454,7 @@
   border-top: 2.5px solid #FBC02D;
   border-bottom: 2.5px solid #FBC02D;
   pointer-events: none;
-  z-index: 99997;
+  z-index: 999997;
   transform: translateY(-50%);
   box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.25);
 }
@@ -388,7 +474,7 @@ body.acc-guide-on .acc-reading-guide-bar {
   border: 2px solid #B59A57;
   padding: 8px 16px;
   border-radius: 999px;
-  z-index: 99996;
+  z-index: 999998;
   font-size: 0.85rem;
   font-weight: 700;
   box-shadow: 0 6px 20px rgba(0,0,0,0.3);
@@ -422,7 +508,7 @@ html.acc-text-lvl-3 { font-size: 138% !important; }
 
 /* Tipografía amigable para dislexia */
 body.acc-dyslexic-on,
-body.acc-dyslexic-on *:not(.acc-widget-root, .acc-widget-root *) {
+body.acc-dyslexic-on *:not(#acc-widget-root, .acc-widget-root, #acc-widget-root *) {
   font-family: 'OpenDyslexic', 'Comic Sans MS', Arial, sans-serif !important;
   letter-spacing: 0.06em !important;
   word-spacing: 0.14em !important;
@@ -435,7 +521,7 @@ body.acc-high-contrast-on {
   color: #FFFFFF !important;
 }
 
-body.acc-high-contrast-on *:not(.acc-widget-root, .acc-widget-root *) {
+body.acc-high-contrast-on *:not(#acc-widget-root, .acc-widget-root, #acc-widget-root *) {
   background-color: #000000 !important;
   color: #FFFFFF !important;
   border-color: #FFD700 !important;
@@ -454,32 +540,34 @@ body.acc-high-contrast-on iframe {
   filter: contrast(115%) brightness(105%);
 }
 
-/* Modo Invertir Colores */
-html.acc-invert-on {
+/* 
+ * Modo Invertir Colores (AISLADO: Aplica al contenido de la página,
+ * JAMÁS a #acc-widget-root, para que el widget nunca desaparezca ni se distorsione).
+ */
+body.acc-invert-on > *:not(#acc-widget-root, .acc-widget-root, .acc-reading-guide-bar, .acc-tts-indicator) {
   filter: invert(1) hue-rotate(180deg) !important;
 }
 
-html.acc-invert-on img,
-html.acc-invert-on video,
-html.acc-invert-on iframe,
-html.acc-invert-on .acc-widget-root {
+body.acc-invert-on > *:not(#acc-widget-root, .acc-widget-root, .acc-reading-guide-bar, .acc-tts-indicator) img,
+body.acc-invert-on > *:not(#acc-widget-root, .acc-widget-root, .acc-reading-guide-bar, .acc-tts-indicator) video,
+body.acc-invert-on > *:not(#acc-widget-root, .acc-widget-root, .acc-reading-guide-bar, .acc-tts-indicator) iframe {
   filter: invert(1) hue-rotate(180deg) !important;
 }
 
-/* Modo Escala de Grises (Monocromo) */
-html.acc-grayscale-on {
+body.acc-invert-on {
+  background-color: #000000 !important;
+}
+
+/* Modo Escala de Grises (Monocromo AISLADO) */
+body.acc-grayscale-on > *:not(#acc-widget-root, .acc-widget-root, .acc-reading-guide-bar, .acc-tts-indicator) {
   filter: grayscale(100%) !important;
 }
 
-html.acc-grayscale-on .acc-widget-root {
-  filter: none !important;
-}
-
 /* Resaltar Enlaces y Botones */
-body.acc-links-on a,
-body.acc-links-on button,
-body.acc-links-on [role="button"],
-body.acc-links-on input[type="submit"] {
+body.acc-links-on a:not(#acc-widget-root *),
+body.acc-links-on button:not(#acc-widget-root *),
+body.acc-links-on [role="button"]:not(#acc-widget-root *),
+body.acc-links-on input[type="submit"]:not(#acc-widget-root *) {
   outline: 3px solid #FFCC00 !important;
   outline-offset: 2px !important;
   text-decoration: underline 3px solid #FFCC00 !important;
@@ -508,17 +596,41 @@ body.acc-tts-on [data-tts-hover="true"] {
   cursor: pointer !important;
 }
 
+/* ═══════════════════════════════════════════
+   4. ADAPTACIÓN RESPONSIVE (MÓVILES)
+   ═══════════════════════════════════════════ */
 @media (max-width: 600px) {
-  .acc-floating-btn {
-    bottom: 16px;
-    left: 16px;
-    width: 46px;
-    height: 46px;
-    font-size: 1.4rem;
+  .acc-tab-wrapper {
+    top: auto;
+    bottom: 24px;
+    right: 0;
+    transform: none;
   }
+
+  .acc-tab-wrapper.is-hidden {
+    transform: translateX(calc(100% - 30px));
+  }
+
+  .acc-tab-label {
+    display: none;
+  }
+
+  .acc-floating-btn {
+    padding: 10px 12px;
+  }
+
   .acc-panel {
-    bottom: 72px;
+    top: auto;
+    bottom: 16px;
+    right: 16px;
     left: 16px;
-    width: calc(100vw - 32px);
+    width: auto;
+    max-width: none;
+    max-height: 84vh;
+    transform: translateY(16px);
+  }
+
+  .acc-panel.open {
+    transform: translateY(0);
   }
 }

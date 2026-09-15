@@ -215,6 +215,9 @@
   },
   "accessibility": {
     "btn_label": "Accessibility Options",
+    "tab_text": "Accessibility",
+    "hide_tab": "Hide tab",
+    "show_tab": "Show tab",
     "title": "Accessibility Tools",
     "subtitle": "Customize display and reading settings to suit your personal needs.",
     "compliance": "Compliant with WCAG 2.1 Level AA",

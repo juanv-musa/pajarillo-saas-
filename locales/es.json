@@ -215,6 +215,9 @@
   },
   "accessibility": {
     "btn_label": "Opciones de Accesibilidad",
+    "tab_text": "Accesibilidad",
+    "hide_tab": "Ocultar pestaña",
+    "show_tab": "Mostrar pestaña",
     "title": "Herramientas de Accesibilidad",
     "subtitle": "Adapta la visualización y lectura del sitio a tus necesidades personales.",
     "compliance": "Conforme a WCAG 2.1 Nivel AA",

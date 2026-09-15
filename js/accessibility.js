@@ -23,7 +23,8 @@ export class AccessibilityWidget {
       guide: false,
       bigCursor: false,
       noAnim: false,
-      tts: false
+      tts: false,
+      tabHidden: false
     };
 
     this.loadState();
@@ -71,11 +72,17 @@ export class AccessibilityWidget {
     root.id = 'acc-widget-root';
     root.className = 'acc-widget-root';
     root.innerHTML = `
-      <!-- Botón Flotante Trigger -->
-      <button type="button" id="acc-trigger-btn" class="acc-floating-btn" aria-label="${this.t('btn_label', 'Opciones de Accesibilidad')}" title="${this.t('btn_label', 'Opciones de Accesibilidad')}" aria-expanded="false" aria-controls="acc-panel">
-        <span>♿</span>
-        <span id="acc-active-badge" class="acc-floating-btn-badge">0</span>
-      </button>
+      <!-- Contenedor Pestaña Lateral (Medio a la derecha) -->
+      <div id="acc-tab-wrapper" class="acc-tab-wrapper${this.state.tabHidden ? ' is-hidden' : ''}">
+        <button type="button" id="acc-trigger-btn" class="acc-floating-btn" aria-label="${this.t('btn_label', 'Opciones de Accesibilidad')}" title="${this.t('btn_label', 'Opciones de Accesibilidad')}" aria-expanded="false" aria-controls="acc-panel">
+          <span class="acc-tab-icon">♿</span>
+          <span class="acc-tab-label" data-acc-i18n="tab_text">${this.t('tab_text', 'Accesibilidad')}</span>
+          <span id="acc-active-badge" class="acc-floating-btn-badge">0</span>
+        </button>
+        <button type="button" id="acc-toggle-hide-btn" class="acc-hide-handle-btn" aria-label="${this.state.tabHidden ? this.t('show_tab', 'Mostrar pestaña') : this.t('hide_tab', 'Ocultar pestaña')}" title="${this.state.tabHidden ? this.t('show_tab', 'Mostrar pestaña') : this.t('hide_tab', 'Ocultar pestaña')}">
+          <span id="acc-hide-arrow">▶</span>
+        </button>
+      </div>
 
       <!-- Fondo desenfocado -->
       <div id="acc-overlay" class="acc-overlay" aria-hidden="true"></div>
@@ -248,12 +255,28 @@ export class AccessibilityWidget {
 
   bindEvents() {
     const triggerBtn = document.getElementById('acc-trigger-btn');
+    const toggleHideBtn = document.getElementById('acc-toggle-hide-btn');
+    const tabWrapper = document.getElementById('acc-tab-wrapper');
     const overlay = document.getElementById('acc-overlay');
     const closeBtn = document.getElementById('acc-close-btn');
     const resetAllBtn = document.getElementById('acc-btn-reset-all');
 
+    if (toggleHideBtn) {
+      toggleHideBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleTabVisibility();
+      });
+    }
+
     if (triggerBtn) {
-      triggerBtn.addEventListener('click', () => this.togglePanel());
+      triggerBtn.addEventListener('click', () => {
+        if (tabWrapper && tabWrapper.classList.contains('is-hidden')) {
+          tabWrapper.classList.remove('is-hidden');
+          this.state.tabHidden = false;
+          this.saveState();
+        }
+        this.togglePanel();
+      });
     }
     if (overlay) {
       overlay.addEventListener('click', () => this.closePanel());
@@ -307,6 +330,23 @@ export class AccessibilityWidget {
 
     // Setup Text-to-Speech (lector al hacer clic o seleccionar texto)
     this.setupTTS();
+  }
+
+  toggleTabVisibility() {
+    const tabWrapper = document.getElementById('acc-tab-wrapper');
+    const toggleHideBtn = document.getElementById('acc-toggle-hide-btn');
+    if (!tabWrapper) return;
+
+    this.state.tabHidden = !this.state.tabHidden;
+    tabWrapper.classList.toggle('is-hidden', this.state.tabHidden);
+    if (toggleHideBtn) {
+      const label = this.state.tabHidden
+        ? this.t('show_tab', 'Mostrar pestaña')
+        : this.t('hide_tab', 'Ocultar pestaña');
+      toggleHideBtn.setAttribute('aria-label', label);
+      toggleHideBtn.setAttribute('title', label);
+    }
+    this.saveState();
   }
 
   togglePanel() {
@@ -376,7 +416,8 @@ export class AccessibilityWidget {
       guide: false,
       bigCursor: false,
       noAnim: false,
-      tts: false
+      tts: false,
+      tabHidden: Boolean(this.state.tabHidden)
     };
     this.stopSpeech();
     this.applyState();
@@ -400,8 +441,8 @@ export class AccessibilityWidget {
     // 2. Modos visuales y de lectura en el DOM
     body.classList.toggle('acc-dyslexic-on', Boolean(this.state.dyslexic));
     body.classList.toggle('acc-high-contrast-on', Boolean(this.state.highContrast));
-    html.classList.toggle('acc-invert-on', Boolean(this.state.invert));
-    html.classList.toggle('acc-grayscale-on', Boolean(this.state.grayscale));
+    body.classList.toggle('acc-invert-on', Boolean(this.state.invert));
+    body.classList.toggle('acc-grayscale-on', Boolean(this.state.grayscale));
     body.classList.toggle('acc-links-on', Boolean(this.state.links));
     body.classList.toggle('acc-guide-on', Boolean(this.state.guide));
     body.classList.toggle('acc-big-cursor-on', Boolean(this.state.bigCursor));
@@ -523,6 +564,15 @@ export class AccessibilityWidget {
       const label = this.t('btn_label', 'Opciones de Accesibilidad');
       triggerBtn.setAttribute('aria-label', label);
       triggerBtn.setAttribute('title', label);
+    }
+
+    const toggleHideBtn = document.getElementById('acc-toggle-hide-btn');
+    if (toggleHideBtn) {
+      const hideTitle = this.state.tabHidden
+        ? this.t('show_tab', 'Mostrar pestaña')
+        : this.t('hide_tab', 'Ocultar pestaña');
+      toggleHideBtn.setAttribute('aria-label', hideTitle);
+      toggleHideBtn.setAttribute('title', hideTitle);
     }
   }
 }
