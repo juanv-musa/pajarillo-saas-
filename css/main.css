@@ -1278,8 +1278,9 @@ button {
   padding-top: 2rem;
   border-top: 1px solid rgba(220, 220, 214, 0.15);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  text-align: center;
   font-size: 0.8rem;
   color: #8A9E92;
   flex-wrap: wrap;
