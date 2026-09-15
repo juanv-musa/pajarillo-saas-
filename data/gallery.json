@@ -148,6 +148,7 @@
   "videos": [
     {
       "id": "vid_1",
+      "category": "Recreación 3D",
       "title": {
         "es": "Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo",
         "en": "3D Virtual Reconstruction: Combat of the Hero and the Wolf",
@@ -155,14 +156,16 @@
       },
       "duration": "04:15",
       "thumb": "./assets/images/gallery/lobo.png",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
       "description": {
-        "es": "Recreación fotorrealista de cómo se erigía el conjunto escultórico en lo alto del santuario en el año 350 a.C.",
+        "es": "Recreación fotorrealista de cómo se erigía el conjunto escultórico en lo alto del santuario en el año 350 a.C. Descubre el significado ritual del héroe oretano y las fieras mitológicas.",
         "en": "Photorealistic 3D visualization of the monumental sculptural terrace in 350 BC.",
         "fr": "Reconstitution 3D de l'apothéose héroïque et de la terrasse monumentale au IVe s. av. J.-C."
       }
     },
     {
       "id": "vid_2",
+      "category": "Documental Histórico",
       "title": {
         "es": "Documental: La Huella Íbera y Cristiana en Sierra Mágina",
         "en": "Documentary: Iberian and Christian Heritage in Sierra Mágina",
@@ -170,10 +173,45 @@
       },
       "duration": "12:30",
       "thumb": "./assets/images/hero/hero.jpg",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       "description": {
-        "es": "Un viaje audiovisual por la historia del santuario, la Iglesia de la Inmaculada Concepción y las investigaciones arqueológicas.",
+        "es": "Un viaje audiovisual por la historia del santuario, la Iglesia de la Inmaculada Concepción y las investigaciones arqueológicas que cambiaron el mapa cultural de Andalucía.",
         "en": "An immersive journey across the history of the sanctuary, the church, and modern excavations.",
         "fr": "Une traversée documentaire de l'histoire du sanctuaire, de l'église et des découvertes récentes."
+      }
+    },
+    {
+      "id": "vid_3",
+      "category": "Arqueología y Ciencia",
+      "title": {
+        "es": "El Hallazgo Arqueológico: Las Excavaciones de El Pajarillo (1994)",
+        "en": "The Archaeological Discovery: Excavations at El Pajarillo (1994)",
+        "fr": "La Découverte Archéologique : Les Fouilles d'El Pajarillo (1994)"
+      },
+      "duration": "06:45",
+      "thumb": "./assets/images/gallery/arqueologia.jpg",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      "description": {
+        "es": "Crónica científica del descubrimiento dirigido por el Instituto Universitario de Arqueología Ibérica. El rescate de los sillares tallados y la iconografía del lobo.",
+        "en": "Scientific chronicle of the excavations led by the University Institute of Iberian Archaeology.",
+        "fr": "Chronique scientifique des fouilles dirigées par l'Institut Universitaire d'Archéologie Ibérique."
+      }
+    },
+    {
+      "id": "vid_4",
+      "category": "Patrimonio y Arte",
+      "title": {
+        "es": "Paseo Inmersivo 360°: La Iglesia de la Inmaculada y el Claustro",
+        "en": "360° Immersive Tour: Church of the Immaculate Conception & Cloister",
+        "fr": "Visite Immersive 360° : L'Église de l'Immaculée Conception et le Cloître"
+      },
+      "duration": "08:20",
+      "thumb": "./assets/images/gallery/exterior.jpg",
+      "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
+      "description": {
+        "es": "Exploración en ultra alta definición de la arquitectura conventual renacentista, la cúpula semiesférica, el retablo mayor barroco y las galerías del claustro toscano.",
+        "en": "High definition architectural tour of the Renaissance church, domes, baroque altarpiece, and cloister.",
+        "fr": "Exploration haute définition de l'architecture conventuelle, du retable baroque et du cloître toscan."
       }
     }
   ]

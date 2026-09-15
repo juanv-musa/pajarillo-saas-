@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fondo Audiovisual · Centro de Interpretación Santuario Ibérico de “El Pajarillo” (TV 65")</title>
+
+  <meta name="description" content="Sala audiovisual interactiva en pantalla completa para TV 65 y tótem expositivo del Centro de Interpretación Santuario Ibérico de El Pajarillo.">
+
+  <!-- Google Fonts: Barlow Condensed (estilo DIN Condensed corporativo) & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos de Sala Audiovisual TV 65" -->
+  <link rel="stylesheet" href="./css/audiovisual.css">
+</head>
+<body>
+
+  <!-- Fondo dinámico sutil -->
+  <div class="tv-background-glow"></div>
+
+  <!-- Contenedor Principal Kiosco -->
+  <div class="tv-app-shell">
+    
+    <!-- Cabecera Institucional y Reloj -->
+    <header class="tv-header">
+      <div class="tv-brand-wrap">
+        <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
+        <div class="tv-brand-titles">
+          <h1>Santuario Ibérico de “El Pajarillo”</h1>
+          <p>Sala Audiovisual Oficial · Ayuntamiento de Huelma</p>
+        </div>
+      </div>
+
+      <div class="tv-header-actions">
+        <div id="tv-clock" class="tv-clock" aria-label="Hora actual">--:--:--</div>
+        <button type="button" id="btn-fullscreen" class="btn-fullscreen-toggle" aria-label="Activar pantalla completa">
+          ⛶ <span>Pantalla Completa</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Zona Central: Parrilla de los 4 Vídeos Documentales -->
+    <main class="tv-main-content">
+      <div class="tv-selection-prompt">
+        <span>Fondo Audiovisual y Recursos Digitales</span>
+        <h2>Selecciona un documental o recreación 3D para reproducir</h2>
+      </div>
+
+      <!-- Inyectado por js/audiovisual.js -->
+      <div id="tv-video-grid" class="tv-grid-4"></div>
+    </main>
+
+    <!-- Pie Informativo de Sala -->
+    <footer class="tv-footer">
+      <div class="tv-instructions">
+        <span>👆 Toca o selecciona cualquier contenido para reproducir a gran resolución</span>
+      </div>
+      <div>
+        <span>© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo · Excmo. Ayuntamiento de Huelma</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       REPRODUCTOR CINEMATOGRÁFICO DE PANTALLA COMPLETA
+       ═══════════════════════════════════════════ -->
+  <div id="tv-player-modal" class="tv-player-modal" role="dialog" aria-modal="true" aria-label="Reproductor audiovisual">
+    
+    <!-- Barra superior flotante -->
+    <div class="tv-player-topbar">
+      <button type="button" id="btn-back-menu" class="btn-back-menu" aria-label="Volver al menú de vídeos">
+        ← Volver a la Selección de Vídeos
+      </button>
+      <div id="tv-playing-title" class="tv-current-playing-title">Cargando contenido...</div>
+    </div>
+
+    <!-- Contenedor del Vídeo -->
+    <div class="tv-video-container">
+      <video id="tv-video" class="tv-video-element" playsinline preload="auto">
+        Tu pantalla o navegador no soporta reproducción de vídeo HTML5.
+      </video>
+    </div>
+
+    <!-- Barra de Controles Táctiles Gigantes -->
+    <div class="tv-player-controls">
+      <!-- Línea de tiempo interactiva -->
+      <div id="tv-progress-bar" class="tv-timeline-bar-wrap" role="slider" aria-label="Barra de progreso" tabindex="0">
+        <div id="tv-progress-fill" class="tv-timeline-bar-fill"></div>
+      </div>
+
+      <div class="tv-controls-row">
+        <div class="tv-controls-left">
+          <button type="button" id="tv-btn-play" class="tv-btn-control" aria-label="Reproducir o pausar">⏸</button>
+          <button type="button" id="tv-btn-replay" class="tv-btn-control" aria-label="Reiniciar desde el inicio">↺</button>
+          <button type="button" id="tv-btn-mute" class="tv-btn-control" aria-label="Activar o desactivar sonido">🔊</button>
+          
+          <div class="tv-time-indicator">
+            <span id="tv-time-current">00:00</span> / <span id="tv-time-total">00:00</span>
+          </div>
+        </div>
+
+        <div style="color: var(--tv-text-muted); font-size: 1.1rem; font-weight: 600;">
+          <span>Presiona <strong>ESC</strong> o pulsa arriba para volver al menú</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Controlador Lógico -->
+  <script src="./js/audiovisual.js"></script>
+</body>
+</html>

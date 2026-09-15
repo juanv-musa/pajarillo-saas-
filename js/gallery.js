@@ -166,11 +166,11 @@ export class GalleryManager {
         const title = vid.title[lang] || vid.title.es;
         const desc = vid.description[lang] || vid.description.es;
         return `
-          <div class="event-card" style="border: 1.5px solid var(--c-border);">
+          <div class="event-card" style="border: 1.5px solid var(--c-border); cursor: pointer;" onclick="window.open('./audiovisual_p0.html', '_blank')">
             <div style="position: relative; height: 220px; overflow: hidden; background: #000;">
               <img src="${vid.thumb}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75;">
               <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
-                <button class="btn-cta-gold" style="padding: 12px 20px; border-radius: 50%; font-size: 1.5rem; width: 56px; height: 56px; justify-content: center;" onclick="playSimulatedVideo('${title.replace(/'/g, "\\'")}')">
+                <button type="button" aria-label="Reproducir ${title} en sala audiovisual" class="btn-cta-gold" style="padding: 12px 20px; border-radius: 50%; font-size: 1.5rem; width: 56px; height: 56px; justify-content: center;">
                   ▶
                 </button>
               </div>
