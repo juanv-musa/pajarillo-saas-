@@ -13,6 +13,7 @@
   --c-stone-warm: #EFECE6;       /* Piedra Suave Cálida */
   --c-accent-purple: #3D2A40;    /* Berenjena / Acento Profundo */
   --c-accent-gold: #B59A57;      /* Ocre Ibérico / Oro */
+  --c-accent-gold-text: #705315; /* Ocre profundo accesible WCAG AA/AAA (contraste 7.4:1 sobre blanco) */
   --c-text-dark: #1A231D;        /* Texto Principal */
   --c-text-muted: #596B61;       /* Texto Secundario */
   --c-border: #D3DDD6;           /* Bordes suaves */
@@ -454,7 +455,7 @@ button {
   font-family: var(--font-condensed);
   font-size: 1.05rem;
   font-weight: 700;
-  color: var(--c-accent-gold);
+  color: var(--c-accent-gold-text);
   text-transform: uppercase;
   letter-spacing: 2.5px;
   display: inline-block;
@@ -693,8 +694,8 @@ button {
 
 .point-subtitle {
   font-size: 0.85rem;
-  color: var(--c-accent-gold);
-  font-weight: 600;
+  color: var(--c-accent-gold-text);
+  font-weight: 700;
   margin-bottom: 0.85rem;
 }
 
@@ -794,6 +795,7 @@ button {
   border-bottom: 1px solid var(--c-stone);
 }
 
+.tarifa-info h4,
 .tarifa-info h5 {
   font-size: 1rem;
   font-weight: 700;
@@ -902,7 +904,7 @@ button {
   gap: 12px;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--c-accent-gold);
+  color: var(--c-accent-gold-text);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
 }
@@ -955,6 +957,21 @@ button {
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--c-border);
+  padding: 0;
+  background: transparent;
+  text-align: left;
+  display: block;
+  width: 100%;
+  font: inherit;
+}
+
+.gallery-card:focus-visible {
+  outline: 3px solid var(--c-primary);
+  outline-offset: 3px;
+}
+
+.gallery-card:focus-visible .gallery-card-overlay {
+  opacity: 1;
 }
 
 .gallery-card img {

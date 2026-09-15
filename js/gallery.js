@@ -123,13 +123,13 @@ export class GalleryManager {
         const caption = item.caption[lang] || item.caption.es;
         const catLabel = this.i18n.t(`galeria.categories.${item.category}`) || item.category;
         return `
-          <div class="gallery-card" onclick="window.galleryInstance.openLightbox(${idx})">
+          <button type="button" class="gallery-card" aria-label="${caption}" onclick="window.galleryInstance.openLightbox(${idx})">
             <img src="${item.thumb}" alt="${caption}" loading="lazy">
             <div class="gallery-card-overlay">
-              <span style="font-size: 0.72rem; text-transform: uppercase; color: var(--c-accent-gold); font-weight: 700;">${catLabel}</span>
+              <span style="font-size: 0.72rem; text-transform: uppercase; color: var(--c-accent-gold-text); font-weight: 700;">${catLabel}</span>
               <p class="gallery-caption">${caption}</p>
             </div>
-          </div>
+          </button>
         `;
       }).join('');
     }

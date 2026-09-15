@@ -89,7 +89,7 @@
           <div class="hero-wolf-img-wrap">
             <img src="./assets/images/lobo.png" alt="Escultura Cabeza de Lobo de El Pajarillo" class="hero-wolf-img">
           </div>
-          <h3 class="hero-card-title" data-i18n="hero.card_title">La Cabeza de Lobo</h3>
+          <h2 class="hero-card-title" data-i18n="hero.card_title">La Cabeza de Lobo</h2>
           <p class="hero-card-sub" data-i18n="hero.card_sub">Escultura ibérica en caliza · Siglo IV a.C.</p>
         </div>
       </div>
@@ -306,7 +306,7 @@
             
             <div class="tarifa-item">
               <div class="tarifa-info">
-                <h5 data-i18n="horarios.tarifa_general">Entrada General</h5>
+                <h4 data-i18n="horarios.tarifa_general">Entrada General</h4>
                 <p data-i18n="horarios.tarifa_general_desc">Incluye acceso al Centro de Interpretación, templo y audioguía digital.</p>
               </div>
               <div class="tarifa-price" data-i18n="horarios.tarifa_general_price">3,00 €</div>
@@ -314,7 +314,7 @@
 
             <div class="tarifa-item">
               <div class="tarifa-info">
-                <h5 data-i18n="horarios.tarifa_reducida">Entrada Reducida</h5>
+                <h4 data-i18n="horarios.tarifa_reducida">Entrada Reducida</h4>
                 <p data-i18n="horarios.tarifa_reducida_desc">Jubilados, estudiantes menores de 25 años, grupos >10 personas.</p>
               </div>
               <div class="tarifa-price" data-i18n="horarios.tarifa_reducida_price">1,50 €</div>
@@ -322,7 +322,7 @@
 
             <div class="tarifa-item">
               <div class="tarifa-info">
-                <h5 data-i18n="horarios.tarifa_gratuita">Entrada Gratuita</h5>
+                <h4 data-i18n="horarios.tarifa_gratuita">Entrada Gratuita</h4>
                 <p data-i18n="horarios.tarifa_gratuita_desc">Menores de 12 años, personas con discapacidad acreditada y empadronados.</p>
               </div>
               <div class="tarifa-price" data-i18n="horarios.tarifa_gratuita_price">0,00 €</div>
@@ -540,21 +540,21 @@
             <form onsubmit="event.preventDefault(); alert('Gracias por tu mensaje. El área de turismo te responderá a la brevedad.'); this.reset();">
               <div class="form-grid-2">
                 <div class="form-field">
-                  <label data-i18n="reservas.form_nombre">Nombre completo</label>
-                  <input type="text" class="form-input" required placeholder="Tu nombre">
+                  <label for="contact-name" data-i18n="reservas.form_nombre">Nombre completo</label>
+                  <input type="text" id="contact-name" name="name" class="form-input" required placeholder="Tu nombre">
                 </div>
                 <div class="form-field">
-                  <label data-i18n="reservas.form_email">Correo electrónico</label>
-                  <input type="email" class="form-input" required placeholder="tu@correo.com">
+                  <label for="contact-email" data-i18n="reservas.form_email">Correo electrónico</label>
+                  <input type="email" id="contact-email" name="email" class="form-input" required placeholder="tu@correo.com">
                 </div>
               </div>
               <div class="form-field">
-                <label data-i18n="contacto.form_asunto">Asunto de la consulta</label>
-                <input type="text" class="form-input" required placeholder="Ej. Consulta para visita de grupo">
+                <label for="contact-subject" data-i18n="contacto.form_asunto">Asunto de la consulta</label>
+                <input type="text" id="contact-subject" name="subject" class="form-input" required placeholder="Ej. Consulta para visita de grupo">
               </div>
               <div class="form-field">
-                <label data-i18n="contacto.form_mensaje">Mensaje</label>
-                <textarea class="form-textarea" rows="4" required placeholder="Escribe tu mensaje..."></textarea>
+                <label for="contact-message" data-i18n="contacto.form_mensaje">Mensaje</label>
+                <textarea id="contact-message" name="message" class="form-textarea" rows="4" required placeholder="Escribe tu mensaje..."></textarea>
               </div>
               <button type="submit" class="btn-cta-gold" style="width: 100%; justify-content: center;" data-i18n="contacto.form_enviar">
                 Enviar Consulta
@@ -652,7 +652,7 @@
 
     <!-- Logotipos de Cofinanciación / Subvención Institucional -->
     <div class="footer-funding">
-      <img src="./assets/images/logos-subvencion.png" alt="Cofinanciado por la Unión Europea, Fondos Europeos, Junta de Andalucía y Consejería de Turismo y Andalucía Exterior">
+      <img src="./assets/images/logos-subvencion.png" alt="Logotipos de cofinanciación de la Unión Europea y Junta de Andalucía">
     </div>
 
     <div class="footer-bottom">
@@ -669,11 +669,11 @@
   <!-- ═══════════════════════════════════════════
        MODAL DE CÓDIGO QR (ESTILO JÓDAR)
        ═══════════════════════════════════════════ -->
-  <div id="qr-modal" class="qr-modal-overlay hidden">
+  <div id="qr-modal" class="qr-modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="qr-modal-title">
     <div class="qr-modal-card">
-      <h3 id="qr-modal-title" style="font-family: var(--font-condensed); font-size: 1.6rem; color: var(--c-primary); margin-bottom: 0.25rem;" data-i18n="qr_modal.title">
+      <h2 id="qr-modal-title" style="font-family: var(--font-condensed); font-size: 1.6rem; color: var(--c-primary); margin-bottom: 0.25rem;" data-i18n="qr_modal.title">
         Código QR
-      </h3>
+      </h2>
       <p style="font-size: 0.85rem; color: var(--c-text-muted); margin-bottom: 1.25rem;" data-i18n="qr_modal.desc">
         Escanea este código con tu dispositivo móvil o descárgalo para señalética.
       </p>
@@ -684,14 +684,14 @@
         <span id="qr-link-text"></span>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; justify-content: center;">
-        <button id="btn-download-qr" class="btn-point-action" style="background: var(--c-primary); color: white;" data-i18n="qr_modal.btn_download">
-          ⬇ Descargar PNG
+      <div class="qr-modal-actions">
+        <button id="btn-download-qr" class="btn-point-action" style="background: var(--c-primary); color: white; border-color: var(--c-primary);" data-i18n="qr_modal.download">
+          Descargar QR (PNG)
         </button>
-        <button id="btn-copy-qr-link" class="btn-point-action" style="background: var(--c-stone-warm); color: var(--c-primary);" data-i18n="qr_modal.btn_copy">
-          Copiar enlace
+        <button id="btn-copy-qr-link" class="btn-point-action" data-i18n="qr_modal.copy">
+          Copiar Enlace
         </button>
-        <button id="btn-close-qr" class="btn-point-action" style="border: 1px solid var(--c-border);" data-i18n="qr_modal.btn_close">
+        <button id="btn-close-qr" class="btn-point-action" style="background: var(--c-stone); color: var(--c-text-dark);" data-i18n="qr_modal.close">
           Cerrar
         </button>
       </div>
@@ -701,19 +701,19 @@
   <!-- ═══════════════════════════════════════════
        MODAL LIGHTBOX FOTOGRAFÍA
        ═══════════════════════════════════════════ -->
-  <div id="gallery-lightbox" class="qr-modal-overlay hidden">
+  <div id="gallery-lightbox" class="qr-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Visor de fotografía ampliada">
     <div style="position: relative; max-width: 900px; width: 100%;">
-      <button id="lightbox-close" style="position: absolute; top: -45px; right: 0; color: white; font-size: 2rem; background: none;">✕</button>
+      <button id="lightbox-close" aria-label="Cerrar visor de fotografía" style="position: absolute; top: -45px; right: 0; color: white; font-size: 2rem; background: none; border: none; cursor: pointer;">✕</button>
       <img id="lightbox-img" src="" alt="Vista ampliada" style="width: 100%; max-height: 80vh; object-fit: contain; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
       <p id="lightbox-caption" style="color: white; text-align: center; margin-top: 1rem; font-size: 1rem;"></p>
       
-      <button id="lightbox-prev" style="position: absolute; left: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none;">‹</button>
-      <button id="lightbox-next" style="position: absolute; right: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none;">›</button>
+      <button id="lightbox-prev" aria-label="Fotografía anterior" style="position: absolute; left: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none; border: none; cursor: pointer;">‹</button>
+      <button id="lightbox-next" aria-label="Fotografía siguiente" style="position: absolute; right: -50px; top: 50%; transform: translateY(-50%); color: white; font-size: 2.5rem; background: none; border: none; cursor: pointer;">›</button>
     </div>
   </div>
 
   <!-- Banner Informativo de Cookies (Conforme a Guía AEPD) -->
-  <div class="cookie-banner" id="analytics-banner">
+  <div class="cookie-banner" id="analytics-banner" role="region" aria-label="Aviso de cookies analíticas">
     <span data-i18n="analytics_banner.msg">Utilizamos cookies analíticas estrictamente anónimas para mejorar la experiencia turística y medir el interés del conjunto monumental.</span>
     <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
       <a href="./legal.html#cookies" style="color: var(--c-stone-light); font-size: 0.8rem; text-decoration: underline; margin-right: 0.25rem;" data-i18n="analytics_banner.info">Más información</a>
