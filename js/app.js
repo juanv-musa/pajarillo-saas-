@@ -6,6 +6,7 @@
 import { I18nManager } from './i18n.js';
 import { AgendaManager } from './agenda.js';
 import { GalleryManager } from './gallery.js';
+import { AccessibilityWidget } from './accessibility.js';
 import './analytics.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -21,6 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   const gallery = new GalleryManager(i18n);
   await gallery.init();
   window.galleryInstance = gallery;
+
+  // 3. Inicializar Widget de Accesibilidad Universal
+  const accessibility = new AccessibilityWidget(i18n);
+  accessibility.init();
+  window.accessibilityInstance = accessibility;
 
   // 3. Cargar Puntos de Visita y Paneles
   await loadExhibitionPoints(i18n);
