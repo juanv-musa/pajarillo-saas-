@@ -1,7 +1,10 @@
 /**
- * Recopilador Anónimo de Datos de Uso y Analítica de Visitantes (SaaS MVP)
- * Centro de Interpretación Santuario Ibérico de "El Pajarillo"
+ * Recopilador Real de Métricas de Uso y Analítica de Visitantes (SaaS MVP)
+ * Centro de Interpretación Santuario Ibérico de "El Pajarillo" · Ayuntamiento de Huelma
+ * Registra datos reales (no ficticios) y persiste en LocalStorage y backend PHP (si está disponible).
  */
+
+const STORAGE_KEY = 'pajarillo_real_analytics';
 
 class AnalyticsTracker {
   constructor() {
@@ -19,15 +22,6 @@ class AnalyticsTracker {
     return s;
   }
 
-  isUniqueVisit() {
-    const visited = localStorage.getItem('pajarillo_has_visited');
-    if (!visited) {
-      localStorage.setItem('pajarillo_has_visited', '1');
-      return true;
-    }
-    return false;
-  }
-
   detectDevice() {
     const ua = navigator.userAgent;
     if (/iPad|iPhone|iPod/.test(ua)) return 'Móvil (iOS)';
@@ -36,46 +30,151 @@ class AnalyticsTracker {
     return 'Escritorio';
   }
 
-  init() {
-    // Registrar vista de página inicial
-    this.track('page_view', {
-      is_unique: this.isUniqueVisit(),
-      device: this.detectDevice(),
-      lang: localStorage.getItem('pajarillo_lang') || 'es'
-    });
+  getStoredData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.summary) return parsed;
+      }
+    } catch (e) {}
 
-    // Tracking de secciones vistas mediante IntersectionObserver
+    return {
+      summary: {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        qrScans: 0,
+        tourBookings: 0,
+        audioListens: 0,
+        downloads: 0
+      },
+      languages: {
+        es: 0,
+        en: 0,
+        fr: 0
+      },
+      events: []
+    };
+  }
+
+  saveStoredData(data) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      // Notificar a otras pestañas o componentes si estuvieran abiertos
+      window.dispatchEvent(new Event('pajarillo_analytics_updated'));
+    } catch (e) {}
+  }
+
+  resetAll() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('pajarillo_has_visited');
+    sessionStorage.removeItem('pajarillo_session_counted');
+    const fresh = {
+      summary: {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        qrScans: 0,
+        tourBookings: 0,
+        audioListens: 0,
+        downloads: 0
+      },
+      languages: {
+        es: 0,
+        en: 0,
+        fr: 0
+      },
+      events: []
+    };
+    this.saveStoredData(fresh);
+    return fresh;
+  }
+
+  init() {
+    // Verificar si esta sesión ya contó como visita en la pestaña actual
+    const sessionCounted = sessionStorage.getItem('pajarillo_session_counted');
+    const isFirstVisitEver = !localStorage.getItem('pajarillo_has_visited');
+
+    if (!sessionCounted) {
+      sessionStorage.setItem('pajarillo_session_counted', '1');
+      if (isFirstVisitEver) {
+        localStorage.setItem('pajarillo_has_visited', '1');
+      }
+
+      this.track('page_view', {
+        is_unique: isFirstVisitEver,
+        device: this.detectDevice(),
+        lang: localStorage.getItem('pajarillo_lang') || 'es',
+        detail: document.title || 'Vista general'
+      });
+    }
+
+    // Detectar si se accede mediante un escaneo QR en la URL (?panel=X o ?qr=X)
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const qrPanel = urlParams.get('panel') || urlParams.get('qr');
+      if (qrPanel) {
+        this.track('qr_scan', {
+          panel_id: qrPanel,
+          detail: `Escaneo directo de QR Panel ${qrPanel}`
+        });
+      }
+    } catch (err) {}
+
+    // Tracking de secciones vistas
     this.setupSectionTracking();
   }
 
-  async track(type, payload = {}) {
-    const data = {
+  track(type, payload = {}) {
+    const lang = payload.lang || localStorage.getItem('pajarillo_lang') || 'es';
+    const device = payload.device || this.detectDevice();
+    const eventTime = new Date().toISOString();
+
+    const data = this.getStoredData();
+
+    // Actualizar contadores reales
+    if (type === 'page_view') {
+      data.summary.totalVisits = (data.summary.totalVisits || 0) + 1;
+      if (payload.is_unique) {
+        data.summary.uniqueVisitors = (data.summary.uniqueVisitors || 0) + 1;
+      }
+      data.languages[lang] = (data.languages[lang] || 0) + 1;
+    } else if (type === 'qr_scan') {
+      data.summary.qrScans = (data.summary.qrScans || 0) + 1;
+    } else if (type === 'audio_play') {
+      data.summary.audioListens = (data.summary.audioListens || 0) + 1;
+    } else if (type === 'download') {
+      data.summary.downloads = (data.summary.downloads || 0) + 1;
+    } else if (type === 'booking') {
+      data.summary.tourBookings = (data.summary.tourBookings || 0) + 1;
+    } else if (type === 'lang_change') {
+      data.languages[lang] = (data.languages[lang] || 0) + 1;
+    }
+
+    // Registrar evento real
+    const eventRecord = {
+      id: 'ev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+      time: eventTime,
       type,
-      sessionId: this.sessionId,
-      device: payload.device || this.detectDevice(),
-      lang: payload.lang || localStorage.getItem('pajarillo_lang') || 'es',
-      ...payload
+      lang,
+      device,
+      detail: payload.detail || payload.section || payload.panel || ''
     };
 
+    data.events.unshift(eventRecord);
+    // Limitar a los últimos 300 eventos para ligereza
+    if (data.events.length > 300) {
+      data.events = data.events.slice(0, 300);
+    }
+
+    this.saveStoredData(data);
+
+    // Intentar sincronizar con backend PHP silenciosamente
     try {
-      await fetch(this.endpoint, {
+      fetch(this.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-    } catch (e) {
-      // Fallback local silencioso si no hay PHP en este entorno
-      this.localFallback(type, data);
-    }
-  }
-
-  localFallback(type, data) {
-    try {
-      const storageKey = 'pajarillo_local_analytics';
-      const current = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      current.unshift({ ...data, time: new Date().toISOString() });
-      if (current.length > 50) current.pop();
-      localStorage.setItem(storageKey, JSON.stringify(current));
+        body: JSON.stringify({ ...payload, type, lang, device })
+      }).catch(() => {});
     } catch (err) {}
   }
 

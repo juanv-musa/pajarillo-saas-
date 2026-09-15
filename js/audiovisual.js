@@ -206,6 +206,13 @@ class AudiovisualKiosk {
     this.dom.videoElement.load();
     this.dom.playerModal.classList.add('active');
 
+    if (window.PajarilloAnalytics) {
+      window.PajarilloAnalytics.track('video_view', {
+        video_id: vid.id,
+        detail: `Kiosco TV 65": ${title}`
+      });
+    }
+
     const playPromise = this.dom.videoElement.play();
     if (playPromise !== undefined) {
       playPromise.catch(() => {

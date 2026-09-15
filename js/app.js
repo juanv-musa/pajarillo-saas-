@@ -496,3 +496,14 @@ window.playSimulatedVideo = function(title) {
     });
   }
 };
+
+window.playAudio = function(audioFile) {
+  alert(`Reproduciendo audioguía oficial: "${audioFile}".\nEscucha disponible en sala y dispositivos móviles.`);
+  if (window.PajarilloAnalytics) {
+    window.PajarilloAnalytics.track('audio_play', {
+      audio: audioFile,
+      detail: `Audioguía: ${audioFile}`
+    });
+  }
+};
+
