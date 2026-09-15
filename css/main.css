@@ -1035,6 +1035,7 @@ button {
   font-size: 2.2rem;
 }
 
+.resource-content h3,
 .resource-content h4 {
   font-family: var(--font-condensed);
   font-size: 1.25rem;

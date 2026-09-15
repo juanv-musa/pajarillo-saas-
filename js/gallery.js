@@ -146,7 +146,7 @@ export class GalleryManager {
             <div class="resource-icon">${res.icon}</div>
             <div class="resource-content">
               <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">${badgeLabel}</span>
-              <h4 style="margin-top: 6px;">${title}</h4>
+              <h3 style="margin-top: 6px;">${title}</h3>
               <p>${desc}</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${res.format}</span>
