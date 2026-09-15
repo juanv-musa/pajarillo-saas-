@@ -123,19 +123,40 @@ button {
 }
 
 .brand-logo-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.75rem;
+  flex-shrink: 0;
+  flex-grow: 0;
+  line-height: 0;
 }
 
 .header-logo-svg {
   height: 52px;
   width: auto;
+  max-width: none;
+  aspect-ratio: 343 / 275;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
   transition: transform 0.2s ease;
 }
 
 .brand-logo-link:hover .header-logo-svg {
   transform: scale(1.02);
+}
+
+.footer-logo-img {
+  height: 52px;
+  width: auto;
+  max-width: none;
+  aspect-ratio: 343 / 275;
+  object-fit: contain;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.92);
+  padding: 5px 12px;
+  border-radius: 8px;
+  display: block;
 }
 
 .nav-menu {
@@ -1486,6 +1507,10 @@ img, video, canvas, svg {
 
   .header-logo-svg {
     height: 42px;
+    width: auto;
+    max-width: none;
+    aspect-ratio: 343 / 275;
+    flex-shrink: 0;
   }
 
   .btn-book-nav span:last-child {
@@ -1771,6 +1796,10 @@ img, video, canvas, svg {
 @media (max-width: 380px) {
   .header-logo-svg {
     height: 36px;
+    width: auto;
+    max-width: none;
+    aspect-ratio: 343 / 275;
+    flex-shrink: 0;
   }
 
   .hero-title {
