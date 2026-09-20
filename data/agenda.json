@@ -74,14 +74,14 @@
       "spotsLeft": 14,
       "image": "./assets/images/gallery/interior.jpg",
       "title": {
-        "es": "Noche en la Iglesia: Luces y Sombras de la Inmaculada Concepción",
-        "en": "Night at the Church: Lights & Shadows of the Immaculate Conception",
-        "fr": "Nuit à l'Église : Ombres et Lumières de l'Immaculée Conception"
+        "es": "Noche en el Santuario: Luces, Sombras y Ritos del Héroe Íbero",
+        "en": "Night at the Sanctuary: Lights, Shadows & Rites of the Iberian Hero",
+        "fr": "Nuit au Sanctuaire : Lumières, Ombres et Rituels du Héros Ibère"
       },
       "description": {
-        "es": "Visita nocturna con iluminación tenue y ambientación sonora, centrada en el retablo barroco, la sacristía y los enigmas del convento.",
-        "en": "Evening visit under ambient lighting exploring the gilded Baroque retablo, sacristy, and conventual mysteries.",
-        "fr": "Visite crépusculaire à la lueur des projecteurs pour explorer le retable baroque, la sacristie et l'histoire conventuelle."
+        "es": "Visita nocturna con iluminación tenue y ambientación sonora, centrada en el simbolismo de la Cabeza de Lobo, el camino ritual y el territorio sagrado de Iltiraka.",
+        "en": "Evening visit under atmospheric ambient lighting exploring the symbolism of the Wolf's Head, the ritual path, and the sacred territory of Iltiraka.",
+        "fr": "Visite nocturne sous éclairage d'ambiance consacrée au symbolisme de la Tête de Loup, au chemin rituel et au territoire sacré d'Iltiraka."
       }
     }
   ]

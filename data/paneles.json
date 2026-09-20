@@ -50,49 +50,49 @@
     },
     {
       "id": 3,
-      "tag": "arquitectura",
+      "tag": "arquelogia",
       "image": "./assets/images/gallery/exterior.jpg",
       "video": null,
       "audio": null,
       "content": {
         "es": {
-          "title": "Iglesia de la Inmaculada Concepción",
-          "subtitle": "Fábrica renacentista y barroca · S. XVI–XVIII",
-          "description": "<p>Templo emblemático que preside el conjunto monumental, construido a partir del siglo XVI y ampliado durante los siglos XVII y XVIII.</p><p>Destaca su equilibrada fachada de sillería de cantería dorada, su torre campanario coronada con chapitel y su portada clásica decorada con motivos geométricos y veneras marianas.</p><p>El interior de nave única con capillas hornacinas conserva una atmósfera de solemnidad reforzada por su techumbre y cúpula central sobre pechinas.</p>"
+          "title": "El Territorio de Iltiraka: Un valle que domesticar",
+          "subtitle": "Colonización ibérica del valle del río Jandulilla · S. IV a.n.e.",
+          "description": "<p>Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka (Úbeda la Vieja) puso los ojos en este valle salvaje (silva): bosque profundo poblado por lobos y seres indómitos.</p><p>Para incorporarlo a su dominio, la aristocracia ibera necesitaba legitimar su presencia mediante un héroe fundador. Fundó la Loma del Perro, controló los pasos hacia el sur y erigió en la cabecera del río el Santuario de El Pajarillo.</p><p>Así nació un territorio organizado como dominio sagrado de linaje (pagus).</p>"
         },
         "en": {
-          "title": "Church of the Immaculate Conception",
-          "subtitle": "Renaissance and Baroque temple · 16th–18th c.",
-          "description": "<p>The monumental church dominating the historical enclave, erected from the 16th century onwards and enlarged across the Baroque era.</p><p>Featuring a fine ashlar stone facade, an elegant bell tower crowned by a spire, and a classical portal adorned with Marian emblems.</p><p>The interior aisle with lateral chapels and central dome offers visitors an authentic space of spiritual reflection and historical continuity.</p>"
+          "title": "The Territory of Iltiraka: A Valley to Control",
+          "subtitle": "Iberian colonization of the Jandulilla River Valley · 4th c. BCE",
+          "description": "<p>2,400 years ago, at the start of the 4th century BCE, the oppidum of Iltiraka (Úbeda la Vieja) claimed this wild valley (silva): deep forest, realm of wolves and untamed forces.</p><p>To incorporate it, the Iberian aristocracy legitimized their control through a founding hero, founding Loma del Perro and raising the heroic sanctuary of El Pajarillo at the river headwaters.</p><p>Thus was born a cohesive territory governed by an aristocratic lineage (pagus).</p>"
         },
         "fr": {
-          "title": "Église de l'Immaculée Conception",
-          "subtitle": "Édifice Renaissance et Baroque · XVIe–XVIIIe s.",
-          "description": "<p>L'église principale qui domine le complexe historique, érigée à partir du XVIe siècle puis embellie au cours de la période baroque.</p><p>Remarquable par sa façade de pierre blonde, son clocher ajouré et son portail classique orné de motifs marials.</p><p>L'intérieur abrite une vaste nef sous coupole ornée de retables et de chapelles latérales.</p>"
+          "title": "Le Territoire d'Iltiraka : Une vallée à conquérir",
+          "subtitle": "Colonisation ibère de la vallée du Jandulilla · IVe s. av. J.-C.",
+          "description": "<p>Il y a 2 400 ans, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée sauvage (silva), domaine indompté des bêtes et de la forêt.</p><p>Pour s'approprier ces terres, le lignage noble érigea le sanctuaire d'El Pajarillo en hommage à son héros fondateur et contrôla les voies d'accès méridionales.</p><p>C'est ainsi que la vallée devint le territoire consacré d'une aristocratie dominante (pagus).</p>"
         }
       }
     },
     {
       "id": 4,
-      "tag": "arquitectura",
+      "tag": "arquelogia",
       "image": "./assets/images/gallery/claustro.jpg",
       "video": null,
       "audio": null,
       "content": {
         "es": {
-          "title": "El Claustro Conventual",
-          "subtitle": "Espacio de recogimiento y vida monástica",
-          "description": "<p>Adosado a los muros de la iglesia, el claustro del antiguo convento se abre en torno a un apacible patio central con vegetación mediterránea y fuente de piedra.</p><p>Sus galerías con arquerías de medio punto sobre columnas toscanas reflejan la sobriedad monástica que caracterizó a las órdenes religiosas de la comarca.</p><p>Hoy rehabilitado, constituye un espacio de descanso y tránsito dentro del recorrido turístico.</p>"
+          "title": "Un Paisaje Sagrado: El camino ritual y El Fontanar",
+          "subtitle": "Espacio ceremonial y sacralización territorial · Cultura Íbera",
+          "description": "<p>Iltiraka no solo ocupó el valle: lo consagró. A lo largo del cauce del río Jandulilla articuló dos grandes hitos sagrados: el Santuario Heroico de El Pajarillo y el monumento de El Fontanar, célebre por su escena escultórica de unión divina.</p><p>Ambos enclaves estaban conectados por un camino ritual procesional. Recorrerlo permitía rememorar el viaje mítico del héroe hacia el inframundo, protegiendo y sacralizando todo el valle.</p>"
         },
         "en": {
-          "title": "The Monastic Cloister",
-          "subtitle": "Place of contemplation and monastic order",
-          "description": "<p>Adjoining the church walls, the historical cloister frames an evocative inner courtyard filled with orange trees and a central fountain.</p><p>Its semicircular arcades supported by Tuscan columns demonstrate the sober elegance of Renaissance religious architecture.</p><p>Now restored, it provides visitors with a serene space connecting the church with the interpretation galleries.</p>"
+          "title": "A Sacred Landscape: The Ritual Path & El Fontanar",
+          "subtitle": "Ceremonial space and territorial sanctification · Iberian Culture",
+          "description": "<p>Iltiraka did not merely conquer the valley: it sanctified it. Along the Jandulilla River it established two sacred landmarks: the Heroic Sanctuary of El Pajarillo and the El Fontanar monument, celebrated for its divine union scene.</p><p>Linked by a ceremonial procession path, traveling it commemorated the founding hero's otherworldly journey, binding the valley as consecrated lineage ground.</p>"
         },
         "fr": {
-          "title": "Le Cloître Conventuel",
-          "subtitle": "Lieu de recueillement et de sérénité",
-          "description": "<p>Attenant à l'église, le cloître conventuel s'organise autour d'une cour lumineuse agrémentée d'orangers et d'un bassin de pierre.</p><p>Ses galeries d'arcades en plein cintre et ses colonnes toscanes incarnent la pureté de la vie monastique.</p><p>Parfaitement restauré, il offre une halte paisible dans le circuit de visite.</p>"
+          "title": "Un Paysage Sacré : Le chemin rituel et El Fontanar",
+          "subtitle": "Espace cérémoniel et sanctification territoriale · Culture Ibère",
+          "description": "<p>Iltiraka consacra la vallée en reliant deux sanctuaires majeurs : le monument héroïque d'El Pajarillo et le site d'El Fontanar, connu pour sa scène d'union divine.</p><p>Reliés par une voie rituelle, ce chemin permettait de revivre le voyage mythique du héros fondateur, sacralisant tout le bassin fluvial sous la tutelle du lignage.</p>"
         }
       }
     },
@@ -104,19 +104,19 @@
       "audio": null,
       "content": {
         "es": {
-          "title": "El Retablo Mayor Barroco",
-          "subtitle": "Joya dorada de la liturgia comarcal · S. XVII",
-          "description": "<p>Presidiendo el presbiterio de la iglesia, el retablo mayor es una magistral obra de talla en madera policromada y dorada al pan de oro.</p><p>Organizado en tres calles y dos cuerpos rematados por ático curvo, alberga hornacinas con tallas marianas y apostólicas, rodeadas de frondosa hojarasca, columnas salomónicas y querubines.</p><p>Es el punto culminante de la visita artística al templo histórico.</p>"
+          "title": "El Guerrero de la Falcata y los Leones Protectores",
+          "subtitle": "El ajuar escultórico y las excavaciones arqueológicas (1933–1994)",
+          "description": "<p>El conjunto escultórico descubierto en El Cortijo del Pajarillo incluía, junto a la Cabeza de Lobo, dos soberbios leones guardianes y la estatua de un guerrero aristócrata portando una falcata ibérica.</p><p>Hallados entre las obras de la carretera de Solera en 1933 y las labores agrícolas de 1993, dieron origen a la excavación de urgencia de 1994 por la Universidad de Jaén y al reconocimiento como Bien de Interés Cultural en 2006.</p>"
         },
         "en": {
-          "title": "The Baroque Gilded Altarpiece",
-          "subtitle": "Golden liturgical masterpiece · 17th century",
-          "description": "<p>Dominating the church chancel, the high retablo is a masterpiece of carved, polychromed, and gilded woodwork.</p><p>Structured in three vertical bays with Solomonic columns, acanthus leaves, and winged cherubs surrounding central devotional niches.</p><p>It marks the artistic climax of the sacred tour through the monumental church.</p>"
+          "title": "The Falcata Warrior & The Protective Lions",
+          "subtitle": "Sculptural ensemble and archaeological recoveries (1933–1994)",
+          "description": "<p>The sculptural ensemble discovered at Cortijo del Pajarillo featured, alongside the Wolf's Head, two majestic guardian lions and an aristocratic warrior wielding an Iberian falcata.</p><p>Discovered between roadworks in 1933 and agricultural labors in 1993, they prompted the 1994 rescue excavation by the University of Jaén and BIC heritage status in 2006.</p>"
         },
         "fr": {
-          "title": "Le Retable Majeur Baroque",
-          "subtitle": "Joyau doré de la liturgie régionale · XVIIe siècle",
-          "description": "<p>Dominant le chœur de l'église, le retable majeur est un somptueux ensemble en bois sculpté et doré à la feuille d'or.</p><p>Composé de colonnes torses salomoniques, d'entrelacs végétaux et d'angelots entourant les niches des saints protecteurs.</p><p>Il constitue le point d'orgue de la découverte patrimoniale du sanctuaire et de l'église.</p>"
+          "title": "Le Guerrier à la Falcata et les Lions Protecteurs",
+          "subtitle": "Groupe sculptural et découvertes archéologiques (1933–1994)",
+          "description": "<p>L'ensemble sculptural de Cortijo del Pajarillo comprenait, avec la Tête de Loup, deux lions gardiens et la statue d'un guerrier noble armé d'une falcata ibérique.</p><p>Découverts en 1933 puis en 1993, ces vestiges ont conduit aux fouilles scientifiques d'urgence de 1994 par l'Université de Jaén et au classement Monument Historique (BIC) en 2006.</p>"
         }
       }
     }

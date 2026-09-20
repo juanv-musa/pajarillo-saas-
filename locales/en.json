@@ -7,7 +7,7 @@
     "entity": "Interpretation Centre of the Iberian Sanctuary of “El Pajarillo”"
   },
   "nav": {
-    "historia": "History & Art",
+    "historia": "El Pajarillo",
     "puntos": "Visit Points",
     "horarios": "Hours & Visit",
     "agenda": "Cultural Agenda",
@@ -18,45 +18,49 @@
     "skip": "Skip to content"
   },
   "hero": {
-    "eyebrow": "Monumental & Archaeological Heritage · 4th Century BC – 18th Century AD",
+    "eyebrow": "Oretan Heroic Sanctuary · 4th Century BCE · Huelma, Jaén",
     "title": "Interpretation Centre of the Iberian Sanctuary of “El Pajarillo”",
-    "subtitle": "Discover the legendary Iberian sculptural monument of the Hero and the Wolf, alongside the Church of the Immaculate Conception and its timeless legacy.",
+    "subtitle": "Discover the legendary Iberian monumental sanctuary of the Hero and the Wolf, the territorial domain of Iltiraka, and the sacred landscape of the Jandulilla River Valley.",
     "cta_primary": "Plan Your Visit",
-    "cta_secondary": "Explore Sanctuary & Temple",
+    "cta_secondary": "Explore Sanctuary & Territory",
     "scroll": "Explore more",
     "card_title": "The Wolf's Head",
     "card_sub": "Iberian limestone sculpture · 4th century BC"
   },
   "historia": {
-    "section_label": "Millenary Heritage",
-    "title": "History, Architecture and Art",
-    "subtitle": "An exceptional archaeological and spiritual site uniting 4th-century BC Iberian rituals with Renaissance and Baroque temple architecture.",
-    "tab_iberico": "Iberian Sanctuary",
-    "tab_iglesia": "Immaculate Church",
-    "tab_arte": "Sculptural Ensemble",
+    "section_label": "Iberian Sanctuary & Territory",
+    "title": "The Iberian Sanctuary of El Pajarillo",
+    "subtitle": "2,400 years ago, the Iberian aristocracy of Iltiraka claimed the wild Jandulilla valley and raised a monumental heroic sanctuary in Huelma, Jaén.",
+    "tab_iberico": "Heroic Sanctuary",
+    "tab_iltiraka": "Territory of Iltiraka",
+    "tab_fontanar": "Sacred Ritual Landscape",
+    "facil_badge": "Easy Reading",
     "iberico_content": {
-      "title": "The Heroic Sanctuary of El Pajarillo (4th c. BC)",
-      "body": "Strategically overlooking the Jandulilla river valley, the Iberian Sanctuary of El Pajarillo is one of the most remarkable archaeological discoveries in the Iberian Peninsula. Dating to the mid-4th century BC, this monumental sanctuary was conceived as a stepped ceremonial terrace for the heroic apotheosis of an Iberian prince or chieftain.\n\nAt its summit stood the celebrated sculptural monument portraying a mythical combat between a young aristocratic warrior and an imposing wild beast: the fierce Iberian Wolf Head, flanked by guardian lions and winged sphinxes, embodying power, valor, and sacred memory."
+      "title": "The Heroic Sanctuary of El Pajarillo (4th Century BCE)",
+      "body": "Strategically raised on a promontory overlooking the Jandulilla valley, the Sanctuary of El Pajarillo is one of the pinnacle monuments of Iberian protohistory (c. 350 BCE).\n\nConceived as a stepped ceremonial terrace across three platforms supported by ashlar stone walls, its summit hosted the heroic sculptural ensemble depicting the mythic struggle between a noble warrior and a wild beast: the monumental Wolf's Head, accompanied by protective lions and winged griffins, embodying power, valor, and aristocratic apotheosis.",
+      "facil": "El Pajarillo is an archaeological site in Huelma. Over 2,300 years ago, the Iberians built a sacred place in memory of a hero. The stone sculptures were discovered in the fields and it is now protected by law."
     },
-    "iglesia_content": {
-      "title": "Church of the Immaculate Conception and Convent",
-      "body": "Standing close to the sanctuary's landscape, the Church of the Immaculate Conception was built between the 16th and 18th centuries. The church exhibits a Latin cross layout with side chapels, carved ashlar masonry arches, and an elegant cupola over pendentives above the transept.\n\nThe adjoining conventual remains preserve traces of the Tuscan cloister, documenting centuries of monastic devotion that shaped regional society and creating an inspiring visual dialogue with the ancient archaeological substratum."
+    "iltiraka_content": {
+      "title": "The Territory of Iltiraka: A Valley to be Brought Under Control",
+      "body": "2,400 years ago, at the beginning of the 4th century BCE, the oppidum of Iltiraka —Úbeda la Vieja— turned its attention to this valley. It decided to claim a wild territory: the valley of the Jandulilla River.\n\nFor the Iberian people, the Jandulilla Valley was a wild territory (silva): a deep forest, the domain of wolves and fantastic beings, a place where human power had not yet reached. These were territories they sought to incorporate, and for this, a hero was needed to legitimise the process.\n\nThe oppidum of Iltiraka had a project to establish new settlements. It established another settlement at Loma del Perro (between present-day Úbeda and Jódar), controlled the routes ascending from the south and, at the headwaters of the river, built a sanctuary in memory of its founding hero: El Pajarillo. Thus, a territory under the control of a lineage (pagus) was created.",
+      "facil": "2,400 years ago, the Iberian city of Iltiraka wanted to master this wild valley. To make it their own, they honored a hero and built a sacred sanctuary: El Pajarillo."
     },
-    "arte_content": {
-      "title": "Sculptural Treasures & Artistic Heritage",
-      "body": "Carved from local white limestone by Iberian master sculptors, the artwork of El Pajarillo reveals classical Mediterranean aesthetics harmonized with native religious values. The dramatic intensity of the Wolf's Head — with bared teeth, alert ears, and snarling muzzle — is a recognized masterpiece of ancient European art.\n\nInside the church, the gilded Baroque altarpiece, sacred imagery, and historical devotional canvases complete a unified cultural ensemble accessible today through interactive digital media."
+    "fontanar_content": {
+      "title": "A Sacred Landscape: The Ritual Path & El Fontanar",
+      "body": "Recent research suggests that Iltiraka did not just take the valley: it made it sacred. Beside the River Jandulilla it raised two places of worship: the sanctuary of El Pajarillo and the monument of El Fontanar —whose scene of a divine union is unique in the Iberian world—, linked by a ritual path.\n\nTo walk it was to relive the founding hero's journey to the land of the dead, and so the lineage's territory became sacred ground.",
+      "facil": "The Iberians connected two sacred places along the river with a ceremonial path. Walking along it remembered the hero's journey and blessed the whole valley."
     },
     "timeline": {
-      "section_label": "Historical Evolution",
-      "title": "Chronological Milestones of the Site",
-      "subtitle": "A journey across more than two millennia of history, from the 4th-century BC Oretan heroic sanctuary to the present day.",
+      "section_label": "Historical Evolution & Discoveries",
+      "title": "Chronological Milestones & Archaeological Discoveries",
+      "subtitle": "From Iberian colonization by Iltiraka (4th c. BCE) to the sculptural discoveries of 1933 and 1993, and excavations by the University of Jaén.",
       "events": [
-        { "year": "c. 350 BC", "text": "Construction of the heroic Iberian Sanctuary monument at El Pajarillo in honor of the Oretan hero." },
-        { "year": "2nd c. BC", "text": "Roman Republican presence and ritual transformation of the Jandulilla river valley." },
-        { "year": "16th c.", "text": "Initial construction of the Church of the Immaculate Conception and monastic buildings." },
-        { "year": "17th–18th c.", "text": "Erection of the central cupola, Baroque gilded altarpiece, and Tuscan cloister." },
-        { "year": "1994", "text": "Systematic excavations led by the University Institute of Iberian Archaeology." },
-        { "year": "Present", "text": "Opening of the modernized, multilingual and fully accessible digital Interpretation Centre." }
+        { "year": "6th–5th c. BCE", "text": "Emergence of fortified oppida in the Upper Guadalquivir (Puente Tablas) and stone lineage sculpture (Cerrillo Blanco, Porcuna)." },
+        { "year": "Early 4th c. BCE", "text": "The oppidum of Iltiraka colonizes the Jandulilla valley and erects the Heroic Sanctuary of El Pajarillo and the Wolf monument." },
+        { "year": "Late 4th c. BCE", "text": "Crisis of clientelist aristocracies: El Pajarillo is ritually decommissioned, demolished, and abandoned." },
+        { "year": "1933", "text": "Discovery of the first Iberian lion sculpture during construction of the road between Solera and the N-324." },
+        { "year": "1993–1994", "text": "Discovery of a second lion and a headless figure with falcata during farming work. Emergency excavations by the University of Jaén." },
+        { "year": "2006 – Present", "text": "Official decree declaring the Cortijo del Pajarillo site an Asset of Cultural Interest (BIC) as an Archaeological Zone." }
       ]
     }
   },
@@ -84,9 +88,9 @@
     "baja_dom": "Sundays & Public Holidays: 10:00 AM – 2:00 PM",
     "aviso_lunes": "⚠️ Closed on Mondays for preservation maintenance (except holidays)",
     "tarifas_title": "Admission Fees",
-    "tarifa_general": "General Admission",
+    "tarifa_general": "Standard Admission",
     "tarifa_general_price": "€3.00",
-    "tarifa_general_desc": "Includes access to the Interpretation Centre, church, and digital audio guide.",
+    "tarifa_general_desc": "Includes access to the Interpretation Centre, exhibition halls, and digital audio guide.",
     "tarifa_reducida": "Reduced Admission",
     "tarifa_reducida_price": "€1.50",
     "tarifa_reducida_desc": "Seniors (65+), students under 25, groups of 10+ visitors.",
@@ -130,7 +134,7 @@
       "Arquitectura": "Architecture",
       "Yacimiento": "Archaeological Site",
       "Entorno": "Surroundings",
-      "Convento": "Monastery",
+      "Territorio": "Territory",
       "Interior": "Interior",
       "Arte Sacro": "Sacred Art"
     },
@@ -146,7 +150,7 @@
     "subtitle": "Digital management portal for individual visitors, academic groups, and travel agencies.",
     "badge_mvp": "Integrated SaaS MVP",
     "info_title": "Official Guided Tours",
-    "info_desc": "Accompanied by cultural mediators and archaeologists, discover the secrets of the Iberian monument and the beauty of the Church of the Immaculate Conception.",
+    "info_desc": "Accompanied by cultural mediators and archaeologists, discover the secrets of the Iberian monument, the mythical struggle of the Wolf's Head, and the sacred territory of Iltiraka.",
     "perk_1": "Exclusive access to restricted areas of the archaeological site",
     "perk_2": "Multilingual digital audio guide or device included",
     "perk_3": "Small group sizes (maximum 25 visitors per session)",

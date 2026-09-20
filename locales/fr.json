@@ -7,7 +7,7 @@
     "entity": "Centre d'Interprétation du Sanctuaire Ibérique d'« El Pajarillo »"
   },
   "nav": {
-    "historia": "Histoire et Art",
+    "historia": "El Pajarillo",
     "puntos": "Points de Visite",
     "horarios": "Horaires et Visite",
     "agenda": "Agenda Culturel",
@@ -18,45 +18,49 @@
     "skip": "Aller au contenu"
   },
   "hero": {
-    "eyebrow": "Patrimoine Monumental et Archéologique · IVe s. av. J.-C. – XVIIIe s.",
+    "eyebrow": "Sanctuaire Héroïque Ibère · IVe siècle av. J.-C. · Huelma, Jaén",
     "title": "Centre d'Interprétation du Sanctuaire Ibérique d'« El Pajarillo »",
-    "subtitle": "Découvrez le légendaire ensemble sculptural ibérique du Héros et du Loup, aux côtés de l'Église de l'Immaculée Conception et de son précieux héritage.",
-    "cta_primary": "Préparez votre visite",
-    "cta_secondary": "Explorer le sanctuaire et le temple",
+    "subtitle": "Découvrez le légendaire sanctuaire monumental ibérique du Héros et du Loup, le domaine territorial d'Iltiraka et le paysage rituel de la vallée du Jandulilla.",
+    "cta_primary": "Planifiez votre visite",
+    "cta_secondary": "Explorer le sanctuaire et le territoire",
     "scroll": "Découvrir plus",
     "card_title": "La Tête de Loup",
     "card_sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
   },
   "historia": {
-    "section_label": "Patrimoine Millénaire",
-    "title": "Histoire, Architecture et Art",
-    "subtitle": "Un site exceptionnel où se rencontrent les rituels héroïques ibériques du IVe siècle avant J.-C. et l'architecture sacrée de l'Église de l'Immaculée Conception.",
-    "tab_iberico": "Sanctuaire Ibérique",
-    "tab_iglesia": "Église Immaculée",
-    "tab_arte": "Ensemble Sculptural",
+    "section_label": "Sanctuaire et Territoire Ibère",
+    "title": "Le Sanctuaire Ibérique d'El Pajarillo",
+    "subtitle": "Il y a 2 400 ans, l'aristocratie ibère d'Iltiraka colonisa la vallée sauvage du fleuve Jandulilla et érigea un monumental sanctuaire héroïque à Huelma, Jaén.",
+    "tab_iberico": "Sanctuaire Héroïque",
+    "tab_iltiraka": "Territoire d'Iltiraka",
+    "tab_fontanar": "Paysage Sacré et Rituel",
+    "facil_badge": "Lecture Facile",
     "iberico_content": {
       "title": "Le Sanctuaire Héroïque d'El Pajarillo (IVe s. av. J.-C.)",
-      "body": "Dominant la vallée fertile de la rivière Jandulilla, le Sanctuaire Ibérique d'El Pajarillo compte parmi les découvertes archéologiques majeures de la péninsule ibérique. Érigé vers le milieu du IVe siècle avant notre ère, ce sanctuaire monumental formait une grande terrasse étagée dédiée à l'héroïsation d'un prince aristocrate ibère.\n\nÀ son sommet trônait le célèbre groupe sculptural illustrant le combat mythique entre un jeune héros et un grand prédateur : la redoutable Tête de Loup sculptée en calcaire, escortée de lions protecteurs et de sphinx ailés, symboles de vaillance, d'honneur et d'immortalité."
+      "body": "Dominant la vallée du fleuve Jandulilla, le Sanctuaire Ibérique d'El Pajarillo compte parmi les découvertes archéologiques majeures de la protohistoire ibérique (vers 350 av. J.-C.).\n\nLe monument a été conçu comme une grande terrasse étagée sur trois niveaux de pierres de taille pour la commémoration ou l'apothéose d'un prince aristocrate ibère. À son sommet trônait le célèbre groupe sculptural illustrant le combat héroïque entre un jeune noble et un grand prédateur : la tête de loup en calcaire, flanquée de lions protecteurs et de griffons ailés, symbole de vaillance, d'honneur et d'héroïsation.",
+      "facil": "El Pajarillo est un site archéologique situé à Huelma. Il y a plus de 2 300 ans, les Ibères y ont construit un lieu sacré en mémoire d'un héros. Les sculptures y ont été découvertes et le site est aujourd'hui protégé par la loi."
     },
-    "iglesia_content": {
-      "title": "L'Église de l'Immaculée Conception et le Couvent",
-      "body": "Voisine du cadre paysager du sanctuaire, l'Église de l'Immaculée Conception a été édifiée entre les XVIe et XVIIIe siècles. L'édifice adopte un plan en croix latine avec des chapelles latérales, de nobles arcs de pierre taillée et une coupole élégante sur pendentifs à la croisée du transept.\n\nLes vestiges conventuels attenants conservent les traces du cloître toscan, témoignant de siècles de ferveur et de vie monastique qui ont façonné le tissu culturel de la région de Sierra Mágina."
+    "iltiraka_content": {
+      "title": "Le Territoire d'Iltiraka : Une vallée à conquérir",
+      "body": "Il y a 2 400 ans, au début du IVe siècle avant notre ère, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée. Il décida d'occuper un espace encore indompté : la vallée du Jandulilla.\n\nPour les Ibères, la vallée du Jandulilla était une terre sauvage (silva) : une forêt dense, domaine des loups et d'êtres mythiques, où l'autorité humaine ne s'exerçait pas encore. Pour s'approprier ces terres, il fallait invoquer la protection d'un héros légitime.\n\nL'oppidum d'Iltiraka organisa un plan de peuplement stratégique : création d'un établissement à Loma del Perro, contrôle des routes venant du sud, et édification à la source du fleuve d'un sanctuaire dédié au héros fondateur : El Pajarillo. C'est ainsi que naquit ce territoire placé sous le patronage d'un lignage noble (pagus).",
+      "facil": "Il y a 2 400 ans, la cité ibère d'Iltiraka voulut maîtriser cette vallée sauvage. Pour en prendre possession, elle honora un héros et bâtit un lieu sacré : El Pajarillo."
     },
-    "arte_content": {
-      "title": "Trésors Sculpturaux et Richesse Artistique",
-      "body": "Taillé dans la pierre calcaire blanche par des maîtres sculpteurs ibères, le monument d'El Pajarillo combine influences méditerranéennes classiques et symbolisme indigène. L'expression farouche de la Tête de Loup — babines retroussées, crocs acérés et oreilles dressées — est un chef-d'œuvre absolu de la sculpture antique.\n\nÀ l'intérieur de l'église, le retable majeur baroque en bois doré, la statuaire liturgique et les peintures pieuses complètent une visite d'une rare intensité culturelle."
+    "fontanar_content": {
+      "title": "Un Paysage Sacré : Le chemin rituel et El Fontanar",
+      "body": "Les recherches récentes révèlent qu'Iltiraka ne s'est pas contentée d'occuper la vallée : elle en a fait un espace sacré. Le long du Jandulilla, deux pôles cultuels ont été érigés : le sanctuaire d'El Pajarillo et le monument d'El Fontanar — remarquable par sa scène d'union divine, unique dans le monde ibère —, tous deux reliés par un chemin rituel.\n\nParcourir cette voie permettait de revivre le voyage initiatique du héros fondateur vers l'au-delà, sanctifiant ainsi l'ensemble du territoire sous l'autorité du lignage aristocratique.",
+      "facil": "Les Ibères ont relié deux sanctuaires le long de la rivière par une route cérémonielle. En la parcourant, ils célébraient le héros et consacraient toute la région."
     },
     "timeline": {
-      "section_label": "Évolution Historique",
-      "title": "Repères Chronologiques du Site",
-      "subtitle": "Une traversée de plus de deux millénaires d'histoire, du sanctuaire héroïque oretan du IVe siècle av. J.-C. jusqu'à nos jours.",
+      "section_label": "Évolution Historique et Découvertes",
+      "title": "Repères Chronologiques et Découvertes Archéologiques",
+      "subtitle": "De la colonisation ibérique d'Iltiraka au IVe siècle av. J.-C. jusqu'aux fouilles systématiques et au classement au titre des Biens d'Intérêt Culturel.",
       "events": [
-        { "year": "v. 350 av. J.-C.", "text": "Édification du sanctuaire monumental héroïque d'El Pajarillo en l'honneur du prince oretan." },
-        { "year": "IIe s. av. J.-C.", "text": "Présence romaine républicaine et reconfiguration rituelle de la vallée du Jandulilla." },
-        { "year": "XVIe s.", "text": "Fondation initiale de l'Église de l'Immaculée Conception et des bâtiments conventuels." },
-        { "year": "XVIIe–XVIIIe s.", "text": "Construction de la coupole centrale, du retable baroque doré et du cloître toscan." },
-        { "year": "1994", "text": "Fouilles archéologiques méthodiques par l'Institut Universitaire d'Archéologie Ibérique." },
-        { "year": "Aujourd'hui", "text": "Inauguration du Centre d'Interprétation numérique, accessible et trilingue." }
+        { "year": "VIe–Ve s. av. J.-C.", "text": "Apparition des premiers oppida fortifiés dans le Haut Guadalquivir (Puente Tablas) et des sculptures héroïques (Cerrillo Blanco, Porcuna)." },
+        { "year": "1ère moitié IVe s. av. J.-C.", "text": "L'oppidum d'Iltiraka colonise la vallée du Jandulilla et édifie le Sanctuaire Héroïque d'El Pajarillo et le monument au Loup." },
+        { "year": "2e moitié IVe s. av. J.-C.", "text": "Crise des aristocraties ibériques : le sanctuaire d'El Pajarillo est rituellement condamné, détruit et abandonné." },
+        { "year": "1933", "text": "Découverte de la première sculpture de lion ibérique lors des travaux de la route reliant Solera à la N-324." },
+        { "year": "1993–1994", "text": "Découverte fortuite d'un second lion et d'un guerrier à la falcata. Fouilles d'urgence dirigées par l'Université de Jaén." },
+        { "year": "2006 – Aujourd'hui", "text": "Décret officiel déclarant le site Bien d'Intérêt Culturel (BIC) en tant que Zone Archéologique et ouverture du Centre d'Interprétation." }
       ]
     }
   },
@@ -86,7 +90,7 @@
     "tarifas_title": "Tarifs d'Entrée",
     "tarifa_general": "Tarif Général",
     "tarifa_general_price": "3,00 €",
-    "tarifa_general_desc": "Comprend l'accès au Centre d'Interprétation, à l'église et l'audioguide numérique.",
+    "tarifa_general_desc": "Comprend l'accès au Centre d'Interprétation, aux salles d'exposition et l'audioguide numérique.",
     "tarifa_reducida": "Tarif Réduit",
     "tarifa_reducida_price": "1,50 €",
     "tarifa_reducida_desc": "Plus de 65 ans, étudiants de moins de 25 ans, groupes de plus de 10 personnes.",
@@ -130,7 +134,7 @@
       "Arquitectura": "Architecture",
       "Yacimiento": "Site Archéologique",
       "Entorno": "Environnement",
-      "Convento": "Couvent",
+      "Territorio": "Territoire",
       "Interior": "Intérieur",
       "Arte Sacro": "Art Sacré"
     },
@@ -146,7 +150,7 @@
     "subtitle": "Outil numérique intégré pour la planification des visites individuelles, scolaires et de groupes.",
     "badge_mvp": "SaaS MVP Intégré",
     "info_title": "Visites Guidées Officielles",
-    "info_desc": "Accompagné de médiateurs culturels et d'archéologues, percez les secrets du sanctuaire ibère et la magnificence de l'Église de l'Immaculée Conception.",
+    "info_desc": "Accompagné de médiateurs culturels et d'archéologues, percez les secrets du sanctuaire ibère, le combat héroïque du Héros et du Loup et le paysage sacré d'Iltiraka.",
     "perk_1": "Accès exclusif aux secteurs réservés du site archéologique",
     "perk_2": "Audioguide numérique multilingue inclus",
     "perk_3": "Petits groupes (maximum 25 participants par créneau)",

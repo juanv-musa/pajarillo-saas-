@@ -19,12 +19,12 @@
       "src": "./assets/images/hero/hero.jpg",
       "thumb": "./assets/images/hero/hero.jpg",
       "caption": {
-        "es": "Vista nocturna monumental de la fachada y torre campanario",
-        "en": "Night view of the monumental facade and bell tower",
-        "fr": "Vue crépusculaire de la façade et du clocher"
+        "es": "Vista panorámica del Centro de Interpretación y entorno del valle del Jandulilla",
+        "en": "Panoramic view of the Interpretation Centre and Jandulilla Valley landscape",
+        "fr": "Vue panoramique du Centre d'Interprétation et du paysage de la vallée du Jandulilla"
       },
       "author": "Archivo Municipal",
-      "category": "Arquitectura"
+      "category": "Entorno"
     },
     {
       "id": "foto_3",
@@ -45,9 +45,9 @@
       "src": "./assets/images/gallery/exterior.jpg",
       "thumb": "./assets/images/gallery/exterior.jpg",
       "caption": {
-        "es": "Plaza exterior y acceso al Centro de Interpretación e Iglesia",
-        "en": "Public square and entrance to the Interpretation Centre & Church",
-        "fr": "Place et parvis du Centre d'Interprétation et de l'Église"
+        "es": "Plaza exterior y acceso al Centro de Interpretación de El Pajarillo",
+        "en": "Public square and entrance to El Pajarillo Interpretation Centre",
+        "fr": "Place et parvis du Centre d'Interprétation d'El Pajarillo"
       },
       "author": "Turismo",
       "category": "Entorno"
@@ -58,12 +58,12 @@
       "src": "./assets/images/gallery/claustro.jpg",
       "thumb": "./assets/images/gallery/claustro.jpg",
       "caption": {
-        "es": "Patio y galerías del claustro conventual restaurado",
-        "en": "Courtyard and arcades of the restored monastic cloister",
-        "fr": "Cour intérieure et arcades du cloître restauré"
+        "es": "Patios y galerías del Centro de Interpretación y Yacimiento",
+        "en": "Courtyard and galleries of the Interpretation Centre and Site",
+        "fr": "Cour intérieure et galeries du Centre d'Interprétation"
       },
       "author": "Patrimonio",
-      "category": "Convento"
+      "category": "Entorno"
     },
     {
       "id": "foto_6",
@@ -71,12 +71,12 @@
       "src": "./assets/images/gallery/interior.jpg",
       "thumb": "./assets/images/gallery/interior.jpg",
       "caption": {
-        "es": "Nave central y bóvedas de la Iglesia de la Inmaculada Concepción",
-        "en": "Central nave and ribbed vaults of the Church of the Immaculate Conception",
-        "fr": "Nef et voûtes de l'Église de l'Immaculée Conception"
+        "es": "Sala expositiva y museografía del Santuario de El Pajarillo",
+        "en": "Exhibition hall and museography of El Pajarillo Sanctuary",
+        "fr": "Salle d'exposition et scénographie du Sanctuaire d'El Pajarillo"
       },
       "author": "Patrimonio",
-      "category": "Interior"
+      "category": "Museografía"
     },
     {
       "id": "foto_7",
@@ -84,12 +84,12 @@
       "src": "./assets/images/gallery/retablo.jpg",
       "thumb": "./assets/images/gallery/retablo.jpg",
       "caption": {
-        "es": "Detalle de talla dorada y policromada del retablo mayor barroco",
-        "en": "Gilded woodcarving detail of the Baroque main retablo",
-        "fr": "Détail de boiserie dorée du retable majeur baroque"
+        "es": "Detalle de relieves y cantería monumental del santuario íbero",
+        "en": "Detail of monumental relief stonework from the Iberian sanctuary",
+        "fr": "Détail des reliefs et pierres sculptées du sanctuaire ibère"
       },
       "author": "Patrimonio",
-      "category": "Arte Sacro"
+      "category": "Escultura"
     }
   ],
   "resources": [
@@ -121,9 +121,9 @@
       "icon": "🗺️",
       "badge": "Cartografía",
       "description": {
-        "es": "Planimetría detallada de las terrazas, accesos rituales y restos conventuales.",
-        "en": "Detailed survey plans of the terraces, ceremonial paths, and monastic remains.",
-        "fr": "Cartographie des terrasses cérémonielles et des vestiges conventuels."
+        "es": "Planimetría detallada de las terrazas, accesos rituales y áreas de prospección arqueológica.",
+        "en": "Detailed survey plans of the terraces, ceremonial paths, and archaeological exploration areas.",
+        "fr": "Cartographie des terrasses cérémonielles et des zones de prospection archéologique."
       },
       "url": "#"
     },
@@ -167,17 +167,17 @@
       "id": "vid_2",
       "category": "Documental Histórico",
       "title": {
-        "es": "Documental: La Huella Íbera y Cristiana en Sierra Mágina",
-        "en": "Documentary: Iberian and Christian Heritage in Sierra Mágina",
-        "fr": "Documentaire : L'Empreinte Ibère et Chrétienne en Sierra Mágina"
+        "es": "Documental: La Huella Íbera en el Valle del Jandulilla",
+        "en": "Documentary: Iberian Heritage in the Jandulilla Valley",
+        "fr": "Documentaire : L'Empreinte Ibère dans la Vallée du Jandulilla"
       },
       "duration": "12:30",
       "thumb": "./assets/images/hero/hero.jpg",
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
       "description": {
-        "es": "Un viaje audiovisual por la historia del santuario, la Iglesia de la Inmaculada Concepción y las investigaciones arqueológicas que cambiaron el mapa cultural de Andalucía.",
-        "en": "An immersive journey across the history of the sanctuary, the church, and modern excavations.",
-        "fr": "Une traversée documentaire de l'histoire du sanctuaire, de l'église et des découvertes récentes."
+        "es": "Un viaje audiovisual por la historia del santuario, el territorio de Iltiraka y las investigaciones arqueológicas que cambiaron el mapa cultural de Andalucía.",
+        "en": "An immersive journey across the history of the sanctuary, the territory of Iltiraka, and modern excavations.",
+        "fr": "Une traversée documentaire de l'histoire du sanctuaire, du territoire d'Iltiraka et des découvertes récentes."
       }
     },
     {
@@ -199,19 +199,19 @@
     },
     {
       "id": "vid_4",
-      "category": "Patrimonio y Arte",
+      "category": "Paisaje y Territorio",
       "title": {
-        "es": "Paseo Inmersivo 360°: La Iglesia de la Inmaculada y el Claustro",
-        "en": "360° Immersive Tour: Church of the Immaculate Conception & Cloister",
-        "fr": "Visite Immersive 360° : L'Église de l'Immaculée Conception et le Cloître"
+        "es": "Paseo Inmersivo 360°: El Santuario Heroico y las Terrazas Monumentales",
+        "en": "360° Immersive Tour: The Heroic Sanctuary & Monumental Terraces",
+        "fr": "Visite Immersive 360° : Le Sanctuaire Héroïque et les Terrasses Monumentales"
       },
       "duration": "08:20",
       "thumb": "./assets/images/gallery/exterior.jpg",
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
       "description": {
-        "es": "Exploración en ultra alta definición de la arquitectura conventual renacentista, la cúpula semiesférica, el retablo mayor barroco y las galerías del claustro toscano.",
-        "en": "High definition architectural tour of the Renaissance church, domes, baroque altarpiece, and cloister.",
-        "fr": "Exploration haute définition de l'architecture conventuelle, du retable baroque et du cloître toscan."
+        "es": "Exploración en ultra alta definición del paisaje sagrado, las tres terrazas escalonadas, el camino ritual y la restitución del grupo escultórico.",
+        "en": "High definition exploration of the sacred landscape, stepped terraces, ritual path, and sculptural restitution.",
+        "fr": "Exploration haute définition du paysage sacré, des terrasses étagées, du chemin rituel et de la restitution sculpturale."
       }
     }
   ]
