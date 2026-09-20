@@ -26,10 +26,9 @@
   <!-- Barra Superior del Panel -->
   <header class="admin-navbar">
     <div class="admin-brand-wrap">
-      <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="admin-logo-img" style="height: 52px; width: auto; aspect-ratio: 343 / 275; object-fit: contain; flex-shrink: 0; background: rgba(255,255,255,0.95); padding: 4px 10px; border-radius: 8px;">
-      <div style="background: #2E3E33; padding: 4px 10px; border-radius: 8px; display: flex; align-items: center;">
-        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" id="admin-header-logo-ayto" style="height: 44px; width: auto; object-fit: contain; flex-shrink: 0;">
-      </div>
+      <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="admin-logo-img" style="height: 52px; width: auto; aspect-ratio: 343 / 275; object-fit: contain; flex-shrink: 0; padding: 2px 6px;">
+      <div style="width: 1px; height: 38px; background: var(--admin-border); margin: 0 4px;"></div>
+      <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" id="admin-header-logo-ayto" style="height: 46px; width: auto; object-fit: contain; flex-shrink: 0;">
       <div class="admin-brand-info">
         <h1>Plataforma de Gestión SaaS MVP</h1>
         <p>Ayuntamiento de Huelma · Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
@@ -54,7 +53,11 @@
        ═══════════════════════════════════════════ -->
   <div id="login-view">
     <div class="login-screen">
-      <div class="login-header-icon"><img src="./assets/icons/icon-lock.png" alt="" style="width: 48px; height: 48px; object-fit: contain;"></div>
+      <div class="login-logos" style="display: flex; align-items: center; justify-content: center; gap: 1.25rem; margin-bottom: 1.5rem;">
+        <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico El Pajarillo" style="height: 56px; width: auto; object-fit: contain;">
+        <div style="width: 1px; height: 42px; background: var(--admin-border);"></div>
+        <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" style="height: 52px; width: auto; object-fit: contain;">
+      </div>
       <h2>Acceso a Gestión Municipal</h2>
       <p>Introduce las credenciales del Ayuntamiento para gestionar contenidos, secciones y analíticas</p>
 
@@ -177,6 +180,13 @@
         <img src="./assets/icons/icon-settings.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Ajustes & Usuarios</span>
       </button>
+
+      <div style="padding: 1.25rem 0.75rem 0.75rem; border-top: 1px solid var(--admin-border); text-align: center; margin-top: auto;">
+        <div style="background: white; border-radius: 8px; padding: 6px 10px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--admin-border);">
+          <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" style="height: 38px; width: auto; object-fit: contain;">
+        </div>
+        <p style="font-size: 0.72rem; color: var(--admin-muted); margin-top: 6px; font-weight: 600;">Concejalía de Patrimonio y Turismo</p>
+      </div>
     </aside>
 
     <!-- Contenido Central Dinámico -->
@@ -1111,8 +1121,13 @@
 
         <div class="grid-2col">
           <div class="admin-card">
-            <h3>Identidad del Centro</h3>
-            <div style="margin-top: 1rem; font-size: 0.9rem; line-height: 1.7;">
+            <h3>Identidad del Centro y Municipio</h3>
+            <div style="display: flex; align-items: center; gap: 1rem; margin: 1.25rem 0; padding: 10px 14px; background: white; border: 1px solid var(--admin-border); border-radius: 8px; width: fit-content;">
+              <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" style="height: 48px; width: auto; object-fit: contain;">
+              <div style="width: 1px; height: 36px; background: var(--admin-border);"></div>
+              <img src="./assets/images/logo-pajarillo.png" alt="El Pajarillo" style="height: 44px; width: auto; object-fit: contain;">
+            </div>
+            <div style="font-size: 0.9rem; line-height: 1.7;">
               <p><strong>Entidad:</strong> Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
               <p><strong>Enclave territorial:</strong> Yacimiento Arqueológico BIC · Valle del Río Jandulilla</p>
               <p><strong>Organismo Gestor:</strong> Ayuntamiento de Huelma (Jaén)</p>
