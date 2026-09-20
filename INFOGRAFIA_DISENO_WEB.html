@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infografía: Proceso y Diseño WebApp · Santuario Ibérico de El Pajarillo</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-ibero {
+      font-family: 'Cinzel', serif;
+    }
+    .gradient-hero {
+      background: linear-gradient(135deg, #1C2720 0%, #2A3C31 50%, #384F3E 100%);
+    }
+    .step-line::before {
+      content: '';
+      position: absolute;
+      left: 28px;
+      top: 50px;
+      bottom: -30px;
+      width: 2px;
+      background: #DCDCD6;
+      z-index: 0;
+    }
+    .step-item:last-child .step-line::before {
+      display: none;
+    }
+    @media print {
+      body { background: white !important; color: black !important; padding: 0 !important; }
+      .no-print { display: none !important; }
+      .shadow-xl, .shadow-md, .shadow-sm { box-shadow: none !important; }
+      .page-break { page-break-after: always; }
+    }
+  </style>
+</head>
+<body class="bg-[#F8F9F7] text-[#1E2922] p-4 md:p-8 antialiased">
+
+  <!-- Contenedor Principal de la Infografía -->
+  <div class="max-w-6xl mx-auto bg-white rounded-3xl shadow-2xl border border-[#E2E6E2] overflow-hidden">
+    
+    <!-- ENCABEZADO INSTITUCIONAL DE LA INFOGRAFÍA -->
+    <header class="gradient-hero text-white p-8 md:p-12 relative overflow-hidden">
+      <div class="absolute -right-16 -bottom-16 w-80 h-80 rounded-full bg-[#E5B869]/10 blur-3xl pointer-events-none"></div>
+      <div class="absolute right-12 top-8 opacity-10 pointer-events-none">
+        <svg class="w-64 h-64 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-4 mb-6 relative z-10 border-b border-white/15 pb-6">
+        <div class="flex items-center gap-3">
+          <span class="px-3 py-1 bg-[#E5B869] text-[#19231D] text-xs font-extrabold uppercase tracking-widest rounded-full shadow-sm">
+            Dossier Museográfico Oficial
+          </span>
+          <span class="text-xs text-[#DCDCD6] font-medium">
+            Ayuntamiento de Huelma · Jaén
+          </span>
+        </div>
+        <div class="text-xs text-[#A8BDB0] font-mono bg-white/10 px-3 py-1.5 rounded-lg backdrop-blur-sm border border-white/10">
+          PROYECTO: DIGITALIZACIÓN PATRIMONIAL &amp; SAAS MVP
+        </div>
+      </div>
+
+      <div class="relative z-10 max-w-3xl">
+        <h1 class="font-serif-ibero text-3xl md:text-5xl font-bold tracking-tight text-white mb-4 leading-tight">
+          Proceso de Conceptualización, Diseño y Operatividad Digital
+        </h1>
+        <p class="text-[#DCDCD6] text-base md:text-lg font-normal leading-relaxed">
+          Infografía integral que resume la ingeniería de software, curaduría arqueológica, experiencia de usuario (UX/UI) y gobernanza técnica implementada en la plataforma del <strong class="text-white">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</strong>.
+        </p>
+      </div>
+
+      <!-- KPI METRICS BAR -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/15 relative z-10">
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+          <div class="text-2xl md:text-3xl font-extrabold text-[#E5B869]">100%</div>
+          <div class="text-xs text-[#DCDCD6] uppercase tracking-wider font-semibold mt-0.5">Discurso Íbero</div>
+          <div class="text-[11px] text-[#A8BDB0] mt-1">Sin elementos eclesiásticos</div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+          <div class="text-2xl md:text-3xl font-extrabold text-emerald-400">WCAG 2.1</div>
+          <div class="text-xs text-[#DCDCD6] uppercase tracking-wider font-semibold mt-0.5">Nivel AA &amp; LF</div>
+          <div class="text-[11px] text-[#A8BDB0] mt-1">Lectura Fácil normalizada</div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+          <div class="text-2xl md:text-3xl font-extrabold text-amber-300">Trilingüe</div>
+          <div class="text-xs text-[#DCDCD6] uppercase tracking-wider font-semibold mt-0.5">ES · EN · FR</div>
+          <div class="text-[11px] text-[#A8BDB0] mt-1">Conmutación dinámica 0s</div>
+        </div>
+        <div class="bg-white/5 backdrop-blur-md rounded-2xl p-4 border border-white/10">
+          <div class="text-2xl md:text-3xl font-extrabold text-sky-400">SaaS MVP</div>
+          <div class="text-xs text-[#DCDCD6] uppercase tracking-wider font-semibold mt-0.5">CMS Autónomo</div>
+          <div class="text-[11px] text-[#A8BDB0] mt-1">Gestión municipal directa</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CUERPO DE LA INFOGRAFÍA: RUTA SECUENCIAL DEL PROYECTO (6 FASES) -->
+    <div class="p-6 md:p-12 space-y-12">
+
+      <!-- FASE 1 & FASE 2: INVESTIGACIÓN Y DISEÑO -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- FASE 1 -->
+        <div class="bg-[#F6F8F5] border border-[#DEE3DC] rounded-3xl p-6 md:p-8 flex flex-col justify-between relative hover:border-[#384F3E] transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-flex items-center gap-2 px-3 py-1 bg-[#384F3E] text-white text-xs font-bold rounded-lg uppercase tracking-wider">
+                Fase 01 · Curaduría
+              </span>
+              <span class="text-2xl">🏺</span>
+            </div>
+            <h2 class="text-xl font-bold text-[#1E2922] mb-3">
+              Conceptualización y Discurso Museológico 100% Íbero
+            </h2>
+            <p class="text-sm text-[#4E5D53] leading-relaxed mb-4">
+              Alineación estricta con las investigaciones arqueológicas del Instituto Universitario de Arqueología Ibérica de la Universidad de Jaén (UJA) y los paneles museográficos oficiales (*Paneles 01, 05 y 06*).
+            </p>
+            <ul class="space-y-2.5 text-xs text-[#334238]">
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>Purga completa:</strong> Supresión de cualquier elemento o imagen eclesiástica/conventual, centrando el foco en la protohistoria oretana.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>El Santuario Heroico:</strong> Representación del monumento en 3 terrazas y el combate del Héroe frente al Lobo.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>El Territorio de Iltiraka:</strong> Colonización de la *silva* (bosque salvaje) del Jandulilla por Úbeda la Vieja y fundación de Loma del Perro.</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>Paisaje Sagrado &amp; Camino Ritual:</strong> Consagración del valle enlazando El Pajarillo con el santuario de El Fontanar.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-6 pt-4 border-t border-[#DEE3DC] flex items-center justify-between text-xs text-[#5D7063]">
+            <span class="font-semibold">Hito Cronológico Clave:</span>
+            <span class="bg-white px-2.5 py-1 rounded-md border border-[#DEE3DC] font-mono">c. 350 a.n.e. – 1994 – BIC 2006</span>
+          </div>
+        </div>
+
+        <!-- FASE 2 -->
+        <div class="bg-[#F6F8F5] border border-[#DEE3DC] rounded-3xl p-6 md:p-8 flex flex-col justify-between relative hover:border-[#384F3E] transition-colors">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <span class="inline-flex items-center gap-2 px-3 py-1 bg-[#52725D] text-white text-xs font-bold rounded-lg uppercase tracking-wider">
+                Fase 02 · Identidad &amp; UX
+              </span>
+              <span class="text-2xl">🎨</span>
+            </div>
+            <h2 class="text-xl font-bold text-[#1E2922] mb-3">
+              Diseño Visual Inspirado en el Paisaje de Sierra Mágina
+            </h2>
+            <p class="text-sm text-[#4E5D53] leading-relaxed mb-4">
+              Construcción de un sistema de diseño visual institucional que traduce los tonos minerales de la roca caliza y el olivar de Huelma en interfaces contemporáneas y accesibles.
+            </p>
+            
+            <!-- Paleta de Color Visual -->
+            <div class="mb-4">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#5D7063] block mb-2">Paleta Cromática Oficial:</span>
+              <div class="grid grid-cols-4 gap-2 text-center text-[10px] font-mono">
+                <div class="p-2 rounded-xl bg-[#384F3E] text-white font-semibold">
+                  #384F3E
+                  <span class="block text-[8px] opacity-80 mt-0.5">Oliva Monte</span>
+                </div>
+                <div class="p-2 rounded-xl bg-[#52725D] text-white font-semibold">
+                  #52725D
+                  <span class="block text-[8px] opacity-80 mt-0.5">Salvia Íbera</span>
+                </div>
+                <div class="p-2 rounded-xl bg-[#DCDCD6] text-[#19231D] font-semibold border border-black/10">
+                  #DCDCD6
+                  <span class="block text-[8px] opacity-80 mt-0.5">Piedra Caliza</span>
+                </div>
+                <div class="p-2 rounded-xl bg-[#E5B869] text-[#19231D] font-semibold">
+                  #E5B869
+                  <span class="block text-[8px] opacity-80 mt-0.5">Oro Ritual</span>
+                </div>
+              </div>
+            </div>
+
+            <ul class="space-y-2 text-xs text-[#334238]">
+              <li class="flex items-center gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>Iconografía Homogénea:</strong> Iconos corporativos proporcionales a <code>1.15em</code> relativos al texto.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <span class="text-emerald-700 font-bold">✓</span>
+                <span><strong>Microinteracciones:</strong> Transiciones suaves sin saltos bruscos respetando la reducción de movimiento.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-6 pt-4 border-t border-[#DEE3DC] flex items-center justify-between text-xs text-[#5D7063]">
+            <span class="font-semibold">Tipografía:</span>
+            <span class="bg-white px-2.5 py-1 rounded-md border border-[#DEE3DC] font-mono">Cinzel / Plus Jakarta Sans</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SECCIÓN DESTACADA: LECTURA FÁCIL & ACCESIBILIDAD UNIVERSAL -->
+      <div class="bg-gradient-to-r from-[#2A3C31] to-[#384F3E] text-white rounded-3xl p-6 md:p-10 shadow-lg relative overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+          <div class="flex items-center gap-3">
+            <span class="bg-[#E5B869] text-[#19231D] text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+              Pilar Museográfico Transversal
+            </span>
+            <h3 class="text-xl md:text-2xl font-bold font-serif-ibero text-white">
+              Inclusión Cognitiva y Accesibilidad Universal (WCAG 2.1 AA)
+            </h3>
+          </div>
+          <span class="text-xs bg-white/10 px-3 py-1.5 rounded-lg border border-white/15">
+            Norma UNE 153101:2018 EX
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+          <div class="bg-white/10 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
+            <div class="flex items-center gap-2 font-bold text-[#E5B869] mb-2">
+              <span>📖</span>
+              <h4>Bloques de Lectura Fácil</h4>
+            </div>
+            <p class="text-xs text-[#DCDCD6] leading-relaxed">
+              Cada sección histórica integra cápsulas textuales en lenguaje simplificado, oraciones breves y tipografía clara para personas mayores, público infantil y visitantes con diversidad funcional.
+            </p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
+            <div class="flex items-center gap-2 font-bold text-emerald-300 mb-2">
+              <span>🎛️</span>
+              <h4>Widget Adaptativo Flotante</h4>
+            </div>
+            <p class="text-xs text-[#DCDCD6] leading-relaxed">
+              Herramientas en vivo: modo Alto Contraste (fondo negro/amarillo), inversión cromática respetando imágenes, tipografía para dislexia, cursor grande y guía de lectura asistida con seguimiento de ratón.
+            </p>
+          </div>
+          <div class="bg-white/10 rounded-2xl p-5 border border-white/10 backdrop-blur-sm">
+            <div class="flex items-center gap-2 font-bold text-sky-300 mb-2">
+              <span>🔊</span>
+              <h4>Lector de Voz (TTS) Trilingüe</h4>
+            </div>
+            <p class="text-xs text-[#DCDCD6] leading-relaxed">
+              Integración de síntesis de voz nativa multilingüe (Web Speech API) que permite escuchar cualquier párrafo o panel explicativo en español, inglés o francés sin consumir ancho de banda.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARQUITECTURA DE LA SOLUCIÓN: FRONTEND vs BACKEND CMS -->
+      <div>
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <span class="text-xs font-bold text-[#384F3E] uppercase tracking-widest bg-[#384F3E]/10 px-3 py-1 rounded-full">
+            Ecosistema Tecnológico
+          </span>
+          <h2 class="text-2xl md:text-3xl font-bold text-[#1E2922] mt-3">
+            Doble Vertiente Operativa: Visitante y Administrador Municipal
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- COLUMNA FRONTEND -->
+          <div class="border-2 border-[#384F3E] rounded-3xl p-6 md:p-8 bg-white relative shadow-sm">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#E2E6E2]">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#384F3E] text-white flex items-center justify-center font-bold text-lg">
+                  1
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg text-[#1E2922]">Portal Público &amp; Audioguía</h3>
+                  <span class="text-xs text-[#5D7063]">index.html · Acceso visitantes</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono font-bold text-[#384F3E] bg-[#384F3E]/10 px-2 py-1 rounded">MÓDULO VISITANTE</span>
+            </div>
+
+            <div class="space-y-3.5 text-xs text-[#334238]">
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">🏛️ Sección "El Pajarillo":</strong>
+                Línea temporal arqueológica (6 hitos) y pestañas interactivas de Santuario, Territorio de Iltiraka y El Fontanar con Lectura Fácil.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">📱 Puntos QR y Audioguía en Sala:</strong>
+                Fichas catalográficas y generador de QR con colores corporativos para vitrinas y yacimiento.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">🎟️ Módulo de Reservas SaaS:</strong>
+                Reserva anticipada con cupos limitados (25 plazas), idiomas seleccionables y almacenamiento offline resiliente.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">🏢 Atención al Visitante:</strong>
+                Información de contacto institucional y horarios directos de la Concejalía sin duplicidad de formularios.
+              </div>
+            </div>
+          </div>
+
+          <!-- COLUMNA BACKEND CMS -->
+          <div class="border-2 border-[#52725D] rounded-3xl p-6 md:p-8 bg-white relative shadow-sm">
+            <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#E2E6E2]">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-[#52725D] text-white flex items-center justify-center font-bold text-lg">
+                  2
+                </div>
+                <div>
+                  <h3 class="font-bold text-lg text-[#1E2922]">Panel CMS Municipal</h3>
+                  <span class="text-xs text-[#5D7063]">admin.html · Técnicos de Turismo</span>
+                </div>
+              </div>
+              <span class="text-xs font-mono font-bold text-[#52725D] bg-[#52725D]/10 px-2 py-1 rounded">BACKOFFICE SAAS</span>
+            </div>
+
+            <div class="space-y-3.5 text-xs text-[#334238]">
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">🎚️ Gestor de Secciones en Vivo:</strong>
+                Interruptores para encender o apagar secciones de la web al instante según necesidades operativas.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">✍️ Editor Multilingüe ES / EN / FR:</strong>
+                Edición centralizada de textos, cronología, tarifas y horarios de invierno/verano sin tocar código.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">📋 Bandeja de Reservas &amp; CSV:</strong>
+                Control de solicitudes de visitas guiadas, confirmaciones automáticas y exportación de hojas de campo para mediadores.
+              </div>
+              <div class="p-3 bg-[#F6F8F5] rounded-xl border border-[#DEE3DC]">
+                <strong class="text-[#1E2922] block mb-1">📊 Analítica First-Party RGPD:</strong>
+                Medición del impacto turístico, idiomas más consultados y piezas de mayor interés preservando la privacidad del usuario.
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DIAGRAMA DE FLUJO: CICLO OPERATIVO MUSEOGRÁFICO -->
+      <div class="bg-[#F6F8F5] border border-[#DEE3DC] rounded-3xl p-6 md:p-10">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h3 class="text-lg md:text-xl font-bold text-[#1E2922]">
+              Flujo Operativo de Mediación y Experiencia del Visitante
+            </h3>
+            <p class="text-xs text-[#5D7063] mt-1">
+              Interacción continua entre el visitante en origen, el recorrido en sala y la gestión técnica del Ayuntamiento de Huelma.
+            </p>
+          </div>
+          <span class="text-xs font-mono font-bold text-[#384F3E] bg-white px-3 py-1 rounded-md border border-[#DEE3DC]">
+            MAPA DE INTERACCIÓN 360°
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 relative">
+          
+          <!-- PASO 1 -->
+          <div class="bg-white p-5 rounded-2xl border border-[#DEE3DC] shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#384F3E] text-white flex items-center justify-center font-bold text-xs mb-3">
+                01
+              </div>
+              <h4 class="font-bold text-sm text-[#1E2922] mb-1.5">Planificación en Origen</h4>
+              <p class="text-xs text-[#5D7063] leading-relaxed">
+                El usuario consulta el santuario y reserva su visita guiada con turno y número de personas.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F0F2EE] text-[11px] font-semibold text-[#384F3E]">
+              → WebApp / Selector Idioma
+            </div>
+          </div>
+
+          <!-- PASO 2 -->
+          <div class="bg-white p-5 rounded-2xl border border-[#DEE3DC] shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#52725D] text-white flex items-center justify-center font-bold text-xs mb-3">
+                02
+              </div>
+              <h4 class="font-bold text-sm text-[#1E2922] mb-1.5">Llegada &amp; Escaneo QR</h4>
+              <p class="text-xs text-[#5D7063] leading-relaxed">
+                En el centro de interpretación o yacimiento, el visitante escanea la señalética de las vitrinas.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F0F2EE] text-[11px] font-semibold text-[#52725D]">
+              → Carga inmediata en móvil
+            </div>
+          </div>
+
+          <!-- PASO 3 -->
+          <div class="bg-white p-5 rounded-2xl border border-[#DEE3DC] shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#E5B869] text-[#19231D] flex items-center justify-center font-bold text-xs mb-3">
+                03
+              </div>
+              <h4 class="font-bold text-sm text-[#1E2922] mb-1.5">Mediación Accesible</h4>
+              <p class="text-xs text-[#5D7063] leading-relaxed">
+                Reproducción de audioguía, lectura fácil del combate del lobo o activación de alto contraste.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F0F2EE] text-[11px] font-semibold text-[#8F6A24]">
+              → Inclusión UNE 153101
+            </div>
+          </div>
+
+          <!-- PASO 4 -->
+          <div class="bg-white p-5 rounded-2xl border border-[#DEE3DC] shadow-sm flex flex-col justify-between">
+            <div>
+              <div class="w-8 h-8 rounded-full bg-[#1C2720] text-white flex items-center justify-center font-bold text-xs mb-3">
+                04
+              </div>
+              <h4 class="font-bold text-sm text-[#1E2922] mb-1.5">Gobernanza Municipal</h4>
+              <p class="text-xs text-[#5D7063] leading-relaxed">
+                El técnico municipal supervisa aforos, exporta reservas y monitoriza el interés cultural de la sala.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#F0F2EE] text-[11px] font-semibold text-[#1C2720]">
+              → Panel CMS / Huelma Ayto
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PIE INSTITUCIONAL DE LA INFOGRAFÍA -->
+    <footer class="bg-[#F0F2EE] border-t border-[#DEE3DC] p-6 md:p-8 flex flex-wrap items-center justify-between gap-6 text-xs text-[#5D7063]">
+      <div class="flex items-center gap-4">
+        <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" class="h-10 w-auto object-contain">
+        <div class="h-8 w-px bg-[#D0D4CD]"></div>
+        <img src="./assets/images/logo-pajarillo.png" alt="El Pajarillo" class="h-10 w-auto object-contain">
+        <div>
+          <div class="font-bold text-[#1E2922]">Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo</div>
+          <div class="text-[11px]">Plataforma Digital del Centro de Interpretación Santuario Ibérico de “El Pajarillo”</div>
+        </div>
+      </div>
+      <div class="text-right">
+        <div class="font-mono text-[11px] text-[#384F3E] font-bold">DOCUMENTO ANEXO AL PROYECTO MUSEOGRÁFICO</div>
+        <div class="text-[10px] text-[#7A8D80]">Versión 2.0 · Revisión Final aprobada · Septiembre 2026</div>
+      </div>
+    </footer>
+
+  </div>
+
+</body>
+</html>
