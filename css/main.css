@@ -1384,21 +1384,34 @@ button {
 .footer-funding {
   max-width: 1280px;
   margin: 2.5rem auto 1.5rem;
-  padding: 1rem 1.5rem;
+  padding: 1.25rem 2rem;
   background: rgba(255, 255, 255, 0.96);
   border-radius: var(--radius-md);
-  display: flex;
-  justify-content: center;
-  align-items: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.footer-funding img {
-  max-height: 58px;
+.footer-funding-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+  width: 100%;
+}
+
+.footer-funding-grid .funding-logo {
+  height: 50px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04));
+  transition: transform 0.2s ease, opacity 0.2s ease;
   display: block;
+}
+
+.footer-funding-grid .funding-logo:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
 }
 
 .admin-link-badge {
@@ -1861,13 +1874,19 @@ img, video, canvas, svg {
   }
 
   .footer-funding {
-    padding: 0.65rem 0.75rem;
+    padding: 0.9rem 0.85rem;
     margin: 1.25rem auto 1rem;
   }
 
-  .footer-funding img {
-    max-height: 38px;
-    width: 100%;
+  .footer-funding-grid {
+    justify-content: center;
+    gap: 1.15rem 1.25rem;
+  }
+
+  .footer-funding-grid .funding-logo {
+    height: 36px;
+    max-height: 36px;
+    max-width: 44%;
   }
 
   /* Modales y Visores */
