@@ -6,6 +6,8 @@
       "image": "./assets/images/lobo.png",
       "video": "https://www.w3schools.com/html/mov_bbb.mp4",
       "audio": null,
+      "pdf": "./assets/docs/dossier_pajarillo.pdf",
+      "pdf_title": "Dossier Museográfico y Estudio Arqueológico",
       "content": {
         "es": {
           "title": "La Cabeza de Lobo",
@@ -30,6 +32,8 @@
       "image": "./assets/images/gallery/arqueologia.jpg",
       "video": null,
       "audio": null,
+      "pdf": null,
+      "pdf_title": null,
       "content": {
         "es": {
           "title": "El Monumento Heroico Escalonado",
@@ -54,6 +58,8 @@
       "image": "./assets/images/gallery/exterior.jpg",
       "video": null,
       "audio": null,
+      "pdf": null,
+      "pdf_title": null,
       "content": {
         "es": {
           "title": "El Territorio de Iltiraka: Un valle que domesticar",
@@ -78,6 +84,8 @@
       "image": "./assets/images/gallery/claustro.jpg",
       "video": null,
       "audio": null,
+      "pdf": null,
+      "pdf_title": null,
       "content": {
         "es": {
           "title": "Un Paisaje Sagrado: El camino ritual y El Fontanar",
@@ -102,6 +110,8 @@
       "image": "./assets/images/gallery/retablo.jpg",
       "video": null,
       "audio": null,
+      "pdf": null,
+      "pdf_title": null,
       "content": {
         "es": {
           "title": "El Guerrero de la Falcata y los Leones Protectores",

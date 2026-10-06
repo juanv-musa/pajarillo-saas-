@@ -876,7 +876,7 @@ function renderPanelsList() {
       <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/lobo.png'">
       <div class="panel-admin-details">
         <h4>Nº 0${panel.id} — ${title}</h4>
-        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong></p>
+        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong>${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}</p>
       </div>
       <div class="panel-actions-group">
         <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="openAdminQR(${panel.id}, '${safeTitle}')" title="Generar y Descargar QR">📱 QR</button>
@@ -930,11 +930,16 @@ DOM.panelForm.addEventListener('submit', async (e) => {
   const idInput = document.getElementById('panel-edit-id').value;
   const id = idInput ? parseInt(idInput) : (panelsData.length > 0 ? Math.max(...panelsData.map(p => p.id)) + 1 : 1);
 
+  const pdfUrlInput = (document.getElementById('panel-pdf-url').value || '').trim();
+  const pdfTitleInput = (document.getElementById('panel-pdf-title').value || '').trim();
+
   const newPanel = {
     id: id,
     tag: document.getElementById('panel-edit-tag').value,
     image: document.getElementById('panel-current-img-url').value || './assets/images/lobo.png',
     video: document.getElementById('panel-video-url').value || null,
+    pdf: pdfUrlInput || null,
+    pdf_title: pdfTitleInput || null,
     content: {
       es: {
         title: document.getElementById('panel-title-es').value,
@@ -971,7 +976,7 @@ DOM.panelForm.addEventListener('submit', async (e) => {
 
   renderPanelsList();
   resetPanelForm();
-  showToast('✅ Panel y QR guardados con éxito');
+  showToast('✅ Panel y recursos (incluido PDF) guardados con éxito');
 });
 
 window.editPanel = function(id) {
@@ -999,6 +1004,20 @@ window.editPanel = function(id) {
   preview.src = panel.image;
   document.getElementById('panel-img-preview-box').style.display = 'block';
 
+  // Cargar campos de PDF
+  document.getElementById('panel-pdf-url').value = panel.pdf || panel.pdf_url || '';
+  document.getElementById('panel-pdf-title').value = panel.pdf_title || '';
+  const pdfInfoBox = document.getElementById('panel-pdf-info-box');
+  const pdfInfoName = document.getElementById('panel-pdf-info-name');
+  if (pdfInfoBox) {
+    if (panel.pdf || panel.pdf_url) {
+      pdfInfoBox.style.display = 'flex';
+      if (pdfInfoName) pdfInfoName.textContent = `📄 PDF vinculado: ${panel.pdf_title || 'Documento disponible'}`;
+    } else {
+      pdfInfoBox.style.display = 'none';
+    }
+  }
+
   DOM.panelFormTitle.textContent = 'Editar Panel Nº 0' + panel.id;
   DOM.btnCancelPanelEdit.classList.remove('hidden');
 
@@ -1020,6 +1039,12 @@ function resetPanelForm() {
   document.getElementById('panel-current-img-url').value = '';
   document.getElementById('panel-video-url').value = '';
   document.getElementById('panel-img-preview-box').style.display = 'none';
+  document.getElementById('panel-pdf-url').value = '';
+  document.getElementById('panel-pdf-title').value = '';
+  const pdfInfoBox = document.getElementById('panel-pdf-info-box');
+  if (pdfInfoBox) pdfInfoBox.style.display = 'none';
+  const filePdfInput = document.getElementById('panel-file-pdf');
+  if (filePdfInput) filePdfInput.value = '';
 }
 
 window.deletePanel = async function(id) {
@@ -1367,30 +1392,68 @@ function setupCsvExport() {
 // SUBIDA DE ARCHIVOS Y DROPZONE
 // ═══════════════════════════════════════════
 function setupDropzone() {
-  const dropzone = document.getElementById('drop-panel-image');
-  const fileInput = document.getElementById('panel-file-img');
+  const dropzoneImg = document.getElementById('drop-panel-image');
+  const fileInputImg = document.getElementById('panel-file-img');
 
-  if (!dropzone || !fileInput) return;
+  if (dropzoneImg && fileInputImg) {
+    dropzoneImg.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzoneImg.classList.add('dragover');
+    });
+    dropzoneImg.addEventListener('dragleave', () => dropzoneImg.classList.remove('dragover'));
+    dropzoneImg.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzoneImg.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        fileInputImg.files = e.dataTransfer.files;
+        handleFileSelected(fileInputImg.files[0]);
+      }
+    });
 
-  dropzone.addEventListener('dragover', (e) => {
-    e.preventDefault();
-    dropzone.classList.add('dragover');
-  });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-  dropzone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    dropzone.classList.remove('dragover');
-    if (e.dataTransfer.files.length > 0) {
-      fileInput.files = e.dataTransfer.files;
-      handleFileSelected(fileInput.files[0]);
-    }
-  });
+    fileInputImg.addEventListener('change', () => {
+      if (fileInputImg.files.length > 0) {
+        handleFileSelected(fileInputImg.files[0]);
+      }
+    });
+  }
 
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files.length > 0) {
-      handleFileSelected(fileInput.files[0]);
-    }
-  });
+  // Dropzone para Archivos PDF
+  const dropzonePdf = document.getElementById('drop-panel-pdf');
+  const fileInputPdf = document.getElementById('panel-file-pdf');
+  const btnRemovePdf = document.getElementById('btn-remove-panel-pdf');
+
+  if (dropzonePdf && fileInputPdf) {
+    dropzonePdf.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropzonePdf.classList.add('dragover');
+    });
+    dropzonePdf.addEventListener('dragleave', () => dropzonePdf.classList.remove('dragover'));
+    dropzonePdf.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropzonePdf.classList.remove('dragover');
+      if (e.dataTransfer.files.length > 0) {
+        fileInputPdf.files = e.dataTransfer.files;
+        handlePdfSelected(fileInputPdf.files[0]);
+      }
+    });
+
+    fileInputPdf.addEventListener('change', () => {
+      if (fileInputPdf.files.length > 0) {
+        handlePdfSelected(fileInputPdf.files[0]);
+      }
+    });
+  }
+
+  if (btnRemovePdf) {
+    btnRemovePdf.addEventListener('click', () => {
+      document.getElementById('panel-pdf-url').value = '';
+      document.getElementById('panel-pdf-title').value = '';
+      const infoBox = document.getElementById('panel-pdf-info-box');
+      if (infoBox) infoBox.style.display = 'none';
+      if (fileInputPdf) fileInputPdf.value = '';
+      showToast('🗑️ Documento PDF desvinculado');
+    });
+  }
 }
 
 async function handleFileSelected(file) {
@@ -1420,6 +1483,47 @@ async function handleFileSelected(file) {
     } catch (err) {}
 
     showToast('✅ Imagen cargada y lista para guardar');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function handlePdfSelected(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+    alert('Por favor selecciona un archivo en formato PDF.');
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const base64Url = e.target.result;
+    document.getElementById('panel-pdf-url').value = base64Url;
+    const infoBox = document.getElementById('panel-pdf-info-box');
+    const infoName = document.getElementById('panel-pdf-info-name');
+    if (infoBox) infoBox.style.display = 'flex';
+    if (infoName) infoName.textContent = `📄 ${file.name} (${Math.round(file.size / 1024)} KB)`;
+
+    const titleInput = document.getElementById('panel-pdf-title');
+    if (titleInput && !titleInput.value) {
+      titleInput.value = file.name.replace(/\.[^/.]+$/, "");
+    }
+
+    // Subida al servidor si PHP está disponible
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('./api/upload.php', { method: 'POST', body: formData });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.url) {
+          document.getElementById('panel-pdf-url').value = data.url;
+          showToast('✅ Archivo PDF subido al servidor');
+          return;
+        }
+      }
+    } catch (err) {}
+
+    showToast('✅ PDF cargado y listo para guardar');
   };
   reader.readAsDataURL(file);
 }

@@ -304,6 +304,74 @@
       max-height: 450px;
     }
 
+    /* Documentación PDF y Recursos Descargables */
+    .punto-pdf-box {
+      background: linear-gradient(135deg, #FAF8F5 0%, #F0ECE1 100%);
+      border: 1.5px solid var(--c-border, #E4DECE);
+      border-left: 5px solid var(--c-accent-terracotta, #a93226);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.25rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+
+    @media (max-width: 600px) {
+      .punto-pdf-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    .punto-pdf-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+    }
+
+    .punto-pdf-info {
+      flex: 1;
+    }
+
+    .punto-pdf-title {
+      font-family: var(--font-condensed, 'Cinzel', serif);
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--c-primary, #384F3E);
+      margin: 0 0 0.25rem;
+    }
+
+    .punto-pdf-desc {
+      font-size: 0.88rem;
+      color: #666;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .btn-punto-pdf {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--c-primary, #384F3E);
+      color: #fff;
+      padding: 0.65rem 1.25rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-punto-pdf:hover {
+      background: var(--c-accent-terracotta, #a93226);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(169, 50, 38, 0.25);
+    }
+
     /* Barra de Navegación del Recorrido (Anterior / Siguiente) */
     .tour-nav-bar {
       margin-top: 3rem;
@@ -482,6 +550,19 @@
           </p>
         </div>
 
+        <!-- Documentación PDF / Dossier Descargable -->
+        <div id="punto-pdf-container" class="punto-pdf-box hidden">
+          <div class="punto-pdf-icon">📄</div>
+          <div class="punto-pdf-info">
+            <h3 class="punto-pdf-title" id="punto-pdf-title">Guía de Sala y Documentación PDF</h3>
+            <p class="punto-pdf-desc" id="punto-pdf-desc">Descarga o visualiza el documento oficial asociado a este punto del santuario.</p>
+          </div>
+          <a href="#" target="_blank" rel="noopener noreferrer" class="btn-punto-pdf" id="btn-punto-pdf-link">
+            <span id="btn-punto-pdf-text">Abrir / Descargar PDF</span>
+            <span aria-hidden="true">⬇</span>
+          </a>
+        </div>
+
         <!-- Navegación entre Puntos del Recorrido -->
         <nav class="tour-nav-bar" id="tour-nav-bar">
           <a href="#" id="tour-link-prev" class="tour-nav-link tour-nav-prev hidden">
@@ -558,7 +639,12 @@
         qrBox: document.getElementById('punto-qrcode-box'),
         qrLinkText: document.getElementById('punto-qr-link-text'),
         btnCopyLink: document.getElementById('btn-copy-punto-link'),
-        txtBackTour: document.getElementById('txt-back-tour')
+        txtBackTour: document.getElementById('txt-back-tour'),
+        pdfContainer: document.getElementById('punto-pdf-container'),
+        pdfTitle: document.getElementById('punto-pdf-title'),
+        pdfDesc: document.getElementById('punto-pdf-desc'),
+        pdfLink: document.getElementById('btn-punto-pdf-link'),
+        btnPdfText: document.getElementById('btn-punto-pdf-text')
       };
 
       // Inicialización
@@ -649,6 +735,28 @@
           dom.nativeAudio.src = `./assets/audio/${currentPanel.audio}`;
         } else {
           dom.nativeAudio.src = '';
+        }
+
+        // Documentación PDF asociada
+        if (currentPanel.pdf || currentPanel.pdf_url) {
+          const pdfUrl = currentPanel.pdf || currentPanel.pdf_url;
+          const defaultTitle = currentLang === 'en' ? 'Official Documentation (PDF)' : (currentLang === 'fr' ? 'Documentation Officielle (PDF)' : 'Documentación y Estudio en PDF');
+          dom.pdfTitle.textContent = currentPanel.pdf_title || defaultTitle;
+          dom.pdfLink.href = pdfUrl;
+
+          if (currentLang === 'en') {
+            dom.pdfDesc.textContent = 'Download or view the official document associated with this sanctuary point.';
+            dom.btnPdfText.textContent = 'Open / Download PDF';
+          } else if (currentLang === 'fr') {
+            dom.pdfDesc.textContent = 'Téléchargez ou consultez le document officiel associé à ce point du sanctuaire.';
+            dom.btnPdfText.textContent = 'Ouvrir / Télécharger PDF';
+          } else {
+            dom.pdfDesc.textContent = 'Descarga o visualiza el documento oficial asociado a este punto del santuario.';
+            dom.btnPdfText.textContent = 'Abrir / Descargar PDF';
+          }
+          dom.pdfContainer.classList.remove('hidden');
+        } else {
+          dom.pdfContainer.classList.add('hidden');
         }
 
         // Detener reproducción previa al cambiar de idioma o punto
