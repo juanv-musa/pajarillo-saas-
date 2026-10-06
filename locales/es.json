@@ -8,7 +8,7 @@
   },
   "nav": {
     "historia": "El Pajarillo",
-    "puntos": "Puntos de Visita",
+    "puntos": "Recorrido",
     "horarios": "Horarios y Visita",
     "agenda": "Agenda Cultural",
     "galeria": "Galería y Recursos",
@@ -66,7 +66,7 @@
   },
   "puntos": {
     "section_label": "Recorrido Interpretativo",
-    "title": "Puntos de Información y Piezas Clave",
+    "title": "Recorrido y Puntos Clave",
     "subtitle": "Escanea los códigos QR situados en las salas y en el yacimiento para escuchar la audioguía y visualizar los modelos digitales.",
     "listen_audio": "Audioguía disponible",
     "view_qr": "Código QR",
