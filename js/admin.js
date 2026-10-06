@@ -113,6 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGalleryManager();
   setupDropzone();
   setupQrModalEvents();
+  setupPanelsExport();
   setupCsvExport();
 });
 
@@ -819,12 +820,38 @@ function renderAnalyticsForPeriod(periodKey) {
 // ═══════════════════════════════════════════
 async function loadPanels() {
   try {
-    let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
-    if (!res || !res.ok) {
-      res = await fetch('./data/paneles.json?t=' + Date.now());
+    let loaded = false;
+
+    // 1. Intentar API en vivo
+    try {
+      const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        if (data.panels && data.panels.length > 0) {
+          panelsData = data.panels;
+          loaded = true;
+        }
+      }
+    } catch (e) {}
+
+    // 2. Fallback a localStorage (para entornos estáticos como GitHub Pages)
+    if (!loaded) {
+      const saved = localStorage.getItem('pajarillo_panels');
+      if (saved) {
+        try {
+          panelsData = JSON.parse(saved);
+          loaded = true;
+        } catch (e) {}
+      }
     }
-    const data = await res.json();
-    panelsData = data.panels || [];
+
+    // 3. Fallback a archivo JSON estático
+    if (!loaded) {
+      const res = await fetch('./data/paneles.json?t=' + Date.now());
+      const data = await res.json();
+      panelsData = data.panels || [];
+    }
+
     renderPanelsList();
   } catch (err) {
     console.error('Error cargando paneles:', err);
@@ -840,18 +867,20 @@ function renderPanelsList() {
     const li = document.createElement('li');
     li.className = 'panel-admin-item';
     li.dataset.id = panel.id;
-    const title = panel.content.es.title;
+    const title = (panel.content && panel.content.es && panel.content.es.title) || 'Punto';
     const safeTitle = title.replace(/'/g, "\\'");
+    const img = panel.image || './assets/images/lobo.png';
 
     li.innerHTML = `
       <div class="panel-drag-grip" title="Arrastrar para reordenar">⋮⋮</div>
-      <img src="${panel.image}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/lobo.jpg'">
+      <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/lobo.png'">
       <div class="panel-admin-details">
         <h4>Nº 0${panel.id} — ${title}</h4>
-        <p>${panel.content.es.subtitle || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong></p>
+        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong></p>
       </div>
       <div class="panel-actions-group">
-        <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="openAdminQR(${panel.id}, '${safeTitle}')" title="Generar QR">📱 QR</button>
+        <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="openAdminQR(${panel.id}, '${safeTitle}')" title="Generar y Descargar QR">📱 QR</button>
+        <a class="btn-admin btn-admin-outline" style="padding: 6px 10px; text-decoration: none;" href="punto.html?id=${panel.id}" target="_blank" title="Ver ficha específica en vivo">🔗 Ficha</a>
         <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="editPanel(${panel.id})" title="Editar">✏️</button>
         <button class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="deletePanel(${panel.id})" title="Eliminar">🗑️</button>
       </div>
@@ -867,6 +896,19 @@ function renderPanelsList() {
       onEnd: async () => {
         const itemEls = DOM.panelsList.querySelectorAll('.panel-admin-item');
         const newOrder = Array.from(itemEls).map(el => parseInt(el.dataset.id));
+        
+        // Reordenar en memoria y guardar en localStorage
+        const reordered = [];
+        newOrder.forEach(id => {
+          const p = panelsData.find(item => item.id === id);
+          if (p) reordered.push(p);
+        });
+        panelsData.forEach(p => {
+          if (!newOrder.includes(p.id)) reordered.push(p);
+        });
+        panelsData = reordered;
+        localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+
         try {
           await fetch('./api/data.php', {
             method: 'POST',
@@ -875,7 +917,7 @@ function renderPanelsList() {
           });
           showToast('✅ Orden de paneles actualizado');
         } catch (e) {
-          showToast('ℹ️ Orden reconfigurado localmente');
+          showToast('✅ Orden guardado en el navegador');
         }
       }
     });
@@ -891,7 +933,7 @@ DOM.panelForm.addEventListener('submit', async (e) => {
   const newPanel = {
     id: id,
     tag: document.getElementById('panel-edit-tag').value,
-    image: document.getElementById('panel-current-img-url').value || './assets/images/gallery/exterior.jpg',
+    image: document.getElementById('panel-current-img-url').value || './assets/images/lobo.png',
     video: document.getElementById('panel-video-url').value || null,
     content: {
       es: {
@@ -920,14 +962,16 @@ DOM.panelForm.addEventListener('submit', async (e) => {
     });
   } catch (err) {}
 
-  // Actualizar en memoria
+  // Actualizar en memoria y guardar en localStorage de forma persistente
   const index = panelsData.findIndex(p => p.id === id);
   if (index >= 0) panelsData[index] = newPanel;
   else panelsData.push(newPanel);
 
+  localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+
   renderPanelsList();
   resetPanelForm();
-  showToast('✅ Panel guardado correctamente');
+  showToast('✅ Panel y QR guardados con éxito');
 });
 
 window.editPanel = function(id) {
@@ -988,6 +1032,7 @@ window.deletePanel = async function(id) {
     });
   } catch (e) {}
   panelsData = panelsData.filter(p => p.id !== id);
+  localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
   renderPanelsList();
   showToast('🗑️ Panel eliminado');
 };
@@ -1189,6 +1234,7 @@ function setupQrModalEvents() {
   const closeBtn = document.getElementById('btn-admin-close-qr');
   const closeIcon = document.getElementById('btn-close-qr-icon');
   const downloadBtn = document.getElementById('btn-admin-download-qr');
+  const copyBtn = document.getElementById('btn-admin-copy-qr-url');
 
   if (closeBtn) closeBtn.addEventListener('click', () => DOM.adminQrModal.classList.add('hidden'));
   if (closeIcon) closeIcon.addEventListener('click', () => DOM.adminQrModal.classList.add('hidden'));
@@ -1202,12 +1248,39 @@ function setupQrModalEvents() {
 
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
+      const canvas = DOM.adminQrcodeBox.querySelector('canvas');
       const img = DOM.adminQrcodeBox.querySelector('img');
-      if (!img) return;
-      const a = document.createElement('a');
-      a.href = img.src;
-      a.download = `QR_Oficial_Pajarillo_${Date.now()}.png`;
-      a.click();
+      let dataUrl = '';
+      if (canvas) {
+        dataUrl = canvas.toDataURL('image/png');
+      } else if (img && img.src) {
+        dataUrl = img.src;
+      }
+
+      if (dataUrl) {
+        const a = document.createElement('a');
+        a.href = dataUrl;
+        a.download = `QR_Punto_Pajarillo_${Date.now()}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('✅ Imagen de Código QR descargada');
+      } else {
+        showToast('⚠️ Espera un segundo a que termine de generarse el QR');
+      }
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', async () => {
+      if (currentAdminQrUrl) {
+        try {
+          await navigator.clipboard.writeText(currentAdminQrUrl);
+          showToast('📋 Enlace copiado al portapapeles');
+        } catch (e) {
+          showToast('⚠️ No se pudo copiar automáticamente');
+        }
+      }
     });
   }
 }
@@ -1216,9 +1289,23 @@ window.openAdminQR = function(id, title) {
   DOM.adminQrTitle.textContent = `QR Oficial — Nº 0${id} ${title}`;
   DOM.adminQrcodeBox.innerHTML = '';
 
-  const origin = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
-  currentAdminQrUrl = `${origin}?panel=${id}`;
+  // La URL del QR apunta DIRECTAMENTE a la página específica del punto (punto.html?id=X)
+  const origin = window.location.origin;
+  let path = window.location.pathname;
+  if (path.endsWith('admin.html')) {
+    path = path.replace(/admin\.html$/, 'punto.html');
+  } else if (path.endsWith('index.html')) {
+    path = path.replace(/index\.html$/, 'punto.html');
+  } else {
+    path = path.replace(/\/?$/, '/punto.html');
+  }
+  currentAdminQrUrl = `${origin}${path}?id=${id}`;
   DOM.adminQrUrlText.textContent = currentAdminQrUrl;
+
+  const btnOpenPunto = document.getElementById('btn-admin-open-punto-url');
+  if (btnOpenPunto) {
+    btnOpenPunto.href = currentAdminQrUrl;
+  }
 
   if (typeof QRCode !== 'undefined') {
     adminQrInstance = new QRCode(DOM.adminQrcodeBox, {
@@ -1307,25 +1394,54 @@ function setupDropzone() {
 }
 
 async function handleFileSelected(file) {
-  // Previsualización inmediata en local
-  const url = URL.createObjectURL(file);
-  const preview = document.getElementById('panel-img-preview');
-  preview.src = url;
-  document.getElementById('panel-img-preview-box').style.display = 'block';
+  // Convertir a Base64 con FileReader para persistencia total en localStorage
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    const base64Url = e.target.result;
+    const preview = document.getElementById('panel-img-preview');
+    if (preview) preview.src = base64Url;
+    const previewBox = document.getElementById('panel-img-preview-box');
+    if (previewBox) previewBox.style.display = 'block';
+    document.getElementById('panel-current-img-url').value = base64Url;
 
-  // Subida al servidor si PHP está disponible
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-    const res = await fetch('./api/upload.php', { method: 'POST', body: formData });
-    const data = await res.json();
-    if (data.success) {
-      document.getElementById('panel-current-img-url').value = data.url;
-      showToast('✅ Archivo subido al servidor');
-    }
-  } catch (err) {
-    document.getElementById('panel-current-img-url').value = url;
-  }
+    // Subida al servidor si PHP está disponible
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('./api/upload.php', { method: 'POST', body: formData });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.success && data.url) {
+          document.getElementById('panel-current-img-url').value = data.url;
+          showToast('✅ Archivo subido al servidor');
+          return;
+        }
+      }
+    } catch (err) {}
+
+    showToast('✅ Imagen cargada y lista para guardar');
+  };
+  reader.readAsDataURL(file);
+}
+
+// Exportación de data/paneles.json
+function setupPanelsExport() {
+  const btnExport = document.getElementById('btn-export-panels-json');
+  if (!btnExport) return;
+
+  btnExport.addEventListener('click', () => {
+    const jsonStr = JSON.stringify({ panels: panelsData }, null, 2);
+    const blob = new Blob([jsonStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `paneles_${Date.now()}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📥 Archivo de datos paneles.json descargado');
+  });
 }
 
 // ═══════════════════════════════════════════

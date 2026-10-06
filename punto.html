@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Punto Interpretativo · Santuario Ibérico de El Pajarillo</title>
+  <meta name="description" content="Ficha interpretativa del Santuario Heroico de El Pajarillo en Huelma, Jaén. Audioguía, reconstrucción 3D y lectura fácil.">
+
+  <!-- Favicons y Metas -->
+  <link rel="icon" type="image/png" href="./assets/images/logo-pajarillo.png">
+  <meta name="theme-color" content="#384F3E">
+
+  <!-- Google Fonts Oficiales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800;900&family=Cinzel+Decorative:wght@700&family=Outfit:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- Hojas de Estilo del Proyecto -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/accessibility.css">
+
+  <!-- QRCode Library para compartir -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* Estilos específicos para la ficha de punto / QR */
+    body {
+      background-color: var(--c-sand-light, #F9F8F5);
+      color: var(--c-text-dark, #23201C);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .punto-header {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--c-border, #E4DECE);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 1.25rem;
+    }
+
+    .punto-header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .btn-punto-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.55rem 1.1rem;
+      background: var(--c-stone, #EFECE4);
+      color: var(--c-primary, #384F3E);
+      border-radius: var(--radius-full, 9999px);
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid var(--c-border, #E4DECE);
+    }
+
+    .btn-punto-back:hover {
+      background: var(--c-primary, #384F3E);
+      color: #fff;
+      transform: translateX(-3px);
+    }
+
+    .punto-main-container {
+      max-width: 1050px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.25rem;
+      flex: 1;
+      width: 100%;
+    }
+
+    .punto-card-main {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid var(--c-border, #E4DECE);
+      box-shadow: 0 10px 30px rgba(56, 79, 62, 0.08);
+      overflow: hidden;
+    }
+
+    .punto-hero-media {
+      position: relative;
+      width: 100%;
+      max-height: 480px;
+      overflow: hidden;
+      background: #1A1A18;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .punto-hero-img {
+      width: 100%;
+      height: 100%;
+      max-height: 480px;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 0.5s ease;
+    }
+
+    .punto-media-badges {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 2;
+    }
+
+    .badge-punto-id {
+      background: rgba(26, 26, 24, 0.85);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      backdrop-filter: blur(4px);
+      letter-spacing: 0.5px;
+    }
+
+    .badge-punto-tag {
+      background: var(--c-primary, #384F3E);
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .punto-content-body {
+      padding: 2.25rem;
+    }
+
+    @media (max-width: 768px) {
+      .punto-content-body {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+
+    .punto-title {
+      font-family: var(--font-condensed, 'Cinzel', serif);
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--c-primary, #384F3E);
+      line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .punto-title {
+        font-size: 1.85rem;
+      }
+    }
+
+    .punto-subtitle {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--c-accent-gold-text, #8C6D23);
+      margin-bottom: 1.5rem;
+      line-height: 1.4;
+    }
+
+    /* Reproductor de Audioguía integrado */
+    .audioguide-widget {
+      background: linear-gradient(135deg, #F3EFE6 0%, #E9E3D3 100%);
+      border: 1.5px solid var(--c-accent-gold, #B59A57);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .audioguide-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .audioguide-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .audioguide-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--c-primary, #384F3E);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.2rem;
+    }
+
+    .audioguide-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn-audio-play {
+      background: var(--c-primary, #384F3E);
+      color: #fff;
+      border: none;
+      padding: 0.7rem 1.4rem;
+      border-radius: 9999px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-audio-play:hover {
+      background: #2b3d30;
+      transform: scale(1.02);
+    }
+
+    .audio-progress-bar {
+      flex: 1;
+      min-width: 160px;
+      accent-color: var(--c-primary, #384F3E);
+      cursor: pointer;
+    }
+
+    .audio-time-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--c-text-muted, #666);
+      min-width: 45px;
+    }
+
+    /* Texto narrativo */
+    .punto-desc-text {
+      font-size: 1.08rem;
+      line-height: 1.75;
+      color: #2D2B28;
+      margin-bottom: 2rem;
+    }
+
+    .punto-desc-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    /* Caja de Lectura Fácil */
+    .punto-facil-box {
+      background: #F4F8F5;
+      border-left: 5px solid #2E7D32;
+      border-radius: 0 12px 12px 0;
+      padding: 1.25rem 1.5rem;
+      margin: 2rem 0;
+    }
+
+    .punto-facil-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.6rem;
+      font-weight: 800;
+      color: #1B5E20;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .punto-facil-text {
+      font-size: 1.02rem;
+      line-height: 1.6;
+      color: #1E3821;
+      margin: 0;
+    }
+
+    /* Video o 3D */
+    .punto-video-box {
+      margin: 2rem 0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .punto-video-box video {
+      width: 100%;
+      display: block;
+      max-height: 450px;
+    }
+
+    /* Barra de Navegación del Recorrido (Anterior / Siguiente) */
+    .tour-nav-bar {
+      margin-top: 3rem;
+      padding-top: 1.75rem;
+      border-top: 1px solid var(--c-border, #E4DECE);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .tour-nav-bar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tour-nav-link {
+      display: flex;
+      flex-direction: column;
+      padding: 1rem 1.25rem;
+      background: var(--c-stone, #EFECE4);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--c-primary, #384F3E);
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tour-nav-link:hover {
+      background: #fff;
+      border-color: var(--c-accent-gold, #B59A57);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .tour-nav-link.tour-nav-next {
+      text-align: right;
+    }
+
+    .tour-nav-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--c-accent-gold-text, #8C6D23);
+      margin-bottom: 0.25rem;
+    }
+
+    .tour-nav-title {
+      font-family: var(--font-condensed, 'Cinzel', serif);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--c-primary, #384F3E);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Modal QR para compartir */
+    .modal-qr-punto {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-qr-punto.hidden {
+      display: none;
+    }
+
+    .modal-qr-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cabecera de Navegación del Punto -->
+  <header class="punto-header">
+    <div class="punto-header-inner">
+      <a href="index.html#puntos" class="btn-punto-back" title="Volver al Recorrido completo">
+        <span aria-hidden="true">←</span>
+        <span id="txt-back-tour">Volver al Recorrido</span>
+      </a>
+
+      <a href="index.html" style="display: flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+        <img src="./assets/images/logo-pajarillo.png" alt="Santuario Ibérico de El Pajarillo" style="height: 42px; width: auto; object-fit: contain;">
+      </a>
+
+      <div class="header-actions">
+        <div class="lang-switcher" aria-label="Seleccionar idioma / Select language">
+          <button class="lang-btn active" data-lang="es">ES</button>
+          <button class="lang-btn" data-lang="en">EN</button>
+          <button class="lang-btn" data-lang="fr">FR</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal del Punto -->
+  <main class="punto-main-container">
+    <article class="punto-card-main">
+      <!-- Imagen de Cabecera con Badges -->
+      <div class="punto-hero-media">
+        <img id="punto-image" src="./assets/images/lobo.png" alt="Cargando pieza..." class="punto-hero-img">
+        <div class="punto-media-badges">
+          <span class="badge-punto-id" id="punto-badge-num">Nº 01</span>
+          <span class="badge-punto-tag" id="punto-badge-tag">Escultura</span>
+        </div>
+      </div>
+
+      <!-- Cuerpo del Contenido -->
+      <div class="punto-content-body">
+        <h1 class="punto-title" id="punto-title">Cargando punto...</h1>
+        <div class="punto-subtitle" id="punto-subtitle">Santuario Heroico de El Pajarillo</div>
+
+        <!-- Reproductor de Audioguía Oficial -->
+        <div class="audioguide-widget">
+          <div class="audioguide-header">
+            <div class="audioguide-title-group">
+              <div class="audioguide-icon">🎧</div>
+              <div>
+                <strong style="color: var(--c-primary); font-size: 0.95rem;" id="lbl-audioguide-title">Audioguía Oficial</strong>
+                <div style="font-size: 0.78rem; color: var(--c-accent-gold-text);" id="lbl-audioguide-sub">Disponible en sala y exterior</div>
+              </div>
+            </div>
+            <button id="btn-show-qr" class="btn-punto-back" style="font-size: 0.78rem; padding: 0.4rem 0.8rem;" title="Ver código QR para compartir">
+              📱 Código QR
+            </button>
+          </div>
+
+          <div class="audioguide-controls">
+            <button id="btn-audio-toggle" class="btn-audio-play">
+              <span id="btn-audio-icon">▶</span>
+              <span id="btn-audio-text">Escuchar narración</span>
+            </button>
+            <input type="range" id="audio-progress" class="audio-progress-bar" min="0" max="100" value="0">
+            <span id="audio-time" class="audio-time-label">0:00</span>
+            <button id="btn-audio-speed" class="btn-punto-back" style="font-size: 0.78rem; padding: 0.4rem 0.6rem;">1.0x</button>
+          </div>
+
+          <!-- Elemento de audio nativo -->
+          <audio id="native-audio" preload="metadata"></audio>
+        </div>
+
+        <!-- Vídeo o Reconstrucción 3D si existe -->
+        <div id="punto-video-container" class="punto-video-box hidden">
+          <video id="punto-video-player" controls preload="metadata"></video>
+        </div>
+
+        <!-- Descripción Histórica Completa -->
+        <div class="punto-desc-text" id="punto-description">
+          <p>Cargando información del punto interpretativo...</p>
+        </div>
+
+        <!-- Bloque de Accesibilidad: Lectura Fácil -->
+        <div class="punto-facil-box">
+          <div class="punto-facil-header">
+            <span>📖</span>
+            <span id="lbl-facil-badge">Lectura Fácil · Accesibilidad Cognitiva</span>
+          </div>
+          <p class="punto-facil-text" id="punto-facil-text">
+            Este texto explica de forma sencilla lo que ves en este punto del santuario.
+          </p>
+        </div>
+
+        <!-- Navegación entre Puntos del Recorrido -->
+        <nav class="tour-nav-bar" id="tour-nav-bar">
+          <a href="#" id="tour-link-prev" class="tour-nav-link tour-nav-prev hidden">
+            <span class="tour-nav-label">← Punto Anterior</span>
+            <span class="tour-nav-title" id="tour-title-prev">Anterior</span>
+          </a>
+          <a href="#" id="tour-link-next" class="tour-nav-link tour-nav-next hidden">
+            <span class="tour-nav-label">Punto Siguiente →</span>
+            <span class="tour-nav-title" id="tour-title-next">Siguiente</span>
+          </a>
+        </nav>
+      </div>
+    </article>
+  </main>
+
+  <!-- Modal QR para compartir o mostrar -->
+  <div id="modal-punto-qr" class="modal-qr-punto hidden">
+    <div class="modal-qr-content">
+      <button type="button" id="btn-close-punto-qr" style="position: absolute; top: 12px; right: 12px; background: none; border: none; font-size: 1.3rem; cursor: pointer;">✕</button>
+      <h3 style="font-family: var(--font-condensed); color: var(--c-primary); margin-bottom: 0.5rem;" id="qr-modal-heading">Código QR del Punto</h3>
+      <p style="font-size: 0.85rem; color: #666; margin-bottom: 1rem;" id="qr-modal-desc">Escanea este código con cualquier móvil para abrir directamente esta ficha.</p>
+      <div id="punto-qrcode-box" style="display: inline-block; padding: 12px; background: white; border: 1.5px solid var(--c-border); border-radius: 8px; margin-bottom: 1rem;"></div>
+      <div style="font-size: 0.75rem; color: #777; word-break: break-all; margin-bottom: 1rem;" id="punto-qr-link-text"></div>
+      <button type="button" id="btn-copy-punto-link" class="btn-punto-back" style="width: 100%; justify-content: center;">📋 Copiar enlace</button>
+    </div>
+  </div>
+
+  <!-- Pie de página oficial -->
+  <footer style="background: var(--c-primary); color: #fff; padding: 2rem 1.25rem; text-align: center; font-size: 0.85rem; margin-top: auto;">
+    <p style="margin: 0 0 0.5rem; font-weight: 700; letter-spacing: 0.5px;">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
+    <p style="margin: 0; color: rgba(255,255,255,0.7);">Ayuntamiento de Huelma · Bien de Interés Cultural (BIC) · Junta de Andalucía</p>
+  </footer>
+
+  <!-- Script Lógico de la Ficha del Punto -->
+  <script>
+    (function() {
+      // Estado global de la ficha
+      let currentLang = localStorage.getItem('pajarillo_lang') || 'es';
+      let panelsList = [];
+      let currentPanel = null;
+      let isPlaying = false;
+      let synthUtterance = null;
+      let audioSpeed = 1.0;
+
+      // Obtener ID del panel desde la URL: ?id=1 o ?panel=1 o ?qr=1
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetId = parseInt(urlParams.get('id') || urlParams.get('panel') || urlParams.get('qr') || '1');
+
+      // Elementos del DOM
+      const dom = {
+        title: document.getElementById('punto-title'),
+        subtitle: document.getElementById('punto-subtitle'),
+        description: document.getElementById('punto-description'),
+        facilText: document.getElementById('punto-facil-text'),
+        image: document.getElementById('punto-image'),
+        badgeNum: document.getElementById('punto-badge-num'),
+        badgeTag: document.getElementById('punto-badge-tag'),
+        videoContainer: document.getElementById('punto-video-container'),
+        videoPlayer: document.getElementById('punto-video-player'),
+        nativeAudio: document.getElementById('native-audio'),
+        btnAudioToggle: document.getElementById('btn-audio-toggle'),
+        btnAudioIcon: document.getElementById('btn-audio-icon'),
+        btnAudioText: document.getElementById('btn-audio-text'),
+        audioProgress: document.getElementById('audio-progress'),
+        audioTime: document.getElementById('audio-time'),
+        btnAudioSpeed: document.getElementById('btn-audio-speed'),
+        tourLinkPrev: document.getElementById('tour-link-prev'),
+        tourTitlePrev: document.getElementById('tour-title-prev'),
+        tourLinkNext: document.getElementById('tour-link-next'),
+        tourTitleNext: document.getElementById('tour-title-next'),
+        btnShowQr: document.getElementById('btn-show-qr'),
+        modalQr: document.getElementById('modal-punto-qr'),
+        btnCloseQr: document.getElementById('btn-close-punto-qr'),
+        qrBox: document.getElementById('punto-qrcode-box'),
+        qrLinkText: document.getElementById('punto-qr-link-text'),
+        btnCopyLink: document.getElementById('btn-copy-punto-link'),
+        txtBackTour: document.getElementById('txt-back-tour')
+      };
+
+      // Inicialización
+      async function init() {
+        setupLanguageButtons();
+        setupQrModal();
+        setupAudioPlayer();
+        await loadPanelsData();
+      }
+
+      // Carga de datos con fallbacks jerárquicos
+      async function loadPanelsData() {
+        try {
+          // 1. Intentar API en vivo
+          let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
+          if (res && res.ok) {
+            const data = await res.json();
+            if (data.panels && data.panels.length > 0) panelsList = data.panels;
+          }
+
+          // 2. Fallback a localStorage
+          if (!panelsList || panelsList.length === 0) {
+            const saved = localStorage.getItem('pajarillo_panels');
+            if (saved) {
+              try { panelsList = JSON.parse(saved); } catch (e) {}
+            }
+          }
+
+          // 3. Fallback a JSON estático
+          if (!panelsList || panelsList.length === 0) {
+            const resStatic = await fetch('./data/paneles.json?t=' + Date.now());
+            const data = await resStatic.json();
+            panelsList = data.panels || [];
+          }
+
+          // Localizar el panel seleccionado
+          currentPanel = panelsList.find(p => p.id === targetId) || panelsList[0];
+          if (currentPanel) {
+            renderPanelContent();
+            renderTourNavigation();
+          }
+        } catch (err) {
+          console.error('Error cargando ficha del punto:', err);
+          dom.title.textContent = 'Error al cargar el punto';
+          dom.description.innerHTML = '<p>No se pudo cargar la información. Por favor, vuelve al recorrido.</p>';
+        }
+      }
+
+      // Renderizar contenido del panel en el idioma actual
+      function renderPanelContent() {
+        if (!currentPanel) return;
+
+        const content = (currentPanel.content && (currentPanel.content[currentLang] || currentPanel.content.es)) || {};
+        const title = content.title || 'Punto Interpretativo';
+        const subtitle = content.subtitle || 'Santuario Heroico de El Pajarillo';
+        const descHtml = content.description || '<p>Sin descripción disponible.</p>';
+
+        document.title = `${title} · Santuario Ibérico de El Pajarillo`;
+
+        dom.title.textContent = title;
+        dom.subtitle.textContent = subtitle;
+        dom.description.innerHTML = descHtml;
+
+        // Lectura Fácil
+        const plainText = descHtml.replace(/<\/?[^>]+(>|$)/g, "");
+        const firstSentence = plainText.split('.')[0] + '.';
+        dom.facilText.textContent = firstSentence || 'Este hito forma parte del conjunto monumental y sagrado de El Pajarillo.';
+
+        // Badges
+        dom.badgeNum.textContent = `Nº 0${currentPanel.id}`;
+        dom.badgeTag.textContent = currentPanel.tag || 'Escultura';
+
+        // Imagen
+        dom.image.src = currentPanel.image || './assets/images/lobo.png';
+        dom.image.alt = title;
+
+        // Video / 3D
+        if (currentPanel.video) {
+          dom.videoPlayer.src = currentPanel.video;
+          dom.videoContainer.classList.remove('hidden');
+        } else {
+          dom.videoContainer.classList.add('hidden');
+          dom.videoPlayer.pause();
+        }
+
+        // Configurar audio nativo si existe
+        if (currentPanel.audio) {
+          dom.nativeAudio.src = `./assets/audio/${currentPanel.audio}`;
+        } else {
+          dom.nativeAudio.src = '';
+        }
+
+        // Detener reproducción previa al cambiar de idioma o punto
+        stopAudioPlayback();
+      }
+
+      // Renderizar enlaces "Anterior" y "Siguiente"
+      function renderTourNavigation() {
+        if (!panelsList || panelsList.length <= 1) return;
+
+        const currentIndex = panelsList.findIndex(p => p.id === currentPanel.id);
+        const prevPanel = currentIndex > 0 ? panelsList[currentIndex - 1] : null;
+        const nextPanel = currentIndex < panelsList.length - 1 ? panelsList[currentIndex + 1] : null;
+
+        if (prevPanel) {
+          const prevContent = prevPanel.content[currentLang] || prevPanel.content.es;
+          dom.tourTitlePrev.textContent = prevContent.title;
+          dom.tourLinkPrev.href = `punto.html?id=${prevPanel.id}`;
+          dom.tourLinkPrev.classList.remove('hidden');
+        } else {
+          dom.tourLinkPrev.classList.add('hidden');
+        }
+
+        if (nextPanel) {
+          const nextContent = nextPanel.content[currentLang] || nextPanel.content.es;
+          dom.tourTitleNext.textContent = nextContent.title;
+          dom.tourLinkNext.href = `punto.html?id=${nextPanel.id}`;
+          dom.tourLinkNext.classList.remove('hidden');
+        } else {
+          dom.tourLinkNext.classList.add('hidden');
+        }
+      }
+
+      // Configuración de Selector de Idioma
+      function setupLanguageButtons() {
+        const buttons = document.querySelectorAll('.lang-btn');
+        buttons.forEach(btn => {
+          btn.classList.toggle('active', btn.dataset.lang === currentLang);
+          btn.addEventListener('click', () => {
+            currentLang = btn.dataset.lang;
+            localStorage.setItem('pajarillo_lang', currentLang);
+            buttons.forEach(b => b.classList.toggle('active', b.dataset.lang === currentLang));
+
+            // Actualizar etiquetas de interfaz
+            if (currentLang === 'en') {
+              dom.txtBackTour.textContent = 'Back to Tour';
+              document.getElementById('lbl-audioguide-title').textContent = 'Official Audio Guide';
+              document.getElementById('lbl-audioguide-sub').textContent = 'Available in exhibition rooms & site';
+              document.getElementById('lbl-facil-badge').textContent = 'Easy Reading · Cognitive Accessibility';
+            } else if (currentLang === 'fr') {
+              dom.txtBackTour.textContent = 'Retour au Parcours';
+              document.getElementById('lbl-audioguide-title').textContent = 'Audioguide Officiel';
+              document.getElementById('lbl-audioguide-sub').textContent = 'Disponible en salle et sur le site';
+              document.getElementById('lbl-facil-badge').textContent = 'Lecture Facile · Accessibilité';
+            } else {
+              dom.txtBackTour.textContent = 'Volver al Recorrido';
+              document.getElementById('lbl-audioguide-title').textContent = 'Audioguía Oficial';
+              document.getElementById('lbl-audioguide-sub').textContent = 'Disponible en sala y exterior';
+              document.getElementById('lbl-facil-badge').textContent = 'Lectura Fácil · Accesibilidad Cognitiva';
+            }
+
+            renderPanelContent();
+            renderTourNavigation();
+          });
+        });
+      }
+
+      // Sistema de Reproductor de Audio (Nativo o Síntesis de Voz en tiempo real)
+      function setupAudioPlayer() {
+        // Alternar Play/Pausa
+        dom.btnAudioToggle.addEventListener('click', () => {
+          if (isPlaying) {
+            stopAudioPlayback();
+          } else {
+            startAudioPlayback();
+          }
+        });
+
+        // Barra de progreso de audio nativo
+        dom.nativeAudio.addEventListener('timeupdate', () => {
+          if (dom.nativeAudio.duration) {
+            const pct = (dom.nativeAudio.currentTime / dom.nativeAudio.duration) * 100;
+            dom.audioProgress.value = pct;
+            dom.audioTime.textContent = formatTime(dom.nativeAudio.currentTime);
+          }
+        });
+
+        dom.nativeAudio.addEventListener('ended', stopAudioPlayback);
+
+        dom.audioProgress.addEventListener('input', () => {
+          if (dom.nativeAudio.duration) {
+            dom.nativeAudio.currentTime = (dom.audioProgress.value / 100) * dom.nativeAudio.duration;
+          }
+        });
+
+        // Control de velocidad
+        dom.btnAudioSpeed.addEventListener('click', () => {
+          if (audioSpeed === 1.0) audioSpeed = 1.25;
+          else if (audioSpeed === 1.25) audioSpeed = 1.5;
+          else audioSpeed = 1.0;
+          dom.btnAudioSpeed.textContent = `${audioSpeed}x`;
+          dom.nativeAudio.playbackRate = audioSpeed;
+          if (synthUtterance && window.speechSynthesis.speaking) {
+            window.speechSynthesis.cancel();
+            startSpeechNarration();
+          }
+        });
+      }
+
+      function startAudioPlayback() {
+        isPlaying = true;
+        dom.btnAudioIcon.textContent = '⏸';
+        dom.btnAudioText.textContent = currentLang === 'en' ? 'Pause' : (currentLang === 'fr' ? 'Pause' : 'Pausar');
+
+        if (currentPanel && currentPanel.audio) {
+          // Reproducir archivo de audio real
+          dom.nativeAudio.play().catch(() => startSpeechNarration());
+        } else {
+          // Si no hay archivo mp3 grabado, narrar con voz sintetizada de alta calidad
+          startSpeechNarration();
+        }
+      }
+
+      function stopAudioPlayback() {
+        isPlaying = false;
+        dom.btnAudioIcon.textContent = '▶';
+        dom.btnAudioText.textContent = currentLang === 'en' ? 'Listen to narration' : (currentLang === 'fr' ? 'Écouter' : 'Escuchar narración');
+        dom.nativeAudio.pause();
+        if (window.speechSynthesis) {
+          window.speechSynthesis.cancel();
+        }
+      }
+
+      function startSpeechNarration() {
+        if (!('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+
+        const content = (currentPanel.content && (currentPanel.content[currentLang] || currentPanel.content.es)) || {};
+        const title = content.title || '';
+        const plainDesc = (content.description || '').replace(/<\/?[^>]+(>|$)/g, " ");
+        const textToSpeak = `${title}. ${plainDesc}`;
+
+        synthUtterance = new SpeechSynthesisUtterance(textToSpeak);
+        synthUtterance.rate = audioSpeed;
+
+        if (currentLang === 'en') synthUtterance.lang = 'en-US';
+        else if (currentLang === 'fr') synthUtterance.lang = 'fr-FR';
+        else synthUtterance.lang = 'es-ES';
+
+        synthUtterance.onend = stopAudioPlayback;
+        synthUtterance.onerror = stopAudioPlayback;
+
+        window.speechSynthesis.speak(synthUtterance);
+      }
+
+      function formatTime(secs) {
+        const m = Math.floor(secs / 60);
+        const s = Math.floor(secs % 60);
+        return `${m}:${s < 10 ? '0' : ''}${s}`;
+      }
+
+      // Modal para Compartir y Visualizar Código QR
+      function setupQrModal() {
+        dom.btnShowQr.addEventListener('click', () => {
+          dom.qrBox.innerHTML = '';
+          const currentUrl = window.location.href;
+          dom.qrLinkText.textContent = currentUrl;
+
+          if (typeof QRCode !== 'undefined') {
+            new QRCode(dom.qrBox, {
+              text: currentUrl,
+              width: 200,
+              height: 200,
+              colorDark: '#384F3E',
+              colorLight: '#FFFFFF',
+              correctLevel: QRCode.CorrectLevel.H
+            });
+          }
+
+          dom.modalQr.classList.remove('hidden');
+        });
+
+        dom.btnCloseQr.addEventListener('click', () => dom.modalQr.classList.add('hidden'));
+        dom.modalQr.addEventListener('click', (e) => {
+          if (e.target === dom.modalQr) dom.modalQr.classList.add('hidden');
+        });
+
+        dom.btnCopyLink.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            dom.btnCopyLink.textContent = '✅ ¡Enlace copiado!';
+            setTimeout(() => {
+              dom.btnCopyLink.textContent = '📋 Copiar enlace';
+            }, 2000);
+          } catch (e) {}
+        });
+      }
+
+      // Iniciar al cargar el DOM
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

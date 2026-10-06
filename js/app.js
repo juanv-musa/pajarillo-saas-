@@ -312,59 +312,64 @@ async function loadExhibitionPoints(i18n) {
   const container = document.getElementById('panels-container');
   if (!container) return;
 
-  try {
-    let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
-    if (!res || !res.ok) {
-      res = await fetch('./data/paneles.json?t=' + Date.now());
-    }
-    const data = await res.json();
-    const panels = data.panels || [];
-    const lang = i18n.currentLang;
+  // Si la URL contiene ?panel=X o ?qr=X (escaneo de código QR), redirigir directamente a la ficha específica
+  const urlParams = new URLSearchParams(window.location.search);
+  const targetPanelId = urlParams.get('panel') || urlParams.get('qr');
+  if (targetPanelId) {
+    window.location.replace(`punto.html?id=${targetPanelId}`);
+    return;
+  }
 
+  try {
+    let panels = [];
+
+    // 1. Intentar API en vivo
+    try {
+      const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
+      if (res.ok) {
+        const data = await res.json();
+        if (data.panels && data.panels.length > 0) panels = data.panels;
+      }
+    } catch (e) {}
+
+    // 2. Fallback a localStorage
+    if (!panels || panels.length === 0) {
+      const saved = localStorage.getItem('pajarillo_panels');
+      if (saved) {
+        try { panels = JSON.parse(saved); } catch (e) {}
+      }
+    }
+
+    // 3. Fallback a archivo JSON estático
+    if (!panels || panels.length === 0) {
+      const resStatic = await fetch('./data/paneles.json?t=' + Date.now());
+      const dataStatic = await resStatic.json();
+      panels = dataStatic.panels || [];
+    }
+
+    const lang = i18n.currentLang || 'es';
+
+    // Renderizado limpio solicitado: Solo recuadro con la imagen y el título, con enlace a ficha específica
     container.innerHTML = panels.map(panel => {
-      const content = panel.content[lang] || panel.content.es;
-      const safeTitle = content.title.replace(/'/g, "\\'");
-      const viewQrLabel = i18n.t('puntos.view_qr') || 'Código QR';
-      const tagLabel = i18n.t(`puntos.tag_${panel.tag}`) || panel.tag;
+      const content = (panel.content && (panel.content[lang] || panel.content.es)) || { title: 'Punto Interpretativo' };
+      const img = panel.image || './assets/images/gallery/exterior.jpg';
 
       return `
-        <article class="point-card" data-id="${panel.id}">
-          <div class="point-img-wrap">
-            <img src="${panel.image}" alt="${content.title}" class="point-img" loading="lazy">
-            <span class="point-tag-badge">${tagLabel}</span>
-            <span class="point-id-badge">Nº 0${panel.id}</span>
+        <a href="punto.html?id=${panel.id}" class="point-card-compact" data-id="${panel.id}" title="Acceder a la ficha de ${content.title}">
+          <div class="point-compact-img-wrap">
+            <img src="${img}" alt="${content.title}" class="point-compact-img" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
+            <span class="point-compact-badge">Nº 0${panel.id}</span>
           </div>
-          <div class="point-body">
-            <h3 class="point-title">${content.title}</h3>
-            <div class="point-subtitle">${content.subtitle || ''}</div>
-            <div class="point-description">${content.description}</div>
-            <div class="point-footer">
-              <button class="btn-point-action btn-point-qr" onclick="openPanelQR(${panel.id}, '${safeTitle}')">
-                <img src="./assets/icons/icon-mobile.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> ${viewQrLabel}
-              </button>
-              ${content.audio ? `
-                <button class="btn-point-action btn-point-qr" style="background: var(--c-accent-purple); color: white;" onclick="playAudio('${content.audio}')">
-                  <img src="./assets/icons/icon-audioguide.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Audio
-                </button>
-              ` : ''}
-            </div>
+          <div class="point-compact-body">
+            <h3 class="point-compact-title">${content.title}</h3>
+            <span class="point-compact-action">
+              <span>Entrar y escuchar</span>
+              <span aria-hidden="true">→</span>
+            </span>
           </div>
-        </article>
+        </a>
       `;
     }).join('');
-
-    // Si la URL contiene ?panel=X o ?qr=X (escaneo de código QR en sala o yacimiento)
-    const urlParams = new URLSearchParams(window.location.search);
-    const targetPanelId = urlParams.get('panel') || urlParams.get('qr');
-    if (targetPanelId) {
-      setTimeout(() => {
-        const targetCard = document.querySelector(`.point-card[data-id="${targetPanelId}"]`);
-        if (targetCard) {
-          targetCard.classList.add('point-card-highlighted');
-          targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      }, 350);
-    }
   } catch (err) {
     console.error('Error cargando paneles:', err);
   }
@@ -527,8 +532,15 @@ window.openPanelQR = function(panelId, panelTitle) {
   titleEl.textContent = panelTitle;
   container.innerHTML = '';
 
-  // URL del punto (puede abrir el punto concreto en la app)
-  const targetUrl = `${window.location.origin}${window.location.pathname}?panel=${panelId}`;
+  // URL específica del punto interpretativo
+  const origin = window.location.origin;
+  let path = window.location.pathname;
+  if (path.endsWith('index.html')) {
+    path = path.replace(/index\.html$/, 'punto.html');
+  } else {
+    path = path.replace(/\/?$/, '/punto.html');
+  }
+  const targetUrl = `${origin}${path}?id=${panelId}`;
   linkText.textContent = targetUrl;
 
   if (typeof QRCode !== 'undefined') {

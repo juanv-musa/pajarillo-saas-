@@ -718,8 +718,103 @@ button {
    ═══════════════════════════════════════════ */
 .panels-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2rem;
+}
+
+/* Recuadro limpio solicitado: solo imagen subida y título, enlace directo a ficha específica */
+.point-card-compact {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--c-border);
+  box-shadow: 0 4px 14px rgba(56, 79, 62, 0.05);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.point-card-compact:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px rgba(56, 79, 62, 0.12);
+  border-color: var(--c-primary);
+}
+
+.point-compact-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--c-stone);
+}
+
+.point-compact-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.point-card-compact:hover .point-compact-img {
+  transform: scale(1.06);
+}
+
+.point-compact-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(56, 79, 62, 0.88);
+  color: var(--c-white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(4px);
+}
+
+.point-compact-body {
+  padding: 1.25rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.6rem;
+  background: var(--c-white);
+  flex-grow: 1;
+}
+
+.point-compact-title {
+  font-family: var(--font-condensed);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--c-primary);
+  line-height: 1.25;
+  margin: 0;
+  transition: color 0.2s ease;
+}
+
+.point-card-compact:hover .point-compact-title {
+  color: var(--c-accent-terracotta);
+}
+
+.point-compact-action {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--c-accent-gold-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  transition: transform 0.2s ease;
+}
+
+.point-card-compact:hover .point-compact-action {
+  transform: translateX(4px);
 }
 
 .point-card {

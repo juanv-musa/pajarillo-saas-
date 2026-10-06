@@ -987,8 +987,11 @@
 
           <!-- Lista de Paneles Ordenables con SortableJS -->
           <div class="admin-card">
-            <div class="card-title-row">
+            <div class="card-title-row" style="display: flex; justify-content: space-between; align-items: center;">
               <h3>Paneles Activos (Arrastra para reordenar)</h3>
+              <button type="button" id="btn-export-panels-json" class="btn-admin btn-admin-outline" style="font-size: 0.8rem; padding: 6px 12px;" title="Descargar copia de data/paneles.json">
+                📥 Exportar JSON
+              </button>
             </div>
             <ul id="admin-panels-sortable-list" class="panel-admin-list">
               <!-- Inyectado por admin.js -->
@@ -1343,10 +1346,16 @@
         <span id="admin-qr-url-text"></span>
       </div>
 
-      <div style="display: flex; gap: 0.5rem; justify-content: center;">
+      <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
         <button id="btn-admin-download-qr" class="btn-admin btn-admin-primary">
           ⬇ Descargar PNG
         </button>
+        <button id="btn-admin-copy-qr-url" class="btn-admin btn-admin-outline">
+          📋 Copiar Enlace
+        </button>
+        <a id="btn-admin-open-punto-url" href="#" target="_blank" class="btn-admin btn-admin-outline" style="text-decoration: none;">
+          🔗 Abrir Ficha
+        </a>
         <button id="btn-admin-close-qr" class="btn-admin btn-admin-outline">
           Cerrar
         </button>
