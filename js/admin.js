@@ -1467,6 +1467,7 @@ let currentCmsLang = 'es';
 
 const DEFAULT_LOCALES = {
   es: {
+    hero_eyebrow: "Santuario Heroico Oretano · Siglo IV a.n.e. · Huelma, Jaén",
     site_title: "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
     hero_cta: "Planifica tu Visita",
     site_tagline: "Un viaje al corazón sagrado de la cultura íbera y el dominio territorial de Iltiraka",
@@ -1508,6 +1509,7 @@ const DEFAULT_LOCALES = {
     footer_copy: "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados."
   },
   en: {
+    hero_eyebrow: "Oretan Heroic Sanctuary · 4th Century BCE · Huelma, Jaén",
     site_title: "El Pajarillo Iberian Sanctuary Interpretation Centre",
     hero_cta: "Plan Your Visit",
     site_tagline: "A journey to the sacred heart of Iberian culture and the territorial domain of Iltiraka",
@@ -1549,6 +1551,7 @@ const DEFAULT_LOCALES = {
     footer_copy: "© 2026 El Pajarillo Iberian Sanctuary Interpretation Centre. Huelma Town Council. All rights reserved."
   },
   fr: {
+    hero_eyebrow: "Sanctuaire Héroïque Ibère · IVe siècle av. J.-C. · Huelma, Jaén",
     site_title: "Centre d'Interprétation Sanctuaire Ibérique d'El Pajarillo",
     hero_cta: "Planifiez votre Visite",
     site_tagline: "Un voyage au cœur sacré de la culture ibérique et du domaine territorial d'Iltiraka",
@@ -1666,6 +1669,7 @@ function populateFormWithLang(lang) {
     if (el) el.value = val !== undefined ? val : '';
   };
 
+  setVal('cnt-hero-eyebrow', c.hero_eyebrow);
   setVal('cnt-site-title', c.site_title);
   setVal('cnt-site-tagline', c.site_tagline);
   setVal('cnt-hero-cta', c.hero_cta);
@@ -1720,6 +1724,7 @@ function saveCurrentFormToLang(lang) {
 
   localesData[lang] = {
     ...localesData[lang],
+    hero_eyebrow: getVal('cnt-hero-eyebrow'),
     site_title: getVal('cnt-site-title'),
     site_tagline: getVal('cnt-site-tagline'),
     hero_cta: getVal('cnt-hero-cta'),

@@ -48,10 +48,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // Escuchar cambios de configuración desde otras pestañas (Panel de Control)
-  window.addEventListener('storage', (e) => {
+  window.addEventListener('storage', async (e) => {
     if (e.key === 'pajarillo_site_config' || e.key === 'pajarillo_locales') {
       try {
-        initSiteConfig();
+        if (i18n) {
+          await i18n.loadLanguage(i18n.currentLang);
+          i18n.applyTranslations();
+        }
+        await initSiteConfig();
       } catch(err) {}
     }
   });
@@ -140,6 +144,11 @@ function applySiteConfig(config) {
 
   // 2. Personalización de Textos y Contenidos
   const c = config.content || {};
+  if (c.hero_eyebrow) {
+    document.querySelectorAll('[data-i18n="hero.eyebrow"]').forEach(el => {
+      el.textContent = c.hero_eyebrow;
+    });
+  }
   if (c.site_title) {
     document.querySelectorAll('.brand-text strong, [data-i18n="hero.title"]').forEach(el => {
       el.textContent = c.site_title;
@@ -151,7 +160,7 @@ function applySiteConfig(config) {
     });
   }
   if (c.hero_cta) {
-    document.querySelectorAll('[data-i18n="hero.btn_plan"]').forEach(el => {
+    document.querySelectorAll('[data-i18n="hero.cta_primary"], [data-i18n="hero.btn_plan"]').forEach(el => {
       el.textContent = c.hero_cta;
     });
   }
@@ -234,6 +243,48 @@ function applySiteConfig(config) {
   if (c.reservas_subtitle) {
     document.querySelectorAll('[data-i18n="reservas.subtitle"]').forEach(el => {
       el.textContent = c.reservas_subtitle;
+    });
+  }
+
+  // 3. Cronología / Línea de Tiempo (Hitos 1 a 6)
+  for (let i = 1; i <= 6; i++) {
+    const idx = i - 1;
+    if (c[`hito${i}_title`]) {
+      document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.year"]`).forEach(el => {
+        el.textContent = c[`hito${i}_title`];
+      });
+    }
+    if (c[`hito${i}_desc`]) {
+      document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.text"]`).forEach(el => {
+        el.textContent = c[`hito${i}_desc`];
+      });
+    }
+  }
+
+  // 4. Patrimonio Milenario / Santuario y Territorio
+  if (c.patrimonio_title) {
+    document.querySelectorAll('[data-i18n="historia.title"]').forEach(el => {
+      el.textContent = c.patrimonio_title;
+    });
+  }
+  if (c.patrimonio_subtitle) {
+    document.querySelectorAll('[data-i18n="historia.subtitle"]').forEach(el => {
+      el.textContent = c.patrimonio_subtitle;
+    });
+  }
+  if (c.patrimonio_tab1) {
+    document.querySelectorAll('[data-i18n="historia.iberico_content.body"]').forEach(el => {
+      el.textContent = c.patrimonio_tab1;
+    });
+  }
+  if (c.patrimonio_tab2) {
+    document.querySelectorAll('[data-i18n="historia.iltiraka_content.body"]').forEach(el => {
+      el.textContent = c.patrimonio_tab2;
+    });
+  }
+  if (c.patrimonio_tab3) {
+    document.querySelectorAll('[data-i18n="historia.fontanar_content.body"]').forEach(el => {
+      el.textContent = c.patrimonio_tab3;
     });
   }
 }

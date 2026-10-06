@@ -21,12 +21,33 @@ export class I18nManager {
       const res = await fetch(`./locales/${lang}.json?t=${Date.now()}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       this.translations[lang] = await res.json();
-      this.currentLang = lang;
-      localStorage.setItem('pajarillo_lang', lang);
-      document.documentElement.lang = lang;
     } catch (err) {
       console.warn(`No se pudo cargar ./locales/${lang}.json, manteniendo fallback`, err);
+      if (!this.translations[lang]) this.translations[lang] = {};
     }
+
+    // Sobrescribir con cambios guardados en el panel de administración
+    try {
+      const savedLocales = localStorage.getItem('pajarillo_locales');
+      if (savedLocales) {
+        const parsed = JSON.parse(savedLocales);
+        if (parsed[lang]) {
+          const l = parsed[lang];
+          if (!this.translations[lang].hero) this.translations[lang].hero = {};
+          if (!this.translations[lang].historia) this.translations[lang].historia = {};
+
+          if (l.hero_eyebrow) this.translations[lang].hero.eyebrow = l.hero_eyebrow;
+          if (l.site_title) this.translations[lang].hero.title = l.site_title;
+          if (l.site_tagline) this.translations[lang].hero.subtitle = l.site_tagline;
+          if (l.hero_cta) this.translations[lang].hero.cta_primary = l.hero_cta;
+          if (l.hero_desc) this.translations[lang].hero.card_desc = l.hero_desc;
+        }
+      }
+    } catch (e) {}
+
+    this.currentLang = lang;
+    localStorage.setItem('pajarillo_lang', lang);
+    document.documentElement.lang = lang;
   }
 
   bindButtons() {
