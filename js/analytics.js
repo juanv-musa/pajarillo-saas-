@@ -35,7 +35,13 @@ class AnalyticsTracker {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw);
-        if (parsed && parsed.summary) return parsed;
+        if (parsed && parsed.summary) {
+          parsed.historyByDay = parsed.historyByDay || {};
+          parsed.historyByMonth = parsed.historyByMonth || {};
+          parsed.historyByYear = parsed.historyByYear || {};
+          parsed.events = Array.isArray(parsed.events) ? parsed.events : [];
+          return parsed;
+        }
       }
     } catch (e) {}
 
@@ -53,6 +59,9 @@ class AnalyticsTracker {
         en: 0,
         fr: 0
       },
+      historyByDay: {},
+      historyByMonth: {},
+      historyByYear: {},
       events: []
     };
   }
@@ -83,6 +92,9 @@ class AnalyticsTracker {
         en: 0,
         fr: 0
       },
+      historyByDay: {},
+      historyByMonth: {},
+      historyByYear: {},
       events: []
     };
     this.saveStoredData(fresh);
@@ -128,29 +140,88 @@ class AnalyticsTracker {
     const lang = payload.lang || localStorage.getItem('pajarillo_lang') || 'es';
     const device = payload.device || this.detectDevice();
     const eventTime = new Date().toISOString();
+    const todayStr = eventTime.slice(0, 10);
+    const monthStr = eventTime.slice(0, 7);
+    const yearStr = eventTime.slice(0, 4);
 
     const data = this.getStoredData();
 
-    // Actualizar contadores reales
-    if (type === 'page_view') {
-      data.summary.totalVisits = (data.summary.totalVisits || 0) + 1;
-      if (payload.is_unique) {
-        data.summary.uniqueVisitors = (data.summary.uniqueVisitors || 0) + 1;
-      }
-      data.languages[lang] = (data.languages[lang] || 0) + 1;
-    } else if (type === 'qr_scan') {
-      data.summary.qrScans = (data.summary.qrScans || 0) + 1;
-    } else if (type === 'audio_play') {
-      data.summary.audioListens = (data.summary.audioListens || 0) + 1;
-    } else if (type === 'download') {
-      data.summary.downloads = (data.summary.downloads || 0) + 1;
-    } else if (type === 'booking') {
-      data.summary.tourBookings = (data.summary.tourBookings || 0) + 1;
-    } else if (type === 'lang_change') {
-      data.languages[lang] = (data.languages[lang] || 0) + 1;
+    // Estructuras de histórico permanente
+    data.historyByDay = data.historyByDay || {};
+    data.historyByMonth = data.historyByMonth || {};
+    data.historyByYear = data.historyByYear || {};
+
+    if (!data.historyByDay[todayStr]) {
+      data.historyByDay[todayStr] = {
+        visits: 0, unique: 0, qr: 0, audio: 0, downloads: 0, bookings: 0, es: 0, en: 0, fr: 0
+      };
+    }
+    if (!data.historyByMonth[monthStr]) {
+      data.historyByMonth[monthStr] = {
+        visits: 0, unique: 0, qr: 0, audio: 0, downloads: 0, bookings: 0, es: 0, en: 0, fr: 0
+      };
+    }
+    if (!data.historyByYear[yearStr]) {
+      data.historyByYear[yearStr] = {
+        visits: 0, unique: 0, qr: 0, audio: 0, downloads: 0, bookings: 0, es: 0, en: 0, fr: 0
+      };
     }
 
-    // Registrar evento real
+    const dayBucket = data.historyByDay[todayStr];
+    const monthBucket = data.historyByMonth[monthStr];
+    const yearBucket = data.historyByYear[yearStr];
+
+    // Actualizar contadores globales y buckets históricos permanentes
+    if (type === 'page_view') {
+      data.summary.totalVisits = (data.summary.totalVisits || 0) + 1;
+      dayBucket.visits = (dayBucket.visits || 0) + 1;
+      monthBucket.visits = (monthBucket.visits || 0) + 1;
+      yearBucket.visits = (yearBucket.visits || 0) + 1;
+
+      if (payload.is_unique) {
+        data.summary.uniqueVisitors = (data.summary.uniqueVisitors || 0) + 1;
+        dayBucket.unique = (dayBucket.unique || 0) + 1;
+        monthBucket.unique = (monthBucket.unique || 0) + 1;
+        yearBucket.unique = (yearBucket.unique || 0) + 1;
+      }
+
+      data.languages[lang] = (data.languages[lang] || 0) + 1;
+      if (dayBucket[lang] !== undefined) dayBucket[lang]++;
+      if (monthBucket[lang] !== undefined) monthBucket[lang]++;
+      if (yearBucket[lang] !== undefined) yearBucket[lang]++;
+
+    } else if (type === 'qr_scan') {
+      data.summary.qrScans = (data.summary.qrScans || 0) + 1;
+      dayBucket.qr = (dayBucket.qr || 0) + 1;
+      monthBucket.qr = (monthBucket.qr || 0) + 1;
+      yearBucket.qr = (yearBucket.qr || 0) + 1;
+
+    } else if (type === 'audio_play') {
+      data.summary.audioListens = (data.summary.audioListens || 0) + 1;
+      dayBucket.audio = (dayBucket.audio || 0) + 1;
+      monthBucket.audio = (monthBucket.audio || 0) + 1;
+      yearBucket.audio = (yearBucket.audio || 0) + 1;
+
+    } else if (type === 'download') {
+      data.summary.downloads = (data.summary.downloads || 0) + 1;
+      dayBucket.downloads = (dayBucket.downloads || 0) + 1;
+      monthBucket.downloads = (monthBucket.downloads || 0) + 1;
+      yearBucket.downloads = (yearBucket.downloads || 0) + 1;
+
+    } else if (type === 'booking') {
+      data.summary.tourBookings = (data.summary.tourBookings || 0) + 1;
+      dayBucket.bookings = (dayBucket.bookings || 0) + 1;
+      monthBucket.bookings = (monthBucket.bookings || 0) + 1;
+      yearBucket.bookings = (yearBucket.bookings || 0) + 1;
+
+    } else if (type === 'lang_change') {
+      data.languages[lang] = (data.languages[lang] || 0) + 1;
+      if (dayBucket[lang] !== undefined) dayBucket[lang]++;
+      if (monthBucket[lang] !== undefined) monthBucket[lang]++;
+      if (yearBucket[lang] !== undefined) yearBucket[lang]++;
+    }
+
+    // Registrar evento reciente (mantiene últimos 300)
     const eventRecord = {
       id: 'ev_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
       time: eventTime,
@@ -161,7 +232,6 @@ class AnalyticsTracker {
     };
 
     data.events.unshift(eventRecord);
-    // Limitar a los últimos 300 eventos para ligereza
     if (data.events.length > 300) {
       data.events = data.events.slice(0, 300);
     }
@@ -173,7 +243,7 @@ class AnalyticsTracker {
       fetch(this.endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, type, lang, device })
+        body: JSON.stringify({ ...payload, type, lang, device, time: eventTime })
       }).catch(() => {});
     } catch (err) {}
   }
