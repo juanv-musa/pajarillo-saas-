@@ -114,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDropzone();
   setupQrModalEvents();
   setupPanelsExport();
+  setupKioskSection();
   setupCsvExport();
 });
 
@@ -1546,6 +1547,36 @@ function setupPanelsExport() {
     URL.revokeObjectURL(url);
     showToast('📥 Archivo de datos paneles.json descargado');
   });
+}
+
+// Configuración de Lanzador Kiosco TV 65" (Exclusivo Administración)
+function setupKioskSection() {
+  const kioskUrlEl = document.getElementById('kiosk-url-text');
+  const btnCopy = document.getElementById('btn-copy-kiosk-url');
+  if (!kioskUrlEl) return;
+
+  const origin = window.location.origin;
+  let path = window.location.pathname;
+  if (path.endsWith('admin.html')) {
+    path = path.replace(/admin\.html$/, 'audiovisual_p0.html');
+  } else if (path.endsWith('index.html')) {
+    path = path.replace(/index\.html$/, 'audiovisual_p0.html');
+  } else {
+    path = path.replace(/\/?$/, '/audiovisual_p0.html');
+  }
+  const fullKioskUrl = `${origin}${path}`;
+  kioskUrlEl.textContent = fullKioskUrl;
+
+  if (btnCopy) {
+    btnCopy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(fullKioskUrl);
+        showToast('📋 Dirección de Pantalla 65" copiada al portapapeles');
+      } catch (e) {
+        showToast('⚠️ No se pudo copiar automáticamente');
+      }
+    });
+  }
 }
 
 // ═══════════════════════════════════════════

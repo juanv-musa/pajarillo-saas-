@@ -174,6 +174,14 @@
         <span class="badge-counter" id="bookings-count-badge">3</span>
       </button>
 
+      <div class="sidebar-heading" style="margin-top: 1rem;">Centro de Interpretación</div>
+
+      <button class="sidebar-btn" data-view="kiosco">
+        <span style="font-size: 1.2em; line-height: 1;">📺</span>
+        <span>Pantalla 65'' Kiosco</span>
+        <span class="badge-counter" style="background: var(--admin-primary); color: white;">SALA</span>
+      </button>
+
       <div class="sidebar-heading" style="margin-top: 1rem;">Administración</div>
 
       <button class="sidebar-btn" data-view="settings">
@@ -1223,6 +1231,84 @@
                   🎫 <strong>turismo</strong> — Mediador Cultural de Sala
                 </li>
               </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: KIOSCO SALA AUDIOVISUAL TV 65" (EXCLUSIVO ADMINISTRACIÓN)
+           ────────────────────────────────────────── -->
+      <section id="subview-kiosco" class="admin-subview hidden">
+        <div class="card-title-row">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
+              Control de Pantalla de 65" · Sala Audiovisual y Kiosco
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem;">
+              Acceso exclusivo para el personal del Centro de Interpretación. Habilita y proyecta la interfaz independiente para el televisor de 65 pulgadas o tótem interactivo.
+            </p>
+          </div>
+        </div>
+
+        <!-- Banner oficial de lanzamiento TV 65" -->
+        <div style="background: linear-gradient(135deg, #1A241E 0%, #111914 100%); border: 1.5px solid rgba(181, 154, 87, 0.4); border-radius: 12px; padding: 2rem 2.25rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+          <div style="max-width: 680px;">
+            <span style="background: rgba(181, 154, 87, 0.25); color: #D4AF37; font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.5rem;">
+              📺 MODO KIOSCO OFICIAL · CENTRO DE INTERPRETACIÓN
+            </span>
+            <h3 style="font-family: var(--font-condensed); font-size: 1.85rem; color: white; margin: 0.4rem 0 0.5rem; font-weight: 800;">
+              Sala Audiovisual Oficial (Pantalla TV 65")
+            </h3>
+            <p style="color: #A3B5AA; font-size: 0.95rem; margin: 0; line-height: 1.55;">
+              Interfaz cinematográfica diseñada a escala para la televisión de 65 pulgadas del centro. Integra selector para los 4 documentales oficiales, controles táctiles y reproducción en bucle sin elementos de la web pública.
+            </p>
+          </div>
+          <a href="./audiovisual_p0.html" target="_blank" class="btn-admin btn-admin-primary" style="font-size: 1.05rem; padding: 1rem 1.8rem; background: #B59A57; color: #111914; font-weight: 800; border-radius: 8px; text-decoration: none; white-space: nowrap; box-shadow: 0 4px 15px rgba(181, 154, 87, 0.4);">
+            📺 Abrir Sala Audiovisual TV 65" ↗
+          </a>
+        </div>
+
+        <div class="grid-2col" style="align-items: start;">
+          <!-- Instrucciones de configuración en el Centro -->
+          <div class="admin-card">
+            <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
+              🛠️ Puesta en Marcha en la Pantalla del Centro
+            </h3>
+            <ol style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--admin-text); line-height: 1.7; display: flex; flex-direction: column; gap: 0.5rem;">
+              <li>
+                <strong>Conexión del Dispositivo:</strong> Conecta el mini-PC, Raspberry Pi o navegador de la Smart TV de 65" a la red del centro.
+              </li>
+              <li>
+                <strong>Apertura del Enlace:</strong> Pulsa el botón superior para abrir la sala audiovisual o introduce la dirección directa en el televisor.
+              </li>
+              <li>
+                <strong>Modo Pantalla Completa:</strong> Pulsa <kbd style="background: var(--admin-bg); border: 1px solid var(--admin-border); padding: 2px 6px; border-radius: 4px; font-weight: 700;">F11</kbd> en el teclado del mini-PC o activa la opción de pantalla completa en el navegador de la TV.
+              </li>
+              <li>
+                <strong>Uso Autónomo:</strong> Los visitantes podrán seleccionar los documentales interactuando con la pantalla o el mando a distancia sin acceso al panel de administración.
+              </li>
+            </ol>
+          </div>
+
+          <!-- Enlace Directo y Acciones de Lanzamiento Rápido -->
+          <div class="admin-card">
+            <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
+              🔗 Dirección Directa para la TV
+            </h3>
+            <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1rem;">
+              Copia esta URL en el navegador del televisor de 65" para dejarlo configurado permanentemente:
+            </p>
+            <div style="background: var(--admin-bg); border: 1.5px solid var(--admin-border); border-radius: 8px; padding: 0.75rem 1rem; font-family: monospace; font-size: 0.85rem; color: var(--admin-primary); word-break: break-all; margin-bottom: 1rem;">
+              <span id="kiosk-url-text">.../audiovisual_p0.html</span>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="button" id="btn-copy-kiosk-url" class="btn-admin btn-admin-outline" style="font-size: 0.85rem;">
+                📋 Copiar Enlace Kiosco
+              </button>
+              <a href="./audiovisual_p0.html" target="_blank" class="btn-admin btn-admin-primary" style="font-size: 0.85rem; text-decoration: none;">
+                🖥️ Probar en esta pantalla
+              </a>
             </div>
           </div>
         </div>
