@@ -132,7 +132,7 @@ button {
 }
 
 .header-logo-svg {
-  height: 52px;
+  height: 72px;
   width: auto;
   max-width: none;
   aspect-ratio: 1024 / 815;
@@ -147,14 +147,14 @@ button {
 }
 
 .footer-logo-img {
-  height: 52px;
+  height: 68px;
   width: auto;
   max-width: none;
   aspect-ratio: 1024 / 815;
   object-fit: contain;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.92);
-  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 6px 12px;
   border-radius: 8px;
   display: block;
 }
@@ -1614,7 +1614,7 @@ img, video, canvas, svg {
   }
 
   .header-logo-svg {
-    height: 42px;
+    height: 56px;
     width: auto;
     max-width: none;
     aspect-ratio: 1024 / 815;
@@ -1909,7 +1909,7 @@ img, video, canvas, svg {
 /* DISPOSITIVOS MUY ESTRECHOS (hasta 380px, ej. iPhone SE / pantallas de 320-360px) */
 @media (max-width: 380px) {
   .header-logo-svg {
-    height: 36px;
+    height: 48px;
     width: auto;
     max-width: none;
     aspect-ratio: 1024 / 815;
