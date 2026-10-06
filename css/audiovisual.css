@@ -81,7 +81,7 @@ html, body {
 .tv-logo-pajarillo {
   height: 64px;
   width: auto;
-  aspect-ratio: 343 / 275;
+  aspect-ratio: 1024 / 815;
   object-fit: contain;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.95);

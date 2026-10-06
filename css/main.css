@@ -135,7 +135,7 @@ button {
   height: 52px;
   width: auto;
   max-width: none;
-  aspect-ratio: 343 / 275;
+  aspect-ratio: 1024 / 815;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
@@ -150,7 +150,7 @@ button {
   height: 52px;
   width: auto;
   max-width: none;
-  aspect-ratio: 343 / 275;
+  aspect-ratio: 1024 / 815;
   object-fit: contain;
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.92);
@@ -1617,7 +1617,7 @@ img, video, canvas, svg {
     height: 42px;
     width: auto;
     max-width: none;
-    aspect-ratio: 343 / 275;
+    aspect-ratio: 1024 / 815;
     flex-shrink: 0;
   }
 
@@ -1912,7 +1912,7 @@ img, video, canvas, svg {
     height: 36px;
     width: auto;
     max-width: none;
-    aspect-ratio: 343 / 275;
+    aspect-ratio: 1024 / 815;
     flex-shrink: 0;
   }
 
