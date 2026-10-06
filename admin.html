@@ -178,8 +178,8 @@
 
       <button class="sidebar-btn" data-view="kiosco">
         <span style="font-size: 1.2em; line-height: 1;">📺</span>
-        <span>Pantalla 65'' Kiosco</span>
-        <span class="badge-counter" style="background: var(--admin-primary); color: white;">SALA</span>
+        <span>Pantallas 65'' (P0 y P1)</span>
+        <span class="badge-counter" style="background: var(--admin-primary); color: white;">2 TVs</span>
       </button>
 
       <div class="sidebar-heading" style="margin-top: 1rem;">Administración</div>
@@ -1237,78 +1237,136 @@
       </section>
 
       <!-- ──────────────────────────────────────────
-           SUBVISTA: KIOSCO SALA AUDIOVISUAL TV 65" (EXCLUSIVO ADMINISTRACIÓN)
+           SUBVISTA: FONDOS AUDIOVISUALES 1 Y 2 · PANTALLAS 65" (EXCLUSIVO ADMINISTRACIÓN)
            ────────────────────────────────────────── -->
       <section id="subview-kiosco" class="admin-subview hidden">
         <div class="card-title-row">
           <div>
             <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary);">
-              Control de Pantalla de 65" · Sala Audiovisual y Kiosco
+              Control de Pantallas de 65" · Fondos Audiovisuales (P0 y P1)
             </h2>
             <p style="color: var(--admin-muted); font-size: 0.88rem;">
-              Acceso exclusivo para el personal del Centro de Interpretación. Habilita y proyecta la interfaz independiente para el televisor de 65 pulgadas o tótem interactivo.
+              Acceso exclusivo para el personal del Centro de Interpretación. Habilita y proyecta de forma independiente las pantallas de 65 pulgadas de la Planta Baja y de la Planta Alta. No visible en la web pública.
             </p>
           </div>
         </div>
 
-        <!-- Banner oficial de lanzamiento TV 65" -->
-        <div style="background: linear-gradient(135deg, #1A241E 0%, #111914 100%); border: 1.5px solid rgba(181, 154, 87, 0.4); border-radius: 12px; padding: 2rem 2.25rem; margin-bottom: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
-          <div style="max-width: 680px;">
-            <span style="background: rgba(181, 154, 87, 0.25); color: #D4AF37; font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 0.5rem;">
-              📺 MODO KIOSCO OFICIAL · CENTRO DE INTERPRETACIÓN
-            </span>
-            <h3 style="font-family: var(--font-condensed); font-size: 1.85rem; color: white; margin: 0.4rem 0 0.5rem; font-weight: 800;">
-              Sala Audiovisual Oficial (Pantalla TV 65")
-            </h3>
-            <p style="color: #A3B5AA; font-size: 0.95rem; margin: 0; line-height: 1.55;">
-              Interfaz cinematográfica diseñada a escala para la televisión de 65 pulgadas del centro. Integra selector para los 4 documentales oficiales, controles táctiles y reproducción en bucle sin elementos de la web pública.
-            </p>
-          </div>
-          <a href="./audiovisual_p0.html" target="_blank" class="btn-admin btn-admin-primary" style="font-size: 1.05rem; padding: 1rem 1.8rem; background: #B59A57; color: #111914; font-weight: 800; border-radius: 8px; text-decoration: none; white-space: nowrap; box-shadow: 0 4px 15px rgba(181, 154, 87, 0.4);">
-            📺 Abrir Sala Audiovisual TV 65" ↗
-          </a>
-        </div>
-
-        <div class="grid-2col" style="align-items: start;">
-          <!-- Instrucciones de configuración en el Centro -->
-          <div class="admin-card">
-            <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
-              🛠️ Puesta en Marcha en la Pantalla del Centro
-            </h3>
-            <ol style="padding-left: 1.25rem; font-size: 0.88rem; color: var(--admin-text); line-height: 1.7; display: flex; flex-direction: column; gap: 0.5rem;">
-              <li>
-                <strong>Conexión del Dispositivo:</strong> Conecta el mini-PC, Raspberry Pi o navegador de la Smart TV de 65" a la red del centro.
-              </li>
-              <li>
-                <strong>Apertura del Enlace:</strong> Pulsa el botón superior para abrir la sala audiovisual o introduce la dirección directa en el televisor.
-              </li>
-              <li>
-                <strong>Modo Pantalla Completa:</strong> Pulsa <kbd style="background: var(--admin-bg); border: 1px solid var(--admin-border); padding: 2px 6px; border-radius: 4px; font-weight: 700;">F11</kbd> en el teclado del mini-PC o activa la opción de pantalla completa en el navegador de la TV.
-              </li>
-              <li>
-                <strong>Uso Autónomo:</strong> Los visitantes podrán seleccionar los documentales interactuando con la pantalla o el mando a distancia sin acceso al panel de administración.
-              </li>
-            </ol>
-          </div>
-
-          <!-- Enlace Directo y Acciones de Lanzamiento Rápido -->
-          <div class="admin-card">
-            <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
-              🔗 Dirección Directa para la TV
-            </h3>
-            <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1rem;">
-              Copia esta URL en el navegador del televisor de 65" para dejarlo configurado permanentemente:
-            </p>
-            <div style="background: var(--admin-bg); border: 1.5px solid var(--admin-border); border-radius: 8px; padding: 0.75rem 1rem; font-family: monospace; font-size: 0.85rem; color: var(--admin-primary); word-break: break-all; margin-bottom: 1rem;">
-              <span id="kiosk-url-text">.../audiovisual_p0.html</span>
+        <!-- Rejilla de los Dos Fondos Audiovisuales -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(460px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          
+          <!-- FONDO AUDIOVISUAL 1: PLANTA BAJA (P0) -->
+          <div style="background: linear-gradient(145deg, #1A241E 0%, #111914 100%); border: 1.5px solid rgba(181, 154, 87, 0.45); border-radius: 14px; padding: 1.85rem; display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.18);">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span style="background: rgba(181, 154, 87, 0.25); color: #D4AF37; font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
+                  📺 FONDO AUDIOVISUAL 1 · PLANTA BAJA (P0)
+                </span>
+                <span style="font-size: 0.8rem; color: #76A085; font-weight: 600;">Selector de 4 Vídeos</span>
+              </div>
+              <h3 style="font-family: var(--font-condensed); font-size: 1.7rem; color: white; margin: 0 0 0.5rem; font-weight: 800;">
+                Sala Audiovisual Interactiva
+              </h3>
+              <p style="color: #A3B5AA; font-size: 0.9rem; margin: 0 0 1rem; line-height: 1.55;">
+                Parrilla táctil con los 4 documentales y recreaciones 3D oficiales. Los visitantes eligen qué contenido ver con controles táctiles en la TV de 65 pulgadas.
+              </p>
+              
+              <!-- URL Directa P0 -->
+              <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(220, 220, 214, 0.15); border-radius: 8px; padding: 0.65rem 0.9rem; font-family: monospace; font-size: 0.82rem; color: #D4AF37; word-break: break-all; margin-bottom: 0.8rem;">
+                <span id="kiosk-url-text">.../audiovisual_p0.html</span>
+              </div>
             </div>
-            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-              <button type="button" id="btn-copy-kiosk-url" class="btn-admin btn-admin-outline" style="font-size: 0.85rem;">
-                📋 Copiar Enlace Kiosco
-              </button>
-              <a href="./audiovisual_p0.html" target="_blank" class="btn-admin btn-admin-primary" style="font-size: 0.85rem; text-decoration: none;">
-                🖥️ Probar en esta pantalla
+
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <a href="./audiovisual_p0.html" target="_blank" class="btn-admin btn-admin-primary" style="flex: 1; text-align: center; font-size: 0.92rem; padding: 0.75rem 1rem; background: #B59A57; color: #111914; font-weight: 800; border-radius: 8px; text-decoration: none;">
+                📺 Abrir Pantalla P0 ↗
               </a>
+              <button type="button" id="btn-copy-kiosk-url" class="btn-admin btn-admin-outline" style="font-size: 0.85rem; border-color: rgba(181, 154, 87, 0.4); color: #E0E7E2;">
+                📋 Copiar URL P0
+              </button>
+            </div>
+          </div>
+
+          <!-- FONDO AUDIOVISUAL 2: PLANTA ALTA (P1) -->
+          <div style="background: linear-gradient(145deg, #1C2329 0%, #10161C 100%); border: 1.5px solid rgba(118, 160, 220, 0.45); border-radius: 14px; padding: 1.85rem; display: flex; flex-direction: column; justify-content: space-between; gap: 1.25rem; box-shadow: 0 10px 30px rgba(0,0,0,0.18);">
+            <div>
+              <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span style="background: rgba(118, 160, 220, 0.25); color: #94BDF2; font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
+                  📺 FONDO AUDIOVISUAL 2 · PLANTA ALTA (P1)
+                </span>
+                <span style="font-size: 0.8rem; color: #94BDF2; font-weight: 600;">Vídeo Único en Bucle</span>
+              </div>
+              <h3 style="font-family: var(--font-condensed); font-size: 1.7rem; color: white; margin: 0 0 0.5rem; font-weight: 800;">
+                Proyección Continua de Sala
+              </h3>
+              <p style="color: #A8B8C8; font-size: 0.9rem; margin: 0 0 1rem; line-height: 1.55;">
+                Pantalla dedicada para la planta de arriba. Proyecta un solo documental continuo sin menús distractores, con reinicio en bucle automático.
+              </p>
+
+              <!-- Selector de vídeo a proyectar en Planta 1 -->
+              <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(118, 160, 220, 0.25); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.8rem;">
+                <label for="select-p1-video" style="display: block; font-size: 0.78rem; font-weight: 700; color: #94BDF2; margin-bottom: 0.4rem; text-transform: uppercase;">
+                  🎬 Seleccionar Vídeo para Planta Alta:
+                </label>
+                <select id="select-p1-video" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(118, 160, 220, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.86rem; margin-bottom: 0.5rem;">
+                  <option value="vid_1">Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo</option>
+                  <option value="vid_2">Documental: La Huella Íbera en el Valle del Jandulilla</option>
+                  <option value="vid_3">El Hallazgo Arqueológico: Las Excavaciones (1994)</option>
+                  <option value="vid_4">Paseo Inmersivo 360°: El Santuario Heroico</option>
+                  <option value="custom">-- Otra URL de vídeo personalizada --</option>
+                </select>
+
+                <div id="p1-custom-url-wrap" class="hidden" style="margin-top: 0.4rem;">
+                  <input type="url" id="input-p1-custom-url" placeholder="https://ejemplo.com/video.mp4" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(118, 160, 220, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.84rem;">
+                </div>
+              </div>
+              
+              <!-- URL Directa P1 -->
+              <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(220, 220, 214, 0.15); border-radius: 8px; padding: 0.65rem 0.9rem; font-family: monospace; font-size: 0.82rem; color: #94BDF2; word-break: break-all; margin-bottom: 0.8rem;">
+                <span id="kiosk-p1-url-text">.../audiovisual_p1.html</span>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <a href="./audiovisual_p1.html" id="btn-open-kiosk-p1" target="_blank" class="btn-admin btn-admin-primary" style="flex: 1; text-align: center; font-size: 0.92rem; padding: 0.75rem 1rem; background: #4D85D1; color: #FFFFFF; font-weight: 800; border-radius: 8px; text-decoration: none;">
+                📺 Abrir Pantalla P1 ↗
+              </a>
+              <button type="button" id="btn-copy-kiosk-p1-url" class="btn-admin btn-admin-outline" style="font-size: 0.85rem; border-color: rgba(118, 160, 220, 0.4); color: #E0E7E2;">
+                📋 Copiar URL P1
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Instrucciones Generales para el Centro de Interpretación -->
+        <div class="admin-card">
+          <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
+            🛠️ Guía de Puesta en Marcha de las Pantallas de 65"
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+            <div style="background: var(--admin-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--admin-primary); margin-bottom: 0.5rem;">
+                🏢 TV Planta Baja (P0)
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--admin-text); line-height: 1.6; margin: 0;">
+                Configura la URL de P0 en la Smart TV o mini-PC de la entrada. Los visitantes tocarán la pantalla para elegir cualquiera de los 4 documentales disponibles.
+              </p>
+            </div>
+            <div style="background: var(--admin-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--admin-primary); margin-bottom: 0.5rem;">
+                🏛️ TV Planta Alta (P1)
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--admin-text); line-height: 1.6; margin: 0;">
+                Configura la URL de P1 en la televisión de la planta de arriba. Proyectará ininterrumpidamente el documental seleccionado en bucle continuo de alta fidelidad.
+              </p>
+            </div>
+            <div style="background: var(--admin-bg); padding: 1.2rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <h4 style="font-size: 0.95rem; font-weight: 800; color: var(--admin-primary); margin-bottom: 0.5rem;">
+                ⌨️ Atajos y Pantalla Completa
+              </h4>
+              <p style="font-size: 0.85rem; color: var(--admin-text); line-height: 1.6; margin: 0;">
+                Pulsa <kbd style="background: #222; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700;">F11</kbd> para fijar pantalla completa en ambas televisiones. Los controles y barras se ocultan automáticamente tras 3 segundos.
+              </p>
             </div>
           </div>
         </div>

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fondo Audiovisual 2 (Planta Alta) · Centro de Interpretación Santuario Ibérico de “El Pajarillo” (TV 65")</title>
+
+  <meta name="description" content="Proyección continua en pantalla completa para TV 65 de la Planta Alta del Centro de Interpretación Santuario Ibérico de El Pajarillo.">
+
+  <!-- Google Fonts: Barlow Condensed & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos de Sala Audiovisual TV 65" -->
+  <link rel="stylesheet" href="./css/audiovisual.css">
+  <style>
+    /* Estilos específicos para proyección continua de vídeo único (Planta Alta · P1) */
+    body.kiosk-p1 {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+      position: relative;
+    }
+
+    .p1-video-viewport {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+      z-index: 1;
+    }
+
+    .p1-video-element {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* Pantalla completa en TV 65" sin bandas */
+      display: block;
+    }
+
+    /* Capa de interfaz superpuesta que se oculta automáticamente */
+    .p1-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 2.5rem 3.5rem;
+      pointer-events: none;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      background: linear-gradient(
+        180deg,
+        rgba(15, 22, 18, 0.85) 0%,
+        rgba(15, 22, 18, 0.1) 25%,
+        transparent 50%,
+        rgba(15, 22, 18, 0.2) 75%,
+        rgba(15, 22, 18, 0.88) 100%
+      );
+    }
+
+    .p1-overlay.hidden-overlay {
+      opacity: 0;
+    }
+
+    .p1-interactive {
+      pointer-events: auto;
+    }
+
+    /* Cabecera P1 */
+    .p1-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .p1-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(26, 36, 30, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(181, 154, 87, 0.4);
+      padding: 0.5rem 1.25rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--tv-accent-gold-text);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .p1-badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 10px #22c55e;
+      animation: pulseDot 2s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    /* Barra inferior con metadatos y controles */
+    .p1-bottom-bar {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .p1-video-info {
+      max-width: 65%;
+      background: rgba(26, 36, 30, 0.8);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(220, 220, 214, 0.15);
+      border-radius: 16px;
+      padding: 1.25rem 2rem;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .p1-video-category {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--tv-accent-gold-text);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+
+    .p1-video-title {
+      font-family: var(--font-condensed);
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin: 0 0 0.4rem 0;
+    }
+
+    .p1-video-desc {
+      font-size: 0.95rem;
+      color: var(--tv-text-muted);
+      line-height: 1.45;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Barra de control flotante */
+    .p1-controls-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: rgba(26, 36, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(181, 154, 87, 0.35);
+      padding: 0.6rem 1rem;
+      border-radius: 999px;
+    }
+
+    .p1-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 1.2rem;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .p1-btn:hover {
+      background: var(--tv-accent-gold);
+      color: #111;
+      border-color: var(--tv-accent-gold);
+      transform: scale(1.08);
+    }
+
+    /* Notificación flotante de sonido bloqueado */
+    .p1-sound-alert {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(17, 25, 20, 0.92);
+      border: 1.5px solid var(--tv-accent-gold);
+      padding: 1.5rem 2.5rem;
+      border-radius: 20px;
+      text-align: center;
+      z-index: 20;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+      cursor: pointer;
+      animation: bounceAlert 2s infinite ease-in-out;
+    }
+
+    @keyframes bounceAlert {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.03); }
+    }
+
+    .p1-sound-alert.hidden {
+      display: none;
+    }
+
+    .p1-sound-alert h3 {
+      font-family: var(--font-condensed);
+      font-size: 1.8rem;
+      color: #fff;
+      margin: 0 0 0.5rem;
+    }
+
+    .p1-sound-alert p {
+      color: var(--tv-text-muted);
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    /* Barra de progreso sutil */
+    .p1-progress-bar-wrap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.15);
+      z-index: 15;
+    }
+
+    .p1-progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--tv-accent-gold);
+      transition: width 0.25s linear;
+    }
+  </style>
+</head>
+<body class="kiosk-p1">
+
+  <!-- Contenedor del Vídeo en Bucle Continuo -->
+  <div class="p1-video-viewport" id="viewport">
+    <video
+      id="p1-video"
+      class="p1-video-element"
+      playsinline
+      autoplay
+      loop
+      muted
+      preload="auto">
+      Tu pantalla o navegador no soporta reproducción de vídeo HTML5.
+    </video>
+  </div>
+
+  <!-- Barra de progreso muy fina en la base inferior -->
+  <div class="p1-progress-bar-wrap">
+    <div id="p1-progress-fill" class="p1-progress-bar-fill"></div>
+  </div>
+
+  <!-- Aviso de activación de sonido si el navegador lo bloqueó -->
+  <div id="p1-sound-alert" class="p1-sound-alert p1-interactive">
+    <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🔊</div>
+    <h3>Reproducción Continua Iniciada</h3>
+    <p>Toca la pantalla o pulsa cualquier tecla para activar el audio en esta sala.</p>
+  </div>
+
+  <!-- Capa de interfaz superpuesta (se oculta automáticamente tras 3.5s de inactividad) -->
+  <div id="p1-overlay" class="p1-overlay">
+    
+    <!-- Cabecera Institucional P1 -->
+    <header class="p1-header">
+      <div class="tv-brand-wrap p1-interactive">
+        <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
+        <div class="tv-brand-titles">
+          <h1>Santuario Ibérico de “El Pajarillo”</h1>
+          <p>Fondo Audiovisual 2 · Planta Alta (Sala Expositiva)</p>
+        </div>
+      </div>
+
+      <div class="p1-badge p1-interactive">
+        <span class="p1-badge-dot"></span>
+        <span>Planta 1 · Bucle Continuo TV 65"</span>
+      </div>
+    </header>
+
+    <!-- Barra inferior con datos del documental y controles rápidos -->
+    <footer class="p1-bottom-bar">
+      <div class="p1-video-info p1-interactive">
+        <span id="p1-category" class="p1-video-category">Fondo Audiovisual 2 · Documental</span>
+        <h2 id="p1-title" class="p1-video-title">Cargando audiovisual...</h2>
+        <p id="p1-desc" class="p1-video-desc">Proyección continua de alta resolución en la sala de la planta alta.</p>
+      </div>
+
+      <div class="p1-controls-group p1-interactive">
+        <button type="button" id="btn-p1-playpause" class="p1-btn" title="Pausar / Reanudar">⏸</button>
+        <button type="button" id="btn-p1-replay" class="p1-btn" title="Reiniciar vídeo">↺</button>
+        <button type="button" id="btn-p1-mute" class="p1-btn" title="Sonido">🔊</button>
+        <button type="button" id="btn-p1-fullscreen" class="p1-btn" title="Pantalla Completa">⛶</button>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Telemetría y Analítica Real -->
+  <script type="module" src="./js/analytics.js"></script>
+  <!-- Controlador Lógico de Planta 1 -->
+  <script src="./js/audiovisual_p1.js"></script>
+</body>
+</html>

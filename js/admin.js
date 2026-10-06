@@ -1549,29 +1549,109 @@ function setupPanelsExport() {
   });
 }
 
-// Configuración de Lanzador Kiosco TV 65" (Exclusivo Administración)
-function setupKioskSection() {
+// Configuración de Lanzadores de Pantallas 65" (P0 y P1 - Exclusivo Administración)
+async function setupKioskSection() {
   const kioskUrlEl = document.getElementById('kiosk-url-text');
-  const btnCopy = document.getElementById('btn-copy-kiosk-url');
-  if (!kioskUrlEl) return;
+  const btnCopyP0 = document.getElementById('btn-copy-kiosk-url');
+  const kioskP1UrlEl = document.getElementById('kiosk-p1-url-text');
+  const btnCopyP1 = document.getElementById('btn-copy-kiosk-p1-url');
+  const btnOpenP1 = document.getElementById('btn-open-kiosk-p1');
+  const selectP1 = document.getElementById('select-p1-video');
+  const customUrlWrap = document.getElementById('p1-custom-url-wrap');
+  const inputCustomUrl = document.getElementById('input-p1-custom-url');
+
+  if (!kioskUrlEl && !kioskP1UrlEl) return;
 
   const origin = window.location.origin;
-  let path = window.location.pathname;
-  if (path.endsWith('admin.html')) {
-    path = path.replace(/admin\.html$/, 'audiovisual_p0.html');
-  } else if (path.endsWith('index.html')) {
-    path = path.replace(/index\.html$/, 'audiovisual_p0.html');
-  } else {
-    path = path.replace(/\/?$/, '/audiovisual_p0.html');
-  }
-  const fullKioskUrl = `${origin}${path}`;
-  kioskUrlEl.textContent = fullKioskUrl;
+  const basePath = window.location.pathname.replace(/(admin|index)\.html$/, '').replace(/\/$/, '');
 
-  if (btnCopy) {
-    btnCopy.addEventListener('click', async () => {
+  // 1. Configuración de P0 (Planta Baja · Selector de 4 vídeos)
+  const fullKioskP0Url = `${origin}${basePath}/audiovisual_p0.html`;
+  if (kioskUrlEl) {
+    kioskUrlEl.textContent = fullKioskP0Url;
+  }
+  if (btnCopyP0) {
+    btnCopyP0.addEventListener('click', async () => {
       try {
-        await navigator.clipboard.writeText(fullKioskUrl);
-        showToast('📋 Dirección de Pantalla 65" copiada al portapapeles');
+        await navigator.clipboard.writeText(fullKioskP0Url);
+        showToast('📋 Enlace Fondo Audiovisual 1 (P0) copiado al portapapeles');
+      } catch (e) {
+        showToast('⚠️ No se pudo copiar automáticamente');
+      }
+    });
+  }
+
+  // 2. Configuración de P1 (Planta Alta · Vídeo único en bucle)
+  const updateP1Url = (videoVal) => {
+    let p1Url = `${origin}${basePath}/audiovisual_p1.html`;
+    if (videoVal && videoVal !== 'vid_1' && videoVal !== 'custom') {
+      p1Url += `?id=${encodeURIComponent(videoVal)}`;
+    } else if (videoVal === 'custom' && inputCustomUrl && inputCustomUrl.value.trim()) {
+      p1Url += `?video=${encodeURIComponent(inputCustomUrl.value.trim())}`;
+    }
+    if (kioskP1UrlEl) kioskP1UrlEl.textContent = p1Url;
+    if (btnOpenP1) btnOpenP1.href = p1Url;
+    return p1Url;
+  };
+
+  // Cargar vídeos desde gallery.json para poblar el selector
+  try {
+    const res = await fetch('./data/gallery.json?t=' + Date.now());
+    const data = await res.json();
+    if (data.videos && data.videos.length > 0 && selectP1) {
+      selectP1.innerHTML = data.videos.map(v => {
+        const title = v.title.es || v.title;
+        return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+      }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+    }
+  } catch (e) {
+    console.warn('Uso de opciones por defecto para selector P1:', e);
+  }
+
+  // Cargar estado previo de P1
+  const savedP1Video = localStorage.getItem('pajarillo_kiosk_p1_video') || 'vid_1';
+  if (selectP1) {
+    const optionExists = Array.from(selectP1.options).some(opt => opt.value === savedP1Video);
+    if (optionExists) {
+      selectP1.value = savedP1Video;
+      if (customUrlWrap) customUrlWrap.classList.add('hidden');
+    } else if (savedP1Video.startsWith('http') || savedP1Video.includes('/')) {
+      selectP1.value = 'custom';
+      if (customUrlWrap) customUrlWrap.classList.remove('hidden');
+      if (inputCustomUrl) inputCustomUrl.value = savedP1Video;
+    }
+    updateP1Url(selectP1.value);
+
+    selectP1.addEventListener('change', () => {
+      const val = selectP1.value;
+      if (val === 'custom') {
+        if (customUrlWrap) customUrlWrap.classList.remove('hidden');
+        if (inputCustomUrl) inputCustomUrl.focus();
+      } else {
+        if (customUrlWrap) customUrlWrap.classList.add('hidden');
+        localStorage.setItem('pajarillo_kiosk_p1_video', val);
+        updateP1Url(val);
+        showToast('💾 Vídeo de Planta Alta actualizado');
+      }
+    });
+  }
+
+  if (inputCustomUrl) {
+    inputCustomUrl.addEventListener('input', () => {
+      const customVal = inputCustomUrl.value.trim();
+      if (customVal) {
+        localStorage.setItem('pajarillo_kiosk_p1_video', customVal);
+        updateP1Url('custom');
+      }
+    });
+  }
+
+  if (btnCopyP1) {
+    btnCopyP1.addEventListener('click', async () => {
+      const currentUrl = kioskP1UrlEl ? kioskP1UrlEl.textContent : `${origin}${basePath}/audiovisual_p1.html`;
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        showToast('📋 Enlace Fondo Audiovisual 2 (P1) copiado al portapapeles');
       } catch (e) {
         showToast('⚠️ No se pudo copiar automáticamente');
       }
