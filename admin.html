@@ -615,6 +615,38 @@
                 <label>Descripción Tarjeta Destacada (Cabeza de Lobo e Introducción)</label>
                 <textarea id="cnt-hero-desc" class="admin-textarea" rows="3" required></textarea>
               </div>
+
+              <!-- Tarjeta Escultura Hero (Imagen, Título y Subtítulo) -->
+              <div style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--admin-border);">
+                <strong style="font-size: 0.88rem; color: var(--admin-primary); display: block; margin-bottom: 8px;">🖼️ Tarjeta Destacada de la Escultura (Hero Card)</strong>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Título de la Tarjeta</label>
+                    <input type="text" id="cnt-hero-card-title" class="admin-input" placeholder="Ej: La Cabeza de Lobo">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Subtítulo de la Tarjeta</label>
+                    <input type="text" id="cnt-hero-card-sub" class="admin-input" placeholder="Ej: Escultura ibérica en caliza · Siglo IV a.C.">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Imagen de la Escultura (Ruta o URL)</label>
+                  <div style="display: flex; gap: 8px; align-items: center;">
+                    <input type="text" id="cnt-hero-card-img" class="admin-input" placeholder="./assets/images/lobo-hero.jpg" style="flex: 1;">
+                    <select id="select-hero-img-preset" class="admin-select" style="width: auto;">
+                      <option value="">-- Imágenes disponibles --</option>
+                      <option value="./assets/images/lobo-hero.jpg">Nueva fotografía Lobo (Detalle)</option>
+                      <option value="./assets/images/lobo.png">Lobo silueteado PNG</option>
+                      <option value="./assets/images/gallery/lobo.jpg">Lobo archivo JPG</option>
+                      <option value="./assets/images/gallery/arqueologia.jpg">Yacimiento Arqueológico</option>
+                    </select>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
+                    <img id="preview-hero-card-img" src="./assets/images/lobo.png" alt="Previsualización" style="width: 54px; height: 54px; object-fit: cover; border-radius: 6px; border: 1px solid var(--admin-border);">
+                    <span style="font-size: 0.78rem; color: var(--admin-muted);">Puedes escribir cualquier ruta o elegir una imagen predefinida. Se actualiza automáticamente.</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 

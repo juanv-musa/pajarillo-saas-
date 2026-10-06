@@ -1472,6 +1472,9 @@ const DEFAULT_LOCALES = {
     hero_cta: "Planifica tu Visita",
     site_tagline: "Un viaje al corazón sagrado de la cultura íbera y el dominio territorial de Iltiraka",
     hero_desc: "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
+    hero_card_title: "La Cabeza de Lobo",
+    hero_card_sub: "Escultura ibérica en caliza · Siglo IV a.C.",
+    hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "Siglos VI–V a.n.e. · Primeros Oppida y Escultura Heroica",
     hito1_desc: "Surgimiento de oppida fortificados en el Alto Guadalquivir y monumentos heroicos como Cerrillo Blanco.",
     hito2_title: "1ª mitad S. IV a.n.e. · Fundación del Santuario de El Pajarillo",
@@ -1514,6 +1517,9 @@ const DEFAULT_LOCALES = {
     hero_cta: "Plan Your Visit",
     site_tagline: "A journey to the sacred heart of Iberian culture and the territorial domain of Iltiraka",
     hero_desc: "Discover the exceptional 4th century BC Oretan heroic monument, the iconic limestone Wolf's Head sculpture, and the sacred landscape of the Jandulilla river in Huelma, Jaén.",
+    hero_card_title: "The Wolf's Head",
+    hero_card_sub: "Iberian limestone sculpture · 4th century BC",
+    hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "6th–5th c. BCE · Early Oppida & Heroic Sculptures",
     hito1_desc: "Fortified oppida emerge in the Upper Guadalquivir alongside dynastic sculptures like Cerrillo Blanco.",
     hito2_title: "Early 4th c. BCE · Foundation of El Pajarillo Sanctuary",
@@ -1556,6 +1562,9 @@ const DEFAULT_LOCALES = {
     hero_cta: "Planifiez votre Visite",
     site_tagline: "Un voyage au cœur sacré de la culture ibérique et du domaine territorial d'Iltiraka",
     hero_desc: "Découvrez le monument héroïque orétan exceptionnel du IVe siècle av. J.-C., la célèbre sculpture en calcaire de la Tête de Loup et le paysage sacré de la vallée du Jandulilla à Huelma, Jaén.",
+    hero_card_title: "La Tête de Loup",
+    hero_card_sub: "Sculpture ibérique en calcaire · IVe s. av. J.-C.",
+    hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "VIe–Ve s. av. J.-C. · Premiers Oppida et Sculpture Héroïque",
     hito1_desc: "Apparition des oppida fortifiés dans le Haut Guadalquivir et de sculptures comme Cerrillo Blanco.",
     hito2_title: "1ère moitié IVe s. av. J.-C. · Fondation d'El Pajarillo",
@@ -1631,6 +1640,24 @@ function setupContentEditor() {
     });
   }
 
+  const imgSelect = document.getElementById('select-hero-img-preset');
+  const imgInput = document.getElementById('cnt-hero-card-img');
+  const imgPreview = document.getElementById('preview-hero-card-img');
+
+  if (imgSelect && imgInput) {
+    imgSelect.addEventListener('change', () => {
+      if (imgSelect.value) {
+        imgInput.value = imgSelect.value;
+        if (imgPreview) imgPreview.src = imgSelect.value;
+      }
+    });
+  }
+  if (imgInput && imgPreview) {
+    imgInput.addEventListener('input', () => {
+      imgPreview.src = imgInput.value;
+    });
+  }
+
   // Carga inicial de campos
   populateFormWithLang('es');
 }
@@ -1674,6 +1701,11 @@ function populateFormWithLang(lang) {
   setVal('cnt-site-tagline', c.site_tagline);
   setVal('cnt-hero-cta', c.hero_cta);
   setVal('cnt-hero-desc', c.hero_desc);
+  setVal('cnt-hero-card-title', c.hero_card_title || 'La Cabeza de Lobo');
+  setVal('cnt-hero-card-sub', c.hero_card_sub || 'Escultura ibérica en caliza · Siglo IV a.C.');
+  setVal('cnt-hero-card-img', c.hero_card_img || './assets/images/lobo-hero.jpg');
+  const imgPrev = document.getElementById('preview-hero-card-img');
+  if (imgPrev) imgPrev.src = c.hero_card_img || './assets/images/lobo-hero.jpg';
 
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);
@@ -1729,6 +1761,9 @@ function saveCurrentFormToLang(lang) {
     site_tagline: getVal('cnt-site-tagline'),
     hero_cta: getVal('cnt-hero-cta'),
     hero_desc: getVal('cnt-hero-desc'),
+    hero_card_title: getVal('cnt-hero-card-title'),
+    hero_card_sub: getVal('cnt-hero-card-sub'),
+    hero_card_img: getVal('cnt-hero-card-img'),
 
     hito1_title: getVal('cnt-hito1-title'),
     hito1_desc: getVal('cnt-hito1-desc'),

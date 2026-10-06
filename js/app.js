@@ -169,6 +169,21 @@ function applySiteConfig(config) {
       el.textContent = c.hero_desc;
     });
   }
+  if (c.hero_card_title) {
+    document.querySelectorAll('[data-i18n="hero.card_title"]').forEach(el => {
+      el.textContent = c.hero_card_title;
+    });
+  }
+  if (c.hero_card_sub) {
+    document.querySelectorAll('[data-i18n="hero.card_sub"]').forEach(el => {
+      el.textContent = c.hero_card_sub;
+    });
+  }
+  if (c.hero_card_img) {
+    document.querySelectorAll('.hero-wolf-img').forEach(el => {
+      el.src = c.hero_card_img;
+    });
+  }
   if (c.tel) {
     document.querySelectorAll('[data-i18n="contacto.tel_val"]').forEach(el => {
       el.textContent = c.tel;
