@@ -320,49 +320,17 @@ const ANALYTICS_STORAGE_KEY = 'pajarillo_real_analytics';
 let cachedAnalyticsData = null;
 
 async function initAnalyticsData() {
-  let local = null;
-  try {
-    const raw = localStorage.getItem(ANALYTICS_STORAGE_KEY);
-    if (raw) local = JSON.parse(raw);
-  } catch (e) {}
-
-  let fileData = null;
-  try {
-    const res = await fetch('./data/analytics.json?t=' + Date.now());
-    if (res.ok) fileData = await res.json();
-  } catch (e) {}
-
-  if (!local && fileData) {
-    local = fileData;
-    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
-  } else if (local && fileData) {
-    local.summary = local.summary || {};
-    local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, fileData.summary.totalVisits || 0);
-    local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, fileData.summary.uniqueVisitors || 0);
-    local.summary.qrScans = Math.max(local.summary.qrScans || 0, fileData.summary.qrScans || 0);
-    local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, fileData.summary.tourBookings || 0);
-    local.summary.audioListens = Math.max(local.summary.audioListens || 0, fileData.summary.audioListens || 0);
-    local.summary.downloads = Math.max(local.summary.downloads || 0, fileData.summary.downloads || 0);
-
-    local.historyByDay = Object.assign({}, fileData.historyByDay || {}, local.historyByDay || {});
-    local.historyByMonth = Object.assign({}, fileData.historyByMonth || {}, local.historyByMonth || {});
-    local.historyByYear = Object.assign({}, fileData.historyByYear || {}, local.historyByYear || {});
-    local.languages = local.languages || fileData.languages;
-    local.events = Array.isArray(local.events) && local.events.length > 0 ? local.events : (fileData.recentEvents || []);
-    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+  // Asegurar limpieza definitiva y única de cualquier residuo de datos ficticios anteriores
+  if (localStorage.getItem('pajarillo_seed_cleared_v1') !== 'true') {
+    localStorage.removeItem(ANALYTICS_STORAGE_KEY);
+    localStorage.setItem('pajarillo_seed_cleared_v1', 'true');
   }
 
-async function initAnalyticsData() {
   let local = null;
   try {
     const raw = localStorage.getItem(ANALYTICS_STORAGE_KEY);
     if (raw) {
       local = JSON.parse(raw);
-      // Si contenía datos ficticios del seed anterior (1485), limpiar a 0 real
-      if (local && local.summary && local.summary.totalVisits === 1485) {
-        local = null;
-        localStorage.removeItem(ANALYTICS_STORAGE_KEY);
-      }
     }
   } catch (e) {}
 
@@ -377,12 +345,12 @@ async function initAnalyticsData() {
     localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
   } else if (local && fileData) {
     local.summary = local.summary || {};
-    local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, fileData.summary.totalVisits || 0);
-    local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, fileData.summary.uniqueVisitors || 0);
-    local.summary.qrScans = Math.max(local.summary.qrScans || 0, fileData.summary.qrScans || 0);
-    local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, fileData.summary.tourBookings || 0);
-    local.summary.audioListens = Math.max(local.summary.audioListens || 0, fileData.summary.audioListens || 0);
-    local.summary.downloads = Math.max(local.summary.downloads || 0, fileData.summary.downloads || 0);
+    local.summary.totalVisits = Number(local.summary.totalVisits) || 0;
+    local.summary.uniqueVisitors = Number(local.summary.uniqueVisitors) || 0;
+    local.summary.qrScans = Number(local.summary.qrScans) || 0;
+    local.summary.tourBookings = Number(local.summary.tourBookings) || 0;
+    local.summary.audioListens = Number(local.summary.audioListens) || 0;
+    local.summary.downloads = Number(local.summary.downloads) || 0;
 
     local.historyByDay = Object.assign({}, fileData.historyByDay || {}, local.historyByDay || {});
     local.historyByMonth = Object.assign({}, fileData.historyByMonth || {}, local.historyByMonth || {});
@@ -415,12 +383,8 @@ function getRealAnalyticsData() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed && parsed.summary) {
-        if (parsed.summary.totalVisits === 1485) {
-          localStorage.removeItem(ANALYTICS_STORAGE_KEY);
-        } else {
-          cachedAnalyticsData = parsed;
-          return parsed;
-        }
+        cachedAnalyticsData = parsed;
+        return parsed;
       }
     }
   } catch (e) {}
@@ -805,51 +769,6 @@ function computePeriodMetrics(periodKey) {
     visits: periodVisits > 0 ? `📊 ${Number(periodVisits).toLocaleString()} visitas registradas` : '📊 0 visitas registradas',
     unique: periodUnique > 0 ? `👤 ${Number(periodUnique).toLocaleString()} visitantes únicos` : '👤 0 únicos',
     qr: periodQr > 0 ? `📱 ${Number(periodQr).toLocaleString()} lecturas en sala` : '📱 0 lecturas en sala',
-    bookings: periodBookings > 0 ? `🎟️ ${Number(periodBookings).toLocaleString()} solicitudes guiadas` : '🎟️ 0 reservas'
-  };
-
-  return {
-    name,
-    kpi: {
-      visits: periodVisits,
-      unique: periodUnique,
-      qr: periodQr,
-      bookings: periodBookings,
-      audio: periodAudio
-    },
-    trends,
-    labels,
-    visits: visitsPerBucket,
-    qr: qrPerBucket,
-    languages: {
-      es: langCounts.es,
-      en: langCounts.en,
-      fr: langCounts.fr,
-      esPct,
-      enPct,
-      frPct
-    },
-    breakdown,
-    global: data.summary
-  };
-}
-
-  // Fallbacks de idiomas
-  if (langCounts.es === 0 && langCounts.en === 0 && langCounts.fr === 0) {
-    langCounts.es = data.languages.es || 1054;
-    langCounts.en = data.languages.en || 297;
-    langCounts.fr = data.languages.fr || 134;
-  }
-
-  const totalLang = langCounts.es + langCounts.en + langCounts.fr;
-  const esPct = totalLang > 0 ? Math.round((langCounts.es / totalLang) * 100) : 71;
-  const enPct = totalLang > 0 ? Math.round((langCounts.en / totalLang) * 100) : 20;
-  const frPct = totalLang > 0 ? (100 - esPct - enPct) : 9;
-
-  const trends = {
-    visits: periodVisits > 0 ? `📊 ${Number(periodVisits).toLocaleString()} visitas computadas` : '📊 0 visitas',
-    unique: periodUnique > 0 ? `👤 ${Number(periodUnique).toLocaleString()} visitantes únicos` : '👤 0 únicos',
-    qr: periodQr > 0 ? `📱 ${Number(periodQr).toLocaleString()} lecturas en sala` : '📱 0 lecturas',
     bookings: periodBookings > 0 ? `🎟️ ${Number(periodBookings).toLocaleString()} solicitudes guiadas` : '🎟️ 0 reservas'
   };
 
