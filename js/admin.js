@@ -352,10 +352,50 @@ async function initAnalyticsData() {
     localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
   }
 
+async function initAnalyticsData() {
+  let local = null;
+  try {
+    const raw = localStorage.getItem(ANALYTICS_STORAGE_KEY);
+    if (raw) {
+      local = JSON.parse(raw);
+      // Si contenía datos ficticios del seed anterior (1485), limpiar a 0 real
+      if (local && local.summary && local.summary.totalVisits === 1485) {
+        local = null;
+        localStorage.removeItem(ANALYTICS_STORAGE_KEY);
+      }
+    }
+  } catch (e) {}
+
+  let fileData = null;
+  try {
+    const res = await fetch('./data/analytics.json?t=' + Date.now());
+    if (res.ok) fileData = await res.json();
+  } catch (e) {}
+
+  if (!local && fileData) {
+    local = fileData;
+    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+  } else if (local && fileData) {
+    local.summary = local.summary || {};
+    local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, fileData.summary.totalVisits || 0);
+    local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, fileData.summary.uniqueVisitors || 0);
+    local.summary.qrScans = Math.max(local.summary.qrScans || 0, fileData.summary.qrScans || 0);
+    local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, fileData.summary.tourBookings || 0);
+    local.summary.audioListens = Math.max(local.summary.audioListens || 0, fileData.summary.audioListens || 0);
+    local.summary.downloads = Math.max(local.summary.downloads || 0, fileData.summary.downloads || 0);
+
+    local.historyByDay = Object.assign({}, fileData.historyByDay || {}, local.historyByDay || {});
+    local.historyByMonth = Object.assign({}, fileData.historyByMonth || {}, local.historyByMonth || {});
+    local.historyByYear = Object.assign({}, fileData.historyByYear || {}, local.historyByYear || {});
+    local.languages = local.languages || fileData.languages || { es: 0, en: 0, fr: 0 };
+    local.events = Array.isArray(local.events) ? local.events : [];
+    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+  }
+
   if (!local) {
     local = {
-      summary: { totalVisits: 1485, uniqueVisitors: 1120, qrScans: 412, tourBookings: 38, audioListens: 284, downloads: 95 },
-      languages: { es: 1054, en: 297, fr: 134 },
+      summary: { totalVisits: 0, uniqueVisitors: 0, qrScans: 0, tourBookings: 0, audioListens: 0, downloads: 0 },
+      languages: { es: 0, en: 0, fr: 0 },
       historyByDay: {},
       historyByMonth: {},
       historyByYear: {},
@@ -375,15 +415,19 @@ function getRealAnalyticsData() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (parsed && parsed.summary) {
-        cachedAnalyticsData = parsed;
-        return parsed;
+        if (parsed.summary.totalVisits === 1485) {
+          localStorage.removeItem(ANALYTICS_STORAGE_KEY);
+        } else {
+          cachedAnalyticsData = parsed;
+          return parsed;
+        }
       }
     }
   } catch (e) {}
 
   return {
-    summary: { totalVisits: 1485, uniqueVisitors: 1120, qrScans: 412, tourBookings: 38, audioListens: 284, downloads: 95 },
-    languages: { es: 1054, en: 297, fr: 134 },
+    summary: { totalVisits: 0, uniqueVisitors: 0, qrScans: 0, tourBookings: 0, audioListens: 0, downloads: 0 },
+    languages: { es: 0, en: 0, fr: 0 },
     historyByDay: {},
     historyByMonth: {},
     historyByYear: {},
@@ -414,21 +458,19 @@ function computePeriodMetrics(periodKey) {
   const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
   const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-  // 1. TOTAL HISTÓRICO ACUMULADO
+  // 1. TOTAL HISTÓRICO ACUMULADO REAL
   if (periodKey === 'total') {
     name = 'Total Histórico Acumulado (Todos los tiempos)';
-    periodVisits = data.summary.totalVisits || 1485;
-    periodUnique = data.summary.uniqueVisitors || 1120;
-    periodQr = data.summary.qrScans || 412;
-    periodBookings = data.summary.tourBookings || 38;
-    periodAudio = data.summary.audioListens || 284;
+    periodVisits = data.summary.totalVisits || 0;
+    periodUnique = data.summary.uniqueVisitors || 0;
+    periodQr = data.summary.qrScans || 0;
+    periodBookings = data.summary.tourBookings || 0;
+    periodAudio = data.summary.audioListens || 0;
 
-    langCounts.es = data.languages.es || 1054;
-    langCounts.en = data.languages.en || 297;
-    langCounts.fr = data.languages.fr || 134;
+    langCounts.es = data.languages.es || 0;
+    langCounts.en = data.languages.en || 0;
+    langCounts.fr = data.languages.fr || 0;
 
-    // Mostrar evolución de los meses de 2026 en la gráfica y tabla
-    const curYear = now.getFullYear();
     const monthsKeys = Object.keys(historyMonths).sort();
     if (monthsKeys.length > 0) {
       monthsKeys.forEach(mKey => {
@@ -440,13 +482,13 @@ function computePeriodMetrics(periodKey) {
         qrPerBucket.push(mData.qr || 0);
 
         const totalL = (mData.es || 0) + (mData.en || 0) + (mData.fr || 0);
-        const esPct = totalL > 0 ? Math.round(((mData.es || 0) / totalL) * 100) + '%' : '71%';
-        const extPct = totalL > 0 ? Math.round((((mData.en || 0) + (mData.fr || 0)) / totalL) * 100) + '%' : '29%';
+        const esPct = totalL > 0 ? Math.round(((mData.es || 0) / totalL) * 100) + '%' : '100%';
+        const extPct = totalL > 0 ? Math.round((((mData.en || 0) + (mData.fr || 0)) / totalL) * 100) + '%' : '0%';
 
         breakdown.push({
           interval: mLabel,
           visits: mData.visits || 0,
-          unique: mData.unique || Math.round((mData.visits || 0) * 0.75),
+          unique: mData.unique || 0,
           qr: mData.qr || 0,
           audio: mData.audio || 0,
           bookings: mData.bookings || 0,
@@ -454,6 +496,21 @@ function computePeriodMetrics(periodKey) {
           enFr: extPct
         });
       });
+    } else {
+      const curMonthLabel = `${monthNames[now.getMonth()]} ${now.getFullYear()}`;
+      labels = [curMonthLabel];
+      visitsPerBucket = [periodVisits];
+      qrPerBucket = [periodQr];
+      breakdown = [{
+        interval: curMonthLabel,
+        visits: periodVisits,
+        unique: periodUnique,
+        qr: periodQr,
+        audio: periodAudio,
+        bookings: periodBookings,
+        es: '100%',
+        enFr: '0%'
+      }];
     }
 
   // 2. HOY (DESGLOSE POR HORAS)
@@ -471,43 +528,51 @@ function computePeriodMetrics(periodKey) {
     ];
 
     const todayStr = now.toISOString().slice(0, 10);
-    const dayBucket = historyDays[todayStr] || { visits: 48, unique: 36, qr: 16, audio: 10, bookings: 1, es: 34, en: 10, fr: 4 };
+    const dayBucket = historyDays[todayStr] || { visits: 0, unique: 0, qr: 0, audio: 0, bookings: 0, es: 0, en: 0, fr: 0 };
 
     periodVisits = dayBucket.visits || 0;
-    periodUnique = dayBucket.unique || Math.round(periodVisits * 0.75);
+    periodUnique = dayBucket.unique || 0;
     periodQr = dayBucket.qr || 0;
     periodBookings = dayBucket.bookings || 0;
     periodAudio = dayBucket.audio || 0;
 
-    langCounts.es = dayBucket.es || Math.round(periodVisits * 0.7);
-    langCounts.en = dayBucket.en || Math.round(periodVisits * 0.2);
-    langCounts.fr = dayBucket.fr || (periodVisits - langCounts.es - langCounts.en);
+    langCounts.es = dayBucket.es || 0;
+    langCounts.en = dayBucket.en || 0;
+    langCounts.fr = dayBucket.fr || 0;
 
     labels = intervals.map(i => i.label.split(' - ')[0]);
 
-    // Reparto ponderado por horas típicas de apertura del museo (09:00 a 20:00)
-    const weights = [0.01, 0.01, 0.03, 0.28, 0.24, 0.22, 0.18, 0.03];
-    intervals.forEach((inv, idx) => {
-      const v = Math.round(periodVisits * weights[idx]);
-      const q = Math.round(periodQr * weights[idx]);
-      const a = Math.round(periodAudio * weights[idx]);
-      const b = idx === 3 ? (periodBookings > 0 ? 1 : 0) : 0;
+    // Filtrar eventos reales registrados en las últimas 24 horas si existen
+    const cutoff = new Date(now.getTime() - 24 * 3600 * 1000);
+    const todayEvents = events.filter(e => e.time && new Date(e.time) >= cutoff);
+
+    intervals.forEach(inv => {
+      const invEvents = todayEvents.filter(e => {
+        const d = new Date(e.time);
+        const h = d.getHours();
+        return h >= inv.startH && h < inv.endH;
+      });
+      const v = invEvents.filter(e => e.type === 'page_view').length;
+      const q = invEvents.filter(e => e.type === 'qr_scan').length;
+      const a = invEvents.filter(e => e.type === 'audio_play').length;
+      const b = invEvents.filter(e => e.type === 'booking').length;
+      const u = invEvents.filter(e => e.type === 'page_view' && e.is_unique).length;
+
       visitsPerBucket.push(v);
       qrPerBucket.push(q);
-
       breakdown.push({
         interval: inv.label,
         visits: v,
-        unique: Math.round(v * 0.75),
+        unique: u,
         qr: q,
         audio: a,
         bookings: b,
-        es: '72%',
-        enFr: '28%'
+        es: '100%',
+        enFr: '0%'
       });
     });
 
-  // 3. DÍAS (ÚLTIMOS 7 DÍAS)
+  // 3. DÍAS (ÚLTIMOS 7 DÍAS REALES)
   } else if (periodKey === 'dias' || periodKey === '7d') {
     name = 'Últimos 7 Días (Día a Día)';
 
@@ -517,19 +582,9 @@ function computePeriodMetrics(periodKey) {
       const label = `${dayNames[d.getDay()]} ${d.getDate()}`;
       labels.push(label);
 
-      const dBucket = historyDays[dStr] || {
-        visits: Math.floor(40 + Math.random() * 20),
-        unique: 30,
-        qr: 12,
-        audio: 8,
-        bookings: (i % 3 === 0 ? 1 : 0),
-        es: 30,
-        en: 8,
-        fr: 2
-      };
-
+      const dBucket = historyDays[dStr] || { visits: 0, unique: 0, qr: 0, audio: 0, bookings: 0, es: 0, en: 0, fr: 0 };
       const v = dBucket.visits || 0;
-      const u = dBucket.unique || Math.round(v * 0.75);
+      const u = dBucket.unique || 0;
       const q = dBucket.qr || 0;
       const a = dBucket.audio || 0;
       const b = dBucket.bookings || 0;
@@ -540,9 +595,9 @@ function computePeriodMetrics(periodKey) {
       periodAudio += a;
       periodBookings += b;
 
-      langCounts.es += (dBucket.es || Math.round(v * 0.7));
-      langCounts.en += (dBucket.en || Math.round(v * 0.2));
-      langCounts.fr += (dBucket.fr || Math.round(v * 0.1));
+      langCounts.es += (dBucket.es || 0);
+      langCounts.en += (dBucket.en || 0);
+      langCounts.fr += (dBucket.fr || 0);
 
       visitsPerBucket.push(v);
       qrPerBucket.push(q);
@@ -553,12 +608,12 @@ function computePeriodMetrics(periodKey) {
         qr: q,
         audio: a,
         bookings: b,
-        es: '71%',
-        enFr: '29%'
+        es: (dBucket.es || 0) > 0 ? `${Math.round(((dBucket.es || 0) / (v || 1)) * 100)}%` : '100%',
+        enFr: ((dBucket.en || 0) + (dBucket.fr || 0)) > 0 ? `${Math.round((((dBucket.en || 0) + (dBucket.fr || 0)) / (v || 1)) * 100)}%` : '0%'
       });
     }
 
-  // 4. SEMANAS (ÚLTIMAS 4 SEMANAS)
+  // 4. SEMANAS (ÚLTIMAS 4 SEMANAS REALES)
   } else if (periodKey === 'semanas' || periodKey === '30d') {
     name = 'Últimas 4 Semanas (Semana a Semana)';
     labels = ['Semana 1', 'Semana 2', 'Semana 3', 'Semana 4'];
@@ -583,10 +638,10 @@ function computePeriodMetrics(periodKey) {
       for (let offset = wb.startOffset; offset >= wb.endOffset; offset--) {
         const d = new Date(now.getTime() - offset * 24 * 3600 * 1000);
         const dStr = d.toISOString().slice(0, 10);
-        const dBucket = historyDays[dStr] || { visits: 45, unique: 34, qr: 13, audio: 9, bookings: 1, es: 32, en: 9, fr: 4 };
+        const dBucket = historyDays[dStr] || { visits: 0, unique: 0, qr: 0, audio: 0, bookings: 0, es: 0, en: 0, fr: 0 };
 
         wVisits += dBucket.visits || 0;
-        wUnique += dBucket.unique || Math.round((dBucket.visits || 0) * 0.75);
+        wUnique += dBucket.unique || 0;
         wQr += dBucket.qr || 0;
         wAudio += dBucket.audio || 0;
         wBookings += dBucket.bookings || 0;
@@ -614,93 +669,170 @@ function computePeriodMetrics(periodKey) {
         qr: wQr,
         audio: wAudio,
         bookings: wBookings,
-        es: '71%',
-        enFr: '29%'
+        es: wVisits > 0 ? `${Math.round((wEs / wVisits) * 100)}%` : '100%',
+        enFr: wVisits > 0 ? `${Math.round(((wEn + wFr) / wVisits) * 100)}%` : '0%'
       });
     });
 
-  // 5. MESES (AÑO 2026)
+  // 5. MESES (AÑO EN CURSO REAL)
   } else if (periodKey === 'meses') {
     const curYear = now.getFullYear();
     name = `Año ${curYear} (Evolución Mensual)`;
     const monthsKeys = Object.keys(historyMonths).filter(k => k.startsWith(`${curYear}-`)).sort();
 
-    monthsKeys.forEach(mKey => {
-      const mData = historyMonths[mKey] || {};
-      const [y, m] = mKey.split('-');
-      const mName = monthNames[parseInt(m, 10) - 1];
-      labels.push(mName);
+    if (monthsKeys.length > 0) {
+      monthsKeys.forEach(mKey => {
+        const mData = historyMonths[mKey] || {};
+        const [y, m] = mKey.split('-');
+        const mName = monthNames[parseInt(m, 10) - 1];
+        labels.push(mName);
 
-      const v = mData.visits || 0;
-      const u = mData.unique || Math.round(v * 0.75);
-      const q = mData.qr || 0;
-      const a = mData.audio || 0;
-      const b = mData.bookings || 0;
+        const v = mData.visits || 0;
+        const u = mData.unique || 0;
+        const q = mData.qr || 0;
+        const a = mData.audio || 0;
+        const b = mData.bookings || 0;
 
-      periodVisits += v;
-      periodUnique += u;
-      periodQr += q;
-      periodAudio += a;
-      periodBookings += b;
+        periodVisits += v;
+        periodUnique += u;
+        periodQr += q;
+        periodAudio += a;
+        periodBookings += b;
 
-      langCounts.es += (mData.es || Math.round(v * 0.7));
-      langCounts.en += (mData.en || Math.round(v * 0.2));
-      langCounts.fr += (mData.fr || Math.round(v * 0.1));
+        langCounts.es += (mData.es || 0);
+        langCounts.en += (mData.en || 0);
+        langCounts.fr += (mData.fr || 0);
 
-      visitsPerBucket.push(v);
-      qrPerBucket.push(q);
+        visitsPerBucket.push(v);
+        qrPerBucket.push(q);
 
-      breakdown.push({
-        interval: `${mName} ${curYear}`,
-        visits: v,
-        unique: u,
-        qr: q,
-        audio: a,
-        bookings: b,
-        es: '71%',
-        enFr: '29%'
+        breakdown.push({
+          interval: `${mName} ${curYear}`,
+          visits: v,
+          unique: u,
+          qr: q,
+          audio: a,
+          bookings: b,
+          es: v > 0 ? `${Math.round(((mData.es || 0) / v) * 100)}%` : '100%',
+          enFr: v > 0 ? `${Math.round((((mData.en || 0) + (mData.fr || 0)) / v) * 100)}%` : '0%'
+        });
       });
-    });
+    } else {
+      const curM = monthNames[now.getMonth()];
+      labels = [curM];
+      visitsPerBucket = [data.summary.totalVisits || 0];
+      qrPerBucket = [data.summary.qrScans || 0];
+      breakdown = [{
+        interval: `${curM} ${curYear}`,
+        visits: data.summary.totalVisits || 0,
+        unique: data.summary.uniqueVisitors || 0,
+        qr: data.summary.qrScans || 0,
+        audio: data.summary.audioListens || 0,
+        bookings: data.summary.tourBookings || 0,
+        es: '100%',
+        enFr: '0%'
+      }];
+      periodVisits = data.summary.totalVisits || 0;
+      periodUnique = data.summary.uniqueVisitors || 0;
+      periodQr = data.summary.qrScans || 0;
+      periodBookings = data.summary.tourBookings || 0;
+    }
 
-  // 6. AÑOS (COMPARATIVA HISTÓRICA)
+  // 6. AÑOS (HISTÓRICO ANUAL REAL)
   } else if (periodKey === 'anos') {
     name = 'Comparativa de Años (Histórico)';
     const yearsKeys = Object.keys(historyYears).sort();
 
-    yearsKeys.forEach(yKey => {
-      const yData = historyYears[yKey] || {};
-      labels.push(`Año ${yKey}`);
+    if (yearsKeys.length > 0) {
+      yearsKeys.forEach(yKey => {
+        const yData = historyYears[yKey] || {};
+        labels.push(`Año ${yKey}`);
 
-      const v = yData.visits || 0;
-      const u = yData.unique || Math.round(v * 0.75);
-      const q = yData.qr || 0;
-      const a = yData.audio || 0;
-      const b = yData.bookings || 0;
+        const v = yData.visits || 0;
+        const u = yData.unique || 0;
+        const q = yData.qr || 0;
+        const a = yData.audio || 0;
+        const b = yData.bookings || 0;
 
-      visitsPerBucket.push(v);
-      qrPerBucket.push(q);
+        visitsPerBucket.push(v);
+        qrPerBucket.push(q);
 
-      breakdown.push({
-        interval: `Año ${yKey} (Total Consolidado)`,
-        visits: v,
-        unique: u,
-        qr: q,
-        audio: a,
-        bookings: b,
-        es: '71%',
-        enFr: '29%'
+        breakdown.push({
+          interval: `Año ${yKey} (Total Consolidado)`,
+          visits: v,
+          unique: u,
+          qr: q,
+          audio: a,
+          bookings: b,
+          es: v > 0 ? `${Math.round(((yData.es || 0) / v) * 100)}%` : '100%',
+          enFr: v > 0 ? `${Math.round((((yData.en || 0) + (yData.fr || 0)) / v) * 100)}%` : '0%'
+        });
       });
-    });
+    } else {
+      const curY = String(now.getFullYear());
+      labels = [`Año ${curY}`];
+      visitsPerBucket = [data.summary.totalVisits || 0];
+      qrPerBucket = [data.summary.qrScans || 0];
+      breakdown = [{
+        interval: `Año ${curY} (Total Consolidado)`,
+        visits: data.summary.totalVisits || 0,
+        unique: data.summary.uniqueVisitors || 0,
+        qr: data.summary.qrScans || 0,
+        audio: data.summary.audioListens || 0,
+        bookings: data.summary.tourBookings || 0,
+        es: '100%',
+        enFr: '0%'
+      }];
+    }
 
-    periodVisits = data.summary.totalVisits || 1485;
-    periodUnique = data.summary.uniqueVisitors || 1120;
-    periodQr = data.summary.qrScans || 412;
-    periodBookings = data.summary.tourBookings || 38;
-    periodAudio = data.summary.audioListens || 284;
-    langCounts.es = data.languages.es || 1054;
-    langCounts.en = data.languages.en || 297;
-    langCounts.fr = data.languages.fr || 134;
+    periodVisits = data.summary.totalVisits || 0;
+    periodUnique = data.summary.uniqueVisitors || 0;
+    periodQr = data.summary.qrScans || 0;
+    periodBookings = data.summary.tourBookings || 0;
+    periodAudio = data.summary.audioListens || 0;
+    langCounts.es = data.languages.es || 0;
+    langCounts.en = data.languages.en || 0;
+    langCounts.fr = data.languages.fr || 0;
   }
+
+  // Idiomas
+  const totalLang = langCounts.es + langCounts.en + langCounts.fr;
+  const esPct = totalLang > 0 ? Math.round((langCounts.es / totalLang) * 100) : 100;
+  const enPct = totalLang > 0 ? Math.round((langCounts.en / totalLang) * 100) : 0;
+  const frPct = totalLang > 0 ? (100 - esPct - enPct) : 0;
+
+  const trends = {
+    visits: periodVisits > 0 ? `📊 ${Number(periodVisits).toLocaleString()} visitas registradas` : '📊 0 visitas registradas',
+    unique: periodUnique > 0 ? `👤 ${Number(periodUnique).toLocaleString()} visitantes únicos` : '👤 0 únicos',
+    qr: periodQr > 0 ? `📱 ${Number(periodQr).toLocaleString()} lecturas en sala` : '📱 0 lecturas en sala',
+    bookings: periodBookings > 0 ? `🎟️ ${Number(periodBookings).toLocaleString()} solicitudes guiadas` : '🎟️ 0 reservas'
+  };
+
+  return {
+    name,
+    kpi: {
+      visits: periodVisits,
+      unique: periodUnique,
+      qr: periodQr,
+      bookings: periodBookings,
+      audio: periodAudio
+    },
+    trends,
+    labels,
+    visits: visitsPerBucket,
+    qr: qrPerBucket,
+    languages: {
+      es: langCounts.es,
+      en: langCounts.en,
+      fr: langCounts.fr,
+      esPct,
+      enPct,
+      frPct
+    },
+    breakdown,
+    global: data.summary
+  };
+}
 
   // Fallbacks de idiomas
   if (langCounts.es === 0 && langCounts.en === 0 && langCounts.fr === 0) {
