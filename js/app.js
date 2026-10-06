@@ -352,6 +352,19 @@ async function loadExhibitionPoints(i18n) {
         </article>
       `;
     }).join('');
+
+    // Si la URL contiene ?panel=X o ?qr=X (escaneo de código QR en sala o yacimiento)
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetPanelId = urlParams.get('panel') || urlParams.get('qr');
+    if (targetPanelId) {
+      setTimeout(() => {
+        const targetCard = document.querySelector(`.point-card[data-id="${targetPanelId}"]`);
+        if (targetCard) {
+          targetCard.classList.add('point-card-highlighted');
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 350);
+    }
   } catch (err) {
     console.error('Error cargando paneles:', err);
   }
