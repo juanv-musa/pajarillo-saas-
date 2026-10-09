@@ -16,6 +16,8 @@ const DOM = {
   userInfoBadge: document.getElementById('user-info-badge'),
   loggedUserName: document.getElementById('logged-user-name'),
   btnLogout: document.getElementById('btn-logout'),
+  btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
+  btnHideSidebarAside: document.getElementById('btn-hide-sidebar-aside'),
 
   // Subvistas
   sidebarBtns: document.querySelectorAll('.sidebar-btn'),
@@ -268,6 +270,7 @@ function showLogin() {
   DOM.dashboardView.classList.add('hidden');
   DOM.userInfoBadge.classList.add('hidden');
   DOM.btnLogout.classList.add('hidden');
+  if (DOM.btnToggleSidebar) DOM.btnToggleSidebar.classList.add('hidden');
 }
 
 function showDashboard(username) {
@@ -276,14 +279,77 @@ function showDashboard(username) {
   DOM.userInfoBadge.classList.remove('hidden');
   DOM.btnLogout.classList.remove('hidden');
   DOM.loggedUserName.textContent = username || 'Gestor Municipal';
+  if (DOM.btnToggleSidebar) DOM.btnToggleSidebar.classList.remove('hidden');
 
+  initSidebarCollapseState();
   loadAllData();
+}
+
+function setSidebarCollapsed(collapsed) {
+  const layout = DOM.dashboardView;
+  const toggleBtn = DOM.btnToggleSidebar || document.getElementById('btn-toggle-sidebar');
+  if (!layout) return;
+
+  if (collapsed) {
+    layout.classList.add('sidebar-collapsed');
+    localStorage.setItem('pajarillo_sidebar_collapsed', 'true');
+    if (toggleBtn) {
+      toggleBtn.classList.add('collapsed');
+      const icon = toggleBtn.querySelector('.toggle-icon');
+      const text = toggleBtn.querySelector('.toggle-text');
+      if (icon) icon.textContent = '☰';
+      if (text) text.textContent = 'Mostrar Menú';
+    }
+  } else {
+    layout.classList.remove('sidebar-collapsed');
+    localStorage.setItem('pajarillo_sidebar_collapsed', 'false');
+    if (toggleBtn) {
+      toggleBtn.classList.remove('collapsed');
+      const icon = toggleBtn.querySelector('.toggle-icon');
+      const text = toggleBtn.querySelector('.toggle-text');
+      if (icon) icon.textContent = '◀';
+      if (text) text.textContent = 'Ocultar Menú';
+    }
+  }
+}
+
+function toggleSidebar() {
+  const isCollapsed = DOM.dashboardView?.classList.contains('sidebar-collapsed');
+  setSidebarCollapsed(!isCollapsed);
+}
+
+function initSidebarCollapseState() {
+  const saved = localStorage.getItem('pajarillo_sidebar_collapsed');
+  if (saved === 'true') {
+    setSidebarCollapsed(true);
+  } else {
+    setSidebarCollapsed(false);
+  }
 }
 
 // ═══════════════════════════════════════════
 // NAVEGACIÓN ENTRE SUBVISTAS (SIDEBAR)
 // ═══════════════════════════════════════════
 function setupSidebarNavigation() {
+  if (DOM.btnToggleSidebar) {
+    DOM.btnToggleSidebar.addEventListener('click', toggleSidebar);
+  }
+  if (DOM.btnHideSidebarAside) {
+    DOM.btnHideSidebarAside.addEventListener('click', () => setSidebarCollapsed(true));
+  }
+
+  // Atajo de teclado universal Ctrl+B / Cmd+B para alternar el menú
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+      const activeEl = document.activeElement;
+      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || activeEl.isContentEditable)) {
+        return;
+      }
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
   DOM.sidebarBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetView = btn.dataset.view;
@@ -297,6 +363,12 @@ function setupSidebarNavigation() {
       // Si se navega a reservas, refrescar la lista para cargar nuevas reservas inmediatamente
       if (targetView === 'bookings') {
         loadBookings();
+      }
+
+      // Si estamos en tablet o pantalla estrecha (<=1200px), colapsar automáticamente
+      // para maximizar el espacio de trabajo y edición
+      if (window.innerWidth <= 1200) {
+        setSidebarCollapsed(true);
       }
     });
   });
