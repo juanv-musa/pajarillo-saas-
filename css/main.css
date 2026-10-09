@@ -1019,9 +1019,12 @@ button {
 
 .tarifa-price {
   font-family: var(--font-condensed);
-  font-size: 1.6rem;
-  font-weight: 800;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: var(--c-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
+  line-height: 1.2;
 }
 
 .map-card-wrapper {
@@ -1946,7 +1949,7 @@ img, video, canvas, svg {
   }
 
   .tarifa-price {
-    font-size: 1.35rem;
+    font-size: 1.05rem;
     flex-shrink: 0;
   }
 

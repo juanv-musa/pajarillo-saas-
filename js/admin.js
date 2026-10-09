@@ -2416,11 +2416,30 @@ const DEFAULT_LOCALES = {
     galeria_title: "Fondo Audiovisual y Recursos Multimedia",
     galeria_subtitle: "Explora la fototeca de alta resolución, visor 3D interactivo y fichas de investigación",
     desc_3d: "Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo en 360°, con soporte de realidad aumentada y control orbital.",
-    horario_invierno: "Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00",
+    horarios_title: "Horarios de Apertura",
+    horario_verano_titulo: "Horario de Verano (Jun–Sep)",
     horario_verano: "Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30",
+    horario_verano_dom: "Domingos y festivos: 10:00 – 14:30 h",
+    horario_invierno_titulo: "Horario de Invierno (Oct–May)",
+    horario_invierno: "Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00",
+    horario_invierno_dom: "Domingos y festivos: 10:00 – 14:30 h",
+    horario_aviso: "⚠️ Lunes cerrado por mantenimiento (excepto festivos)",
+    tarifas_title: "Tarifas y Entradas",
+    tarifa_general_titulo: "Entrada General",
+    tarifa_general_desc: "Acceso libre al centro de interpretación, salas expositivas y claustro.",
     tarifa_general: "3,00 €",
-    tarifa_reducida: "1,50 € (Jubilados, estudiantes y grupos >10)",
-    tarifa_gratuita: "Menores de 12 años, empadronados en Huelma y domingos tarde",
+    tarifa_reducida_titulo: "Tarifa Reducida",
+    tarifa_reducida_desc: "Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.",
+    tarifa_reducida: "1,50 €",
+    tarifa_gratuita_titulo: "Entrada Gratuita",
+    tarifa_gratuita_desc: "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
+    tarifa_gratuita: "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
+    tarifa_gratuita_precio: "0,00 €",
+    como_llegar_titulo: "Cómo llegar",
+    como_llegar_direccion: "Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén",
+    como_llegar_parking: "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
+    como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
     agenda_title: "Agenda Cultural y Actividades",
     agenda_subtitle: "Participa en nuestras visitas temáticas, talleres arqueológicos y conferencias",
     reservas_title: "Reserva tu Visita Guiada",
@@ -2461,11 +2480,30 @@ const DEFAULT_LOCALES = {
     galeria_title: "Audiovisual Archives & Multimedia Resources",
     galeria_subtitle: "Explore high-resolution photographs, 3D interactive models and educational research factsheets",
     desc_3d: "Explore the 3D digital reconstruction of the Iberian sculpture and El Pajarillo sanctuary in 360°, with VR/orbit controls.",
-    horario_invierno: "Wednesday to Sunday: 10:00 - 14:00 | 16:30 - 19:00",
+    horarios_title: "Opening Hours",
+    horario_verano_titulo: "Summer Hours (Jun–Sep)",
     horario_verano: "Wednesday to Sunday: 9:30 - 13:30 | 18:00 - 20:30",
+    horario_verano_dom: "Sundays and holidays: 10:00 – 14:30 h",
+    horario_invierno_titulo: "Winter Hours (Oct–May)",
+    horario_invierno: "Wednesday to Sunday: 10:00 - 14:00 | 16:30 - 19:00",
+    horario_invierno_dom: "Sundays and holidays: 10:00 – 14:30 h",
+    horario_aviso: "⚠️ Closed on Mondays for maintenance (except holidays)",
+    tarifas_title: "Admission Fees",
+    tarifa_general_titulo: "General Admission",
+    tarifa_general_desc: "Full access to the interpretation centre, exhibition halls and courtyard.",
     tarifa_general: "€3.00",
-    tarifa_reducida: "€1.50 (Seniors, students and groups >10)",
-    tarifa_gratuita: "Children under 12, Huelma residents and Sunday afternoons",
+    tarifa_reducida_titulo: "Reduced Admission",
+    tarifa_reducida_desc: "Seniors, students, youth card, large families and groups > 15 people.",
+    tarifa_reducida: "€1.50",
+    tarifa_gratuita_titulo: "Free Admission",
+    tarifa_gratuita_desc: "Children under 12, accredited persons with disabilities and residents.",
+    tarifa_gratuita: "Children under 12, accredited persons with disabilities and residents.",
+    tarifa_gratuita_precio: "€0.00",
+    como_llegar_titulo: "How to get here",
+    como_llegar_direccion: "El Pajarillo Sanctuary Site · Huelma-Cabra Road, Jaén",
+    como_llegar_parking: "Free parking area for cars and tourist coaches.",
+    como_llegar_accesibilidad: "Accessible facilities for people with reduced mobility and braille signage.",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
     agenda_title: "Cultural Agenda & Activities",
     agenda_subtitle: "Join our specialized guided tours, archaeological workshops and scientific lectures",
     reservas_title: "Book Your Guided Tour",
@@ -2506,11 +2544,30 @@ const DEFAULT_LOCALES = {
     galeria_title: "Fonds Audiovisuel et Ressources Multimédias",
     galeria_subtitle: "Explorez la photothèque haute résolution, le visualiseur 3D interactif et les fiches didactiques",
     desc_3d: "Explorez la reconstitution 3D interactive de la sculpture ibérique et du sanctuaire d'El Pajarillo à 360°.",
-    horario_invierno: "Mercredi au Dimanche: 10h00 - 14h00 | 16h30 - 19h00",
+    horarios_title: "Horaires d'Ouverture",
+    horario_verano_titulo: "Horaires d'Été (Juin–Sept)",
     horario_verano: "Mercredi au Dimanche: 9h30 - 13h30 | 18h00 - 20h30",
+    horario_verano_dom: "Dimanches et jours fériés: 10h00 – 14h30",
+    horario_invierno_titulo: "Horaires d'Hiver (Oct–Mai)",
+    horario_invierno: "Mercredi au Dimanche: 10h00 - 14h00 | 16h30 - 19h00",
+    horario_invierno_dom: "Dimanches et jours fériés: 10h00 – 14h30",
+    horario_aviso: "⚠️ Fermé le lundi pour entretien (sauf jours fériés)",
+    tarifas_title: "Tarifs et Billetterie",
+    tarifa_general_titulo: "Billet Général",
+    tarifa_general_desc: "Accès libre au centre d'interprétation, salles d'exposition et cloître.",
     tarifa_general: "3,00 €",
-    tarifa_reducida: "1,50 € (Retraités, étudiants et groupes >10)",
-    tarifa_gratuita: "Moins de 12 ans, résidents d'Huelma et dimanches après-midi",
+    tarifa_reducida_titulo: "Tarif Réduit",
+    tarifa_reducida_desc: "Retraités, étudiants, carte jeune, familles nombreuses et groupes > 15 pers.",
+    tarifa_reducida: "1,50 €",
+    tarifa_gratuita_titulo: "Entrée Gratuite",
+    tarifa_gratuita_desc: "Moins de 12 ans, personnes en situation de handicap et résidents.",
+    tarifa_gratuita: "Moins de 12 ans, personnes en situation de handicap et résidents.",
+    tarifa_gratuita_precio: "0,00 €",
+    como_llegar_titulo: "Comment venir",
+    como_llegar_direccion: "Enceinte du Sanctuaire d'El Pajarillo · Route Huelma-Cabra, Jaén",
+    como_llegar_parking: "Parking gratuit pour véhicules particuliers et autocars touristiques.",
+    como_llegar_accesibilidad: "Installations accessibles aux personnes à mobilité réduite et cartels braille.",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
     agenda_title: "Agenda Culturel & Activités",
     agenda_subtitle: "Participez à nos visites guidées, ateliers d'archéologie et conférences scientifiques",
     reservas_title: "Réservez votre Visite Guidée",
@@ -2630,6 +2687,14 @@ function loadSavedLocales() {
     const saved = localStorage.getItem('pajarillo_locales');
     if (saved) {
       localesData = JSON.parse(saved);
+      // Limpieza/migración de tarifa_reducida si incluía descripción embebida
+      ['es', 'en', 'fr'].forEach(lang => {
+        if (localesData[lang] && localesData[lang].tarifa_reducida) {
+          if (localesData[lang].tarifa_reducida.includes('(')) {
+            localesData[lang].tarifa_reducida = lang === 'en' ? '€1.50' : '1,50 €';
+          }
+        }
+      });
     }
   } catch (e) {}
 }
@@ -2702,16 +2767,39 @@ function populateFormWithLang(lang) {
   setVal('cnt-galeria-subtitle', c.galeria_subtitle);
   setVal('cnt-3d-desc', c.desc_3d);
 
-  setVal('cnt-horario-invierno', c.horario_invierno);
-  setVal('cnt-horario-verano', c.horario_verano);
-  setVal('cnt-tarifa-general', c.tarifa_general);
-  setVal('cnt-tarifa-reducida', c.tarifa_reducida);
-  setVal('cnt-tarifa-gratuita', c.tarifa_gratuita);
+  // 5. Horarios y Tarifas
+  setVal('cnt-horarios-title', c.horarios_title || 'Horarios de Apertura');
+  setVal('cnt-horario-verano-titulo', c.horario_verano_titulo || 'Horario de Verano (Jun–Sep)');
+  setVal('cnt-horario-verano', c.horario_verano || 'Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30');
+  setVal('cnt-horario-verano-dom', c.horario_verano_dom || 'Domingos y festivos: 10:00 – 14:30 h');
+  setVal('cnt-horario-invierno-titulo', c.horario_invierno_titulo || 'Horario de Invierno (Oct–May)');
+  setVal('cnt-horario-invierno', c.horario_invierno || 'Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00');
+  setVal('cnt-horario-invierno-dom', c.horario_invierno_dom || 'Domingos y festivos: 10:00 – 14:30 h');
+  setVal('cnt-horario-aviso', c.horario_aviso || '⚠️ Lunes cerrado por mantenimiento (excepto festivos)');
+
+  setVal('cnt-tarifas-title', c.tarifas_title || 'Tarifas y Entradas');
+  setVal('cnt-tarifa-general-titulo', c.tarifa_general_titulo || 'Entrada General');
+  setVal('cnt-tarifa-general-desc', c.tarifa_general_desc || 'Acceso libre al centro de interpretación, salas expositivas y claustro.');
+  setVal('cnt-tarifa-general', c.tarifa_general || '3,00 €');
+  setVal('cnt-tarifa-reducida-titulo', c.tarifa_reducida_titulo || 'Tarifa Reducida');
+  setVal('cnt-tarifa-reducida-desc', c.tarifa_reducida_desc || 'Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.');
+  setVal('cnt-tarifa-reducida', (c.tarifa_reducida && c.tarifa_reducida.includes('(')) ? '1,50 €' : (c.tarifa_reducida || '1,50 €'));
+  setVal('cnt-tarifa-gratuita-titulo', c.tarifa_gratuita_titulo || 'Entrada Gratuita');
+  setVal('cnt-tarifa-gratuita-desc', c.tarifa_gratuita || c.tarifa_gratuita_desc || 'Menores de 12 años, personas con discapacidad acreditada y empadronados.');
+  setVal('cnt-tarifa-gratuita', c.tarifa_gratuita || c.tarifa_gratuita_desc || 'Menores de 12 años, personas con discapacidad acreditada y empadronados.');
+  setVal('cnt-tarifa-gratuita-precio', c.tarifa_gratuita_precio || '0,00 €');
 
   setVal('cnt-agenda-title', c.agenda_title);
   setVal('cnt-agenda-subtitle', c.agenda_subtitle);
   setVal('cnt-reservas-title', c.reservas_title);
   setVal('cnt-reservas-subtitle', c.reservas_subtitle);
+
+  // 7. Contacto y Cómo llegar
+  setVal('cnt-como-llegar-titulo', c.como_llegar_titulo || 'Cómo llegar');
+  setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén');
+  setVal('cnt-como-llegar-parking', c.como_llegar_parking || 'Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.');
+  setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.');
+  setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma');
 
   setVal('cnt-tel', c.tel);
   setVal('cnt-email', c.email);
@@ -2763,16 +2851,39 @@ function saveCurrentFormToLang(lang) {
     galeria_subtitle: getVal('cnt-galeria-subtitle'),
     desc_3d: getVal('cnt-3d-desc'),
 
-    horario_invierno: getVal('cnt-horario-invierno'),
+    // 5. Horarios y Tarifas
+    horarios_title: getVal('cnt-horarios-title'),
+    horario_verano_titulo: getVal('cnt-horario-verano-titulo'),
     horario_verano: getVal('cnt-horario-verano'),
+    horario_verano_dom: getVal('cnt-horario-verano-dom'),
+    horario_invierno_titulo: getVal('cnt-horario-invierno-titulo'),
+    horario_invierno: getVal('cnt-horario-invierno'),
+    horario_invierno_dom: getVal('cnt-horario-invierno-dom'),
+    horario_aviso: getVal('cnt-horario-aviso'),
+
+    tarifas_title: getVal('cnt-tarifas-title'),
+    tarifa_general_titulo: getVal('cnt-tarifa-general-titulo'),
+    tarifa_general_desc: getVal('cnt-tarifa-general-desc'),
     tarifa_general: getVal('cnt-tarifa-general'),
+    tarifa_reducida_titulo: getVal('cnt-tarifa-reducida-titulo'),
+    tarifa_reducida_desc: getVal('cnt-tarifa-reducida-desc'),
     tarifa_reducida: getVal('cnt-tarifa-reducida'),
+    tarifa_gratuita_titulo: getVal('cnt-tarifa-gratuita-titulo'),
     tarifa_gratuita: getVal('cnt-tarifa-gratuita'),
+    tarifa_gratuita_desc: getVal('cnt-tarifa-gratuita'),
+    tarifa_gratuita_precio: getVal('cnt-tarifa-gratuita-precio'),
 
     agenda_title: getVal('cnt-agenda-title'),
     agenda_subtitle: getVal('cnt-agenda-subtitle'),
     reservas_title: getVal('cnt-reservas-title'),
     reservas_subtitle: getVal('cnt-reservas-subtitle'),
+
+    // 7. Contacto y Cómo llegar
+    como_llegar_titulo: getVal('cnt-como-llegar-titulo'),
+    como_llegar_direccion: getVal('cnt-como-llegar-direccion'),
+    como_llegar_parking: getVal('cnt-como-llegar-parking'),
+    como_llegar_accesibilidad: getVal('cnt-como-llegar-accesibilidad'),
+    como_llegar_mapa_url: getVal('cnt-como-llegar-mapa-url'),
 
     tel: getVal('cnt-tel'),
     email: getVal('cnt-email'),

@@ -41,6 +41,34 @@ export class I18nManager {
           if (l.site_tagline) this.translations[lang].hero.subtitle = l.site_tagline;
           if (l.hero_cta) this.translations[lang].hero.cta_primary = l.hero_cta;
           if (l.hero_desc) this.translations[lang].hero.card_desc = l.hero_desc;
+
+          if (!this.translations[lang].horarios) this.translations[lang].horarios = {};
+          if (l.horarios_title) this.translations[lang].horarios.horarios_title = l.horarios_title;
+          if (l.horario_verano_titulo) this.translations[lang].horarios.temporada_alta = l.horario_verano_titulo;
+          if (l.horario_verano) this.translations[lang].horarios.alta_dias = l.horario_verano;
+          if (l.horario_verano_dom) this.translations[lang].horarios.alta_dom = l.horario_verano_dom;
+          if (l.horario_invierno_titulo) this.translations[lang].horarios.temporada_baja = l.horario_invierno_titulo;
+          if (l.horario_invierno) this.translations[lang].horarios.baja_dias = l.horario_invierno;
+          if (l.horario_invierno_dom) this.translations[lang].horarios.baja_dom = l.horario_invierno_dom;
+          if (l.horario_aviso) this.translations[lang].horarios.aviso_lunes = l.horario_aviso;
+
+          if (l.tarifas_title) this.translations[lang].horarios.tarifas_title = l.tarifas_title;
+          if (l.tarifa_general_titulo) this.translations[lang].horarios.tarifa_general = l.tarifa_general_titulo;
+          if (l.tarifa_general_desc) this.translations[lang].horarios.tarifa_general_desc = l.tarifa_general_desc;
+          if (l.tarifa_general) this.translations[lang].horarios.tarifa_general_price = l.tarifa_general;
+          if (l.tarifa_reducida_titulo) this.translations[lang].horarios.tarifa_reducida = l.tarifa_reducida_titulo;
+          if (l.tarifa_reducida_desc) this.translations[lang].horarios.tarifa_reducida_desc = l.tarifa_reducida_desc;
+          if (l.tarifa_reducida) {
+            this.translations[lang].horarios.tarifa_reducida_price = l.tarifa_reducida.includes('(') ? (lang === 'en' ? '€1.50' : '1,50 €') : l.tarifa_reducida;
+          }
+          if (l.tarifa_gratuita_titulo) this.translations[lang].horarios.tarifa_gratuita = l.tarifa_gratuita_titulo;
+          if (l.tarifa_gratuita || l.tarifa_gratuita_desc) this.translations[lang].horarios.tarifa_gratuita_desc = l.tarifa_gratuita_desc || l.tarifa_gratuita;
+          if (l.tarifa_gratuita_precio) this.translations[lang].horarios.tarifa_gratuita_price = l.tarifa_gratuita_precio;
+
+          if (l.como_llegar_titulo) this.translations[lang].horarios.localizacion_title = l.como_llegar_titulo;
+          if (l.como_llegar_direccion) this.translations[lang].horarios.direccion_val = l.como_llegar_direccion;
+          if (l.como_llegar_parking) this.translations[lang].horarios.parking_val = l.como_llegar_parking;
+          if (l.como_llegar_accesibilidad) this.translations[lang].horarios.accesibilidad_val = l.como_llegar_accesibilidad;
         }
       }
     } catch (e) {}

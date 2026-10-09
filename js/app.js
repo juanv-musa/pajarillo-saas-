@@ -222,30 +222,90 @@ function applySiteConfig(config) {
       el.textContent = c.horario_atencion;
     });
   }
+  // 5. Horarios de Apertura y Tarifas
+  if (c.horarios_title) {
+    document.querySelectorAll('[data-i18n="horarios.horarios_title"]').forEach(el => el.textContent = c.horarios_title);
+  }
+  if (c.horario_verano_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.temporada_alta"]').forEach(el => el.textContent = c.horario_verano_titulo);
+  }
   if (c.horario_verano) {
     document.querySelectorAll('[data-i18n="horarios.alta_dias"]').forEach(el => {
       el.textContent = c.horario_verano;
     });
+  }
+  if (c.horario_verano_dom) {
+    document.querySelectorAll('[data-i18n="horarios.alta_dom"]').forEach(el => el.textContent = c.horario_verano_dom);
+  }
+  if (c.horario_invierno_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.temporada_baja"]').forEach(el => el.textContent = c.horario_invierno_titulo);
   }
   if (c.horario_invierno) {
     document.querySelectorAll('[data-i18n="horarios.baja_dias"]').forEach(el => {
       el.textContent = c.horario_invierno;
     });
   }
+  if (c.horario_invierno_dom) {
+    document.querySelectorAll('[data-i18n="horarios.baja_dom"]').forEach(el => el.textContent = c.horario_invierno_dom);
+  }
+  if (c.horario_aviso) {
+    document.querySelectorAll('[data-i18n="horarios.aviso_lunes"]').forEach(el => el.textContent = c.horario_aviso);
+  }
+
+  // Tarifas
+  if (c.tarifas_title) {
+    document.querySelectorAll('[data-i18n="horarios.tarifas_title"]').forEach(el => el.textContent = c.tarifas_title);
+  }
+  if (c.tarifa_general_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_general"]').forEach(el => el.textContent = c.tarifa_general_titulo);
+  }
+  if (c.tarifa_general_desc) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_general_desc"]').forEach(el => el.textContent = c.tarifa_general_desc);
+  }
   if (c.tarifa_general) {
     document.querySelectorAll('[data-i18n="horarios.tarifa_general_price"]').forEach(el => {
       el.textContent = c.tarifa_general;
     });
   }
+  if (c.tarifa_reducida_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida"]').forEach(el => el.textContent = c.tarifa_reducida_titulo);
+  }
+  if (c.tarifa_reducida_desc) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_desc"]').forEach(el => el.textContent = c.tarifa_reducida_desc);
+  }
   if (c.tarifa_reducida) {
+    const cleanReducida = c.tarifa_reducida.includes('(') ? '1,50 €' : c.tarifa_reducida;
     document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_price"]').forEach(el => {
-      el.textContent = c.tarifa_reducida;
+      el.textContent = cleanReducida;
     });
   }
-  if (c.tarifa_gratuita) {
+  if (c.tarifa_gratuita_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita"]').forEach(el => el.textContent = c.tarifa_gratuita_titulo);
+  }
+  if (c.tarifa_gratuita || c.tarifa_gratuita_desc) {
     document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_desc"]').forEach(el => {
-      el.textContent = c.tarifa_gratuita;
+      el.textContent = c.tarifa_gratuita_desc || c.tarifa_gratuita;
     });
+  }
+  if (c.tarifa_gratuita_precio) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_price"]').forEach(el => el.textContent = c.tarifa_gratuita_precio);
+  }
+
+  // Cómo llegar y Localización
+  if (c.como_llegar_titulo) {
+    document.querySelectorAll('[data-i18n="horarios.localizacion_title"]').forEach(el => el.textContent = c.como_llegar_titulo);
+  }
+  if (c.como_llegar_direccion) {
+    document.querySelectorAll('[data-i18n="horarios.direccion_val"]').forEach(el => el.textContent = c.como_llegar_direccion);
+  }
+  if (c.como_llegar_parking) {
+    document.querySelectorAll('[data-i18n="horarios.parking_val"]').forEach(el => el.textContent = c.como_llegar_parking);
+  }
+  if (c.como_llegar_accesibilidad) {
+    document.querySelectorAll('[data-i18n="horarios.accesibilidad_val"]').forEach(el => el.textContent = c.como_llegar_accesibilidad);
+  }
+  if (c.como_llegar_mapa_url) {
+    document.querySelectorAll('#btn-google-maps, a[href*="maps.google.com"]').forEach(el => el.href = c.como_llegar_mapa_url);
   }
   if (c.footer_copy) {
     document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => {

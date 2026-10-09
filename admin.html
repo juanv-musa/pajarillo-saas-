@@ -886,35 +886,137 @@
             </div>
           </div>
 
-          <!-- 5. Horarios y Tarifas -->
+          <!-- 5. Horarios de Apertura y Tarifas -->
           <div class="cms-section-accordion">
             <div class="cms-accordion-header">
-              <span>⏰ 5. Horarios de Visita y Tarifas</span>
-              <span style="font-size: 0.82rem; color: var(--admin-muted);">Temporadas y precios</span>
+              <span>⏰ 5. Horarios de Apertura y Tarifas</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Temporadas, domingos/festivos, aviso y precios</span>
             </div>
             <div class="cms-accordion-body">
-              <div class="grid-2col">
-                <div class="admin-form-group">
-                  <label>Horario Temporada Invierno</label>
-                  <input type="text" id="cnt-horario-invierno" class="admin-input">
-                </div>
-                <div class="admin-form-group">
-                  <label>Horario Temporada Verano</label>
-                  <input type="text" id="cnt-horario-verano" class="admin-input">
-                </div>
-                <div class="admin-form-group">
-                  <label>Tarifa General</label>
-                  <input type="text" id="cnt-tarifa-general" class="admin-input">
-                </div>
-                <div class="admin-form-group">
-                  <label>Tarifa Reducida</label>
-                  <input type="text" id="cnt-tarifa-reducida" class="admin-input">
-                </div>
-              </div>
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
+                🕒 Bloque de Horarios de Apertura
+              </h4>
               <div class="admin-form-group">
-                <label>Condiciones de Gratuidad</label>
-                <input type="text" id="cnt-tarifa-gratuita" class="admin-input">
+                <label>Título de la sección</label>
+                <input type="text" id="cnt-horarios-title" class="admin-input" placeholder="Ej. Horarios de Apertura">
               </div>
+
+              <div style="background: rgba(56, 79, 62, 0.03); border: 1px solid var(--admin-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.6rem;">
+                  ☀️ Horario de Verano
+                </h5>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Título Temporada Verano</label>
+                    <input type="text" id="cnt-horario-verano-titulo" class="admin-input" placeholder="Ej. Horario de Verano (Jun–Sep)">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Horario Regular (Miércoles a Sábado / Días)</label>
+                    <input type="text" id="cnt-horario-verano" class="admin-input" placeholder="Ej. Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Domingos y Festivos de Verano</label>
+                  <input type="text" id="cnt-horario-verano-dom" class="admin-input" placeholder="Ej. Domingos y festivos: 10:00 – 14:30 h">
+                </div>
+              </div>
+
+              <div style="background: rgba(56, 79, 62, 0.03); border: 1px solid var(--admin-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.6rem;">
+                  ❄️ Horario de Invierno
+                </h5>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Título Temporada Invierno</label>
+                    <input type="text" id="cnt-horario-invierno-titulo" class="admin-input" placeholder="Ej. Horario de Invierno (Oct–May)">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Horario Regular (Miércoles a Sábado / Días)</label>
+                    <input type="text" id="cnt-horario-invierno" class="admin-input" placeholder="Ej. Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Domingos y Festivos de Invierno</label>
+                  <input type="text" id="cnt-horario-invierno-dom" class="admin-input" placeholder="Ej. Domingos y festivos: 10:00 – 14:30 h">
+                </div>
+              </div>
+
+              <div class="admin-form-group">
+                <label>Aviso de Mantenimiento / Días Cerrados</label>
+                <input type="text" id="cnt-horario-aviso" class="admin-input" placeholder="Ej. ⚠️ Lunes cerrado por mantenimiento (excepto festivos)">
+              </div>
+
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin: 1.5rem 0 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
+                🎟️ Bloque de Tarifas y Entradas
+              </h4>
+              <div class="admin-form-group">
+                <label>Título del Bloque de Tarifas</label>
+                <input type="text" id="cnt-tarifas-title" class="admin-input" placeholder="Ej. Tarifas y Entradas">
+              </div>
+
+              <!-- Tarifa General -->
+              <div style="background: rgba(56, 79, 62, 0.03); border: 1px solid var(--admin-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.6rem;">
+                  1. Entrada General
+                </h5>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Nombre de la Tarifa</label>
+                    <input type="text" id="cnt-tarifa-general-titulo" class="admin-input" placeholder="Entrada General">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Precio (Solo importe, ej. 3,00 €)</label>
+                    <input type="text" id="cnt-tarifa-general" class="admin-input" placeholder="3,00 €">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Descripción / Qué incluye</label>
+                  <input type="text" id="cnt-tarifa-general-desc" class="admin-input" placeholder="Acceso libre al centro de interpretación, salas expositivas y claustro.">
+                </div>
+              </div>
+
+              <!-- Tarifa Reducida -->
+              <div style="background: rgba(56, 79, 62, 0.03); border: 1px solid var(--admin-border); border-radius: 8px; padding: 1rem; margin-bottom: 1rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.6rem;">
+                  2. Tarifa Reducida
+                </h5>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Nombre de la Tarifa</label>
+                    <input type="text" id="cnt-tarifa-reducida-titulo" class="admin-input" placeholder="Tarifa Reducida">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Precio (Solo importe, ej. 1,50 €)</label>
+                    <input type="text" id="cnt-tarifa-reducida" class="admin-input" placeholder="1,50 €">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Beneficiarios / Condiciones</label>
+                  <input type="text" id="cnt-tarifa-reducida-desc" class="admin-input" placeholder="Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.">
+                </div>
+              </div>
+
+              <!-- Tarifa Gratuita -->
+              <div style="background: rgba(56, 79, 62, 0.03); border: 1px solid var(--admin-border); border-radius: 8px; padding: 1rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.6rem;">
+                  3. Entrada Gratuita
+                </h5>
+                <div class="grid-2col">
+                  <div class="admin-form-group">
+                    <label>Nombre de la Tarifa</label>
+                    <input type="text" id="cnt-tarifa-gratuita-titulo" class="admin-input" placeholder="Entrada Gratuita">
+                  </div>
+                  <div class="admin-form-group">
+                    <label>Precio / Gratuidad</label>
+                    <input type="text" id="cnt-tarifa-gratuita-precio" class="admin-input" placeholder="0,00 €">
+                  </div>
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Condiciones de Gratuidad</label>
+                  <input type="text" id="cnt-tarifa-gratuita" class="admin-input" placeholder="Menores de 12 años, personas con discapacidad acreditada y empadronados.">
+                </div>
+              </div>
+
             </div>
           </div>
 
@@ -946,13 +1048,40 @@
             </div>
           </div>
 
-          <!-- 7. Contacto e Información Municipal -->
+          <!-- 7. Contacto, Ubicación y Cómo llegar -->
           <div class="cms-section-accordion">
             <div class="cms-accordion-header">
-              <span>📞 7. Contacto e Información Municipal</span>
-              <span style="font-size: 0.82rem; color: var(--admin-muted);">Teléfono, email, entidad gestora</span>
+              <span>🗺️ 7. Contacto, Localización y Cómo llegar</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Dirección, aparcamiento, accesibilidad, mapa y atención</span>
             </div>
             <div class="cms-accordion-body">
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
+                📍 Bloque «Cómo llegar» (Columna derecha de la web pública)
+              </h4>
+              <div class="admin-form-group">
+                <label>Título de la Tarjeta</label>
+                <input type="text" id="cnt-como-llegar-titulo" class="admin-input" placeholder="Ej. Cómo llegar">
+              </div>
+              <div class="admin-form-group">
+                <label>Dirección del Yacimiento / Santuario</label>
+                <input type="text" id="cnt-como-llegar-direccion" class="admin-input" placeholder="Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén">
+              </div>
+              <div class="admin-form-group">
+                <label>Información de Aparcamiento</label>
+                <input type="text" id="cnt-como-llegar-parking" class="admin-input" placeholder="Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.">
+              </div>
+              <div class="admin-form-group">
+                <label>Accesibilidad y Adaptaciones</label>
+                <input type="text" id="cnt-como-llegar-accesibilidad" class="admin-input" placeholder="Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.">
+              </div>
+              <div class="admin-form-group">
+                <label>Enlace del botón a Google Maps</label>
+                <input type="url" id="cnt-como-llegar-mapa-url" class="admin-input" placeholder="https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma">
+              </div>
+
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin: 1.5rem 0 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
+                📞 Contacto Institucional y Atención Telefónica
+              </h4>
               <div class="grid-2col">
                 <div class="admin-form-group">
                   <label>Teléfono Oficial de Turismo</label>
@@ -972,7 +1101,7 @@
                 </div>
               </div>
               <div class="admin-form-group">
-                <label>Dirección y Localización del Centro</label>
+                <label>Dirección Administrativa</label>
                 <input type="text" id="cnt-direccion" class="admin-input" value="Plaza de España, 1 · 23140 Huelma (Jaén)">
               </div>
             </div>
