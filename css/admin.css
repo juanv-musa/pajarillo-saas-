@@ -154,6 +154,8 @@ body {
 
 .admin-content {
   flex: 1;
+  min-width: 0;
+  max-width: 100%;
   padding: 2rem;
   overflow-y: auto;
 }
@@ -264,12 +266,16 @@ body {
   padding: 1.75rem;
   box-shadow: var(--admin-shadow);
   margin-bottom: 2rem;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .card-title-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
   margin-bottom: 1.5rem;
 }
 
@@ -320,11 +326,21 @@ body {
   background: var(--admin-accent-purple);
 }
 
-/* Tablas Modernas */
+/* Tablas Modernas y Responsive */
+.admin-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--admin-border);
+}
+
 .admin-table {
   width: 100%;
+  min-width: 820px;
   border-collapse: collapse;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
 }
 
 .admin-table th {
@@ -334,15 +350,17 @@ body {
   color: var(--admin-muted);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   letter-spacing: 0.5px;
   border-bottom: 1px solid var(--admin-border);
+  white-space: nowrap;
 }
 
 .admin-table td {
-  padding: 0.9rem 1rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid var(--admin-border);
   color: var(--admin-text);
+  vertical-align: middle;
 }
 
 .status-badge {
@@ -623,12 +641,12 @@ body {
 
   .admin-content {
     padding: 1.25rem 1rem;
+    min-width: 0;
   }
 
   .admin-card {
     padding: 1.25rem 1rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    min-width: 0;
   }
 
   .grid-2col {

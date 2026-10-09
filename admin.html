@@ -22,7 +22,7 @@
   <!-- Módulo de Analítica Oficial -->
   <script type="module" src="./js/analytics.js?v=3.3"></script>
 
-  <link rel="stylesheet" href="./css/admin.css?v=3.4">
+  <link rel="stylesheet" href="./css/admin.css?v=3.5">
 </head>
 <body>
 
@@ -1309,24 +1309,26 @@
             </div>
           </div>
 
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Fecha Visita</th>
-                <th>Turno</th>
-                <th>Visitante & Contacto</th>
-                <th>Personas</th>
-                <th>Idioma</th>
-                <th>Revisión / Trazabilidad</th>
-                <th>Estado</th>
-                <th style="min-width: 200px;">Acciones de Gestión</th>
-              </tr>
-            </thead>
-            <tbody id="admin-bookings-tbody">
-              <!-- Inyectado por admin.js -->
-            </tbody>
-          </table>
+          <div class="admin-table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha Visita</th>
+                  <th>Turno</th>
+                  <th>Visitante & Contacto</th>
+                  <th>Personas</th>
+                  <th>Idioma</th>
+                  <th>Revisión / Trazabilidad</th>
+                  <th>Estado</th>
+                  <th style="min-width: 170px;">Acciones de Gestión</th>
+                </tr>
+              </thead>
+              <tbody id="admin-bookings-tbody">
+                <!-- Inyectado por admin.js -->
+              </tbody>
+            </table>
+          </div>
         </div>
       </section>
 
@@ -1729,6 +1731,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.5"></script>
+  <script type="module" src="./js/admin.js?v=3.6"></script>
 </body>
 </html>
