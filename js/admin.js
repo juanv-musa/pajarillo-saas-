@@ -407,15 +407,9 @@ async function initAnalyticsData() {
     }
   } catch (e) {}
 
-  let fileData = null;
-  try {
-    const res = await fetch('./data/analytics.json?t=' + Date.now());
-    if (res.ok) fileData = await res.json();
-  } catch (e) {}
-
-  // Si no hay datos locales o los datos locales estaban forzados a cero pero fileData tiene el histórico real:
-  if (!local || (local.summary && local.summary.totalVisits === 0 && fileData && fileData.summary && fileData.summary.totalVisits > 0)) {
-    local = fileData || {
+  // Si los datos en el navegador provienen de la antigua prueba ficticia (ej. 1513/1518 con 1141):
+  if (local && local.summary && (local.summary.uniqueVisitors === 1141 || local.summary.totalVisits === 1518 || local.summary.totalVisits === 1513)) {
+    local = {
       summary: { totalVisits: 0, uniqueVisitors: 0, qrScans: 0, tourBookings: 0, audioListens: 0, downloads: 0 },
       languages: { es: 0, en: 0, fr: 0 },
       historyByDay: {},
@@ -425,24 +419,29 @@ async function initAnalyticsData() {
       topPanels: [],
       events: []
     };
-    if (local) localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
-  } else if (local && fileData) {
-    local.summary = local.summary || {};
-    local.summary.totalVisits = Math.max(Number(local.summary.totalVisits) || 0, Number(fileData.summary?.totalVisits) || 0);
-    local.summary.uniqueVisitors = Math.max(Number(local.summary.uniqueVisitors) || 0, Number(fileData.summary?.uniqueVisitors) || 0);
-    local.summary.qrScans = Math.max(Number(local.summary.qrScans) || 0, Number(fileData.summary?.qrScans) || 0);
-    local.summary.tourBookings = Math.max(Number(local.summary.tourBookings) || 0, Number(fileData.summary?.tourBookings) || 0);
-    local.summary.audioListens = Math.max(Number(local.summary.audioListens) || 0, Number(fileData.summary?.audioListens) || 0);
-    local.summary.downloads = Math.max(Number(local.summary.downloads) || 0, Number(fileData.summary?.downloads) || 0);
-
-    local.historyByDay = Object.assign({}, fileData.historyByDay || {}, local.historyByDay || {});
-    local.historyByMonth = Object.assign({}, fileData.historyByMonth || {}, local.historyByMonth || {});
-    local.historyByYear = Object.assign({}, fileData.historyByYear || {}, local.historyByYear || {});
-    local.languages = local.languages || fileData.languages || { es: 0, en: 0, fr: 0 };
-    local.topPanels = (local.topPanels && local.topPanels.length > 0) ? local.topPanels : (fileData.topPanels || []);
-    local.topSections = (local.topSections && local.topSections.length > 0) ? local.topSections : (fileData.topSections || []);
-    local.events = (Array.isArray(local.events) && local.events.length > 0) ? local.events : (fileData.recentEvents || []);
     localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+    localStorage.setItem('pajarillo_analytics_cleared', '1');
+  }
+
+  // Si ya tenemos datos válidos en localStorage, son la ÚNICA fuente de verdad (NUNCA mezclar con datos demo)
+  if (local && local.summary) {
+    cachedAnalyticsData = local;
+    return local;
+  }
+
+  // Si no hay datos y nunca se ha reseteado, cargar baseline limpio
+  const hasBeenCleared = localStorage.getItem('pajarillo_analytics_cleared');
+  if (!hasBeenCleared) {
+    try {
+      const res = await fetch('./data/analytics.json?t=' + Date.now());
+      if (res.ok) {
+        const fileData = await res.json();
+        if (fileData && fileData.summary) {
+          local = fileData;
+          localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+        }
+      }
+    } catch (e) {}
   }
 
   if (!local) {
@@ -456,6 +455,7 @@ async function initAnalyticsData() {
       topPanels: [],
       events: []
     };
+    localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
   }
 
   cachedAnalyticsData = local;
@@ -1002,18 +1002,38 @@ function setupPeriodFilters() {
   const btnReset = document.getElementById('btn-reset-analytics');
   if (btnReset) {
     btnReset.addEventListener('click', () => {
-      const ok = confirm('⚠️ ¿Deseas restablecer todos los contadores y analíticas a 0?\n\nEsta acción reiniciará los contadores de visitas reales, visitantes únicos, códigos QR y reservas a cero.');
+      const ok = confirm('⚠️ ¿Deseas restablecer todos los contadores y analíticas a 0?\n\nEsta acción reiniciará los contadores de visitas reales, visitantes únicos, códigos QR y reservas a cero permanentemente.');
       if (ok) {
-        if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.resetAll === 'function') {
-          window.PajarilloAnalytics.resetAll();
-        } else {
-          localStorage.removeItem(ANALYTICS_STORAGE_KEY);
-          localStorage.removeItem('pajarillo_has_visited');
-          sessionStorage.removeItem('pajarillo_session_counted');
+        localStorage.setItem('pajarillo_analytics_cleared', '1');
+        localStorage.removeItem('pajarillo_has_visited');
+        sessionStorage.removeItem('pajarillo_session_counted');
+
+        const fresh = {
+          summary: {
+            totalVisits: 0,
+            uniqueVisitors: 0,
+            qrScans: 0,
+            tourBookings: 0,
+            audioListens: 0,
+            downloads: 0
+          },
+          languages: { es: 0, en: 0, fr: 0 },
+          historyByDay: {},
+          historyByMonth: {},
+          historyByYear: {},
+          topSections: [],
+          topPanels: [],
+          events: []
+        };
+        localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(fresh));
+        cachedAnalyticsData = fresh;
+
+        if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.saveStoredData === 'function') {
+          window.PajarilloAnalytics.saveStoredData(fresh);
         }
-        cachedAnalyticsData = null;
+
         renderAnalyticsForPeriod(currentAnalyticsPeriod);
-        showToast('🔄 Todos los contadores se han puesto a 0.');
+        showToast('🔄 Todos los contadores se han puesto a 0 de forma permanente.');
       }
     });
   }

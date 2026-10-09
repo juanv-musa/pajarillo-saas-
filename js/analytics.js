@@ -78,10 +78,21 @@ class AnalyticsTracker {
   }
 
   async ensureInitialBaseline() {
-    // Si localStorage no tiene datos aún, cargar el baseline desde data/analytics.json
+    // Si ya se restableció a cero explícitamente, nunca volver a cargar datos de plantilla
+    if (localStorage.getItem('pajarillo_analytics_cleared')) {
+      return;
+    }
+
     try {
       const existing = localStorage.getItem(STORAGE_KEY);
-      if (!existing) {
+      if (existing) {
+        const parsed = JSON.parse(existing);
+        // Si contiene datos de prueba antiguos con 1141 visitantes o 1513/1518 visitas, limpiar a 0
+        if (parsed && parsed.summary && (parsed.summary.uniqueVisitors === 1141 || parsed.summary.totalVisits === 1518 || parsed.summary.totalVisits === 1513)) {
+          this.resetAll();
+          return;
+        }
+      } else {
         const res = await fetch('./data/analytics.json?t=' + Date.now()).catch(() => null);
         if (res && res.ok) {
           const baseData = await res.json();
@@ -94,7 +105,7 @@ class AnalyticsTracker {
   }
 
   resetAll() {
-    localStorage.removeItem(STORAGE_KEY);
+    localStorage.setItem('pajarillo_analytics_cleared', '1');
     localStorage.removeItem('pajarillo_has_visited');
     sessionStorage.removeItem('pajarillo_session_counted');
     const fresh = {
