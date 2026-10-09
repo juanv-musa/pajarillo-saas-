@@ -29,10 +29,6 @@
   <!-- Barra Superior del Panel -->
   <header class="admin-navbar">
     <div class="admin-brand-wrap">
-      <button type="button" id="btn-toggle-sidebar" class="btn-sidebar-toggle hidden" title="Ocultar / Mostrar menú lateral para ganar espacio de edición (Ctrl+B)">
-        <span class="toggle-icon">◀</span>
-        <span class="toggle-text">Ocultar Menú</span>
-      </button>
       <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="admin-logo-img" style="height: 52px; width: auto; aspect-ratio: 1024 / 815; object-fit: contain; flex-shrink: 0; padding: 2px 6px;">
       <div style="width: 1px; height: 38px; background: var(--admin-border); margin: 0 4px;"></div>
       <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" id="admin-header-logo-ayto" style="height: 46px; width: auto; object-fit: contain; flex-shrink: 0;">
@@ -148,12 +144,19 @@
        VISTA 2: PANEL DE CONTROL PRINCIPAL (DASHBOARD)
        ═══════════════════════════════════════════ -->
   <div id="dashboard-view" class="admin-layout hidden">
-    <!-- Sidebar de Navegación del SaaS -->
+    <!-- Pestaña flotante lateral para desplegar el menú cuando esté oculto -->
+    <button type="button" id="btn-sidebar-edge-toggle" class="sidebar-edge-toggle" title="Desplegar Menú Lateral (Ctrl+B)">
+      <span class="edge-icon">☰</span>
+      <span class="edge-text">Menú</span>
+    </button>
+
+    <!-- Sidebar de Navegación del SaaS (Lateral permanente) -->
     <aside class="admin-sidebar" id="admin-sidebar">
       <div class="sidebar-top-row">
         <span class="sidebar-heading" style="padding: 0; margin: 0;">Módulos del SaaS</span>
-        <button type="button" id="btn-hide-sidebar-aside" class="btn-sidebar-aside-toggle" title="Ocultar menú para ganar espacio de edición (Ctrl+B)">
-          ◀
+        <button type="button" id="btn-hide-sidebar-aside" class="btn-sidebar-aside-toggle" title="Ocultar menú lateral (Ctrl+B)">
+          <span>◀</span>
+          <span>Ocultar</span>
         </button>
       </div>
 

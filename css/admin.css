@@ -53,35 +53,36 @@ body {
   gap: 0.85rem;
 }
 
-.btn-sidebar-toggle {
-  display: inline-flex;
+/* Pestaña flotante lateral para desplegar el menú cuando está oculto */
+.sidebar-edge-toggle {
+  position: fixed;
+  top: 76px;
+  left: 0;
+  z-index: 999;
+  display: none;
   align-items: center;
   gap: 6px;
-  background: var(--admin-surface);
-  border: 1.5px solid var(--admin-border);
-  color: var(--admin-primary);
-  padding: 6px 12px;
-  border-radius: 8px;
+  background: var(--admin-primary);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  padding: 8px 14px 8px 10px;
   font-size: 0.82rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
+  box-shadow: 2px 4px 14px rgba(0, 0, 0, 0.22);
+  transition: transform 0.2s ease, background 0.2s ease;
   user-select: none;
 }
 
-.btn-sidebar-toggle:hover {
-  background: var(--admin-primary);
-  color: #FFFFFF;
-  border-color: var(--admin-primary);
-  box-shadow: 0 3px 10px rgba(56, 79, 62, 0.2);
+.sidebar-edge-toggle:hover {
+  background: #2b3e31;
+  transform: translateX(3px);
 }
 
-.btn-sidebar-toggle.collapsed {
-  background: var(--admin-primary);
-  color: #FFFFFF;
-  border-color: var(--admin-primary);
-  box-shadow: 0 3px 10px rgba(56, 79, 62, 0.2);
+.admin-layout.sidebar-collapsed .sidebar-edge-toggle {
+  display: inline-flex;
 }
 
 .sidebar-top-row {
@@ -92,24 +93,25 @@ body {
 }
 
 .btn-sidebar-aside-toggle {
-  background: none;
-  border: 1px solid transparent;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-border);
   color: var(--admin-muted);
-  width: 28px;
-  height: 28px;
+  padding: 5px 9px;
   border-radius: 6px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
   cursor: pointer;
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  font-weight: 700;
   transition: all 0.2s ease;
+  user-select: none;
 }
 
 .btn-sidebar-aside-toggle:hover {
-  background: var(--admin-bg);
-  border-color: var(--admin-border);
-  color: var(--admin-primary);
+  background: var(--admin-primary);
+  border-color: var(--admin-primary);
+  color: #FFFFFF;
 }
 
 /* Layout del Panel con Sidebar */
@@ -668,60 +670,17 @@ body {
    ═══════════════════════════════════════════ */
 @media (max-width: 1200px) {
   .admin-layout {
-    flex-direction: column;
-  }
-
-  .btn-sidebar-aside-toggle,
-  .sidebar-top-row {
-    display: none;
+    flex-direction: row;
   }
 
   .admin-sidebar {
-    width: 100%;
-    padding: 0.6rem 0.85rem;
-    flex-direction: row;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    gap: 0.5rem;
-    border-right: none;
-    border-bottom: 1px solid var(--admin-border);
+    width: 250px;
+    flex-shrink: 0;
     position: sticky;
-    top: 60px;
-    z-index: 90;
+    top: 65px;
+    height: calc(100vh - 65px);
+    overflow-y: auto;
     background: var(--admin-surface);
-    scrollbar-width: none;
-    transition: max-height 0.25s ease, padding 0.25s ease, opacity 0.2s ease;
-    max-height: 80px;
-  }
-
-  .admin-layout.sidebar-collapsed .admin-sidebar {
-    width: 100% !important;
-    max-width: 100% !important;
-    height: 0 !important;
-    max-height: 0 !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    border-bottom: none !important;
-    overflow: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-  }
-
-  .admin-sidebar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .sidebar-heading {
-    display: none;
-  }
-
-  .sidebar-btn {
-    flex: 0 0 auto;
-    width: auto;
-    padding: 7px 14px;
-    font-size: 0.82rem;
-    border-radius: 9999px;
   }
 
   .admin-content {
@@ -742,6 +701,18 @@ body {
   .kpi-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.25);
+    background: var(--admin-surface);
   }
 }
 

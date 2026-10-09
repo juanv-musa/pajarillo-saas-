@@ -18,6 +18,7 @@ const DOM = {
   btnLogout: document.getElementById('btn-logout'),
   btnToggleSidebar: document.getElementById('btn-toggle-sidebar'),
   btnHideSidebarAside: document.getElementById('btn-hide-sidebar-aside'),
+  btnSidebarEdgeToggle: document.getElementById('btn-sidebar-edge-toggle'),
 
   // Subvistas
   sidebarBtns: document.querySelectorAll('.sidebar-btn'),
@@ -332,6 +333,9 @@ function initSidebarCollapseState() {
 // NAVEGACIÓN ENTRE SUBVISTAS (SIDEBAR)
 // ═══════════════════════════════════════════
 function setupSidebarNavigation() {
+  if (DOM.btnSidebarEdgeToggle) {
+    DOM.btnSidebarEdgeToggle.addEventListener('click', () => setSidebarCollapsed(false));
+  }
   if (DOM.btnToggleSidebar) {
     DOM.btnToggleSidebar.addEventListener('click', toggleSidebar);
   }
