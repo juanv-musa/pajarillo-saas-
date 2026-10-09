@@ -1150,3 +1150,73 @@ input:checked + .slider:before {
   flex-shrink: 0 !important;
 }
 
+/* Footer Institucional en Panel de Admin */
+.admin-footer {
+  margin-top: 3.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--admin-border);
+}
+
+.admin-footer-funding {
+  background: #FFFFFF;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius);
+  padding: 1.25rem 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.25rem;
+}
+
+.admin-footer-funding-grid {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 1.5rem 2.5rem;
+  width: 100%;
+}
+
+.admin-footer-funding-grid .funding-logo {
+  height: 48px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04));
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  display: block;
+}
+
+.admin-footer-funding-grid .funding-logo:hover {
+  transform: translateY(-2px);
+  opacity: 0.92;
+}
+
+.admin-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.75rem 0.5rem 1.5rem;
+  font-size: 0.82rem;
+  color: var(--admin-muted);
+}
+
+@media (max-width: 768px) {
+  .admin-footer-funding {
+    padding: 1rem 0.75rem;
+  }
+  .admin-footer-funding-grid {
+    gap: 1rem 1.25rem;
+    justify-content: center;
+  }
+  .admin-footer-funding-grid .funding-logo {
+    height: 34px;
+    max-height: 34px;
+  }
+  .admin-footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+

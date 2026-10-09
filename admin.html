@@ -22,7 +22,7 @@
   <!-- Módulo de Analítica Oficial -->
   <script type="module" src="./js/analytics.js?v=3.3"></script>
 
-  <link rel="stylesheet" href="./css/admin.css">
+  <link rel="stylesheet" href="./css/admin.css?v=3.4">
 </head>
 <body>
 
@@ -126,6 +126,17 @@
       </form>
 
       <p id="login-error-msg" class="hidden" style="color: var(--admin-danger); font-size: 0.85rem; font-weight: 700; margin-top: 1rem;"></p>
+
+      <!-- Logotipos Institucionales en Pantalla de Acceso -->
+      <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--admin-border);">
+        <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.85rem;">
+          <img src="./assets/images/logos/01-union-europea.png?v=2.3" alt="Cofinanciado por la Unión Europea" style="height: 28px; width: auto; object-fit: contain;">
+          <img src="./assets/images/logos/02-ministerio-hacienda.png?v=2.3" alt="Ministerio de Hacienda - Gobierno de España" style="height: 28px; width: auto; object-fit: contain;">
+          <img src="./assets/images/logos/03-fondos-europeos.png?v=2.3" alt="Fondos Europeos" style="height: 28px; width: auto; object-fit: contain;">
+          <img src="./assets/images/logos/04-junta-andalucia.png?v=2.3" alt="Junta de Andalucía" style="height: 28px; width: auto; object-fit: contain;">
+          <img src="./assets/images/logos/05-ayuntamiento-huelma.png?v=2.3" alt="Ayuntamiento de Huelma" style="height: 28px; width: auto; object-fit: contain;">
+        </div>
+      </div>
     </div>
   </div>
 
@@ -196,7 +207,6 @@
         <div style="background: white; border-radius: 8px; padding: 6px 10px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--admin-border);">
           <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" style="height: 38px; width: auto; object-fit: contain;">
         </div>
-        <p style="font-size: 0.72rem; color: var(--admin-muted); margin-top: 6px; font-weight: 600;">Concejalía de Patrimonio y Turismo</p>
       </div>
     </aside>
 
@@ -1487,6 +1497,31 @@
         </div>
       </section>
 
+      <!-- ═══════════════════════════════════════════
+           FOOTER INSTITUCIONAL DEL PANEL DE GESTIÓN
+           ═══════════════════════════════════════════ -->
+      <footer class="admin-footer">
+        <!-- Logotipos de Cofinanciación / Subvención Institucional -->
+        <div class="admin-footer-funding">
+          <div class="admin-footer-funding-grid">
+            <img src="./assets/images/logos/01-union-europea.png?v=2.3" alt="Cofinanciado por la Unión Europea" class="funding-logo" loading="lazy">
+            <img src="./assets/images/logos/02-ministerio-hacienda.png?v=2.3" alt="Ministerio de Hacienda - Gobierno de España" class="funding-logo" loading="lazy">
+            <img src="./assets/images/logos/03-fondos-europeos.png?v=2.3" alt="Fondos Europeos" class="funding-logo" loading="lazy">
+            <img src="./assets/images/logos/04-junta-andalucia.png?v=2.3" alt="Junta de Andalucía" class="funding-logo" loading="lazy">
+            <img src="./assets/images/logos/05-ayuntamiento-huelma.png?v=2.3" alt="Ayuntamiento de Huelma" class="funding-logo" loading="lazy">
+          </div>
+        </div>
+
+        <div class="admin-footer-bottom">
+          <div style="font-weight: 700; color: var(--admin-primary);">
+            Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Plataforma SaaS MVP
+          </div>
+          <div>
+            Ayuntamiento de Huelma · Bien de Interés Cultural (BIC) · Junta de Andalucía
+          </div>
+        </div>
+      </footer>
+
     </main>
   </div>
 
@@ -1657,6 +1692,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.3"></script>
+  <script type="module" src="./js/admin.js?v=3.4"></script>
 </body>
 </html>
