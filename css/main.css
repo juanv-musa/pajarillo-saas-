@@ -1311,12 +1311,14 @@ button {
 
 .form-grid-2 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1.25rem;
 }
 
 .form-field {
   margin-bottom: 1.25rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .form-field label {
@@ -1327,10 +1329,13 @@ button {
   letter-spacing: 0.5px;
   color: var(--c-primary);
   margin-bottom: 0.4rem;
+  white-space: normal;
 }
 
 .form-input, .form-select, .form-textarea {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--c-border);
@@ -1339,6 +1344,24 @@ button {
   background: var(--c-stone-light);
   color: var(--c-text-dark);
   transition: border-color 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Flecha personalizada para select nativo */
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23384F3E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+}
+
+/* Ajuste específico para inputs date en Safari / WebKit */
+input[type="date"].form-input {
+  min-height: 48px;
+  line-height: normal;
+  display: block;
 }
 
 .form-input:focus, .form-select:focus, .form-textarea:focus {
@@ -1698,6 +1721,10 @@ img, video, canvas, svg {
   .contact-grid, 
   .booking-container {
     grid-template-columns: 1fr;
+  }
+
+  .booking-form-pane {
+    padding: 2.25rem 2rem;
   }
 
   .panels-grid,
