@@ -8,6 +8,7 @@
     "horarios": true,
     "agenda": true,
     "reservas": true,
+    "header_btn_reservas": true,
     "contacto": true
   },
   "content": {

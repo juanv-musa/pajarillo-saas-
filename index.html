@@ -17,8 +17,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- Estilos del Manual Corporativo y Accesibilidad Universal -->
-  <link rel="stylesheet" href="./css/main.css?v=2.6">
-  <link rel="stylesheet" href="./css/accessibility.css?v=2.6">
+  <link rel="stylesheet" href="./css/main.css?v=3.2">
+  <link rel="stylesheet" href="./css/accessibility.css?v=3.2">
 </head>
 <body>
 
@@ -34,9 +34,9 @@
         <ul class="nav-menu" id="nav-menu">
           <li><a href="#historia" class="nav-link" data-i18n="nav.historia">El Pajarillo</a></li>
           <li><a href="#puntos" class="nav-link" data-i18n="nav.puntos">Recorrido</a></li>
-          <li><a href="#galeria" class="nav-link" data-i18n="nav.galeria">Galería y Recursos</a></li>
-          <li><a href="#horarios" class="nav-link" data-i18n="nav.horarios">Horarios y Visita</a></li>
-          <li><a href="#agenda" class="nav-link" data-i18n="nav.agenda">Agenda Cultural</a></li>
+          <li><a href="#galeria" class="nav-link" data-i18n="nav.galeria">Galería</a></li>
+          <li><a href="#horarios" class="nav-link" data-i18n="nav.horarios">Horarios</a></li>
+          <li><a href="#agenda" class="nav-link" data-i18n="nav.agenda">Agenda</a></li>
           <li><a href="#contacto" class="nav-link" data-i18n="nav.contacto">Contacto</a></li>
         </ul>
       </nav>
@@ -65,13 +65,12 @@
          ═══════════════════════════════════════════ -->
     <section class="hero-section" id="hero" aria-label="Portada y presentación">
       <div class="hero-bg-media">
-        <img src="./assets/images/hero/hero.jpg" alt="Santuario Ibérico de El Pajarillo y valle del río Jandulilla" class="hero-bg-img">
+        <img src="./assets/images/hero/hero.jpg?v=2" alt="Santuario Ibérico de El Pajarillo y valle del río Jandulilla" class="hero-bg-img">
       </div>
       <div class="hero-overlay"></div>
 
       <div class="hero-content">
         <div>
-          <span class="hero-badge" data-i18n="hero.eyebrow">Santuario Heroico Oretano · Siglo IV a.n.e. · Huelma, Jaén</span>
           <h1 class="hero-title" data-i18n="hero.title">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</h1>
           <p class="hero-subtitle" data-i18n="hero.subtitle">
             Descubre el legendario santuario monumental ibérico del Héroe y el Lobo, el dominio territorial de Iltiraka y el paisaje ritual del valle del río Jandulilla.
@@ -90,8 +89,7 @@
           <div class="hero-wolf-img-wrap">
             <img src="./assets/images/lobo-hero.jpg" alt="Escultura Cabeza de Lobo de El Pajarillo" class="hero-wolf-img">
           </div>
-          <h2 class="hero-card-title" data-i18n="hero.card_title">La Cabeza de Lobo</h2>
-          <p class="hero-card-sub" data-i18n="hero.card_sub">Escultura ibérica en caliza · Siglo IV a.C.</p>
+          <h2 class="hero-card-title" data-i18n="hero.card_title">Cabeza de Lobo</h2>
         </div>
       </div>
     </section>
@@ -104,7 +102,6 @@
         <!-- Hitos cronológicos del conjunto (Primero) -->
         <div id="sec-cronologia">
           <div class="section-header">
-            <span class="section-label" data-i18n="historia.timeline.section_label">Evolución Histórica y Descubrimientos</span>
             <h2 class="section-title" data-i18n="historia.timeline.title">Hitos Cronológicos y Hallazgos Arqueológicos</h2>
             <p class="section-subtitle" data-i18n="historia.timeline.subtitle">
               Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.
@@ -144,79 +141,64 @@
         <!-- Patrimonio Milenario: Santuario y Territorio Íbero -->
         <div id="sec-patrimonio">
           <div class="section-header">
-            <span class="section-label" data-i18n="historia.section_label">Santuario y Territorio Íbero</span>
-            <h2 class="section-title" data-i18n="historia.title">El Santuario Ibérico de El Pajarillo</h2>
+            <h2 class="section-title" data-i18n="historia.title">Santuario y Territorio Íbero</h2>
             <p class="section-subtitle" data-i18n="historia.subtitle">
-              Hace 2.400 años, la aristocracia ibera de Iltiraka colonizó el valle salvaje del río Jandulilla y erigió un monumental santuario heroico en Huelma, Jaén.
+              Hace 2.400 años, la aristocracia de Iltiraka domesticó el valle salvaje del río Jandulilla
             </p>
           </div>
 
-          <!-- Pestañas temáticas -->
+          <!-- Pestañas temáticas (Orden: 1º Territorio de Iltiraka, 2º Santuario Heroico, 3º Paisaje Sagrado y Ritual) -->
           <div class="tabs-nav history-tabs">
-            <button class="tab-btn active" data-tab="iberico" data-i18n="historia.tab_iberico">Santuario Heroico</button>
-            <button class="tab-btn" data-tab="iltiraka" data-i18n="historia.tab_iltiraka">Territorio de Iltiraka</button>
+            <button class="tab-btn active" data-tab="iltiraka" data-i18n="historia.tab_iltiraka">Territorio de Iltiraka</button>
+            <button class="tab-btn" data-tab="iberico" data-i18n="historia.tab_iberico">Santuario Heroico</button>
             <button class="tab-btn" data-tab="fontanar" data-i18n="historia.tab_fontanar">Paisaje Sagrado y Ritual</button>
           </div>
 
-          <!-- Tab 1: Santuario Ibérico -->
-          <div class="tab-content history-pane active" id="tab-iberico">
-            <div class="story-grid">
-              <div class="story-text">
-                <h3 data-i18n="historia.iberico_content.title">El Santuario Heroico de El Pajarillo (Siglo IV a.n.e.)</h3>
-                <p data-i18n="historia.iberico_content.body">
-                  Ubicado estratégicamente sobre una loma dominante en el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular (c. 350 a.n.e.).
-                </p>
-                <div class="lectura-facil-box">
-                  <div class="lectura-facil-badge" data-i18n="historia.facil_badge">Lectura Fácil</div>
-                  <p class="lectura-facil-text" data-i18n="historia.iberico_content.facil">
-                    El Pajarillo es un yacimiento arqueológico en Huelma. Hace más de 2.300 años, los iberos construyeron aquí un lugar sagrado en memoria de un héroe. Las esculturas se descubrieron en el campo y hoy es un lugar protegido por la ley.
-                  </p>
-                </div>
-              </div>
-              <div class="story-media">
-                <img src="./assets/images/gallery/arqueologia.jpg" alt="Yacimiento arqueológico del Santuario Heroico de El Pajarillo">
-              </div>
-            </div>
-          </div>
-
-          <!-- Tab 2: Territorio de Iltiraka -->
-          <div class="tab-content history-pane" id="tab-iltiraka">
+          <!-- Tab 1: Territorio de Iltiraka (Activo por defecto) -->
+          <div class="tab-content history-pane active" id="tab-iltiraka">
             <div class="story-grid">
               <div class="story-text">
                 <h3 data-i18n="historia.iltiraka_content.title">El Territorio de Iltiraka: Un valle que domesticar</h3>
-                <p data-i18n="historia.iltiraka_content.body">
-                  Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka —Úbeda la Vieja— puso los ojos en este valle. Decidió apropiarse de un territorio salvaje: el valle del río Jandulilla.
-                </p>
-                <div class="lectura-facil-box">
-                  <div class="lectura-facil-badge" data-i18n="historia.facil_badge">Lectura Fácil</div>
-                  <p class="lectura-facil-text" data-i18n="historia.iltiraka_content.facil">
-                    Hace 2.400 años, la ciudad ibera de Iltiraka quiso dominar este valle salvaje. Para hacerlo suyo, honró a un héroe y le construyó un lugar sagrado: El Pajarillo.
-                  </p>
+                <div class="story-body" data-i18n="historia.iltiraka_content.body">
+                  <p>Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka —Úbeda la Vieja— puso los ojos en este valle. Decidió apropiarse de un territorio salvaje: el valle del río Jandulilla.</p>
+                  <p>Para las gentes iberas, el valle del Jandulilla era territorio salvaje (silva): bosque profundo, dominio de lobos y seres fantásticos, un lugar donde el poder humano aún no llegaba. Eran territorios que querían incorporar y para ello hacía falta un héroe capaz de justificarlo.</p>
+                  <p>El oppidum de Iltiraka desplegó un ambicioso proyecto de ocupación: estableció una población en la Loma del Perro (entre las actuales Úbeda y Jódar), controló las rutas que subían desde el sur y levantó, en la cabecera del río, un santuario en memoria de su héroe fundador: El Pajarillo. Así nació un territorio convertido en dominio de un linaje (pagus).</p>
                 </div>
               </div>
               <div class="story-media">
-                <img src="./assets/images/gallery/exterior.jpg" alt="Entorno territorial y paisaje del valle del río Jandulilla">
+                <img id="img-tab-iltiraka" src="./assets/images/gallery/exterior.jpg" alt="Entorno territorial y paisaje del valle del río Jandulilla">
               </div>
             </div>
           </div>
 
-          <!-- Tab 3: Paisaje Sagrado y El Fontanar -->
+          <!-- Tab 2: Santuario Heroico -->
+          <div class="tab-content history-pane" id="tab-iberico">
+            <div class="story-grid">
+              <div class="story-text">
+                <h3 data-i18n="historia.iberico_content.title">El Santuario Heroico de El Pajarillo (Siglo IV a.n.e.)</h3>
+                <div class="story-body" data-i18n="historia.iberico_content.body">
+                  <p>Ubicado estratégicamente sobre una loma dominante en el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular (c. 350 a.n.e.).</p>
+                  <p>El monumento conmemorativo fue concebido como un gran escenario escalonado en tres terrazas de mampostería y sillares labrados para la apoteosis o heroización de un príncipe o aristócrata oretano. En su cima se alzaba el célebre conjunto escultórico que escenificaba el combate mítico entre un joven aristócrata y una fiera salvaje: la portentosa Cabeza de Lobo, escoltada por leones protectores y grifos alados, símbolo de poder, valor y trascendencia de la cultura ibérica.</p>
+                </div>
+              </div>
+              <div class="story-media">
+                <img id="img-tab-iberico" src="./assets/images/gallery/arqueologia.jpg" alt="Yacimiento arqueológico del Santuario Heroico de El Pajarillo">
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Paisaje Sagrado y Ritual -->
           <div class="tab-content history-pane" id="tab-fontanar">
             <div class="story-grid">
               <div class="story-text">
                 <h3 data-i18n="historia.fontanar_content.title">Un Paisaje Sagrado: El camino ritual y El Fontanar</h3>
-                <p data-i18n="historia.fontanar_content.body">
-                  Los estudios más recientes proponen que Iltiraka no solo tomó el valle: lo hizo sagrado. Junto al río Jandulilla levantó dos grandes lugares de culto: el santuario de El Pajarillo y el monumento de El Fontanar, enlazados por un camino ritual.
-                </p>
-                <div class="lectura-facil-box">
-                  <div class="lectura-facil-badge" data-i18n="historia.facil_badge">Lectura Fácil</div>
-                  <p class="lectura-facil-text" data-i18n="historia.fontanar_content.facil">
-                    Los iberos unieron dos lugares sagrados junto al río con un camino especial. Al caminar por él, recordaban el viaje del héroe y bendecían toda la comarca.
-                  </p>
+                <div class="story-body" data-i18n="historia.fontanar_content.body">
+                  <p>Los estudios más recientes proponen que Iltiraka no solo tomó el valle: lo hizo sagrado. Junto al río Jandulilla levantó dos grandes lugares de culto: el santuario de El Pajarillo y el monumento de El Fontanar —con su escena de una unión divina, única en el mundo ibero—, enlazados por un camino ritual.</p>
+                  <p>Recorrerlo rememoraba el viaje del héroe fundador al mundo de los muertos, y todo el valle quedaba consagrado como territorio sagrado del linaje aristocrático.</p>
                 </div>
               </div>
               <div class="story-media">
-                <img src="./assets/images/gallery/claustro.jpg" alt="Centro de Interpretación y recreación del camino ritual">
+                <img id="img-tab-fontanar" src="./assets/images/gallery/claustro.jpg" alt="Centro de Interpretación y recreación del camino ritual">
               </div>
             </div>
           </div>
@@ -697,9 +679,9 @@
         <ul class="footer-links">
           <li><a href="#historia" data-i18n="nav.historia">El Pajarillo</a></li>
           <li><a href="#puntos" data-i18n="nav.puntos">Recorrido</a></li>
-          <li><a href="#galeria" data-i18n="nav.galeria">Galería y Recursos</a></li>
-          <li><a href="#horarios" data-i18n="nav.horarios">Horarios y Tarifas</a></li>
-          <li><a href="#agenda" data-i18n="nav.agenda">Agenda Cultural</a></li>
+          <li><a href="#galeria" data-i18n="nav.galeria">Galería</a></li>
+          <li><a href="#horarios" data-i18n="nav.horarios">Horarios</a></li>
+          <li><a href="#agenda" data-i18n="nav.agenda">Agenda</a></li>
           <li><a href="#reservas" data-i18n="nav.reservar">Reservar Visita</a></li>
         </ul>
       </div>
@@ -799,6 +781,6 @@
   </div>
 
   <!-- Lógica Principal -->
-  <script type="module" src="./js/app.js"></script>
+  <script type="module" src="./js/app.js?v=3.2"></script>
 </body>
 </html>

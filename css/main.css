@@ -478,7 +478,7 @@ button {
   font-size: 1.45rem;
   font-weight: 700;
   color: var(--c-white);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0;
 }
 
 .hero-card-sub {

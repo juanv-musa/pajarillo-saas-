@@ -9,27 +9,27 @@
   "nav": {
     "historia": "El Pajarillo",
     "puntos": "Recorrido",
-    "horarios": "Horarios y Visita",
-    "agenda": "Agenda Cultural",
-    "galeria": "Galería y Recursos",
+    "galeria": "Galería",
+    "horarios": "Horarios",
+    "agenda": "Agenda",
     "contacto": "Contacto",
     "reservar": "Reservar Visita",
     "admin": "Acceso Gestión",
     "skip": "Saltar al contenido"
   },
   "hero": {
-    "eyebrow": "Santuario Heroico Oretano · Siglo IV a.n.e. · Huelma, Jaén",
+    "eyebrow": "",
     "title": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
     "subtitle": "Descubre el legendario santuario monumental ibérico del Héroe y el Lobo, el dominio territorial de Iltiraka y el paisaje ritual del valle del río Jandulilla.",
     "cta_primary": "Planifica tu visita",
     "cta_secondary": "Explorar santuario y territorio",
     "scroll": "Descubrir más",
-    "card_title": "La Cabeza de Lobo",
-    "card_sub": "Escultura ibérica en caliza · Siglo IV a.C."
+    "card_title": "Cabeza de Lobo",
+    "card_sub": ""
   },
   "historia": {
-    "section_label": "Santuario y Territorio Íbero",
-    "title": "El Santuario Ibérico de El Pajarillo",
+    "section_label": "",
+    "title": "Santuario y Territorio Íbero",
     "subtitle": "Hace 2.400 años, la aristocracia ibera de Iltiraka colonizó el valle salvaje del río Jandulilla y erigió un monumental santuario heroico en Huelma, Jaén.",
     "tab_iberico": "Santuario Heroico",
     "tab_iltiraka": "Territorio de Iltiraka",
@@ -51,7 +51,7 @@
       "facil": "Los iberos unieron dos lugares sagrados junto al río con un camino especial. Al caminar por él, recordaban el viaje del héroe y bendecían toda la comarca."
     },
     "timeline": {
-      "section_label": "Evolución Histórica y Descubrimientos",
+      "section_label": "",
       "title": "Hitos Cronológicos y Hallazgos Arqueológicos",
       "subtitle": "Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.",
       "events": [

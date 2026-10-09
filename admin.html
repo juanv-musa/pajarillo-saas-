@@ -142,7 +142,7 @@
       <button class="sidebar-btn" data-view="sections">
         <img src="./assets/icons/icon-grid.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Secciones de la Web</span>
-        <span class="badge-counter" id="sections-active-badge">9/9</span>
+        <span class="badge-counter" id="sections-active-badge">10/10</span>
       </button>
 
       <button class="sidebar-btn" data-view="contents">
@@ -556,7 +556,25 @@
             </div>
           </div>
 
-          <!-- 9. Contacto e Información Municipal -->
+          <!-- 9. Botón "Reservar Visita" en Cabecera (Opcional) -->
+          <div class="section-card-row" data-sec-key="header_btn_reservas">
+            <div class="section-card-info">
+              <div class="section-icon-box">📌</div>
+              <div class="section-text">
+                <h4>Botón «Reservar Visita» en Cabecera (Navbar)</h4>
+                <p>Botón de reserva directa en el menú superior. Puede ocultarse o mostrarse de forma opcional e independiente.</p>
+              </div>
+            </div>
+            <div class="section-controls">
+              <span class="status-pill active" id="status-pill-header_btn_reservas">● Visible en web</span>
+              <label class="switch">
+                <input type="checkbox" class="sec-toggle-input" data-section="header_btn_reservas" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- 10. Contacto e Información Municipal -->
           <div class="section-card-row" data-sec-key="contacto">
             <div class="section-card-info">
               <div class="section-icon-box">📞</div>
@@ -654,11 +672,11 @@
                 <div class="grid-2col">
                   <div class="admin-form-group">
                     <label>Título de la Tarjeta</label>
-                    <input type="text" id="cnt-hero-card-title" class="admin-input" placeholder="Ej: La Cabeza de Lobo">
+                    <input type="text" id="cnt-hero-card-title" class="admin-input" placeholder="Ej: Cabeza de Lobo">
                   </div>
                   <div class="admin-form-group">
-                    <label>Subtítulo de la Tarjeta</label>
-                    <input type="text" id="cnt-hero-card-sub" class="admin-input" placeholder="Ej: Escultura ibérica en caliza · Siglo IV a.C.">
+                    <label>Subtítulo de la Tarjeta (Opcional)</label>
+                    <input type="text" id="cnt-hero-card-sub" class="admin-input" placeholder="Opcional (dejar vacío si no se desea)">
                   </div>
                 </div>
                 <div class="admin-form-group" style="margin-bottom: 0;">
@@ -735,11 +753,11 @@
             </div>
           </div>
 
-          <!-- 3. Patrimonio Milenario -->
+          <!-- 3. Patrimonio Milenario: Santuario y Territorio Íbero -->
           <div class="cms-section-accordion">
             <div class="cms-accordion-header">
               <span>🏛️ 3. Santuario y Territorio Íbero (Bloques Temáticos)</span>
-              <span style="font-size: 0.82rem; color: var(--admin-muted);">Santuario Heroico, Iltiraka y El Fontanar</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">1º Territorio de Iltiraka, 2º Santuario Heroico, 3º Paisaje Sagrado</span>
             </div>
             <div class="cms-accordion-body">
               <div class="grid-2col">
@@ -752,17 +770,68 @@
                   <input type="text" id="cnt-patrimonio-subtitle" class="admin-input">
                 </div>
               </div>
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
-                <label><strong>Pestaña 1 · El Santuario Ibérico Heroico</strong></label>
-                <textarea id="cnt-patrimonio-tab1" class="admin-textarea" rows="3"></textarea>
+
+              <!-- Pestaña 1: Territorio de Iltiraka -->
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 1 · Territorio de Iltiraka (Principal)</strong>
+                <label>Texto Completo:</label>
+                <textarea id="cnt-patrimonio-tab2" class="admin-textarea" rows="4"></textarea>
+                <div style="margin-top: 10px;">
+                  <label>Imagen de la Pestaña:</label>
+                  <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                    <input type="text" id="cnt-patrimonio-img-iltiraka" class="admin-input" placeholder="./assets/images/gallery/exterior.jpg" style="flex: 1;">
+                    <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
+                      📁 Subir Imagen
+                      <input type="file" id="file-patrimonio-img-iltiraka" accept="image/*" style="display: none;">
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                    <img id="preview-patrimonio-img-iltiraka" src="./assets/images/gallery/exterior.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
+                  </div>
+                </div>
               </div>
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
-                <label><strong>Pestaña 2 · El Territorio de Iltiraka</strong></label>
-                <textarea id="cnt-patrimonio-tab2" class="admin-textarea" rows="3"></textarea>
+
+              <!-- Pestaña 2: Santuario Heroico -->
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 2 · Santuario Heroico</strong>
+                <label>Texto Completo:</label>
+                <textarea id="cnt-patrimonio-tab1" class="admin-textarea" rows="4"></textarea>
+                <div style="margin-top: 10px;">
+                  <label>Imagen de la Pestaña:</label>
+                  <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                    <input type="text" id="cnt-patrimonio-img-iberico" class="admin-input" placeholder="./assets/images/gallery/arqueologia.jpg" style="flex: 1;">
+                    <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
+                      📁 Subir Imagen
+                      <input type="file" id="file-patrimonio-img-iberico" accept="image/*" style="display: none;">
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                    <img id="preview-patrimonio-img-iberico" src="./assets/images/gallery/arqueologia.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
+                  </div>
+                </div>
               </div>
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px; margin-top: 0.5rem;">
-                <label><strong>Pestaña 3 · Un Paisaje Sagrado y El Fontanar</strong></label>
-                <textarea id="cnt-patrimonio-tab3" class="admin-textarea" rows="3"></textarea>
+
+              <!-- Pestaña 3: Paisaje Sagrado y Ritual -->
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 3 · Paisaje Sagrado y Ritual</strong>
+                <label>Texto Completo:</label>
+                <textarea id="cnt-patrimonio-tab3" class="admin-textarea" rows="4"></textarea>
+                <div style="margin-top: 10px;">
+                  <label>Imagen de la Pestaña:</label>
+                  <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
+                    <input type="text" id="cnt-patrimonio-img-fontanar" class="admin-input" placeholder="./assets/images/gallery/claustro.jpg" style="flex: 1;">
+                    <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
+                      📁 Subir Imagen
+                      <input type="file" id="file-patrimonio-img-fontanar" accept="image/*" style="display: none;">
+                    </label>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
+                    <img id="preview-patrimonio-img-fontanar" src="./assets/images/gallery/claustro.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1566,6 +1635,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=2.5"></script>
+  <script type="module" src="./js/admin.js?v=3.2"></script>
 </body>
 </html>

@@ -65,6 +65,13 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
+  const CACHE_VERSION = 'v3.2';
+  if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
+    localStorage.removeItem('pajarillo_site_config');
+    localStorage.removeItem('pajarillo_locales');
+    localStorage.setItem('pajarillo_app_v', CACHE_VERSION);
+  }
+
   const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || 'es';
   let config = null;
   const local = localStorage.getItem('pajarillo_site_config');
@@ -122,6 +129,7 @@ function applySiteConfig(config) {
     // Enlaces de navegación correspondientes
     const navLinks = document.querySelectorAll(`a[href="#${key}"]`);
     navLinks.forEach(a => {
+      if (a.classList.contains('btn-book-nav')) return;
       a.style.display = isVisible ? '' : 'none';
       if (a.parentElement && a.parentElement.tagName === 'LI') {
         a.parentElement.style.display = isVisible ? '' : 'none';
@@ -140,6 +148,13 @@ function applySiteConfig(config) {
         a.parentElement.style.display = showHistoria ? '' : 'none';
       }
     });
+  }
+
+  // Control específico del botón opcional "Reservar Visita" en la cabecera
+  const btnBookNav = document.querySelector('.btn-book-nav');
+  if (btnBookNav) {
+    const showHeaderReservas = (s.header_btn_reservas !== false) && (s.reservas !== false);
+    btnBookNav.style.display = showHeaderReservas ? '' : 'none';
   }
 
   // 2. Personalización de Textos y Contenidos
@@ -287,20 +302,39 @@ function applySiteConfig(config) {
       el.textContent = c.patrimonio_subtitle;
     });
   }
+  const formatStoryParagraphs = (txt) => {
+    if (!txt) return '';
+    return txt.split(/\n\s*\n/).map(p => `<p>${p.trim()}</p>`).join('');
+  };
+
   if (c.patrimonio_tab1) {
     document.querySelectorAll('[data-i18n="historia.iberico_content.body"]').forEach(el => {
-      el.textContent = c.patrimonio_tab1;
+      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab1);
     });
   }
   if (c.patrimonio_tab2) {
     document.querySelectorAll('[data-i18n="historia.iltiraka_content.body"]').forEach(el => {
-      el.textContent = c.patrimonio_tab2;
+      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab2);
     });
   }
   if (c.patrimonio_tab3) {
     document.querySelectorAll('[data-i18n="historia.fontanar_content.body"]').forEach(el => {
-      el.textContent = c.patrimonio_tab3;
+      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab3);
     });
+  }
+
+  // Imágenes personalizables de las 3 pestañas
+  if (c.patrimonio_img_iltiraka) {
+    const el = document.getElementById('img-tab-iltiraka');
+    if (el) el.src = c.patrimonio_img_iltiraka;
+  }
+  if (c.patrimonio_img_iberico) {
+    const el = document.getElementById('img-tab-iberico');
+    if (el) el.src = c.patrimonio_img_iberico;
+  }
+  if (c.patrimonio_img_fontanar) {
+    const el = document.getElementById('img-tab-fontanar');
+    if (el) el.src = c.patrimonio_img_fontanar;
   }
 }
 

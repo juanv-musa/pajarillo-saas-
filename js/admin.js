@@ -81,6 +81,7 @@ let siteConfigData = {
     horarios: true,
     agenda: true,
     reservas: true,
+    header_btn_reservas: true,
     contacto: true
   },
   content: {
@@ -2021,13 +2022,13 @@ let currentCmsLang = 'es';
 
 const DEFAULT_LOCALES = {
   es: {
-    hero_eyebrow: "Santuario Heroico Oretano · Siglo IV a.n.e. · Huelma, Jaén",
+    hero_eyebrow: "",
     site_title: "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
     hero_cta: "Planifica tu Visita",
     site_tagline: "Un viaje al corazón sagrado de la cultura íbera y el dominio territorial de Iltiraka",
     hero_desc: "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
-    hero_card_title: "La Cabeza de Lobo",
-    hero_card_sub: "Escultura ibérica en caliza · Siglo IV a.C.",
+    hero_card_title: "Cabeza de Lobo",
+    hero_card_sub: "",
     hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "Siglos VI–V a.n.e. · Primeros Oppida y Escultura Heroica",
     hito1_desc: "Surgimiento de oppida fortificados en el Alto Guadalquivir y monumentos heroicos como Cerrillo Blanco.",
@@ -2043,9 +2044,12 @@ const DEFAULT_LOCALES = {
     hito6_desc: "Declaración de Bien de Interés Cultural como Zona Arqueológica y apertura de la plataforma digital accesible.",
     patrimonio_title: "Santuario y Territorio Íbero",
     patrimonio_subtitle: "Hace 2.400 años, la aristocracia de Iltiraka domesticó el valle salvaje del río Jandulilla",
-    patrimonio_tab1: "El Santuario Heroico de El Pajarillo representa uno de los hallazgos cumbre de la protohistoria peninsular...",
-    patrimonio_tab2: "El Territorio de Iltiraka: colonización de un valle salvaje (silva) mediante un héroe fundador y el oppidum de Loma del Perro...",
-    patrimonio_tab3: "Un Paisaje Sagrado y El Fontanar: dos santuarios articulados por un camino ritual procesional...",
+    patrimonio_tab1: "Ubicado estratégicamente sobre una loma dominante en el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular (c. 350 a.n.e.).\n\nEl monumento conmemorativo fue concebido como un gran escenario escalonado en tres terrazas de mampostería y sillares labrados para la apoteosis o heroización de un príncipe o aristócrata oretano. En su cima se alzaba el célebre conjunto escultórico que escenificaba el combate mítico entre un joven aristócrata y una fiera salvaje: la portentosa Cabeza de Lobo, escoltada por leones protectores y grifos alados, símbolo de poder, valor y trascendencia de la cultura ibérica.",
+    patrimonio_tab2: "Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka —Úbeda la Vieja— puso los ojos en este valle. Decidió apropiarse de un territorio salvaje: el valle del río Jandulilla.\n\nPara las gentes iberas, el valle del Jandulilla era territorio salvaje (silva): bosque profundo, dominio de lobos y seres fantásticos, un lugar donde el poder humano aún no llegaba. Eran territorios que querían incorporar y para ello hacía falta un héroe capaz de justificarlo.\n\nEl oppidum de Iltiraka desplegó un ambicioso proyecto de ocupación: estableció una población en la Loma del Perro (entre las actuales Úbeda y Jódar), controló las rutas que subían desde el sur y levantó, en la cabecera del río, un santuario en memoria de su héroe fundador: El Pajarillo. Así nació un territorio convertido en dominio de un linaje (pagus).",
+    patrimonio_tab3: "Los estudios más recientes proponen que Iltiraka no solo tomó el valle: lo hizo sagrado. Junto al río Jandulilla levantó dos grandes lugares de culto: el santuario de El Pajarillo y el monumento de El Fontanar —con su escena de una unión divina, única en el mundo ibero—, enlazados por un camino ritual.\n\nRecorrerlo rememoraba el viaje del héroe fundador al mundo de los muertos, y todo el valle quedaba consagrado como territorio sagrado del linaje aristocrático.",
+    patrimonio_img_iltiraka: "./assets/images/gallery/exterior.jpg",
+    patrimonio_img_iberico: "./assets/images/gallery/arqueologia.jpg",
+    patrimonio_img_fontanar: "./assets/images/gallery/claustro.jpg",
     galeria_title: "Fondo Audiovisual y Recursos Multimedia",
     galeria_subtitle: "Explora la fototeca de alta resolución, visor 3D interactivo y fichas de investigación",
     desc_3d: "Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo en 360°, con soporte de realidad aumentada y control orbital.",
@@ -2066,13 +2070,13 @@ const DEFAULT_LOCALES = {
     footer_copy: "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados."
   },
   en: {
-    hero_eyebrow: "Oretan Heroic Sanctuary · 4th Century BCE · Huelma, Jaén",
+    hero_eyebrow: "",
     site_title: "El Pajarillo Iberian Sanctuary Interpretation Centre",
     hero_cta: "Plan Your Visit",
     site_tagline: "A journey to the sacred heart of Iberian culture and the territorial domain of Iltiraka",
     hero_desc: "Discover the exceptional 4th century BC Oretan heroic monument, the iconic limestone Wolf's Head sculpture, and the sacred landscape of the Jandulilla river in Huelma, Jaén.",
-    hero_card_title: "The Wolf's Head",
-    hero_card_sub: "Iberian limestone sculpture · 4th century BC",
+    hero_card_title: "Wolf's Head",
+    hero_card_sub: "",
     hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "6th–5th c. BCE · Early Oppida & Heroic Sculptures",
     hito1_desc: "Fortified oppida emerge in the Upper Guadalquivir alongside dynastic sculptures like Cerrillo Blanco.",
@@ -2111,13 +2115,13 @@ const DEFAULT_LOCALES = {
     footer_copy: "© 2026 El Pajarillo Iberian Sanctuary Interpretation Centre. Huelma Town Council. All rights reserved."
   },
   fr: {
-    hero_eyebrow: "Sanctuaire Héroïque Ibère · IVe siècle av. J.-C. · Huelma, Jaén",
+    hero_eyebrow: "",
     site_title: "Centre d'Interprétation Sanctuaire Ibérique d'El Pajarillo",
     hero_cta: "Planifiez votre Visite",
     site_tagline: "Un voyage au cœur sacré de la culture ibérique et du domaine territorial d'Iltiraka",
     hero_desc: "Découvrez le monument héroïque orétan exceptionnel du IVe siècle av. J.-C., la célèbre sculpture en calcaire de la Tête de Loup et le paysage sacré de la vallée du Jandulilla à Huelma, Jaén.",
-    hero_card_title: "La Tête de Loup",
-    hero_card_sub: "Sculpture ibérique en calcaire · IVe s. av. J.-C.",
+    hero_card_title: "Tête de Loup",
+    hero_card_sub: "",
     hero_card_img: "./assets/images/lobo-hero.jpg",
     hito1_title: "VIe–Ve s. av. J.-C. · Premiers Oppida et Sculpture Héroïque",
     hito1_desc: "Apparition des oppida fortifiés dans le Haut Guadalquivir et de sculptures comme Cerrillo Blanco.",
@@ -2212,6 +2216,48 @@ function setupContentEditor() {
     });
   }
 
+  const bindTabImageUpload = (fileId, inputId, previewId) => {
+    const fileEl = document.getElementById(fileId);
+    const inputEl = document.getElementById(inputId);
+    const prevEl = document.getElementById(previewId);
+    if (!fileEl || !inputEl) return;
+
+    if (inputEl && prevEl) {
+      inputEl.addEventListener('input', () => {
+        if (prevEl && inputEl.value) prevEl.src = inputEl.value;
+      });
+    }
+
+    fileEl.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (ev) => {
+        const base64 = ev.target.result;
+        inputEl.value = base64;
+        if (prevEl) prevEl.src = base64;
+        try {
+          const fd = new FormData();
+          fd.append('file', file);
+          const res = await fetch('./api/upload.php', { method: 'POST', body: fd });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.success && data.url) {
+              inputEl.value = data.url;
+              if (prevEl) prevEl.src = data.url;
+            }
+          }
+        } catch(err) {}
+        showToast('✅ Imagen cargada correctamente');
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  bindTabImageUpload('file-patrimonio-img-iltiraka', 'cnt-patrimonio-img-iltiraka', 'preview-patrimonio-img-iltiraka');
+  bindTabImageUpload('file-patrimonio-img-iberico', 'cnt-patrimonio-img-iberico', 'preview-patrimonio-img-iberico');
+  bindTabImageUpload('file-patrimonio-img-fontanar', 'cnt-patrimonio-img-fontanar', 'preview-patrimonio-img-fontanar');
+
   // Carga inicial de campos
   populateFormWithLang('es');
 }
@@ -2255,8 +2301,8 @@ function populateFormWithLang(lang) {
   setVal('cnt-site-tagline', c.site_tagline);
   setVal('cnt-hero-cta', c.hero_cta);
   setVal('cnt-hero-desc', c.hero_desc);
-  setVal('cnt-hero-card-title', c.hero_card_title || 'La Cabeza de Lobo');
-  setVal('cnt-hero-card-sub', c.hero_card_sub || 'Escultura ibérica en caliza · Siglo IV a.C.');
+  setVal('cnt-hero-card-title', c.hero_card_title || 'Cabeza de Lobo');
+  setVal('cnt-hero-card-sub', c.hero_card_sub || '');
   setVal('cnt-hero-card-img', c.hero_card_img || './assets/images/lobo-hero.jpg');
   const imgPrev = document.getElementById('preview-hero-card-img');
   if (imgPrev) imgPrev.src = c.hero_card_img || './assets/images/lobo-hero.jpg';
@@ -2279,6 +2325,15 @@ function populateFormWithLang(lang) {
   setVal('cnt-patrimonio-tab1', c.patrimonio_tab1);
   setVal('cnt-patrimonio-tab2', c.patrimonio_tab2);
   setVal('cnt-patrimonio-tab3', c.patrimonio_tab3);
+  setVal('cnt-patrimonio-img-iltiraka', c.patrimonio_img_iltiraka || './assets/images/gallery/exterior.jpg');
+  setVal('cnt-patrimonio-img-iberico', c.patrimonio_img_iberico || './assets/images/gallery/arqueologia.jpg');
+  setVal('cnt-patrimonio-img-fontanar', c.patrimonio_img_fontanar || './assets/images/gallery/claustro.jpg');
+  const prevIlt = document.getElementById('preview-patrimonio-img-iltiraka');
+  if (prevIlt) prevIlt.src = c.patrimonio_img_iltiraka || './assets/images/gallery/exterior.jpg';
+  const prevIber = document.getElementById('preview-patrimonio-img-iberico');
+  if (prevIber) prevIber.src = c.patrimonio_img_iberico || './assets/images/gallery/arqueologia.jpg';
+  const prevFont = document.getElementById('preview-patrimonio-img-fontanar');
+  if (prevFont) prevFont.src = c.patrimonio_img_fontanar || './assets/images/gallery/claustro.jpg';
 
   setVal('cnt-galeria-title', c.galeria_title);
   setVal('cnt-galeria-subtitle', c.galeria_subtitle);
@@ -2337,6 +2392,9 @@ function saveCurrentFormToLang(lang) {
     patrimonio_tab1: getVal('cnt-patrimonio-tab1'),
     patrimonio_tab2: getVal('cnt-patrimonio-tab2'),
     patrimonio_tab3: getVal('cnt-patrimonio-tab3'),
+    patrimonio_img_iltiraka: getVal('cnt-patrimonio-img-iltiraka'),
+    patrimonio_img_iberico: getVal('cnt-patrimonio-img-iberico'),
+    patrimonio_img_fontanar: getVal('cnt-patrimonio-img-fontanar'),
 
     galeria_title: getVal('cnt-galeria-title'),
     galeria_subtitle: getVal('cnt-galeria-subtitle'),

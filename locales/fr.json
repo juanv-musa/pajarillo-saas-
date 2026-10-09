@@ -9,27 +9,27 @@
   "nav": {
     "historia": "El Pajarillo",
     "puntos": "Parcours",
-    "horarios": "Horaires et Visite",
-    "agenda": "Agenda Culturel",
-    "galeria": "Galerie et Ressources",
+    "galeria": "Galerie",
+    "horarios": "Horaires",
+    "agenda": "Agenda",
     "contacto": "Contact",
     "reservar": "Réserver une Visite",
     "admin": "Espace Gestion",
     "skip": "Aller au contenu"
   },
   "hero": {
-    "eyebrow": "Sanctuaire Héroïque Ibère · IVe siècle av. J.-C. · Huelma, Jaén",
+    "eyebrow": "",
     "title": "Centre d'Interprétation du Sanctuaire Ibérique d'« El Pajarillo »",
     "subtitle": "Découvrez le légendaire sanctuaire monumental ibérique du Héros et du Loup, le domaine territorial d'Iltiraka et le paysage rituel de la vallée du Jandulilla.",
     "cta_primary": "Planifiez votre visite",
     "cta_secondary": "Explorer le sanctuaire et le territoire",
     "scroll": "Découvrir plus",
-    "card_title": "La Tête de Loup",
-    "card_sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+    "card_title": "Tête de Loup",
+    "card_sub": ""
   },
   "historia": {
-    "section_label": "Sanctuaire et Territoire Ibère",
-    "title": "Le Sanctuaire Ibérique d'El Pajarillo",
+    "section_label": "",
+    "title": "Sanctuaire et Territoire Ibère",
     "subtitle": "Il y a 2 400 ans, l'aristocratie ibère d'Iltiraka colonisa la vallée sauvage du fleuve Jandulilla et érigea un monumental sanctuaire héroïque à Huelma, Jaén.",
     "tab_iberico": "Sanctuaire Héroïque",
     "tab_iltiraka": "Territoire d'Iltiraka",
@@ -51,7 +51,7 @@
       "facil": "Les Ibères ont relié deux sanctuaires le long de la rivière par une route cérémonielle. En la parcourant, ils célébraient le héros et consacraient toute la région."
     },
     "timeline": {
-      "section_label": "Évolution Historique et Découvertes",
+      "section_label": "",
       "title": "Repères Chronologiques et Découvertes Archéologiques",
       "subtitle": "De la colonisation ibérique d'Iltiraka au IVe siècle av. J.-C. jusqu'aux fouilles systématiques et au classement au titre des Biens d'Intérêt Culturel.",
       "events": [

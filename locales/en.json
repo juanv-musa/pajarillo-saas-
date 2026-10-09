@@ -9,27 +9,27 @@
   "nav": {
     "historia": "El Pajarillo",
     "puntos": "Tour",
-    "horarios": "Hours & Visit",
-    "agenda": "Cultural Agenda",
-    "galeria": "Gallery & Resources",
+    "galeria": "Gallery",
+    "horarios": "Hours",
+    "agenda": "Agenda",
     "contacto": "Contact",
-    "reservar": "Book a Tour",
+    "reservar": "Book Visit",
     "admin": "Admin Portal",
     "skip": "Skip to content"
   },
   "hero": {
-    "eyebrow": "Oretan Heroic Sanctuary · 4th Century BCE · Huelma, Jaén",
+    "eyebrow": "",
     "title": "Interpretation Centre of the Iberian Sanctuary of “El Pajarillo”",
     "subtitle": "Discover the legendary Iberian monumental sanctuary of the Hero and the Wolf, the territorial domain of Iltiraka, and the sacred landscape of the Jandulilla River Valley.",
     "cta_primary": "Plan Your Visit",
     "cta_secondary": "Explore Sanctuary & Territory",
     "scroll": "Explore more",
-    "card_title": "The Wolf's Head",
-    "card_sub": "Iberian limestone sculpture · 4th century BC"
+    "card_title": "Wolf's Head",
+    "card_sub": ""
   },
   "historia": {
-    "section_label": "Iberian Sanctuary & Territory",
-    "title": "The Iberian Sanctuary of El Pajarillo",
+    "section_label": "",
+    "title": "Iberian Sanctuary & Territory",
     "subtitle": "2,400 years ago, the Iberian aristocracy of Iltiraka claimed the wild Jandulilla valley and raised a monumental heroic sanctuary in Huelma, Jaén.",
     "tab_iberico": "Heroic Sanctuary",
     "tab_iltiraka": "Territory of Iltiraka",
@@ -51,7 +51,7 @@
       "facil": "The Iberians connected two sacred places along the river with a ceremonial path. Walking along it remembered the hero's journey and blessed the whole valley."
     },
     "timeline": {
-      "section_label": "Historical Evolution & Discoveries",
+      "section_label": "",
       "title": "Chronological Milestones & Archaeological Discoveries",
       "subtitle": "From Iberian colonization by Iltiraka (4th c. BCE) to the sculptural discoveries of 1933 and 1993, and excavations by the University of Jaén.",
       "events": [
