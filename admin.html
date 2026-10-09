@@ -1652,6 +1652,28 @@
 
         </div>
 
+        <!-- GESTOR Y EDITOR DE CONTENIDO DE VÍDEOS (P0 y P1) -->
+        <div class="admin-card" style="margin-bottom: 2rem;">
+          <div class="card-title-row" style="flex-wrap: wrap; gap: 1rem; align-items: center;">
+            <div>
+              <h3 style="color: var(--admin-primary); margin-bottom: 0.35rem; display: flex; align-items: center; gap: 8px;">
+                🎬 Editor de Contenido de Vídeos (Pantallas P0 y P1)
+              </h3>
+              <p style="color: var(--admin-muted); font-size: 0.88rem; margin: 0;">
+                Edita los títulos, descripciones divulgativas, duración, portada y enlace del archivo de vídeo que se proyecta en las pantallas de 65" (P0 y P1) y en la web pública.
+              </p>
+            </div>
+            <button type="button" id="btn-add-kiosk-video" class="btn-admin btn-admin-primary">
+              ➕ Añadir Nuevo Vídeo
+            </button>
+          </div>
+
+          <!-- Parrilla interactiva de vídeos configurados -->
+          <div id="kiosk-videos-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 1.25rem; margin-top: 1.5rem;">
+            <!-- Generado dinámicamente por admin.js -->
+          </div>
+        </div>
+
         <!-- Instrucciones Generales para el Centro de Interpretación -->
         <div class="admin-card">
           <h3 style="color: var(--admin-primary); margin-bottom: 1rem;">
@@ -1869,9 +1891,79 @@
     </div>
   </div>
 
+  <!-- Modal Editor de Vídeo Kiosco / Pantallas P0 y P1 -->
+  <div id="modal-kiosk-video" class="qr-modal-overlay hidden">
+    <div class="qr-modal-card" style="max-width: 580px; width: 92%; text-align: left;">
+      <button type="button" class="modal-close-icon-btn" id="btn-close-kiosk-video-modal" title="Cerrar">✕</button>
+      <h3 id="modal-kiosk-video-title" style="font-family: var(--font-condensed); font-size: 1.5rem; color: var(--admin-primary); margin-bottom: 0.3rem;">
+        ✏️ Editar Vídeo del Fondo Audiovisual
+      </h3>
+      <p style="font-size: 0.82rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+        Edita el título, descripción divulgativa, duración y archivo de vídeo para la pantalla interactiva P0 y la proyección P1.
+      </p>
+
+      <form id="form-kiosk-video">
+        <input type="hidden" id="kiosk-video-id">
+
+        <div class="admin-form-group">
+          <label>Título del Vídeo / Documental *</label>
+          <input type="text" id="kiosk-video-title" class="admin-input" required placeholder="Ej: Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo">
+        </div>
+
+        <div class="grid-2col">
+          <div class="admin-form-group">
+            <label>Categoría Temática</label>
+            <input type="text" id="kiosk-video-category" class="admin-input" list="kiosk-categories-list" placeholder="Ej: Recreación 3D, Documental...">
+            <datalist id="kiosk-categories-list">
+              <option value="Recreación 3D">
+              <option value="Documental Histórico">
+              <option value="Arqueología y Ciencia">
+              <option value="Paisaje y Territorio">
+              <option value="Fondo Audiovisual">
+            </datalist>
+          </div>
+          <div class="admin-form-group">
+            <label>Duración Estimada</label>
+            <input type="text" id="kiosk-video-duration" class="admin-input" placeholder="Ej: 04:15, 12:30">
+          </div>
+        </div>
+
+        <div class="admin-form-group">
+          <label>URL o Archivo del Vídeo (.mp4 o enlace directo) *</label>
+          <input type="url" id="kiosk-video-url" class="admin-input" required placeholder="https://dominio.com/video.mp4 o ./assets/videos/video.mp4">
+          <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
+            Acepta enlaces directos a vídeos MP4 en la nube (Google Storage, S3, CDN) o archivos locales.
+          </small>
+        </div>
+
+        <div class="admin-form-group">
+          <label>Imagen de Portada / Miniatura</label>
+          <input type="text" id="kiosk-video-thumb" class="admin-input" placeholder="./assets/images/gallery/lobo.png o URL externa">
+          <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
+            Imagen que se mostrará en los botones táctiles de la TV de 65" de la entrada.
+          </small>
+        </div>
+
+        <div class="admin-form-group">
+          <label>Descripción Divulgativa *</label>
+          <textarea id="kiosk-video-desc" class="admin-textarea" rows="3" required placeholder="Explicación del contenido audiovisual que se proyectará..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
+          <button type="button" id="btn-cancel-kiosk-video" class="btn-admin btn-admin-outline">
+            Cancelar
+          </button>
+          <button type="submit" class="btn-admin btn-admin-primary">
+            💾 Guardar Vídeo
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.7"></script>
+  <script type="module" src="./js/admin.js?v=3.8"></script>
 </body>
 </html>

@@ -28,6 +28,13 @@ class AudiovisualP1 {
     this.setupAutoFullscreen();
     await this.resolveAndLoadVideo();
     this.startInactivityTracker();
+
+    // Sincronización en tiempo real desde el panel de Administración
+    window.addEventListener('storage', async (e) => {
+      if (e.key === 'pajarillo_kiosk_videos' || e.key === 'pajarillo_kiosk_p1_video') {
+        await this.resolveAndLoadVideo();
+      }
+    });
   }
 
   async resolveAndLoadVideo() {
@@ -36,12 +43,21 @@ class AudiovisualP1 {
     const idParam = params.get('id');
 
     let videos = [];
-    try {
-      const res = await fetch('./data/gallery.json?t=' + Date.now());
-      const data = await res.json();
-      videos = data.videos || [];
-    } catch (e) {
-      console.warn('Error cargando data/gallery.json:', e);
+    const savedKioskVideos = localStorage.getItem('pajarillo_kiosk_videos');
+    if (savedKioskVideos) {
+      try {
+        videos = JSON.parse(savedKioskVideos) || [];
+      } catch (e) {}
+    }
+
+    if (!videos || videos.length === 0) {
+      try {
+        const res = await fetch('./data/gallery.json?t=' + Date.now());
+        const data = await res.json();
+        videos = data.videos || [];
+      } catch (e) {
+        console.warn('Error cargando data/gallery.json:', e);
+      }
     }
 
     let selectedVideo = null;

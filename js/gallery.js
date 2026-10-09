@@ -32,7 +32,7 @@ export class GalleryManager {
     });
 
     window.addEventListener('storage', (e) => {
-      if (e.key === 'pajarillo_gallery_data') {
+      if (e.key === 'pajarillo_gallery_data' || e.key === 'pajarillo_kiosk_videos') {
         this.loadData().then(() => this.render());
       }
     });
@@ -94,6 +94,17 @@ export class GalleryManager {
         if (photos.length > 0) this.data.media = photos;
         if (resources.length > 0) this.data.resources = resources;
         if (videos.length > 0) this.data.videos = videos;
+      }
+    } catch (e) {}
+
+    // Si hay vídeos personalizados del Kiosco / Fondos Audiovisuales, usarlos
+    try {
+      const customKiosk = localStorage.getItem('pajarillo_kiosk_videos');
+      if (customKiosk) {
+        const parsedKiosk = JSON.parse(customKiosk);
+        if (Array.isArray(parsedKiosk) && parsedKiosk.length > 0) {
+          this.data.videos = parsedKiosk;
+        }
       }
     } catch (e) {}
   }

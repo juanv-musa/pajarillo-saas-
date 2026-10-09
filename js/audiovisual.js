@@ -35,6 +35,14 @@ class AudiovisualKiosk {
     await this.loadVideos();
     this.renderCards();
     this.setupKioskInactivity();
+
+    // Sincronización en tiempo real al editar vídeos en el panel de Administración
+    window.addEventListener('storage', async (e) => {
+      if (e.key === 'pajarillo_kiosk_videos') {
+        await this.loadVideos();
+        this.renderCards();
+      }
+    });
   }
 
   setupAutoFullscreen() {
@@ -64,10 +72,25 @@ class AudiovisualKiosk {
   }
 
   async loadVideos() {
+    // 1. Prioridad: vídeos modificados o añadidos en el panel de Administración
+    const saved = localStorage.getItem('pajarillo_kiosk_videos');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          this.videos = parsed;
+          return;
+        }
+      } catch (e) {}
+    }
+
     try {
       const res = await fetch('./data/gallery.json?t=' + Date.now());
       const data = await res.json();
       this.videos = data.videos || [];
+      if (this.videos.length > 0 && !saved) {
+        localStorage.setItem('pajarillo_kiosk_videos', JSON.stringify(this.videos));
+      }
     } catch (e) {
       console.warn('Error cargando vídeos:', e);
       this.videos = [];
@@ -77,15 +100,23 @@ class AudiovisualKiosk {
   renderCards() {
     if (!this.dom.grid) return;
     this.dom.grid.innerHTML = this.videos.map((vid, idx) => {
-      const title = vid.title.es || vid.title;
-      const desc = vid.description.es || vid.description;
+      const title = typeof vid.title === 'object' && vid.title !== null
+        ? (vid.title.es || Object.values(vid.title)[0] || '')
+        : (vid.title || '');
+      const desc = typeof vid.description === 'object' && vid.description !== null
+        ? (vid.description.es || Object.values(vid.description)[0] || '')
+        : (vid.description || '');
+      const thumb = vid.thumb || './assets/images/gallery/exterior.jpg';
+      const duration = vid.duration || '05:00';
+      const category = vid.category || 'Documental';
+
       return `
         <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${title}" onclick="window.tvKiosk.playVideo(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKiosk.playVideo(${idx});}">
           <div class="tv-card-media">
-            <img src="${vid.thumb}" alt="${title}" class="tv-card-thumb" loading="lazy">
+            <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/gallery/exterior.jpg'">
             <div class="tv-card-overlay"></div>
-            <span class="tv-card-category">${vid.category || 'Documental'}</span>
-            <span class="tv-card-duration">⏱ ${vid.duration}</span>
+            <span class="tv-card-category">${category}</span>
+            <span class="tv-card-duration">⏱ ${duration}</span>
             <div class="tv-card-play-icon">▶</div>
           </div>
           <div class="tv-card-body">

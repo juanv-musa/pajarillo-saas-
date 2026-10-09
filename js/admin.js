@@ -2280,7 +2280,10 @@ function setupPanelsExport() {
   });
 }
 
-// Configuración de Lanzadores de Pantallas 65" (P0 y P1 - Exclusivo Administración)
+// Configuración y Gestor de Contenidos de Pantallas 65" (P0 y P1)
+const KIOSK_VIDEOS_STORAGE_KEY = 'pajarillo_kiosk_videos';
+let kioskVideos = [];
+
 async function setupKioskSection() {
   const kioskUrlEl = document.getElementById('kiosk-url-text');
   const btnCopyP0 = document.getElementById('btn-copy-kiosk-url');
@@ -2290,8 +2293,6 @@ async function setupKioskSection() {
   const selectP1 = document.getElementById('select-p1-video');
   const customUrlWrap = document.getElementById('p1-custom-url-wrap');
   const inputCustomUrl = document.getElementById('input-p1-custom-url');
-
-  if (!kioskUrlEl && !kioskP1UrlEl) return;
 
   const origin = window.location.origin;
   const basePath = window.location.pathname.replace(/(admin|index)\.html$/, '').replace(/\/$/, '');
@@ -2325,23 +2326,29 @@ async function setupKioskSection() {
     return p1Url;
   };
 
-  // Cargar vídeos desde gallery.json para poblar el selector
-  try {
-    const res = await fetch('./data/gallery.json?t=' + Date.now());
-    const data = await res.json();
-    if (data.videos && data.videos.length > 0 && selectP1) {
-      selectP1.innerHTML = data.videos.map(v => {
-        const title = v.title.es || v.title;
-        return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
-      }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+  // 3. Cargar y gestionar los vídeos de los Fondos Audiovisuales
+  await loadKioskVideos();
+
+  function updateP1Select() {
+    if (!selectP1) return;
+    const currentVal = selectP1.value || localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    selectP1.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+
+    const exists = Array.from(selectP1.options).some(opt => opt.value === currentVal);
+    if (exists) {
+      selectP1.value = currentVal;
+    } else if (currentVal && (currentVal.startsWith('http') || currentVal.includes('/'))) {
+      selectP1.value = 'custom';
     }
-  } catch (e) {
-    console.warn('Uso de opciones por defecto para selector P1:', e);
   }
 
   // Cargar estado previo de P1
   const savedP1Video = localStorage.getItem('pajarillo_kiosk_p1_video') || 'vid_1';
   if (selectP1) {
+    updateP1Select();
     const optionExists = Array.from(selectP1.options).some(opt => opt.value === savedP1Video);
     if (optionExists) {
       selectP1.value = savedP1Video;
@@ -2361,6 +2368,7 @@ async function setupKioskSection() {
       } else {
         if (customUrlWrap) customUrlWrap.classList.add('hidden');
         localStorage.setItem('pajarillo_kiosk_p1_video', val);
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
         updateP1Url(val);
         showToast('💾 Vídeo de Planta Alta actualizado');
       }
@@ -2372,6 +2380,7 @@ async function setupKioskSection() {
       const customVal = inputCustomUrl.value.trim();
       if (customVal) {
         localStorage.setItem('pajarillo_kiosk_p1_video', customVal);
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
         updateP1Url('custom');
       }
     });
@@ -2388,6 +2397,227 @@ async function setupKioskSection() {
       }
     });
   }
+
+  // 4. Configurar el Editor de Vídeos Kiosco y su Modal
+  setupKioskVideoEditor(updateP1Select);
+}
+
+async function loadKioskVideos() {
+  const saved = localStorage.getItem(KIOSK_VIDEOS_STORAGE_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        kioskVideos = parsed;
+        renderKioskVideos();
+        return;
+      }
+    } catch (e) {}
+  }
+
+  try {
+    const res = await fetch('./data/gallery.json?t=' + Date.now());
+    const data = await res.json();
+    kioskVideos = data.videos || [];
+    if (kioskVideos.length > 0 && !saved) {
+      localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    }
+  } catch (e) {
+    console.warn('Error cargando vídeos del kiosco:', e);
+    kioskVideos = [];
+  }
+
+  renderKioskVideos();
+}
+
+function renderKioskVideos() {
+  const grid = document.getElementById('kiosk-videos-grid');
+  if (!grid) return;
+
+  if (kioskVideos.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; background: var(--admin-bg); border-radius: 8px; border: 1px dashed var(--admin-border); color: var(--admin-muted);">
+        No hay vídeos configurados en el Fondo Audiovisual. Haz clic en "Añadir Nuevo Vídeo" para agregar uno.
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = kioskVideos.map(v => {
+    const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+    const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
+    const thumb = v.thumb || './assets/images/gallery/exterior.jpg';
+    const duration = v.duration || '--:--';
+    const cat = v.category || 'Audiovisual';
+    const url = v.videoUrl || '';
+
+    return `
+      <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1px solid var(--admin-border); background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
+        <div>
+          <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
+            <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/gallery/exterior.jpg'">
+            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #B59A57; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
+              ${cat}
+            </span>
+            <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
+              ⏱ ${duration}
+            </span>
+          </div>
+
+          <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.45rem; line-height: 1.3;">
+            ${title}
+          </h4>
+
+          <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0 0 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+            ${desc}
+          </p>
+
+          <div style="background: var(--admin-bg); padding: 0.45rem 0.65rem; border-radius: 6px; font-family: monospace; font-size: 0.74rem; color: #76A0DC; word-break: break-all; margin-bottom: 0.85rem;">
+            🔗 <a href="${url}" target="_blank" style="color: inherit; text-decoration: none;" title="Abrir enlace del vídeo">${url.length > 40 ? url.substring(0, 40) + '...' : url}</a>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; border-top: 1px solid var(--admin-border); padding-top: 0.75rem; margin-top: 0.5rem;">
+          <a href="${url}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.8rem; text-decoration: none;" title="Probar vídeo en nueva pestaña">
+            ▶ Probar
+          </a>
+          <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.8rem;" onclick="window.editKioskVideo('${v.id}')" title="Editar detalles del vídeo">
+            ✏️ Editar
+          </button>
+          <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 9px; font-size: 0.8rem;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar vídeo">
+            🗑️
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function setupKioskVideoEditor(onVideosChange) {
+  const modal = document.getElementById('modal-kiosk-video');
+  const form = document.getElementById('form-kiosk-video');
+  const btnAdd = document.getElementById('btn-add-kiosk-video');
+  const btnClose = document.getElementById('btn-close-kiosk-video-modal');
+  const btnCancel = document.getElementById('btn-cancel-kiosk-video');
+  const modalTitle = document.getElementById('modal-kiosk-video-title');
+
+  if (!modal || !form) return;
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+    form.reset();
+    document.getElementById('kiosk-video-id').value = '';
+  };
+
+  const openModal = (video = null) => {
+    if (video) {
+      if (modalTitle) modalTitle.textContent = '✏️ Editar Vídeo del Fondo Audiovisual';
+      document.getElementById('kiosk-video-id').value = video.id;
+      document.getElementById('kiosk-video-title').value = (typeof video.title === 'object' ? (video.title.es || Object.values(video.title)[0]) : video.title) || '';
+      document.getElementById('kiosk-video-category').value = video.category || 'Recreación 3D';
+      document.getElementById('kiosk-video-duration').value = video.duration || '05:00';
+      document.getElementById('kiosk-video-url').value = video.videoUrl || '';
+      document.getElementById('kiosk-video-thumb').value = video.thumb || '';
+      document.getElementById('kiosk-video-desc').value = (typeof video.description === 'object' ? (video.description.es || Object.values(video.description)[0]) : video.description) || '';
+    } else {
+      if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
+      form.reset();
+      document.getElementById('kiosk-video-id').value = '';
+      document.getElementById('kiosk-video-category').value = 'Recreación 3D';
+      document.getElementById('kiosk-video-duration').value = '05:00';
+      document.getElementById('kiosk-video-thumb').value = './assets/images/gallery/exterior.jpg';
+    }
+    modal.classList.remove('hidden');
+  };
+
+  if (btnAdd) btnAdd.addEventListener('click', () => openModal(null));
+  if (btnClose) btnClose.addEventListener('click', closeModal);
+  if (btnCancel) btnCancel.addEventListener('click', closeModal);
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  window.editKioskVideo = (id) => {
+    const vid = kioskVideos.find(v => v.id === id);
+    if (vid) openModal(vid);
+  };
+
+  window.deleteKioskVideo = (id) => {
+    const vid = kioskVideos.find(v => v.id === id);
+    const title = vid ? (typeof vid.title === 'object' ? vid.title.es : vid.title) : id;
+    if (!confirm(`¿Deseas eliminar el vídeo "${title}" del fondo audiovisual?`)) return;
+
+    kioskVideos = kioskVideos.filter(v => v.id !== id);
+    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+
+    try {
+      fetch('./api/data.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete_kiosk_video', id })
+      }).catch(() => {});
+    } catch(e) {}
+
+    renderKioskVideos();
+    if (onVideosChange) onVideosChange();
+    showToast('🗑️ Vídeo eliminado del fondo audiovisual');
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const idVal = document.getElementById('kiosk-video-id').value;
+    const isEditing = Boolean(idVal);
+    const targetId = isEditing ? idVal : `vid_${Date.now()}`;
+    const existing = kioskVideos.find(v => v.id === targetId);
+
+    const titleVal = document.getElementById('kiosk-video-title').value.trim();
+    const descVal = document.getElementById('kiosk-video-desc').value.trim();
+
+    const videoItem = {
+      id: targetId,
+      category: document.getElementById('kiosk-video-category').value.trim() || 'Fondo Audiovisual',
+      title: {
+        es: titleVal,
+        en: (existing && existing.title && existing.title.en) || titleVal,
+        fr: (existing && existing.title && existing.title.fr) || titleVal
+      },
+      duration: document.getElementById('kiosk-video-duration').value.trim() || '05:00',
+      thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/gallery/exterior.jpg',
+      videoUrl: document.getElementById('kiosk-video-url').value.trim(),
+      description: {
+        es: descVal,
+        en: (existing && existing.description && existing.description.en) || descVal,
+        fr: (existing && existing.description && existing.description.fr) || descVal
+      }
+    };
+
+    if (isEditing) {
+      const idx = kioskVideos.findIndex(v => v.id === targetId);
+      if (idx >= 0) kioskVideos[idx] = videoItem;
+      else kioskVideos.push(videoItem);
+      showToast('✅ Vídeo actualizado correctamente');
+    } else {
+      kioskVideos.push(videoItem);
+      showToast('✅ Nuevo vídeo añadido al fondo audiovisual');
+    }
+
+    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+
+    try {
+      fetch('./api/data.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save_kiosk_video', video: videoItem })
+      }).catch(() => {});
+    } catch(e) {}
+
+    renderKioskVideos();
+    if (onVideosChange) onVideosChange();
+    closeModal();
+  });
 }
 
 // ═══════════════════════════════════════════
