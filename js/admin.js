@@ -2463,6 +2463,8 @@ function renderKioskVideos() {
     return;
   }
 
+  const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+
   grid.innerHTML = kioskVideos.map(v => {
     const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
     const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
@@ -2471,8 +2473,11 @@ function renderKioskVideos() {
     const cat = v.category || 'Audiovisual';
     const url = v.videoUrl || '';
 
+    const isP0 = v.showInP0 !== false;
+    const isP1 = savedP1 === v.id || savedP1 === v.videoUrl;
+
     return `
-      <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1px solid var(--admin-border); background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
+      <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)')}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
         <div>
           <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
             <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/gallery/exterior.jpg'">
@@ -2484,29 +2489,52 @@ function renderKioskVideos() {
             </span>
           </div>
 
+          <!-- Badges de estado en P0 y P1 -->
+          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
+            ${isP0 
+              ? '<span style="background: rgba(181, 154, 87, 0.2); color: #D4AF37; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(181, 154, 87, 0.4);">📺 P0: Activo (Entrada)</span>' 
+              : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">📺 P0: Oculto</span>'}
+            ${isP1 
+              ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ P1: Proyectando (Alta)</span>' 
+              : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🏛️ P1: Inactivo</span>'}
+          </div>
+
           <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.45rem; line-height: 1.3;">
             ${title}
           </h4>
 
-          <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0 0 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+          <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0 0 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
             ${desc}
           </p>
 
           <div style="background: var(--admin-bg); padding: 0.45rem 0.65rem; border-radius: 6px; font-family: monospace; font-size: 0.74rem; color: #76A0DC; word-break: break-all; margin-bottom: 0.85rem;">
-            🔗 <a href="${url}" target="_blank" style="color: inherit; text-decoration: none;" title="Abrir enlace del vídeo">${url.length > 40 ? url.substring(0, 40) + '...' : url}</a>
+            🔗 <a href="${url}" target="_blank" style="color: inherit; text-decoration: none;" title="Abrir enlace del vídeo">${url.length > 38 ? url.substring(0, 38) + '...' : url}</a>
           </div>
         </div>
 
-        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; border-top: 1px solid var(--admin-border); padding-top: 0.75rem; margin-top: 0.5rem;">
-          <a href="${url}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.8rem; text-decoration: none;" title="Probar vídeo en nueva pestaña">
-            ▶ Probar
-          </a>
-          <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.8rem;" onclick="window.editKioskVideo('${v.id}')" title="Editar detalles del vídeo">
-            ✏️ Editar
-          </button>
-          <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 9px; font-size: 0.8rem;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar vídeo">
-            🗑️
-          </button>
+        <div>
+          <!-- Botones de Conmutación Rápida P0 / P1 -->
+          <div style="display: flex; gap: 0.4rem; margin-bottom: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--admin-border);">
+            <button type="button" class="btn-admin ${isP0 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP0 ? 'background: #B59A57; color: #111;' : ''}" onclick="window.toggleKioskP0('${v.id}')" title="Habilitar o deshabilitar de la pantalla táctil de la entrada (P0)">
+              ${isP0 ? '✓ En Pantalla P0' : '+ Activar en P0'}
+            </button>
+            <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
+              ${isP1 ? '✓ En Pantalla P1' : '🏛️ Asignar a P1'}
+            </button>
+          </div>
+
+          <!-- Acciones secundarias -->
+          <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+            <a href="${url}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem; text-decoration: none;" title="Probar vídeo en nueva pestaña">
+              ▶ Ver
+            </a>
+            <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.editKioskVideo('${v.id}')" title="Editar detalles del vídeo">
+              ✏️ Editar
+            </button>
+            <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar vídeo">
+              🗑️
+            </button>
+          </div>
         </div>
       </div>
     `;
@@ -2521,6 +2549,35 @@ function setupKioskVideoEditor(onVideosChange) {
   const btnCancel = document.getElementById('btn-cancel-kiosk-video');
   const modalTitle = document.getElementById('modal-kiosk-video-title');
 
+  // Subida de archivos desde ordenador
+  const btnBrowseVideo = document.getElementById('btn-browse-kiosk-video');
+  const fileInputVideo = document.getElementById('kiosk-video-file-input');
+  if (btnBrowseVideo && fileInputVideo) {
+    btnBrowseVideo.addEventListener('click', () => fileInputVideo.click());
+    fileInputVideo.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      document.getElementById('kiosk-video-url').value = `./assets/videos/${file.name}`;
+      showToast(`📁 Archivo de vídeo "${file.name}" seleccionado`);
+    });
+  }
+
+  const btnBrowseThumb = document.getElementById('btn-browse-kiosk-thumb');
+  const fileInputThumb = document.getElementById('kiosk-thumb-file-input');
+  if (btnBrowseThumb && fileInputThumb) {
+    btnBrowseThumb.addEventListener('click', () => fileInputThumb.click());
+    fileInputThumb.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        document.getElementById('kiosk-video-thumb').value = ev.target.result;
+        showToast(`🖼️ Portada "${file.name}" cargada`);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
   if (!modal || !form) return;
 
   const closeModal = () => {
@@ -2530,6 +2587,7 @@ function setupKioskVideoEditor(onVideosChange) {
   };
 
   const openModal = (video = null) => {
+    const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video');
     if (video) {
       if (modalTitle) modalTitle.textContent = '✏️ Editar Vídeo del Fondo Audiovisual';
       document.getElementById('kiosk-video-id').value = video.id;
@@ -2539,6 +2597,12 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-url').value = video.videoUrl || '';
       document.getElementById('kiosk-video-thumb').value = video.thumb || '';
       document.getElementById('kiosk-video-desc').value = (typeof video.description === 'object' ? (video.description.es || Object.values(video.description)[0]) : video.description) || '';
+      
+      const checkP0 = document.getElementById('kiosk-video-show-p0');
+      if (checkP0) checkP0.checked = video.showInP0 !== false;
+
+      const checkP1 = document.getElementById('kiosk-video-set-p1');
+      if (checkP1) checkP1.checked = (savedP1 === video.id || savedP1 === video.videoUrl);
     } else {
       if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
       form.reset();
@@ -2546,6 +2610,10 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-category').value = 'Recreación 3D';
       document.getElementById('kiosk-video-duration').value = '05:00';
       document.getElementById('kiosk-video-thumb').value = './assets/images/gallery/exterior.jpg';
+      const checkP0 = document.getElementById('kiosk-video-show-p0');
+      if (checkP0) checkP0.checked = true;
+      const checkP1 = document.getElementById('kiosk-video-set-p1');
+      if (checkP1) checkP1.checked = false;
     }
     modal.classList.remove('hidden');
   };
@@ -2561,6 +2629,35 @@ function setupKioskVideoEditor(onVideosChange) {
   window.editKioskVideo = (id) => {
     const vid = kioskVideos.find(v => v.id === id);
     if (vid) openModal(vid);
+  };
+
+  window.toggleKioskP0 = (id) => {
+    const v = kioskVideos.find(item => item.id === id);
+    if (!v) return;
+    v.showInP0 = (v.showInP0 === false) ? true : false;
+    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+    renderKioskVideos();
+    showToast(v.showInP0 ? '📺 Vídeo activado en Pantalla 0 (Entrada)' : '👁️ Vídeo ocultado de Pantalla 0 (Entrada)');
+  };
+
+  window.assignKioskP1 = (id) => {
+    localStorage.setItem('pajarillo_kiosk_p1_video', id);
+    window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
+    
+    const selectP1 = document.getElementById('select-p1-video');
+    if (selectP1) selectP1.value = id;
+
+    const kioskP1UrlEl = document.getElementById('kiosk-p1-url-text');
+    const btnOpenP1 = document.getElementById('btn-open-kiosk-p1');
+    const origin = window.location.origin;
+    const basePath = window.location.pathname.replace(/(admin|index)\.html$/, '').replace(/\/$/, '');
+    const p1Url = `${origin}${basePath}/audiovisual_p1.html?id=${encodeURIComponent(id)}`;
+    if (kioskP1UrlEl) kioskP1UrlEl.textContent = p1Url;
+    if (btnOpenP1) btnOpenP1.href = p1Url;
+
+    renderKioskVideos();
+    showToast('🏛️ Vídeo asignado como proyección en bucle para Pantalla 1 (Planta Alta)');
   };
 
   window.deleteKioskVideo = (id) => {
@@ -2594,9 +2691,12 @@ function setupKioskVideoEditor(onVideosChange) {
 
     const titleVal = document.getElementById('kiosk-video-title').value.trim();
     const descVal = document.getElementById('kiosk-video-desc').value.trim();
+    const checkP0 = document.getElementById('kiosk-video-show-p0');
+    const checkP1 = document.getElementById('kiosk-video-set-p1');
 
     const videoItem = {
       id: targetId,
+      showInP0: checkP0 ? checkP0.checked : true,
       category: document.getElementById('kiosk-video-category').value.trim() || 'Fondo Audiovisual',
       title: {
         es: titleVal,
@@ -2625,6 +2725,10 @@ function setupKioskVideoEditor(onVideosChange) {
 
     localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
     window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+
+    if (checkP1 && checkP1.checked) {
+      window.assignKioskP1(targetId);
+    }
 
     try {
       fetch('./api/data.php', {

@@ -1930,7 +1930,13 @@
 
         <div class="admin-form-group">
           <label>URL o Archivo del Vídeo (.mp4 o enlace directo) *</label>
-          <input type="url" id="kiosk-video-url" class="admin-input" required placeholder="https://dominio.com/video.mp4 o ./assets/videos/video.mp4">
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="kiosk-video-url" class="admin-input" required placeholder="https://dominio.com/video.mp4 o ./assets/videos/video.mp4" style="flex: 1;">
+            <input type="file" id="kiosk-video-file-input" accept="video/mp4,video/webm,video/*" style="display: none;">
+            <button type="button" id="btn-browse-kiosk-video" class="btn-admin btn-admin-outline" style="white-space: nowrap; padding: 7px 11px; font-size: 0.8rem;" title="Seleccionar vídeo del ordenador">
+              📁 Subir Vídeo
+            </button>
+          </div>
           <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
             Acepta enlaces directos a vídeos MP4 en la nube (Google Storage, S3, CDN) o archivos locales.
           </small>
@@ -1938,7 +1944,13 @@
 
         <div class="admin-form-group">
           <label>Imagen de Portada / Miniatura</label>
-          <input type="text" id="kiosk-video-thumb" class="admin-input" placeholder="./assets/images/gallery/lobo.png o URL externa">
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="kiosk-video-thumb" class="admin-input" placeholder="./assets/images/gallery/lobo.png o URL externa" style="flex: 1;">
+            <input type="file" id="kiosk-thumb-file-input" accept="image/*" style="display: none;">
+            <button type="button" id="btn-browse-kiosk-thumb" class="btn-admin btn-admin-outline" style="white-space: nowrap; padding: 7px 11px; font-size: 0.8rem;" title="Seleccionar imagen del ordenador">
+              🖼️ Subir Portada
+            </button>
+          </div>
           <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
             Imagen que se mostrará en los botones táctiles de la TV de 65" de la entrada.
           </small>
@@ -1947,6 +1959,21 @@
         <div class="admin-form-group">
           <label>Descripción Divulgativa *</label>
           <textarea id="kiosk-video-desc" class="admin-textarea" rows="3" required placeholder="Explicación del contenido audiovisual que se proyectará..."></textarea>
+        </div>
+
+        <!-- Asignación de Pantallas -->
+        <div style="background: var(--admin-bg); padding: 0.9rem; border-radius: 8px; border: 1.5px solid var(--admin-border); margin-top: 1rem;">
+          <h4 style="font-size: 0.82rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.6rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            📺 Asignación a Pantallas de Visualización
+          </h4>
+          <label style="display: flex; align-items: center; gap: 9px; font-size: 0.85rem; cursor: pointer; margin-bottom: 0.5rem; color: var(--admin-text);">
+            <input type="checkbox" id="kiosk-video-show-p0" checked style="width: 17px; height: 17px; accent-color: #B59A57;">
+            <span><strong>Pantalla 0 (P0 · Entrada):</strong> Mostrar en el menú táctil de selección interactiva</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 9px; font-size: 0.85rem; cursor: pointer; color: var(--admin-text);">
+            <input type="checkbox" id="kiosk-video-set-p1" style="width: 17px; height: 17px; accent-color: #4D85D1;">
+            <span><strong>Pantalla 1 (P1 · Planta Alta):</strong> Proyectar este vídeo en bucle continuo de sala</span>
+          </label>
         </div>
 
         <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
@@ -1964,6 +1991,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.9"></script>
+  <script type="module" src="./js/admin.js?v=4.0"></script>
 </body>
 </html>

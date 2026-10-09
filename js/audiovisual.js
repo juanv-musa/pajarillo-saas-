@@ -99,7 +99,19 @@ class AudiovisualKiosk {
 
   renderCards() {
     if (!this.dom.grid) return;
-    this.dom.grid.innerHTML = this.videos.map((vid, idx) => {
+    const activeVideos = this.videos.filter(v => v.showInP0 !== false);
+
+    if (activeVideos.length === 0) {
+      this.dom.grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; background: var(--tv-card-bg); border-radius: var(--tv-radius); border: 1.5px dashed var(--tv-border); color: #A3B5AA;">
+          <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem; color: #fff;">Sin contenidos activos en Pantalla 0</h3>
+          <p style="font-size: 1.1rem; margin: 0;">Activa los documentales que desees proyectar en esta sala desde el Panel de Administración SaaS.</p>
+        </div>
+      `;
+      return;
+    }
+
+    this.dom.grid.innerHTML = activeVideos.map(vid => {
       const title = typeof vid.title === 'object' && vid.title !== null
         ? (vid.title.es || Object.values(vid.title)[0] || '')
         : (vid.title || '');
@@ -111,7 +123,7 @@ class AudiovisualKiosk {
       const category = vid.category || 'Documental';
 
       return `
-        <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${title}" onclick="window.tvKiosk.playVideo(${idx})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKiosk.playVideo(${idx});}">
+        <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${title}" onclick="window.tvKiosk.playVideoById('${vid.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKiosk.playVideoById('${vid.id}');}">
           <div class="tv-card-media">
             <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/gallery/exterior.jpg'">
             <div class="tv-card-overlay"></div>
@@ -131,6 +143,11 @@ class AudiovisualKiosk {
         </article>
       `;
     }).join('');
+  }
+
+  playVideoById(id) {
+    const idx = this.videos.findIndex(v => v.id === id);
+    if (idx >= 0) this.playVideo(idx);
   }
 
   bindEvents() {

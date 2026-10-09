@@ -195,7 +195,7 @@ html, body {
 
 .tv-grid-4 {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 1.8rem;
   max-width: 1750px;
   width: 100%;
