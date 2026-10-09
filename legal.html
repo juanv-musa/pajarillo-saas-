@@ -242,7 +242,7 @@
 
       <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--c-border); font-size: 0.8rem; color: var(--c-text-muted);">
         <p><strong>Última actualización:</strong></p>
-        <p>Septiembre de 2026</p>
+        <p>Octubre de 2026</p>
         <p style="margin-top: 0.5rem;"><strong>Marco legal:</strong></p>
         <p>LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018</p>
       </div>
@@ -431,25 +431,39 @@
                 <td>1 año (LocalStorage)</td>
               </tr>
               <tr>
-                <td><code>pajarillo_session</code></td>
-                <td>Propia (Panel SaaS)</td>
-                <td>Técnica / Sesión <span class="legal-badge-ok">Exenta</span></td>
-                <td>Gestiona la autenticación segura y temporal de los técnicos municipales en el panel administrativo.</td>
-                <td>Sesión de navegación</td>
+                <td><code>pajarillo_accessibility</code></td>
+                <td>Propia (Local)</td>
+                <td>Técnica / Accesibilidad <span class="legal-badge-ok">Exenta</span></td>
+                <td>Almacena las preferencias configuradas en el widget de Accesibilidad Universal (modo dislexia, alto contraste, escala de texto, cursor aumentado, guía de lectura).</td>
+                <td>Persistente (LocalStorage)</td>
               </tr>
               <tr>
-                <td><code>pajarillo_analytics</code></td>
+                <td><code>pajarillo_cookie_consent</code></td>
+                <td>Propia (Local)</td>
+                <td>Técnica / Consentimiento <span class="legal-badge-ok">Exenta</span></td>
+                <td>Registra la decisión del visitante respecto a la aceptación o rechazo del aviso informativo de métricas y cookies.</td>
+                <td>1 año (LocalStorage)</td>
+              </tr>
+              <tr>
+                <td><code>pajarillo_sid</code></td>
+                <td>Propia (Local)</td>
+                <td>Técnica / Sesión <span class="legal-badge-ok">Exenta</span></td>
+                <td>Identificador efímero y disociado para evitar la duplicación de contadores de visitas en recargas durante la misma sesión de consulta.</td>
+                <td>Sesión (SessionStorage, se destruye al cerrar el navegador)</td>
+              </tr>
+              <tr>
+                <td><code>pajarillo_real_analytics</code></td>
                 <td>Propia (Local)</td>
                 <td>Analítica Anónima</td>
-                <td>Computa el número de consultas a piezas clave y puntos QR para la optimización de los recorridos turísticos municipales, de forma totalmente disociada y sin recopilar direcciones IP identificables.</td>
-                <td>6 meses</td>
+                <td>Computa de forma disociada el número de consultas a salas, escaneos de códigos QR in situ, reproducciones de audioguía y descargas de recursos didácticos para la mejora del servicio público, sin registrar direcciones IP ni huella digital (fingerprinting).</td>
+                <td>6 meses (LocalStorage)</td>
               </tr>
               <tr>
-                <td><code>cookies_accepted</code></td>
-                <td>Propia (Local)</td>
-                <td>Técnica</td>
-                <td>Registra la decisión del visitante respecto a la aceptación o rechazo del aviso informativo de cookies.</td>
-                <td>1 año</td>
+                <td><code>pajarillo_admin_auth</code></td>
+                <td>Propia (Panel SaaS)</td>
+                <td>Técnica / Gestión <span class="legal-badge-ok">Exenta</span></td>
+                <td>Gestiona la autenticación segura y temporal de los técnicos municipales del Ayuntamiento de Huelma en el panel de control administrativo.</td>
+                <td>Sesión de trabajo</td>
               </tr>
             </tbody>
           </table>

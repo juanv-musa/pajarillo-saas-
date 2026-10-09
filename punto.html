@@ -22,6 +22,9 @@
   <!-- QRCode Library para compartir -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+  <!-- Analítica Oficial y Telemetría in situ -->
+  <script type="module" src="./js/analytics.js?v=3.3"></script>
+
   <style>
     /* Estilos específicos para la ficha de punto / QR */
     body {
@@ -652,6 +655,17 @@
         setupLanguageButtons();
         setupQrModal();
         setupAudioPlayer();
+
+        if (dom.pdfLink) {
+          dom.pdfLink.addEventListener('click', () => {
+            if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
+              window.PajarilloAnalytics.track('download', {
+                detail: dom.pdfTitle.textContent || 'Documento PDF Oficial'
+              });
+            }
+          });
+        }
+
         await loadPanelsData();
       }
 
@@ -685,6 +699,16 @@
           if (currentPanel) {
             renderPanelContent();
             renderTourNavigation();
+
+            // Registrar escaneo real in situ en el motor de analítica
+            if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
+              const panelTitle = (currentPanel.content && (currentPanel.content[currentLang] || currentPanel.content.es))?.title || `Punto ${currentPanel.id}`;
+              window.PajarilloAnalytics.track('qr_scan', {
+                panel_id: currentPanel.id,
+                title: panelTitle,
+                detail: `Escaneo directo in situ Punto 0${currentPanel.id}: ${panelTitle}`
+              });
+            }
           }
         } catch (err) {
           console.error('Error cargando ficha del punto:', err);
@@ -870,6 +894,13 @@
         isPlaying = true;
         dom.btnAudioIcon.textContent = '⏸';
         dom.btnAudioText.textContent = currentLang === 'en' ? 'Pause' : (currentLang === 'fr' ? 'Pause' : 'Pausar');
+
+        if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
+          window.PajarilloAnalytics.track('audio_play', {
+            panel_id: currentPanel ? currentPanel.id : null,
+            detail: `Audioguía Punto 0${currentPanel ? currentPanel.id : ''}: ${dom.title.textContent}`
+          });
+        }
 
         if (currentPanel && currentPanel.audio) {
           // Reproducir archivo de audio real

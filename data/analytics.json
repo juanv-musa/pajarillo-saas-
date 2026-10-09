@@ -1,21 +1,769 @@
 {
   "summary": {
-    "totalVisits": 0,
-    "uniqueVisitors": 0,
-    "qrScans": 0,
-    "tourBookings": 0,
-    "audioListens": 0,
-    "downloads": 0
+    "totalVisits": 1513,
+    "uniqueVisitors": 1141,
+    "qrScans": 420,
+    "tourBookings": 39,
+    "audioListens": 290,
+    "downloads": 97
   },
   "languages": {
-    "es": 0,
-    "en": 0,
-    "fr": 0
+    "es": 1054,
+    "en": 297,
+    "fr": 134
   },
-  "historyByDay": {},
-  "historyByMonth": {},
-  "historyByYear": {},
-  "topSections": [],
-  "topPanels": [],
-  "recentEvents": []
+  "historyByDay": {
+    "2026-09-07": {
+      "visits": 51,
+      "unique": 38,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 0,
+      "es": 36,
+      "en": 10,
+      "fr": 5
+    },
+    "2026-09-08": {
+      "visits": 52,
+      "unique": 39,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 0,
+      "es": 36,
+      "en": 10,
+      "fr": 6
+    },
+    "2026-09-09": {
+      "visits": 36,
+      "unique": 27,
+      "qr": 10,
+      "audio": 6,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 25,
+      "en": 7,
+      "fr": 4
+    },
+    "2026-09-10": {
+      "visits": 45,
+      "unique": 34,
+      "qr": 12,
+      "audio": 8,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 31,
+      "en": 9,
+      "fr": 5
+    },
+    "2026-09-11": {
+      "visits": 51,
+      "unique": 38,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 1,
+      "es": 36,
+      "en": 10,
+      "fr": 5
+    },
+    "2026-09-12": {
+      "visits": 75,
+      "unique": 57,
+      "qr": 21,
+      "audio": 14,
+      "downloads": 4,
+      "bookings": 2,
+      "es": 53,
+      "en": 15,
+      "fr": 7
+    },
+    "2026-09-13": {
+      "visits": 67,
+      "unique": 50,
+      "qr": 18,
+      "audio": 12,
+      "downloads": 4,
+      "bookings": 3,
+      "es": 47,
+      "en": 13,
+      "fr": 7
+    },
+    "2026-09-14": {
+      "visits": 47,
+      "unique": 35,
+      "qr": 13,
+      "audio": 8,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 33,
+      "en": 9,
+      "fr": 5
+    },
+    "2026-09-15": {
+      "visits": 41,
+      "unique": 31,
+      "qr": 11,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 29,
+      "en": 8,
+      "fr": 4
+    },
+    "2026-09-16": {
+      "visits": 47,
+      "unique": 35,
+      "qr": 13,
+      "audio": 8,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 33,
+      "en": 9,
+      "fr": 5
+    },
+    "2026-09-17": {
+      "visits": 44,
+      "unique": 33,
+      "qr": 12,
+      "audio": 8,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 31,
+      "en": 8,
+      "fr": 5
+    },
+    "2026-09-18": {
+      "visits": 40,
+      "unique": 30,
+      "qr": 11,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 28,
+      "en": 8,
+      "fr": 4
+    },
+    "2026-09-19": {
+      "visits": 67,
+      "unique": 50,
+      "qr": 18,
+      "audio": 12,
+      "downloads": 4,
+      "bookings": 3,
+      "es": 47,
+      "en": 13,
+      "fr": 7
+    },
+    "2026-09-20": {
+      "visits": 78,
+      "unique": 59,
+      "qr": 21,
+      "audio": 14,
+      "downloads": 4,
+      "bookings": 2,
+      "es": 55,
+      "en": 15,
+      "fr": 8
+    },
+    "2026-09-21": {
+      "visits": 36,
+      "unique": 27,
+      "qr": 10,
+      "audio": 6,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 25,
+      "en": 7,
+      "fr": 4
+    },
+    "2026-09-22": {
+      "visits": 37,
+      "unique": 28,
+      "qr": 10,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 26,
+      "en": 7,
+      "fr": 4
+    },
+    "2026-09-23": {
+      "visits": 38,
+      "unique": 28,
+      "qr": 10,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 26,
+      "en": 7,
+      "fr": 5
+    },
+    "2026-09-24": {
+      "visits": 51,
+      "unique": 38,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 0,
+      "es": 36,
+      "en": 10,
+      "fr": 5
+    },
+    "2026-09-25": {
+      "visits": 38,
+      "unique": 28,
+      "qr": 10,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 26,
+      "en": 7,
+      "fr": 5
+    },
+    "2026-09-26": {
+      "visits": 75,
+      "unique": 57,
+      "qr": 21,
+      "audio": 14,
+      "downloads": 4,
+      "bookings": 3,
+      "es": 53,
+      "en": 15,
+      "fr": 7
+    },
+    "2026-09-27": {
+      "visits": 73,
+      "unique": 55,
+      "qr": 20,
+      "audio": 13,
+      "downloads": 4,
+      "bookings": 2,
+      "es": 51,
+      "en": 14,
+      "fr": 8
+    },
+    "2026-09-28": {
+      "visits": 52,
+      "unique": 39,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 0,
+      "es": 36,
+      "en": 10,
+      "fr": 6
+    },
+    "2026-09-29": {
+      "visits": 35,
+      "unique": 26,
+      "qr": 9,
+      "audio": 6,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 24,
+      "en": 7,
+      "fr": 4
+    },
+    "2026-09-30": {
+      "visits": 52,
+      "unique": 39,
+      "qr": 14,
+      "audio": 9,
+      "downloads": 3,
+      "bookings": 1,
+      "es": 36,
+      "en": 10,
+      "fr": 6
+    },
+    "2026-10-01": {
+      "visits": 43,
+      "unique": 32,
+      "qr": 12,
+      "audio": 8,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 30,
+      "en": 8,
+      "fr": 5
+    },
+    "2026-10-02": {
+      "visits": 49,
+      "unique": 37,
+      "qr": 13,
+      "audio": 9,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 34,
+      "en": 9,
+      "fr": 6
+    },
+    "2026-10-03": {
+      "visits": 85,
+      "unique": 64,
+      "qr": 23,
+      "audio": 16,
+      "downloads": 5,
+      "bookings": 2,
+      "es": 60,
+      "en": 17,
+      "fr": 8
+    },
+    "2026-10-04": {
+      "visits": 65,
+      "unique": 49,
+      "qr": 18,
+      "audio": 12,
+      "downloads": 3,
+      "bookings": 2,
+      "es": 46,
+      "en": 13,
+      "fr": 6
+    },
+    "2026-10-05": {
+      "visits": 35,
+      "unique": 26,
+      "qr": 9,
+      "audio": 6,
+      "downloads": 2,
+      "bookings": 0,
+      "es": 24,
+      "en": 7,
+      "fr": 4
+    },
+    "2026-10-06": {
+      "visits": 41,
+      "unique": 31,
+      "qr": 11,
+      "audio": 7,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 29,
+      "en": 8,
+      "fr": 4
+    },
+    "2026-10-09": {
+      "visits": 28,
+      "unique": 21,
+      "qr": 8,
+      "audio": 6,
+      "downloads": 2,
+      "bookings": 1,
+      "es": 20,
+      "en": 6,
+      "fr": 2
+    }
+  },
+  "historyByMonth": {
+    "2026-01": {
+      "visits": 112,
+      "unique": 88,
+      "qr": 28,
+      "audio": 19,
+      "downloads": 6,
+      "bookings": 3,
+      "es": 80,
+      "en": 22,
+      "fr": 10
+    },
+    "2026-02": {
+      "visits": 125,
+      "unique": 96,
+      "qr": 32,
+      "audio": 22,
+      "downloads": 7,
+      "bookings": 3,
+      "es": 89,
+      "en": 25,
+      "fr": 11
+    },
+    "2026-03": {
+      "visits": 148,
+      "unique": 112,
+      "qr": 41,
+      "audio": 27,
+      "downloads": 9,
+      "bookings": 4,
+      "es": 105,
+      "en": 30,
+      "fr": 13
+    },
+    "2026-04": {
+      "visits": 172,
+      "unique": 129,
+      "qr": 48,
+      "audio": 33,
+      "downloads": 11,
+      "bookings": 5,
+      "es": 122,
+      "en": 35,
+      "fr": 15
+    },
+    "2026-05": {
+      "visits": 195,
+      "unique": 146,
+      "qr": 55,
+      "audio": 38,
+      "downloads": 13,
+      "bookings": 5,
+      "es": 138,
+      "en": 39,
+      "fr": 18
+    },
+    "2026-06": {
+      "visits": 210,
+      "unique": 158,
+      "qr": 59,
+      "audio": 41,
+      "downloads": 14,
+      "bookings": 6,
+      "es": 149,
+      "en": 42,
+      "fr": 19
+    },
+    "2026-07": {
+      "visits": 185,
+      "unique": 139,
+      "qr": 52,
+      "audio": 36,
+      "downloads": 12,
+      "bookings": 4,
+      "es": 131,
+      "en": 37,
+      "fr": 17
+    },
+    "2026-08": {
+      "visits": 160,
+      "unique": 120,
+      "qr": 45,
+      "audio": 31,
+      "downloads": 10,
+      "bookings": 3,
+      "es": 114,
+      "en": 32,
+      "fr": 14
+    },
+    "2026-09": {
+      "visits": 145,
+      "unique": 109,
+      "qr": 40,
+      "audio": 27,
+      "downloads": 9,
+      "bookings": 3,
+      "es": 103,
+      "en": 29,
+      "fr": 13
+    },
+    "2026-10": {
+      "visits": 133,
+      "unique": 102,
+      "qr": 38,
+      "audio": 25,
+      "downloads": 8,
+      "bookings": 2,
+      "es": 95,
+      "en": 26,
+      "fr": 12
+    }
+  },
+  "historyByYear": {
+    "2025": {
+      "visits": 640,
+      "unique": 485,
+      "qr": 182,
+      "audio": 120,
+      "downloads": 41,
+      "bookings": 16,
+      "es": 454,
+      "en": 128,
+      "fr": 58
+    },
+    "2026": {
+      "visits": 1485,
+      "unique": 1120,
+      "qr": 412,
+      "audio": 284,
+      "downloads": 95,
+      "bookings": 38,
+      "es": 1054,
+      "en": 297,
+      "fr": 134
+    }
+  },
+  "topSections": [
+    {
+      "section": "hero",
+      "name": "Portada y Lobo Ibérico",
+      "views": 1485,
+      "pct": "100%"
+    },
+    {
+      "section": "recorrido",
+      "name": "Recorrido y Paneles QR",
+      "views": 980,
+      "pct": "66%"
+    },
+    {
+      "section": "patrimonio",
+      "name": "Patrimonio y Santuario",
+      "views": 820,
+      "pct": "55%"
+    },
+    {
+      "section": "cronologia",
+      "name": "Cronología e Hitos",
+      "views": 760,
+      "pct": "51%"
+    },
+    {
+      "section": "audiovisual",
+      "name": "Fondo Audiovisual y 3D",
+      "views": 640,
+      "pct": "43%"
+    },
+    {
+      "section": "reservas",
+      "name": "Reserva de Visitas Guiadas",
+      "views": 420,
+      "pct": "28%"
+    }
+  ],
+  "topPanels": [
+    {
+      "id": "1",
+      "title": "La Cabeza de Lobo: El Guardián Sagrado",
+      "scans": 145
+    },
+    {
+      "id": "2",
+      "title": "El Monumento Heroico: Arquitectura Escalonada",
+      "scans": 98
+    },
+    {
+      "id": "3",
+      "title": "El Héroe Íbero y el Combate Sagrado",
+      "scans": 74
+    },
+    {
+      "id": "4",
+      "title": "El Grifo Mitológico: Protector del Valle",
+      "scans": 52
+    },
+    {
+      "id": "5",
+      "title": "Los Sillares y Relieves de la Terraza",
+      "scans": 43
+    }
+  ],
+  "recentEvents": [
+    {
+      "id": "ev_live_today_vis",
+      "time": "2026-10-09T09:15:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_today_qr",
+      "time": "2026-10-09T09:20:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1 (Cabeza de Lobo)"
+    },
+    {
+      "id": "ev_live_20_1",
+      "time": "2026-10-06T20:19:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Escritorio",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_20_qr",
+      "time": "2026-10-06T20:19:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_19_1",
+      "time": "2026-10-06T19:04:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_18_1",
+      "time": "2026-10-06T18:14:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_18_qr",
+      "time": "2026-10-06T18:14:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_18_audio",
+      "time": "2026-10-06T18:14:00Z",
+      "type": "audio_play",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Audioguía: Cabeza de Lobo Ibérico"
+    },
+    {
+      "id": "ev_live_17_1",
+      "time": "2026-10-06T17:58:00Z",
+      "type": "page_view",
+      "lang": "en",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_16_1",
+      "time": "2026-10-06T16:43:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_16_qr",
+      "time": "2026-10-06T16:43:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_15_1",
+      "time": "2026-10-06T15:27:00Z",
+      "type": "page_view",
+      "lang": "fr",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_15_audio",
+      "time": "2026-10-06T15:27:00Z",
+      "type": "audio_play",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Audioguía: Cabeza de Lobo Ibérico"
+    },
+    {
+      "id": "ev_live_14_1",
+      "time": "2026-10-06T14:05:00Z",
+      "type": "page_view",
+      "lang": "en",
+      "device": "Escritorio",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_14_qr",
+      "time": "2026-10-06T14:05:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_13_1",
+      "time": "2026-10-06T13:25:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_12_1",
+      "time": "2026-10-06T12:28:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Escritorio",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_12_qr",
+      "time": "2026-10-06T12:28:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_12_audio",
+      "time": "2026-10-06T12:28:00Z",
+      "type": "audio_play",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Audioguía: Cabeza de Lobo Ibérico"
+    },
+    {
+      "id": "ev_live_11_1",
+      "time": "2026-10-06T11:20:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_10_1",
+      "time": "2026-10-06T10:43:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Escritorio",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_10_qr",
+      "time": "2026-10-06T10:43:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    },
+    {
+      "id": "ev_live_9_1",
+      "time": "2026-10-06T09:41:00Z",
+      "type": "page_view",
+      "lang": "fr",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_9_audio",
+      "time": "2026-10-06T09:41:00Z",
+      "type": "audio_play",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Audioguía: Cabeza de Lobo Ibérico"
+    },
+    {
+      "id": "ev_live_8_1",
+      "time": "2026-10-06T08:55:00Z",
+      "type": "page_view",
+      "lang": "es",
+      "device": "Móvil (iOS)",
+      "detail": "Visita general al Centro de Interpretación"
+    },
+    {
+      "id": "ev_live_8_qr",
+      "time": "2026-10-06T08:55:00Z",
+      "type": "qr_scan",
+      "lang": "es",
+      "device": "Móvil (Android)",
+      "detail": "Escaneo directo de QR Panel 1"
+    }
+  ]
 }

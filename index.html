@@ -767,14 +767,14 @@
   </div>
 
   <!-- Banner Informativo de Cookies (Conforme a Guía AEPD) -->
-  <div class="cookie-banner" id="analytics-banner" role="region" aria-label="Aviso de cookies analíticas">
+  <div class="cookie-banner" id="analytics-banner" role="region" aria-label="Aviso de cookies analíticas" style="display: none;">
     <span data-i18n="analytics_banner.msg">Utilizamos cookies analíticas estrictamente anónimas para mejorar la experiencia turística y medir el interés del conjunto monumental.</span>
     <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
       <a href="./legal.html#cookies" style="color: var(--c-stone-light); font-size: 0.8rem; text-decoration: underline; margin-right: 0.25rem;" data-i18n="analytics_banner.info">Más información</a>
-      <button class="btn-point-action" style="background: rgba(255,255,255,0.15); color: white; border-radius: 999px; padding: 4px 12px; border: 1px solid rgba(255,255,255,0.3);" onclick="document.getElementById('analytics-banner').style.display='none'" data-i18n="analytics_banner.reject">
+      <button class="btn-point-action" id="btn-reject-cookies" style="background: rgba(255,255,255,0.15); color: white; border-radius: 999px; padding: 4px 12px; border: 1px solid rgba(255,255,255,0.3);" data-i18n="analytics_banner.reject">
         Rechazar
       </button>
-      <button class="btn-point-action" style="background: var(--c-primary-light); color: white; border-radius: 999px; padding: 4px 14px;" onclick="document.getElementById('analytics-banner').style.display='none'" data-i18n="analytics_banner.accept">
+      <button class="btn-point-action" id="btn-accept-cookies" style="background: var(--c-primary-light); color: white; border-radius: 999px; padding: 4px 14px;" data-i18n="analytics_banner.accept">
         Aceptar
       </button>
     </div>

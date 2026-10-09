@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupHistoryTabs();
   setupBookingForm(i18n);
   setupQrModal();
+  setupCookieConsentBanner();
 
   // 5. Cargar y Aplicar Configuración de Secciones y Textos del CMS
   await initSiteConfig();
@@ -633,4 +634,33 @@ window.playAudio = function(audioFile) {
     });
   }
 };
+
+function setupCookieConsentBanner() {
+  const banner = document.getElementById('analytics-banner');
+  const btnAccept = document.getElementById('btn-accept-cookies');
+  const btnReject = document.getElementById('btn-reject-cookies');
+  if (!banner) return;
+
+  const consent = localStorage.getItem('pajarillo_cookie_consent');
+  if (!consent) {
+    banner.style.display = 'flex';
+  } else {
+    banner.style.display = 'none';
+  }
+
+  if (btnAccept) {
+    btnAccept.addEventListener('click', () => {
+      localStorage.setItem('pajarillo_cookie_consent', 'accepted');
+      banner.style.display = 'none';
+    });
+  }
+
+  if (btnReject) {
+    btnReject.addEventListener('click', () => {
+      localStorage.setItem('pajarillo_cookie_consent', 'rejected');
+      banner.style.display = 'none';
+    });
+  }
+}
+
 
