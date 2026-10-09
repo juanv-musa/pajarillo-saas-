@@ -34,35 +34,47 @@ export class AgendaManager {
   }
 
   async loadData() {
-    // 1. Prioridad: localStorage si el usuario ha creado o editado actividades
-    const saved = localStorage.getItem(AGENDA_STORAGE_KEY);
-    if (saved !== null) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          this.activities = parsed;
-          return;
+    let loaded = false;
+
+    // 1. Intentar API PHP en vivo (o servidor) con timestamp para evitar caché
+    try {
+      const res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json();
+        if (data && Array.isArray(data.activities) && data.activities.length > 0) {
+          this.activities = data.activities;
+          localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
+          loaded = true;
         }
-      } catch (e) {
-        console.warn('Error leyendo agenda de localStorage:', e);
+      }
+    } catch (err) {}
+
+    // 2. Si no hay backend PHP (ej. GitHub Pages), comprobar localStorage
+    if (!loaded) {
+      const saved = localStorage.getItem(AGENDA_STORAGE_KEY);
+      if (saved !== null) {
+        try {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this.activities = parsed;
+            loaded = true;
+          }
+        } catch (e) {}
       }
     }
 
-    // 2. Intentar API PHP en vivo, luego JSON estático
-    try {
-      let res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
-      if (!res || !res.ok) {
-        res = await fetch('./data/agenda.json?t=' + Date.now());
+    // 3. Fallback a data/agenda.json estático
+    if (!loaded) {
+      try {
+        const res = await fetch('./data/agenda.json?t=' + Date.now());
+        const data = await res.json();
+        this.activities = data.activities || [];
+        if (this.activities.length > 0) {
+          localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
+        }
+      } catch (err) {
+        this.activities = [];
       }
-      const data = await res.json();
-      this.activities = data.activities || [];
-      // Si no existía en localStorage, inicializarlo para que futuras adiciones se sincronicen
-      if (this.activities.length > 0 && saved === null) {
-        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
-      }
-    } catch (err) {
-      console.warn('Error cargando actividades de la agenda:', err);
-      this.activities = [];
     }
   }
 
@@ -95,9 +107,12 @@ export class AgendaManager {
     if (!this.container) return;
     const lang = this.i18n.currentLang || 'es';
 
+    // Solo mostrar actividades activas/publicadas en el portal público
+    const activeActivities = this.activities.filter(act => act.active !== false);
+
     const filtered = this.currentFilter === 'todos'
-      ? this.activities
-      : this.activities.filter(a => a.category === this.currentFilter);
+      ? activeActivities
+      : activeActivities.filter(a => a.category === this.currentFilter);
 
     if (filtered.length === 0) {
       this.container.innerHTML = `
@@ -143,4 +158,3 @@ export class AgendaManager {
     }).join('');
   }
 }
-

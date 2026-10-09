@@ -564,6 +564,30 @@ body {
   color: var(--admin-primary);
 }
 
+.btn-admin-success {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1.5px solid #A5D6A7;
+}
+
+.btn-admin-success:hover {
+  background: #2E7D32;
+  color: #FFFFFF;
+  border-color: #2E7D32;
+}
+
+.btn-admin-warning {
+  background: #FFF8E1;
+  color: #B78103;
+  border: 1.5px solid #FFE082;
+}
+
+.btn-admin-warning:hover {
+  background: #F59E0B;
+  color: #FFFFFF;
+  border-color: #F59E0B;
+}
+
 /* Lista de Paneles Ordenables */
 .panel-admin-list {
   list-style: none;

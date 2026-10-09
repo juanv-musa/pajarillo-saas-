@@ -1358,6 +1358,23 @@
                 <textarea id="act-desc-es" class="admin-textarea" rows="3" required></textarea>
               </div>
 
+              <!-- Control de Publicación (Activa / Borrador) -->
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 0.85rem 1rem; border-radius: var(--admin-radius); border: 1.5px solid var(--admin-border); margin-bottom: 1.25rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 1rem;">
+                  <div>
+                    <strong style="display: block; font-size: 0.88rem; color: var(--admin-text);">Estado de Publicación</strong>
+                    <span id="act-active-desc" style="font-size: 0.78rem; color: var(--admin-muted);">Visible en la web pública para todos los visitantes</span>
+                  </div>
+                  <label class="switch" style="margin: 0;" title="Activar o desactivar publicación en la web">
+                    <input type="checkbox" id="act-active" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+                <div style="margin-top: 8px;">
+                  <span id="act-active-badge" class="status-pill active">● Publicada (Visible en Web)</span>
+                </div>
+              </div>
+
               <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center;">
                 Guardar Actividad
               </button>
@@ -1367,9 +1384,15 @@
             </form>
           </div>
 
-          <!-- Listado de Actividades Activas -->
+          <!-- Listado de Actividades -->
           <div class="admin-card">
-            <h3 style="margin-bottom: 1.25rem;">Actividades Programadas</h3>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem;">
+              <h3 style="margin: 0;">Actividades Programadas</h3>
+              <span id="agenda-active-count-indicator" style="font-size: 0.8rem; color: var(--admin-muted); font-weight: 700;"></span>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+              Activa o desactiva actividades en cualquier momento con un clic para publicarlas o guardarlas como borrador.
+            </p>
             <ul id="admin-agenda-list" class="panel-admin-list">
               <!-- Inyectado por admin.js -->
             </ul>

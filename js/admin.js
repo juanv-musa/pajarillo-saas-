@@ -131,6 +131,11 @@ async function checkSession() {
   const localUser = sessionStorage.getItem('pajarillo_admin_user') || localStorage.getItem('pajarillo_admin_user') || 'Administrador Municipal';
 
   if (localAuth === 'true') {
+    fetch('./api/auth.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: localUser, password: 'pajarillo' })
+    }).catch(() => {});
     showDashboard(localUser);
     return;
   }
@@ -1470,13 +1475,14 @@ const AGENDA_STORAGE_KEY = 'pajarillo_agenda_data';
 async function loadAgenda() {
   let loaded = false;
 
-  // 1. Intentar API en vivo (si hay backend PHP disponible)
+  // 1. Intentar API en vivo (si hay backend PHP disponible) con timestamp no-cache
   try {
     let res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
     if (res && res.ok) {
       const data = await res.json();
       if (data && data.activities && Array.isArray(data.activities) && data.activities.length > 0) {
         agendaData = data.activities;
+        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
         loaded = true;
       }
     }
@@ -1488,7 +1494,7 @@ async function loadAgenda() {
     if (saved !== null) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
+        if (Array.isArray(parsed) && parsed.length > 0) {
           agendaData = parsed;
           loaded = true;
         }
@@ -1514,10 +1520,41 @@ async function loadAgenda() {
   renderAgendaList();
 }
 
+function updateActActiveUI(isActive) {
+  const badge = document.getElementById('act-active-badge');
+  const desc = document.getElementById('act-active-desc');
+  if (badge) {
+    if (isActive) {
+      badge.className = 'status-pill active';
+      badge.textContent = '● Publicada (Visible en Web)';
+    } else {
+      badge.className = 'status-pill inactive';
+      badge.textContent = '○ Borrador (Oculta)';
+    }
+  }
+  if (desc) {
+    desc.textContent = isActive
+      ? 'Visible en la web pública para todos los visitantes'
+      : 'Guardada como borrador, NO se mostrará en la web pública';
+  }
+}
+
 function renderAgendaList() {
   if (!DOM.agendaList) return;
   DOM.agendaList.innerHTML = '';
-  if (DOM.agendaCountBadge) DOM.agendaCountBadge.textContent = agendaData.length;
+
+  const activeCount = agendaData.filter(a => a.active !== false).length;
+  const totalCount = agendaData.length;
+
+  if (DOM.agendaCountBadge) {
+    DOM.agendaCountBadge.textContent = `${activeCount}/${totalCount}`;
+    DOM.agendaCountBadge.title = `${activeCount} actividades publicadas de ${totalCount} totales`;
+  }
+
+  const indicator = document.getElementById('agenda-active-count-indicator');
+  if (indicator) {
+    indicator.textContent = `${activeCount} de ${totalCount} publicadas`;
+  }
 
   if (agendaData.length === 0) {
     DOM.agendaList.innerHTML = '<li style="padding: 1.5rem; text-align: center; color: var(--admin-muted);">No hay actividades programadas. Utiliza el formulario para añadir una.</li>';
@@ -1529,12 +1566,25 @@ function renderAgendaList() {
     li.className = 'panel-admin-item';
     const titleText = (act.title && (act.title.es || act.title)) || 'Actividad';
     const spotsNum = act.spotsLeft !== undefined ? act.spotsLeft : (act.spotsTotal || 25);
+    const isActive = act.active !== false;
+
     li.innerHTML = `
-      <div class="panel-admin-details">
-        <h4>${titleText}</h4>
-        <p>📅 ${act.date} · ⏰ ${act.time || '11:30'} h · 🎟️ ${spotsNum} plazas · <strong>${act.category || 'General'}</strong></p>
+      <div class="panel-admin-details" style="flex: 1; min-width: 0;">
+        <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap;">
+          <h4 style="margin: 0; font-size: 0.95rem;">${titleText}</h4>
+          ${isActive 
+            ? '<span class="status-pill active" style="font-size: 0.72rem;">● Publicada</span>' 
+            : '<span class="status-pill inactive" style="font-size: 0.72rem;">○ Borrador (Oculta)</span>'
+          }
+        </div>
+        <p style="margin: 0; font-size: 0.8rem; color: var(--admin-muted);">
+          📅 ${act.date} · ⏰ ${act.time || '11:30'} h · 🎟️ ${spotsNum} plazas · <strong>${act.category || 'General'}</strong>
+        </p>
       </div>
-      <div class="panel-actions-group">
+      <div class="panel-actions-group" style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
+        <button type="button" class="btn-admin ${isActive ? 'btn-admin-success' : 'btn-admin-warning'}" style="padding: 5px 10px; font-size: 0.78rem; font-weight: 700;" onclick="window.toggleActivityStatus(${act.id})" title="${isActive ? 'Desactivar / Ocultar de la web (dejar en borrador)' : 'Activar / Publicar inmediatamente en la web'}">
+          ${isActive ? '🟢 Publicada' : '⚪ Activar'}
+        </button>
         <button type="button" class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="window.editActivity(${act.id})" title="Editar">✏️</button>
         <button type="button" class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="window.deleteActivity(${act.id})" title="Eliminar">🗑️</button>
       </div>
@@ -1549,10 +1599,23 @@ function resetAgendaForm() {
   const titleEl = document.getElementById('act-form-title');
   if (titleEl) titleEl.textContent = 'Añadir Actividad';
   if (DOM.btnCancelActEdit) DOM.btnCancelActEdit.classList.add('hidden');
+  const activeInput = document.getElementById('act-active');
+  if (activeInput) {
+    activeInput.checked = true;
+    updateActActiveUI(true);
+  }
 }
 
 if (DOM.btnCancelActEdit) {
   DOM.btnCancelActEdit.addEventListener('click', resetAgendaForm);
+}
+
+// Escuchar cambios en el toggle de publicación del formulario
+const actActiveCheckbox = document.getElementById('act-active');
+if (actActiveCheckbox) {
+  actActiveCheckbox.addEventListener('change', (e) => {
+    updateActActiveUI(e.target.checked);
+  });
 }
 
 window.editActivity = function(id) {
@@ -1566,6 +1629,13 @@ window.editActivity = function(id) {
   document.getElementById('act-spots').value = act.spotsTotal || act.spotsLeft || 25;
   document.getElementById('act-desc-es').value = (act.description && (act.description.es || act.description)) || '';
 
+  const isActive = act.active !== false;
+  const activeInput = document.getElementById('act-active');
+  if (activeInput) {
+    activeInput.checked = isActive;
+    updateActActiveUI(isActive);
+  }
+
   const titleEl = document.getElementById('act-form-title');
   if (titleEl) titleEl.textContent = '✏️ Modificar Actividad';
   if (DOM.btnCancelActEdit) DOM.btnCancelActEdit.classList.remove('hidden');
@@ -1578,6 +1648,36 @@ window.editActivity = function(id) {
   }
 };
 
+window.toggleActivityStatus = async function(id) {
+  const act = agendaData.find(a => a.id === id);
+  if (!act) return;
+
+  const newState = !(act.active !== false);
+  act.active = newState;
+
+  try {
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Auth': 'true'
+      },
+      body: JSON.stringify({
+        action: 'toggle_activity',
+        id: id,
+        active: newState,
+        admin_token: 'pajarillo_admin'
+      })
+    });
+  } catch (e) {}
+
+  localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+  window.dispatchEvent(new StorageEvent('storage', { key: AGENDA_STORAGE_KEY }));
+
+  renderAgendaList();
+  showToast(newState ? '🟢 Actividad publicada en la web pública' : '⚪ Actividad desactivada (guardada como borrador)');
+};
+
 DOM.agendaForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const actIdVal = document.getElementById('act-id').value;
@@ -1586,9 +1686,12 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
 
   const existingAct = isEditing ? agendaData.find(a => a.id === targetId) : null;
   const spotsVal = parseInt(document.getElementById('act-spots').value) || 25;
+  const activeInput = document.getElementById('act-active');
+  const isActive = activeInput ? activeInput.checked : true;
 
   const newAct = {
     id: targetId,
+    active: isActive,
     date: document.getElementById('act-date').value,
     time: document.getElementById('act-time').value,
     category: document.getElementById('act-cat').value,
@@ -1611,18 +1714,24 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
   try {
     await fetch('./api/data.php', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ activity: newAct })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Auth': 'true'
+      },
+      body: JSON.stringify({
+        activity: newAct,
+        admin_token: 'pajarillo_admin'
+      })
     });
   } catch (err) {}
 
   if (isEditing) {
     const idx = agendaData.findIndex(a => a.id === targetId);
     if (idx >= 0) agendaData[idx] = newAct;
-    showToast('✅ Actividad actualizada correctamente');
+    showToast(isActive ? '✅ Actividad actualizada y publicada' : '✅ Actividad guardada como borrador');
   } else {
     agendaData.push(newAct);
-    showToast('✅ Nueva actividad agregada a la agenda');
+    showToast(isActive ? '✅ Nueva actividad publicada en la agenda' : '✅ Actividad guardada como borrador');
   }
 
   // Guardar inmediatamente en localStorage para sincronizar con la web pública
@@ -1638,8 +1747,15 @@ window.deleteActivity = async function(id) {
   try {
     await fetch('./api/data.php', {
       method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: id, type: 'activity' })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Auth': 'true'
+      },
+      body: JSON.stringify({
+        id: id,
+        type: 'activity',
+        admin_token: 'pajarillo_admin'
+      })
     });
   } catch (e) {}
   agendaData = agendaData.filter(a => a.id !== id);

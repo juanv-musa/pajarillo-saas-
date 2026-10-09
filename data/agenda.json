@@ -2,6 +2,7 @@
   "activities": [
     {
       "id": 1,
+      "active": true,
       "category": "visitas",
       "date": "2026-10-10",
       "time": "11:30",
@@ -23,6 +24,7 @@
     },
     {
       "id": 2,
+      "active": true,
       "category": "talleres",
       "date": "2026-10-17",
       "time": "17:00",
@@ -44,6 +46,7 @@
     },
     {
       "id": 3,
+      "active": true,
       "category": "arqueologia",
       "date": "2026-10-24",
       "time": "19:00",
@@ -60,11 +63,12 @@
       "description": {
         "es": "Ponencia divulgativa sobre el impacto científico internacional del monumento escultórico y las futuras campañas de prospección.",
         "en": "Scientific outreach talk addressing the global impact of the monument and upcoming archaeological survey campaigns.",
-        "fr": "Conférence scientifique sur le rayonnement international du site et les futures campagnes de prospection."
+        "fr": "Conférence scientifique sur le rayonnement international du site et les futures campañas de prospection."
       }
     },
     {
       "id": 4,
+      "active": true,
       "category": "visitas",
       "date": "2026-11-07",
       "time": "18:00",
