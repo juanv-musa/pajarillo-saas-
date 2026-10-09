@@ -76,7 +76,7 @@ let siteConfigData = {
     hero: true,
     cronologia: true,
     patrimonio: true,
-    puntos: true,
+    puntos: false,
     galeria: true,
     horarios: true,
     agenda: true,

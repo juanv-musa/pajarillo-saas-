@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v3.2';
+  const CACHE_VERSION = 'v3.3';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -396,10 +396,6 @@ async function loadExhibitionPoints(i18n) {
           </div>
           <div class="point-compact-body">
             <h3 class="point-compact-title">${content.title}</h3>
-            <span class="point-compact-action">
-              <span>Entrar y escuchar</span>
-              <span aria-hidden="true">→</span>
-            </span>
           </div>
         </a>
       `;

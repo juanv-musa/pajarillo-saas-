@@ -142,7 +142,7 @@
       <button class="sidebar-btn" data-view="sections">
         <img src="./assets/icons/icon-grid.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Secciones de la Web</span>
-        <span class="badge-counter" id="sections-active-badge">10/10</span>
+        <span class="badge-counter" id="sections-active-badge">9/10</span>
       </button>
 
       <button class="sidebar-btn" data-view="contents">
@@ -467,18 +467,18 @@
           </div>
 
           <!-- 4. Recorrido Interpretativo / Puntos QR -->
-          <div class="section-card-row" data-sec-key="puntos">
+          <div class="section-card-row disabled" data-sec-key="puntos">
             <div class="section-card-info">
               <div class="section-icon-box">📱</div>
               <div class="section-text">
                 <h4>Recorrido Interpretativo (Puntos QR y Paneles)</h4>
-                <p>Cuadrícula de piezas clave y salas con códigos QR oficiales para visitantes, audioguía y modelos tridimensionales.</p>
+                <p>Cuadrícula de piezas clave y salas con códigos QR. Oculta en web pública por defecto (reservada para escaneo directo in situ). Actívala aquí cuando desees mostrarla a todo el público.</p>
               </div>
             </div>
             <div class="section-controls">
-              <span class="status-pill active" id="status-pill-puntos">● Visible en web</span>
+              <span class="status-pill inactive" id="status-pill-puntos">○ Oculta en web</span>
               <label class="switch">
-                <input type="checkbox" class="sec-toggle-input" data-section="puntos" checked>
+                <input type="checkbox" class="sec-toggle-input" data-section="puntos">
                 <span class="slider"></span>
               </label>
             </div>
@@ -1635,6 +1635,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.2"></script>
+  <script type="module" src="./js/admin.js?v=3.3"></script>
 </body>
 </html>

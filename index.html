@@ -17,8 +17,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- Estilos del Manual Corporativo y Accesibilidad Universal -->
-  <link rel="stylesheet" href="./css/main.css?v=3.2">
-  <link rel="stylesheet" href="./css/accessibility.css?v=3.2">
+  <link rel="stylesheet" href="./css/main.css?v=3.3">
+  <link rel="stylesheet" href="./css/accessibility.css?v=3.3">
 </head>
 <body>
 
@@ -33,7 +33,7 @@
       <nav>
         <ul class="nav-menu" id="nav-menu">
           <li><a href="#historia" class="nav-link" data-i18n="nav.historia">El Pajarillo</a></li>
-          <li><a href="#puntos" class="nav-link" data-i18n="nav.puntos">Recorrido</a></li>
+          <li style="display: none;"><a href="#puntos" class="nav-link" data-i18n="nav.puntos">Recorrido</a></li>
           <li><a href="#galeria" class="nav-link" data-i18n="nav.galeria">Galería</a></li>
           <li><a href="#horarios" class="nav-link" data-i18n="nav.horarios">Horarios</a></li>
           <li><a href="#agenda" class="nav-link" data-i18n="nav.agenda">Agenda</a></li>
@@ -209,7 +209,7 @@
     <!-- ═══════════════════════════════════════════
          SECCIÓN 2: PUNTOS DE VISITA & QR (ESTILO JÓDAR)
          ═══════════════════════════════════════════ -->
-    <section class="section section-alt" id="puntos" aria-label="Puntos de información y exposición">
+    <section class="section section-alt" id="puntos" aria-label="Puntos de información y exposición" style="display: none;">
       <div class="container">
         <div class="section-header">
           <span class="section-label" data-i18n="puntos.section_label">Recorrido Interpretativo</span>
@@ -781,6 +781,6 @@
   </div>
 
   <!-- Lógica Principal -->
-  <script type="module" src="./js/app.js?v=3.2"></script>
+  <script type="module" src="./js/app.js?v=3.3"></script>
 </body>
 </html>
