@@ -1299,9 +1299,14 @@
             <div>
               <strong>🛡️ Protocolo de Control y Trazabilidad Municipal:</strong> Cada reserva entrante se marca como <span class="status-badge unseen" style="padding: 2px 6px;">Sin Abrir</span>. Al pulsar <em>"Marcar como Vista"</em> o <em>"Confirmar y Registrar"</em>, queda acreditado el gestor, fecha y hora de atención.
             </div>
-            <button type="button" class="btn-admin btn-admin-outline" style="font-size: 0.75rem; padding: 4px 8px;" onclick="window.markAllBookingsAsSeen()">
-              👁️ Marcar todas como vistas
-            </button>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <button type="button" class="btn-admin btn-admin-primary" style="font-size: 0.75rem; padding: 4px 10px;" onclick="window.refreshBookingsNow()">
+                🔄 Actualizar Bandeja
+              </button>
+              <button type="button" class="btn-admin btn-admin-outline" style="font-size: 0.75rem; padding: 4px 8px;" onclick="window.markAllBookingsAsSeen()">
+                👁️ Marcar todas como vistas
+              </button>
+            </div>
           </div>
 
           <table class="admin-table">
@@ -1724,6 +1729,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=3.4"></script>
+  <script type="module" src="./js/admin.js?v=3.5"></script>
 </body>
 </html>

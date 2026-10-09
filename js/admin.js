@@ -293,6 +293,11 @@ function setupSidebarNavigation() {
       DOM.subviews.forEach(view => {
         view.classList.toggle('hidden', view.id !== `subview-${targetView}`);
       });
+
+      // Si se navega a reservas, refrescar la lista para cargar nuevas reservas inmediatamente
+      if (targetView === 'bookings') {
+        loadBookings();
+      }
     });
   });
 }
@@ -1509,27 +1514,29 @@ async function loadBookings() {
       remoteList = data.bookings || [];
     }
 
-    const localList = getStoredBookings();
+    const localList = getStoredBookings() || [];
 
-    if (localList && localList.length) {
-      // Fusionar asegurando que no se pierdan reservas nuevas ni marcas locales de lectura
-      const map = new Map();
-      (remoteList || []).forEach(b => map.set(b.id, b));
-      localList.forEach(b => {
-        // La versión local preserva campos de trazabilidad (seen, seenBy, seenAt, status)
-        if (map.has(b.id)) {
-          map.set(b.id, { ...map.get(b.id), ...b });
-        } else {
-          map.set(b.id, b);
-        }
-      });
-      bookingsData = Array.from(map.values());
-    } else {
-      bookingsData = remoteList || [];
-    }
+    // Usar Map indexado por ID
+    const map = new Map();
+    // 1. Primero cargar las reservas remotas (o del archivo base)
+    (remoteList || []).forEach(b => {
+      if (b && b.id) map.set(String(b.id), b);
+    });
+    // 2. Fusionar las locales (tienen prioridad porque contienen reservas nuevas hechas por el usuario y marcas de visto)
+    localList.forEach(b => {
+      if (!b || !b.id) return;
+      const key = String(b.id);
+      if (map.has(key)) {
+        map.set(key, { ...map.get(key), ...b });
+      } else {
+        map.set(key, b);
+      }
+    });
+
+    bookingsData = Array.from(map.values());
 
     // Ordenar por ID descendente (las más recientes arriba)
-    bookingsData.sort((a, b) => (b.id || 0) - (a.id || 0));
+    bookingsData.sort((a, b) => Number(b.id || 0) - Number(a.id || 0));
     saveStoredBookings(bookingsData);
     renderBookingsList();
   } catch (err) {
@@ -1802,6 +1809,33 @@ window.saveNotificationSettings = function() {
   }
   showToast(emailVal ? `📧 Guardado email opcional: ${emailVal}` : '✅ Se revisará únicamente en el panel SaaS');
 };
+
+window.refreshBookingsNow = async function() {
+  await loadBookings();
+  showToast('🔄 Bandeja de reservas sincronizada');
+};
+
+// Escucha en tiempo real de nuevas reservas recibidas en otra pestaña (web pública)
+window.addEventListener('storage', (e) => {
+  if (e.key === BOOKINGS_STORAGE_KEY) {
+    loadBookings();
+  }
+});
+
+// Comprobar nuevas reservas en segundo plano cada 10 segundos
+setInterval(() => {
+  const currentTab = document.querySelector('.sidebar-btn.active');
+  if (currentTab && currentTab.dataset.view === 'bookings') {
+    loadBookings();
+  } else {
+    // Solo actualizar insignias/contador
+    const local = getStoredBookings();
+    if (local && local.length) {
+      bookingsData = local;
+      updateBookingsCountBadges();
+    }
+  }
+}, 10000);
 
 // ═══════════════════════════════════════════
 // GENERADOR DE CÓDIGOS QR OFICIALES
