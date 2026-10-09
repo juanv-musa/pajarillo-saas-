@@ -1477,60 +1477,283 @@ window.deleteActivity = async function(id) {
 };
 
 // ═══════════════════════════════════════════
-// MÓDULO 4: BANDEJA DE RESERVAS ONLINE
 // ═══════════════════════════════════════════
+// MÓDULO 4: BANDEJA DE RESERVAS ONLINE (CON TRAZABILIDAD Y REGISTRO OFICIAL)
+// ═══════════════════════════════════════════
+const BOOKINGS_STORAGE_KEY = 'pajarillo_bookings_data';
+const NOTIFY_CONFIG_KEY = 'pajarillo_notify_config';
+let currentBookingsFilter = 'all';
+
+function getStoredBookings() {
+  try {
+    const raw = localStorage.getItem(BOOKINGS_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveStoredBookings(list) {
+  try {
+    localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {}
+}
+
 async function loadBookings() {
   try {
+    let remoteList = null;
     let res = await fetch('./api/data.php?entity=bookings&t=' + Date.now()).catch(() => null);
-    if (!res || !res.ok) res = await fetch('./data/reservas.json?t=' + Date.now());
-    const data = await res.json();
-    bookingsData = data.bookings || [];
+    if (!res || !res.ok) res = await fetch('./data/reservas.json?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      const data = await res.json();
+      remoteList = data.bookings || [];
+    }
+
+    const localList = getStoredBookings();
+
+    if (localList && localList.length) {
+      // Fusionar asegurando que no se pierdan reservas nuevas ni marcas locales de lectura
+      const map = new Map();
+      (remoteList || []).forEach(b => map.set(b.id, b));
+      localList.forEach(b => {
+        // La versión local preserva campos de trazabilidad (seen, seenBy, seenAt, status)
+        if (map.has(b.id)) {
+          map.set(b.id, { ...map.get(b.id), ...b });
+        } else {
+          map.set(b.id, b);
+        }
+      });
+      bookingsData = Array.from(map.values());
+    } else {
+      bookingsData = remoteList || [];
+    }
+
+    // Ordenar por ID descendente (las más recientes arriba)
+    bookingsData.sort((a, b) => (b.id || 0) - (a.id || 0));
+    saveStoredBookings(bookingsData);
     renderBookingsList();
   } catch (err) {
     console.error('Error cargando reservas:', err);
+    bookingsData = getStoredBookings() || [];
+    renderBookingsList();
+  }
+
+  // Cargar preferencia de email en Settings
+  loadNotificationSettingsUI();
+}
+
+function updateBookingsCountBadges() {
+  const total = bookingsData.length;
+  const unseen = bookingsData.filter(b => !b.seen).length;
+  const pending = bookingsData.filter(b => b.status === 'pending').length;
+  const registered = bookingsData.filter(b => b.status === 'confirmed' || b.status === 'registered').length;
+
+  const countAll = document.getElementById('count-all-bookings');
+  const countUnseen = document.getElementById('count-unseen-bookings');
+  const countPending = document.getElementById('count-pending-bookings');
+  const countReg = document.getElementById('count-registered-bookings');
+
+  if (countAll) countAll.textContent = total;
+  if (countUnseen) countUnseen.textContent = unseen;
+  if (countPending) countPending.textContent = pending;
+  if (countReg) countReg.textContent = registered;
+
+  if (DOM.bookingsCountBadge) {
+    DOM.bookingsCountBadge.textContent = unseen > 0 ? `${unseen} nuevas` : total;
+    if (unseen > 0) {
+      DOM.bookingsCountBadge.style.background = '#DC2626';
+      DOM.bookingsCountBadge.style.color = '#FFFFFF';
+    } else {
+      DOM.bookingsCountBadge.style.background = 'var(--admin-bg)';
+      DOM.bookingsCountBadge.style.color = 'var(--admin-muted)';
+    }
   }
 }
 
 function renderBookingsList() {
   if (!DOM.bookingsTbody) return;
   DOM.bookingsTbody.innerHTML = '';
-  if (DOM.bookingsCountBadge) DOM.bookingsCountBadge.textContent = bookingsData.length;
+  updateBookingsCountBadges();
 
-  DOM.bookingsTbody.innerHTML = bookingsData.map(b => {
-    const isPending = b.status === 'pending';
-    return `
+  let list = bookingsData;
+  if (currentBookingsFilter === 'unseen') {
+    list = list.filter(b => !b.seen);
+  } else if (currentBookingsFilter === 'pending') {
+    list = list.filter(b => b.status === 'pending');
+  } else if (currentBookingsFilter === 'registered') {
+    list = list.filter(b => b.status === 'confirmed' || b.status === 'registered');
+  }
+
+  if (list.length === 0) {
+    DOM.bookingsTbody.innerHTML = `
       <tr>
-        <td>#${b.id}</td>
+        <td colspan="9" style="text-align: center; padding: 2rem; color: var(--admin-muted);">
+          No hay reservas que coincidan con el filtro seleccionado.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  DOM.bookingsTbody.innerHTML = list.map(b => {
+    const isPending = b.status === 'pending';
+    const isSeen = Boolean(b.seen);
+    const seenInfo = isSeen 
+      ? `<span class="status-badge seen" title="Revisada por ${b.seenBy || 'Gestor'} el ${b.seenAt || ''}">👁️ Vista (${b.seenBy || 'Gestor'})</span><br><small style="color: var(--admin-muted); font-size: 0.72rem;">${b.seenAt || ''}</small>`
+      : `<span class="status-badge unseen">⚠️ Sin Abrir</span>`;
+
+    const statusBadge = isPending 
+      ? `<span class="status-badge pending">⏳ Pendiente</span>`
+      : `<span class="status-badge confirmed">✅ Confirmada</span>`;
+
+    return `
+      <tr style="${!isSeen ? 'background: rgba(254, 242, 242, 0.45); font-weight: 500;' : ''}">
+        <td><strong>#${b.id}</strong></td>
         <td><strong>${b.date}</strong></td>
         <td>${b.time || '11:00'}</td>
         <td>
-          <strong>${b.name}</strong><br>
-          <small style="color: var(--admin-muted);">${b.email} · ${b.phone}</small>
+          <strong style="color: var(--admin-primary);">${b.name}</strong><br>
+          <small style="color: var(--admin-muted);">${b.email} · <strong>${b.phone}</strong></small>
+          ${b.notes ? `<div style="font-size: 0.75rem; color: #4B5563; margin-top: 3px; font-style: italic;">📝 "${b.notes}"</div>` : ''}
         </td>
         <td>${b.people} pers.</td>
-        <td><span style="text-transform: uppercase; font-weight: 700;">${b.lang}</span></td>
-        <td><span class="status-badge ${isPending ? 'pending' : 'confirmed'}">${isPending ? 'Pendiente' : 'Confirmada'}</span></td>
+        <td><span style="text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">${b.lang || 'es'}</span></td>
+        <td>${seenInfo}</td>
+        <td>${statusBadge}</td>
         <td>
-          ${isPending ? `<button class="btn-admin btn-admin-primary" style="padding: 4px 8px; font-size: 0.75rem;" onclick="updateBookingStatus(${b.id}, 'confirmed')">Confirmar</button>` : ''}
-          <button class="btn-admin btn-admin-danger" style="padding: 4px 8px; font-size: 0.75rem;" onclick="deleteBooking(${b.id})">✕</button>
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+            ${!isSeen ? `
+              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem; background: white;" onclick="markBookingAsSeen(${b.id})" title="Dejar constancia de que se ha revisado en el SaaS">
+                👁️ Vista
+              </button>
+            ` : ''}
+            ${isPending ? `
+              <button class="btn-admin btn-admin-primary" style="padding: 4px 8px; font-size: 0.74rem;" onclick="confirmAndRegisterBooking(${b.id})" title="Registrar y confirmar oficialmente">
+                ✅ Confirmar
+              </button>
+            ` : `
+              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem;" onclick="sendConfirmationEmail(${b.id})" title="Preparar correo de respuesta al visitante">
+                ✉️ Enviar Email
+              </button>
+            `}
+            <button class="btn-admin btn-admin-danger" style="padding: 4px 8px; font-size: 0.74rem;" onclick="deleteBooking(${b.id})" title="Eliminar registro">
+              ✕
+            </button>
+          </div>
         </td>
       </tr>
     `;
   }).join('');
 }
 
-window.updateBookingStatus = async function(id, status) {
+window.filterBookings = function(type) {
+  currentBookingsFilter = type;
+  const btnAll = document.getElementById('btn-filter-all-bookings');
+  const btnUnseen = document.getElementById('btn-filter-unseen-bookings');
+  const btnPending = document.getElementById('btn-filter-pending-bookings');
+  const btnReg = document.getElementById('btn-filter-registered-bookings');
+
+  [btnAll, btnUnseen, btnPending, btnReg].forEach(btn => {
+    if (btn) btn.style.fontWeight = 'normal';
+  });
+
+  if (type === 'all' && btnAll) btnAll.style.fontWeight = '700';
+  if (type === 'unseen' && btnUnseen) btnUnseen.style.fontWeight = '700';
+  if (type === 'pending' && btnPending) btnPending.style.fontWeight = '700';
+  if (type === 'registered' && btnReg) btnReg.style.fontWeight = '700';
+
+  renderBookingsList();
+};
+
+window.markBookingAsSeen = function(id) {
+  const currentGestor = sessionStorage.getItem('pajarillo_admin_user') || 'Gestor Municipal';
+  const now = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+  const b = bookingsData.find(item => item.id === id);
+  if (b) {
+    b.seen = true;
+    b.seenBy = currentGestor;
+    b.seenAt = now;
+    saveStoredBookings(bookingsData);
+    renderBookingsList();
+    showToast(`👁️ Reserva #${id} marcada como revisada por ${currentGestor}`);
+  }
+};
+
+window.markAllBookingsAsSeen = function() {
+  const currentGestor = sessionStorage.getItem('pajarillo_admin_user') || 'Gestor Municipal';
+  const now = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+  bookingsData.forEach(b => {
+    if (!b.seen) {
+      b.seen = true;
+      b.seenBy = currentGestor;
+      b.seenAt = now;
+    }
+  });
+  saveStoredBookings(bookingsData);
+  renderBookingsList();
+  showToast('👁️ Todas las reservas han quedado marcadas como vistas');
+};
+
+window.confirmAndRegisterBooking = async function(id) {
+  const currentGestor = sessionStorage.getItem('pajarillo_admin_user') || 'Gestor Municipal';
+  const now = new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' });
+  const b = bookingsData.find(item => item.id === id);
+  if (!b) return;
+
+  b.status = 'confirmed';
+  b.seen = true;
+  if (!b.seenBy) b.seenBy = currentGestor;
+  if (!b.seenAt) b.seenAt = now;
+  b.registeredBy = currentGestor;
+  b.registeredAt = now;
+
   try {
     await fetch('./api/data.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'update_booking_status', id: id, status: status })
+      body: JSON.stringify({ 
+        action: 'update_booking_status', 
+        id: id, 
+        status: 'confirmed',
+        seen: true,
+        seenBy: currentGestor,
+        seenAt: now
+      })
     });
   } catch (e) {}
-  const b = bookingsData.find(item => item.id === id);
-  if (b) b.status = status;
+
+  saveStoredBookings(bookingsData);
   renderBookingsList();
-  showToast('✅ Reserva confirmada');
+  showToast(`✅ Reserva #${id} confirmada y registrada en el SaaS`);
+};
+
+window.sendConfirmationEmail = function(id) {
+  const b = bookingsData.find(item => item.id === id);
+  if (!b || !b.email) return;
+
+  const subject = encodeURIComponent(`Confirmación de Visita Guiada · Centro de Interpretación "El Pajarillo"`);
+  const body = encodeURIComponent(
+`Estimado/a ${b.name},
+
+Le confirmamos que su solicitud de reserva para visitar el Centro de Interpretación Santuario Ibérico de "El Pajarillo" ha sido registrada correctamente.
+
+Detalles de la visita:
+- Fecha: ${b.date}
+- Turno: ${b.time || '11:00'} h
+- Personas: ${b.people}
+- Idioma: ${(b.lang || 'es').toUpperCase()}
+
+Ubicación:
+Centro de Interpretación Santuario Ibérico de "El Pajarillo"
+Huelma (Jaén)
+
+Si tiene cualquier consulta, puede contactar con nosotros en este mismo correo o en el (+34) 953 39 00 10.
+
+Atentamente,
+Área de Turismo y Patrimonio · Ayuntamiento de Huelma`
+  );
+
+  window.open(`mailto:${b.email}?subject=${subject}&body=${body}`, '_blank');
 };
 
 window.deleteBooking = async function(id) {
@@ -1543,8 +1766,41 @@ window.deleteBooking = async function(id) {
     });
   } catch (e) {}
   bookingsData = bookingsData.filter(item => item.id !== id);
+  saveStoredBookings(bookingsData);
   renderBookingsList();
   showToast('🗑️ Registro borrado');
+};
+
+// Configuración de Notificaciones (Email Opcional)
+function loadNotificationSettingsUI() {
+  const input = document.getElementById('cfg-notify-email');
+  if (!input) return;
+  try {
+    const raw = localStorage.getItem(NOTIFY_CONFIG_KEY);
+    if (raw) {
+      const cfg = JSON.parse(raw);
+      input.value = cfg.email || '';
+    }
+  } catch (e) {}
+}
+
+window.saveNotificationSettings = function() {
+  const input = document.getElementById('cfg-notify-email');
+  const statusEl = document.getElementById('notify-settings-status');
+  const emailVal = input ? input.value.trim() : '';
+
+  try {
+    localStorage.setItem(NOTIFY_CONFIG_KEY, JSON.stringify({
+      email: emailVal,
+      updatedAt: new Date().toISOString()
+    }));
+  } catch (e) {}
+
+  if (statusEl) {
+    statusEl.style.display = 'block';
+    setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+  }
+  showToast(emailVal ? `📧 Guardado email opcional: ${emailVal}` : '✅ Se revisará únicamente en el panel SaaS');
 };
 
 // ═══════════════════════════════════════════

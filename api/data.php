@@ -65,6 +65,7 @@ if ($method === 'POST') {
         $booking['id'] = time();
         $booking['createdAt'] = date('Y-m-d H:i');
         $booking['status'] = 'pending';
+        $booking['seen'] = false;
         $data['bookings'][] = $booking;
         writeJson($reservasFile, $data);
         echo json_encode(['success' => true, 'id' => $booking['id']]);
@@ -153,14 +154,17 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Actualizar estado de reserva (confirmar / cancelar)
+    // Actualizar estado de reserva (confirmar / visto / trazabilidad)
     if (isset($input['action']) && $input['action'] === 'update_booking_status') {
         $bId = $input['id'] ?? 0;
-        $status = $input['status'] ?? 'confirmed';
+        $status = $input['status'] ?? null;
         $data = readJson($reservasFile, ['bookings' => []]);
         foreach ($data['bookings'] as $i => $b) {
             if ($b['id'] == $bId) {
-                $data['bookings'][$i]['status'] = $status;
+                if ($status) $data['bookings'][$i]['status'] = $status;
+                if (isset($input['seen'])) $data['bookings'][$i]['seen'] = (bool)$input['seen'];
+                if (isset($input['seenBy'])) $data['bookings'][$i]['seenBy'] = $input['seenBy'];
+                if (isset($input['seenAt'])) $data['bookings'][$i]['seenAt'] = $input['seenAt'];
                 break;
             }
         }

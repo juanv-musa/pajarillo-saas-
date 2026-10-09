@@ -353,14 +353,33 @@ body {
   text-transform: uppercase;
 }
 
-.status-badge.confirmed {
+.status-badge.confirmed,
+.status-badge.registered {
   background: #E8F5E9;
   color: var(--admin-success);
 }
 
 .status-badge.pending {
   background: #FFF3E0;
-  color: var(--admin-warning);
+  color: #D97706;
+}
+
+.status-badge.seen {
+  background: #EFF6FF;
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+}
+
+.status-badge.unseen {
+  background: #FEF2F2;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+  animation: pulse-badge 2s infinite ease-in-out;
+}
+
+@keyframes pulse-badge {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.75; }
 }
 
 /* Formularios de Edición */

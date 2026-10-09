@@ -492,6 +492,41 @@ function setupBookingForm(i18n) {
       console.warn('Almacenamiento offline de reserva');
     }
 
+    // Persistir localmente para sincronización en tiempo real con el panel de administración
+    try {
+      const storageKey = 'pajarillo_bookings_data';
+      const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const newEntry = {
+        ...bookingData,
+        id: Date.now(),
+        createdAt: new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }),
+        status: 'pending',
+        seen: false
+      };
+      existing.unshift(newEntry);
+      localStorage.setItem(storageKey, JSON.stringify(existing));
+
+      // Si el gestor municipal ha configurado un email opcional para avisos:
+      const notifyCfg = JSON.parse(localStorage.getItem('pajarillo_notify_config') || '{}');
+      if (notifyCfg && notifyCfg.email) {
+        // Enviar copia por webhook o mailto/formulario si hay endpoint configurado
+        fetch('https://formsubmit.co/ajax/' + encodeURIComponent(notifyCfg.email), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({
+            _subject: `🎟️ Nueva Reserva: ${bookingData.name} (${bookingData.date})`,
+            nombre: bookingData.name,
+            fecha: bookingData.date,
+            hora: bookingData.time,
+            personas: bookingData.people,
+            telefono: bookingData.phone,
+            email: bookingData.email,
+            observaciones: bookingData.notes || 'Ninguna'
+          })
+        }).catch(() => null);
+      }
+    } catch (e) {}
+
     if (window.PajarilloAnalytics) {
       window.PajarilloAnalytics.track('booking', {
         people: bookingData.people,

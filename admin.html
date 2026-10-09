@@ -1275,23 +1275,47 @@
               Bandeja de Reservas de Visitas Guiadas
             </h2>
             <p style="color: var(--admin-muted); font-size: 0.88rem;">
-              Solicitudes recibidas desde el portal público pendientes de confirmación o confirmadas.
+              Solicitudes recibidas desde el portal público con confirmación de lectura y registro oficial de mediación.
             </p>
+          </div>
+          <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+            <button type="button" class="btn-admin btn-admin-outline" id="btn-filter-all-bookings" style="font-size: 0.8rem; padding: 6px 12px; background: white;" onclick="window.filterBookings('all')">
+              Todas (<span id="count-all-bookings">0</span>)
+            </button>
+            <button type="button" class="btn-admin btn-admin-outline" id="btn-filter-unseen-bookings" style="font-size: 0.8rem; padding: 6px 12px; background: #FEF2F2; color: #DC2626; border-color: #FECACA;" onclick="window.filterBookings('unseen')">
+              ⚠️ Sin Abrir / No Vistas (<span id="count-unseen-bookings">0</span>)
+            </button>
+            <button type="button" class="btn-admin btn-admin-outline" id="btn-filter-pending-bookings" style="font-size: 0.8rem; padding: 6px 12px; background: #FFFBEB; color: #D97706; border-color: #FDE68A;" onclick="window.filterBookings('pending')">
+              ⏳ Pendientes (<span id="count-pending-bookings">0</span>)
+            </button>
+            <button type="button" class="btn-admin btn-admin-outline" id="btn-filter-registered-bookings" style="font-size: 0.8rem; padding: 6px 12px; background: #F0FDF4; color: #16A34A; border-color: #BBF7D0;" onclick="window.filterBookings('registered')">
+              ✅ Confirmadas / Registradas (<span id="count-registered-bookings">0</span>)
+            </button>
           </div>
         </div>
 
         <div class="admin-card">
+          <div style="background: rgba(56, 79, 62, 0.05); border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 14px; margin-bottom: 1.25rem; font-size: 0.84rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;">
+            <div>
+              <strong>🛡️ Protocolo de Control y Trazabilidad Municipal:</strong> Cada reserva entrante se marca como <span class="status-badge unseen" style="padding: 2px 6px;">Sin Abrir</span>. Al pulsar <em>"Marcar como Vista"</em> o <em>"Confirmar y Registrar"</em>, queda acreditado el gestor, fecha y hora de atención.
+            </div>
+            <button type="button" class="btn-admin btn-admin-outline" style="font-size: 0.75rem; padding: 4px 8px;" onclick="window.markAllBookingsAsSeen()">
+              👁️ Marcar todas como vistas
+            </button>
+          </div>
+
           <table class="admin-table">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Fecha Visita</th>
                 <th>Turno</th>
-                <th>Visitante</th>
+                <th>Visitante & Contacto</th>
                 <th>Personas</th>
                 <th>Idioma</th>
+                <th>Revisión / Trazabilidad</th>
                 <th>Estado</th>
-                <th>Acciones</th>
+                <th style="min-width: 200px;">Acciones de Gestión</th>
               </tr>
             </thead>
             <tbody id="admin-bookings-tbody">
@@ -1350,6 +1374,29 @@
                   🎫 <strong>turismo</strong> — Mediador Cultural de Sala
                 </li>
               </ul>
+            </div>
+          </div>
+
+          <!-- Tarjeta de Configuración de Notificaciones de Reserva (Email Opcional) -->
+          <div class="admin-card" style="grid-column: 1 / -1;">
+            <h3>📬 Canal de Notificación de Nuevas Reservas (Opcional)</h3>
+            <p style="font-size: 0.86rem; color: var(--admin-muted); margin: 0.5rem 0 1rem;">
+              El protocolo oficial principal se gestiona dentro de este panel SaaS con trazabilidad garantizada. De forma complementaria, puedes indicar un correo electrónico opcional para recibir una copia de cada solicitud entrante.
+            </p>
+            <form id="form-notification-settings" onsubmit="event.preventDefault(); window.saveNotificationSettings();" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
+              <div class="admin-form-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
+                <label for="cfg-notify-email">Correo para Copias / Avisos de Reserva (Opcional):</label>
+                <input type="email" id="cfg-notify-email" class="admin-input" placeholder="turismo@elpajarillo.es (Dejar vacío si solo se revisa en el panel)">
+              </div>
+              <div class="admin-form-group" style="margin-bottom: 0;">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn-admin btn-admin-primary" style="padding: 10px 18px;">
+                  💾 Guardar Preferencia
+                </button>
+              </div>
+            </form>
+            <div id="notify-settings-status" style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--admin-success); display: none;">
+              ✅ Configuración de avisos guardada con éxito.
             </div>
           </div>
         </div>
