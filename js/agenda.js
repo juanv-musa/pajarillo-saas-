@@ -3,6 +3,8 @@
  * Centro de Interpretación Santuario Ibérico de "El Pajarillo"
  */
 
+const AGENDA_STORAGE_KEY = 'pajarillo_agenda_data';
+
 export class AgendaManager {
   constructor(i18n) {
     this.i18n = i18n;
@@ -10,6 +12,7 @@ export class AgendaManager {
     this.currentFilter = 'todos';
     this.container = document.getElementById('agenda-container');
     this.filterButtons = document.querySelectorAll('.agenda-filters .filter-btn');
+    window.pajarilloAgenda = this;
   }
 
   async init() {
@@ -20,17 +23,43 @@ export class AgendaManager {
     this.i18n.onLanguageChange(() => {
       this.render();
     });
+
+    // Escuchar actualizaciones en tiempo real desde el panel Admin u otras pestañas
+    window.addEventListener('storage', async (e) => {
+      if (e.key === AGENDA_STORAGE_KEY) {
+        await this.loadData();
+        this.render();
+      }
+    });
   }
 
   async loadData() {
+    // 1. Prioridad: localStorage si el usuario ha creado o editado actividades
+    const saved = localStorage.getItem(AGENDA_STORAGE_KEY);
+    if (saved !== null) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          this.activities = parsed;
+          return;
+        }
+      } catch (e) {
+        console.warn('Error leyendo agenda de localStorage:', e);
+      }
+    }
+
+    // 2. Intentar API PHP en vivo, luego JSON estático
     try {
-      // Intentar primero API PHP, luego JSON estático
       let res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
       if (!res || !res.ok) {
         res = await fetch('./data/agenda.json?t=' + Date.now());
       }
       const data = await res.json();
       this.activities = data.activities || [];
+      // Si no existía en localStorage, inicializarlo para que futuras adiciones se sincronicen
+      if (this.activities.length > 0 && saved === null) {
+        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
+      }
     } catch (err) {
       console.warn('Error cargando actividades de la agenda:', err);
       this.activities = [];
@@ -64,7 +93,7 @@ export class AgendaManager {
 
   render() {
     if (!this.container) return;
-    const lang = this.i18n.currentLang;
+    const lang = this.i18n.currentLang || 'es';
 
     const filtered = this.currentFilter === 'todos'
       ? this.activities
@@ -80,25 +109,30 @@ export class AgendaManager {
     }
 
     this.container.innerHTML = filtered.map(act => {
-      const title = act.title[lang] || act.title.es;
-      const desc = act.description[lang] || act.description.es;
+      const title = typeof act.title === 'object' && act.title !== null
+        ? (act.title[lang] || act.title.es || Object.values(act.title)[0] || '')
+        : (act.title || '');
+      const desc = typeof act.description === 'object' && act.description !== null
+        ? (act.description[lang] || act.description.es || Object.values(act.description)[0] || '')
+        : (act.description || '');
       const dateFormatted = this.formatDate(act.date, lang);
+      const spotsCount = act.spotsLeft !== undefined ? act.spotsLeft : (act.spotsTotal || 25);
       const spotsLabel = this.i18n.t('agenda.plazas_disponibles');
       const reserveLabel = this.i18n.t('agenda.reservar_btn');
-      const freeLabel = this.i18n.t('agenda.precio_gratis');
+      const actImage = act.image || './assets/images/gallery/exterior.jpg';
 
       return `
         <article class="event-card">
-          <img src="${act.image}" alt="${title}" class="event-img" loading="lazy">
+          <img src="${actImage}" alt="${title.replace(/"/g, '&quot;')}" class="event-img" loading="lazy" onerror="this.src='./assets/images/gallery/exterior.jpg'">
           <div class="event-body">
             <div class="event-meta">
               <span>📅 ${dateFormatted}</span>
-              <span>⏰ ${act.time} h</span>
+              <span>⏰ ${act.time || '11:30'} h</span>
             </div>
             <h3 class="event-title">${title}</h3>
             <p class="event-desc">${desc}</p>
             <div class="event-footer">
-              <span class="spots-badge">${act.spotsLeft} ${spotsLabel}</span>
+              <span class="spots-badge">${spotsCount} ${spotsLabel}</span>
               <a href="#reservas" class="btn-point-action btn-point-qr" style="background: var(--c-primary); color: white;" onclick="prefillActivity('${title.replace(/'/g, "\\'")}')">
                 ${reserveLabel}
               </a>
@@ -109,3 +143,4 @@ export class AgendaManager {
     }).join('');
   }
 }
+

@@ -46,6 +46,7 @@ const DOM = {
   agendaList: document.getElementById('admin-agenda-list'),
   agendaForm: document.getElementById('form-activity-edit'),
   agendaCountBadge: document.getElementById('agenda-count-badge'),
+  btnCancelActEdit: document.getElementById('btn-cancel-act-edit'),
 
   // Reservas
   bookingsTbody: document.getElementById('admin-bookings-tbody'),
@@ -1440,16 +1441,53 @@ window.deletePanel = async function(id) {
 // ═══════════════════════════════════════════
 // MÓDULO 3: AGENDA CULTURAL
 // ═══════════════════════════════════════════
+const AGENDA_STORAGE_KEY = 'pajarillo_agenda_data';
+
 async function loadAgenda() {
+  let loaded = false;
+
+  // 1. Intentar API en vivo (si hay backend PHP disponible)
   try {
     let res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
-    if (!res || !res.ok) res = await fetch('./data/agenda.json?t=' + Date.now());
-    const data = await res.json();
-    agendaData = data.activities || [];
-    renderAgendaList();
-  } catch (err) {
-    console.error('Error cargando agenda:', err);
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data && data.activities && Array.isArray(data.activities) && data.activities.length > 0) {
+        agendaData = data.activities;
+        loaded = true;
+      }
+    }
+  } catch (err) {}
+
+  // 2. Si no hay API o en GitHub Pages, comprobar localStorage
+  if (!loaded) {
+    const saved = localStorage.getItem(AGENDA_STORAGE_KEY);
+    if (saved !== null) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          agendaData = parsed;
+          loaded = true;
+        }
+      } catch (e) {}
+    }
   }
+
+  // 3. Fallback a JSON estático base
+  if (!loaded) {
+    try {
+      const res = await fetch('./data/agenda.json?t=' + Date.now());
+      const data = await res.json();
+      agendaData = data.activities || [];
+      if (agendaData.length > 0) {
+        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+      }
+    } catch (err) {
+      console.error('Error cargando agenda JSON:', err);
+      agendaData = [];
+    }
+  }
+
+  renderAgendaList();
 }
 
 function renderAgendaList() {
@@ -1457,13 +1495,20 @@ function renderAgendaList() {
   DOM.agendaList.innerHTML = '';
   if (DOM.agendaCountBadge) DOM.agendaCountBadge.textContent = agendaData.length;
 
+  if (agendaData.length === 0) {
+    DOM.agendaList.innerHTML = '<li style="padding: 1.5rem; text-align: center; color: var(--admin-muted);">No hay actividades programadas. Utiliza el formulario para añadir una.</li>';
+    return;
+  }
+
   agendaData.forEach(act => {
     const li = document.createElement('li');
     li.className = 'panel-admin-item';
+    const titleText = (act.title && (act.title.es || act.title)) || 'Actividad';
+    const spotsNum = act.spotsLeft !== undefined ? act.spotsLeft : (act.spotsTotal || 25);
     li.innerHTML = `
       <div class="panel-admin-details">
-        <h4>${act.title.es || act.title}</h4>
-        <p>📅 ${act.date} · ⏰ ${act.time} h · 🎟️ ${act.spotsLeft || act.spotsTotal || 25} plazas · <strong>${act.category || 'General'}</strong></p>
+        <h4>${titleText}</h4>
+        <p>📅 ${act.date} · ⏰ ${act.time || '11:30'} h · 🎟️ ${spotsNum} plazas · <strong>${act.category || 'General'}</strong></p>
       </div>
       <div class="panel-actions-group">
         <button type="button" class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="window.editActivity(${act.id})" title="Editar">✏️</button>
@@ -1474,19 +1519,32 @@ function renderAgendaList() {
   });
 }
 
+function resetAgendaForm() {
+  DOM.agendaForm.reset();
+  document.getElementById('act-id').value = '';
+  const titleEl = document.getElementById('act-form-title');
+  if (titleEl) titleEl.textContent = 'Añadir Actividad';
+  if (DOM.btnCancelActEdit) DOM.btnCancelActEdit.classList.add('hidden');
+}
+
+if (DOM.btnCancelActEdit) {
+  DOM.btnCancelActEdit.addEventListener('click', resetAgendaForm);
+}
+
 window.editActivity = function(id) {
   const act = agendaData.find(a => a.id === id);
   if (!act) return;
   document.getElementById('act-id').value = act.id;
-  document.getElementById('act-title-es').value = act.title.es || act.title || '';
+  document.getElementById('act-title-es').value = (act.title && (act.title.es || act.title)) || '';
   document.getElementById('act-date').value = act.date || '';
   document.getElementById('act-time').value = act.time || '11:30';
   document.getElementById('act-cat').value = act.category || 'visitas';
   document.getElementById('act-spots').value = act.spotsTotal || act.spotsLeft || 25;
-  document.getElementById('act-desc-es').value = (act.description && act.description.es) || act.description || '';
+  document.getElementById('act-desc-es').value = (act.description && (act.description.es || act.description)) || '';
 
   const titleEl = document.getElementById('act-form-title');
   if (titleEl) titleEl.textContent = '✏️ Modificar Actividad';
+  if (DOM.btnCancelActEdit) DOM.btnCancelActEdit.classList.remove('hidden');
 
   DOM.agendaForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
   const card = DOM.agendaForm.closest('.admin-card');
@@ -1502,17 +1560,28 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
   const isEditing = Boolean(actIdVal);
   const targetId = isEditing ? Number(actIdVal) : Date.now();
 
+  const existingAct = isEditing ? agendaData.find(a => a.id === targetId) : null;
+  const spotsVal = parseInt(document.getElementById('act-spots').value) || 25;
+
   const newAct = {
     id: targetId,
     date: document.getElementById('act-date').value,
     time: document.getElementById('act-time').value,
     category: document.getElementById('act-cat').value,
-    spotsTotal: parseInt(document.getElementById('act-spots').value) || 25,
-    spotsLeft: parseInt(document.getElementById('act-spots').value) || 25,
+    spotsTotal: spotsVal,
+    spotsLeft: isEditing && existingAct ? (existingAct.spotsLeft ?? spotsVal) : spotsVal,
     free: true,
-    image: './assets/images/gallery/exterior.jpg',
-    title: { es: document.getElementById('act-title-es').value },
-    description: { es: document.getElementById('act-desc-es').value }
+    image: (existingAct && existingAct.image) || './assets/images/gallery/exterior.jpg',
+    title: {
+      es: document.getElementById('act-title-es').value,
+      en: (existingAct && existingAct.title && existingAct.title.en) || document.getElementById('act-title-es').value,
+      fr: (existingAct && existingAct.title && existingAct.title.fr) || document.getElementById('act-title-es').value
+    },
+    description: {
+      es: document.getElementById('act-desc-es').value,
+      en: (existingAct && existingAct.description && existingAct.description.en) || document.getElementById('act-desc-es').value,
+      fr: (existingAct && existingAct.description && existingAct.description.fr) || document.getElementById('act-desc-es').value
+    }
   };
 
   try {
@@ -1532,11 +1601,12 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
     showToast('✅ Nueva actividad agregada a la agenda');
   }
 
+  // Guardar inmediatamente en localStorage para sincronizar con la web pública
+  localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+  window.dispatchEvent(new StorageEvent('storage', { key: AGENDA_STORAGE_KEY }));
+
   renderAgendaList();
-  DOM.agendaForm.reset();
-  document.getElementById('act-id').value = '';
-  const titleEl = document.getElementById('act-form-title');
-  if (titleEl) titleEl.textContent = 'Añadir Actividad';
+  resetAgendaForm();
 });
 
 window.deleteActivity = async function(id) {
@@ -1549,6 +1619,8 @@ window.deleteActivity = async function(id) {
     });
   } catch (e) {}
   agendaData = agendaData.filter(a => a.id !== id);
+  localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+  window.dispatchEvent(new StorageEvent('storage', { key: AGENDA_STORAGE_KEY }));
   renderAgendaList();
   showToast('🗑️ Actividad eliminada');
 };

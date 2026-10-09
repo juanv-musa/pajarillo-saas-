@@ -58,6 +58,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         await initSiteConfig();
       } catch(err) {}
+    } else if (e.key === 'pajarillo_agenda_data') {
+      try {
+        if (agenda) {
+          await agenda.loadData();
+          agenda.render();
+        }
+      } catch(err) {}
+    } else if (e.key === 'pajarillo_panels') {
+      try {
+        await loadExhibitionPoints(i18n);
+      } catch(err) {}
     }
   });
 });
