@@ -318,6 +318,10 @@ function applySiteConfig(config) {
   if (c.como_llegar_mapa_url) {
     document.querySelectorAll('#btn-google-maps, a[href*="maps.google.com"]').forEach(el => el.href = c.como_llegar_mapa_url);
   }
+  if (c.como_llegar_mapa_embed) {
+    const mapIframe = document.getElementById('osm-map-iframe');
+    if (mapIframe) mapIframe.src = c.como_llegar_mapa_embed;
+  }
   if (c.footer_copy) {
     document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => {
       el.textContent = c.footer_copy;

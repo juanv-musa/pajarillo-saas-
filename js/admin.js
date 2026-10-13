@@ -2981,10 +2981,11 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
     tarifa_gratuita_precio: "0,00 €",
     como_llegar_titulo: "Cómo llegar",
-    como_llegar_direccion: "Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén)",
     como_llegar_parking: "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Cultural y Actividades",
     agenda_subtitle: "Participa en nuestras visitas temáticas, talleres arqueológicos y conferencias",
     reservas_title: "Reserva tu Visita Guiada",
@@ -3045,10 +3046,11 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Children under 12, accredited persons with disabilities and residents.",
     tarifa_gratuita_precio: "€0.00",
     como_llegar_titulo: "How to get here",
-    como_llegar_direccion: "El Pajarillo Sanctuary Site · Huelma-Cabra Road, Jaén",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén), Spain",
     como_llegar_parking: "Free parking area for cars and tourist coaches.",
     como_llegar_accesibilidad: "Accessible facilities for people with reduced mobility and braille signage.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Cultural Agenda & Activities",
     agenda_subtitle: "Join our specialized guided tours, archaeological workshops and scientific lectures",
     reservas_title: "Book Your Guided Tour",
@@ -3109,10 +3111,11 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Moins de 12 ans, personnes en situation de handicap et résidents.",
     tarifa_gratuita_precio: "0,00 €",
     como_llegar_titulo: "Comment venir",
-    como_llegar_direccion: "Enceinte du Sanctuaire d'El Pajarillo · Route Huelma-Cabra, Jaén",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén), Espagne",
     como_llegar_parking: "Parking gratuit pour véhicules particuliers et autocars touristiques.",
     como_llegar_accesibilidad: "Installations accessibles aux personnes à mobilité réduite et cartels braille.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Culturel & Activités",
     agenda_subtitle: "Participez à nos visites guidées, ateliers d'archéologie et conférences scientifiques",
     reservas_title: "Réservez votre Visite Guidée",
@@ -3341,10 +3344,11 @@ function populateFormWithLang(lang) {
 
   // 7. Contacto y Cómo llegar
   setVal('cnt-como-llegar-titulo', c.como_llegar_titulo || 'Cómo llegar');
-  setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén');
+  setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Calle Cárcel, 2 · 23140 Huelma (Jaén)');
   setVal('cnt-como-llegar-parking', c.como_llegar_parking || 'Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.');
   setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.');
-  setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma');
+  setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n');
+  setVal('cnt-como-llegar-mapa-embed', c.como_llegar_mapa_embed || 'https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178');
 
   setVal('cnt-tel', c.tel);
   setVal('cnt-email', c.email);
@@ -3429,6 +3433,7 @@ function saveCurrentFormToLang(lang) {
     como_llegar_parking: getVal('cnt-como-llegar-parking'),
     como_llegar_accesibilidad: getVal('cnt-como-llegar-accesibilidad'),
     como_llegar_mapa_url: getVal('cnt-como-llegar-mapa-url'),
+    como_llegar_mapa_embed: getVal('cnt-como-llegar-mapa-embed'),
 
     tel: getVal('cnt-tel'),
     email: getVal('cnt-email'),

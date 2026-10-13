@@ -37,9 +37,10 @@
     "tarifa_gratuita_desc": "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
     "tarifa_gratuita_precio": "0,00 €",
     "como_llegar_titulo": "Cómo llegar",
-    "como_llegar_direccion": "Entorno del Santuario de El Pajarillo · Ctra. Huelma-Cabra, Jaén",
+    "como_llegar_direccion": "Calle Cárcel, 2 · 23140 Huelma (Jaén)",
     "como_llegar_parking": "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     "como_llegar_accesibilidad": "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
-    "como_llegar_mapa_url": "https://maps.google.com/?q=Santuario+Iberico+El+Pajarillo+Huelma"
+    "como_llegar_mapa_url": "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    "como_llegar_mapa_embed": "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178"
   }
 }
