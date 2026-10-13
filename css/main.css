@@ -510,14 +510,7 @@ button {
 }
 
 .section-label {
-  font-family: var(--font-condensed);
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--c-accent-gold-text);
-  text-transform: uppercase;
-  letter-spacing: 2.5px;
-  display: inline-block;
-  margin-bottom: 0.5rem;
+  display: none !important;
 }
 
 .section-title {

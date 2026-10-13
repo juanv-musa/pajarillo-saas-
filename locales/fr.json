@@ -65,7 +65,7 @@
     }
   },
   "puntos": {
-    "section_label": "Parcours d'Interprétation",
+    "section_label": "",
     "title": "Points Clés et Œuvres Majeures",
     "subtitle": "Scannez les QR codes disséminés dans les salles et sur le site pour écouter l'audioguide et examiner les modèles 3D.",
     "listen_audio": "Audioguide disponible",
@@ -75,7 +75,7 @@
     "tag_arquitectura": "Architecture"
   },
   "horarios": {
-    "section_label": "Préparer votre visite",
+    "section_label": "",
     "title": "Horaires, Tarifs et Accès",
     "subtitle": "Toutes les indications pratiques pour planifier votre découverte du monument.",
     "horarios_title": "Horaires d'Ouverture",
@@ -107,7 +107,7 @@
     "abrir_mapa": "Ouvrir dans Google Maps"
   },
   "agenda": {
-    "section_label": "Agenda Culturel",
+    "section_label": "",
     "title": "Activités et Événements Programmés",
     "subtitle": "Retrouvez les ateliers pédagogiques, visites guidées et cycles de conférences organisés par la municipalité.",
     "filtro_todos": "Toutes",
@@ -120,7 +120,7 @@
     "no_events": "Aucun événement prévu dans cette catégorie."
   },
   "galeria": {
-    "section_label": "Fonds Audiovisuel",
+    "section_label": "",
     "title": "Galerie Médias et Ressources Numériques",
     "subtitle": "Photographies haute résolution, restitutions en 3D, vidéos documentaires et fiches scientifiques.",
     "tab_fotos": "Photos HD",
@@ -145,7 +145,7 @@
     }
   },
   "reservas": {
-    "section_label": "Module de Réservation",
+    "section_label": "",
     "title": "Réservation en Ligne de Visites Guidées",
     "subtitle": "Outil numérique intégré pour la planification des visites individuelles, scolaires et de groupes.",
     "badge_mvp": "SaaS MVP Intégré",
@@ -173,7 +173,7 @@
     "success_desc": "Notre équipe municipale confirmera votre réservation par courriel sous 24 heures ouvrées."
   },
   "contacto": {
-    "section_label": "Service aux Visiteurs",
+    "section_label": "",
     "title": "Contact et Renseignements",
     "subtitle": "Une question ou un projet de visite scolaire ? Contactez notre équipe de médiation culturelle.",
     "oficina_title": "Office du Tourisme et du Patrimoine",

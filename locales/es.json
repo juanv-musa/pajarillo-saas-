@@ -65,7 +65,7 @@
     }
   },
   "puntos": {
-    "section_label": "Recorrido Interpretativo",
+    "section_label": "",
     "title": "Recorrido y Puntos Clave",
     "subtitle": "Escanea los códigos QR situados en las salas y en el yacimiento para escuchar la audioguía y visualizar los modelos digitales.",
     "listen_audio": "Audioguía disponible",
@@ -75,7 +75,7 @@
     "tag_arquitectura": "Arquitectura"
   },
   "horarios": {
-    "section_label": "Planifica tu visita",
+    "section_label": "",
     "title": "Horarios, Acceso y Tarifas",
     "subtitle": "Todo lo necesario para organizar tu recorrido por el conjunto monumental y arqueológico.",
     "horarios_title": "Horarios de Apertura",
@@ -107,7 +107,7 @@
     "abrir_mapa": "Abrir en Google Maps"
   },
   "agenda": {
-    "section_label": "Agenda Dinámica",
+    "section_label": "",
     "title": "Actividades y Eventos Programados",
     "subtitle": "Conoce los talleres didácticos, visitas teatralizadas y conferencias organizadas por el Ayuntamiento.",
     "filtro_todos": "Todas",
@@ -120,7 +120,7 @@
     "no_events": "No se encontraron actividades en esta categoría."
   },
   "galeria": {
-    "section_label": "Fondo Audiovisual",
+    "section_label": "",
     "title": "Galería Multimedia y Recursos Digitales",
     "subtitle": "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
     "tab_fotos": "Fotografías HD",
@@ -145,7 +145,7 @@
     }
   },
   "reservas": {
-    "section_label": "Módulo de Reservas",
+    "section_label": "",
     "title": "Reserva Online para Visitas Guiadas",
     "subtitle": "Plataforma digital integrada para la gestión anticipada de visitas de particulares y grupos.",
     "badge_mvp": "SaaS MVP Integrado",
@@ -173,7 +173,7 @@
     "success_desc": "El equipo del Centro de Interpretación confirmará tu reserva por correo electrónico en menos de 24 horas laborables."
   },
   "contacto": {
-    "section_label": "Atención al Visitante",
+    "section_label": "",
     "title": "Contacto e Información Institucional",
     "subtitle": "¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.",
     "oficina_title": "Oficina de Turismo y Patrimonio",

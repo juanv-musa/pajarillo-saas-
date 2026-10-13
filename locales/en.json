@@ -65,7 +65,7 @@
     }
   },
   "puntos": {
-    "section_label": "Interpretive Itinerary",
+    "section_label": "",
     "title": "Key Exhibition Points & Masterpieces",
     "subtitle": "Scan the on-site QR codes to access narrated audio guides and 3D digital artifacts.",
     "listen_audio": "Audio guide available",
@@ -75,7 +75,7 @@
     "tag_arquitectura": "Architecture"
   },
   "horarios": {
-    "section_label": "Plan Your Visit",
+    "section_label": "",
     "title": "Opening Hours, Tickets and Location",
     "subtitle": "All essential information to prepare your visit comfortably.",
     "horarios_title": "Opening Hours",
@@ -107,7 +107,7 @@
     "abrir_mapa": "Open in Google Maps"
   },
   "agenda": {
-    "section_label": "Cultural Agenda",
+    "section_label": "",
     "title": "Scheduled Activities & Events",
     "subtitle": "Discover family workshops, specialized lectures, and guided dramatized tours.",
     "filtro_todos": "All Events",
@@ -120,7 +120,7 @@
     "no_events": "No activities scheduled for this category."
   },
   "galeria": {
-    "section_label": "Media Gallery",
+    "section_label": "",
     "title": "Photo Archive & Digital Resources",
     "subtitle": "High-definition photography, 3D reconstructions, video guides, and downloadable research sheets.",
     "tab_fotos": "HD Photos",
@@ -145,7 +145,7 @@
     }
   },
   "reservas": {
-    "section_label": "Booking Module",
+    "section_label": "",
     "title": "Online Guided Tour Reservations",
     "subtitle": "Digital management portal for individual visitors, academic groups, and travel agencies.",
     "badge_mvp": "Integrated SaaS MVP",
@@ -173,7 +173,7 @@
     "success_desc": "Our team will confirm your booking via email within 24 working hours."
   },
   "contacto": {
-    "section_label": "Visitor Services",
+    "section_label": "",
     "title": "Contact & Institutional Information",
     "subtitle": "Have questions or planning a specialized group visit? Get in touch with our curatorial team.",
     "oficina_title": "Tourism and Heritage Office",
