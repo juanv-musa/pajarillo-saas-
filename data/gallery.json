@@ -77,6 +77,32 @@
       },
       "author": "Archivo Municipal",
       "category": "Entorno"
+    },
+    {
+      "id": "foto_7",
+      "type": "photo",
+      "src": "./assets/images/dibujando.png",
+      "thumb": "./assets/images/dibujando.png",
+      "caption": {
+        "es": "Trabajo de documentación y dibujo arqueológico en el santuario",
+        "en": "Archaeological documentation and field sketching at the sanctuary",
+        "fr": "Documentation et relevés archéologiques au sanctuaire"
+      },
+      "author": "Instituto de Arqueología Ibérica",
+      "category": "Investigación"
+    },
+    {
+      "id": "foto_8",
+      "type": "photo",
+      "src": "./assets/images/excavacion_medios.png",
+      "thumb": "./assets/images/excavacion_medios.png",
+      "caption": {
+        "es": "Repercusión en prensa y excavación de urgencia de El Pajarillo (1994)",
+        "en": "Media press coverage and emergency excavation of El Pajarillo (1994)",
+        "fr": "Couverture médiatique et fouilles d'urgence d'El Pajarillo (1994)"
+      },
+      "author": "Hemeroteca Municipal",
+      "category": "Historia"
     }
   ],
   "resources": [

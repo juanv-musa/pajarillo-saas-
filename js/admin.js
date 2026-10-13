@@ -3646,6 +3646,50 @@ const INITIAL_GALLERY_ITEMS = [
       en: 'Interactive fullscreen display interface designed for exhibition halls and 65" TV screens.',
       fr: 'Interface interactive plein écran dédiée aux salles d\'exposition et écrans TV 65 pouces.'
     }
+  },
+  {
+    id: 9,
+    type: 'foto',
+    title: {
+      es: 'Documentación y Dibujo Arqueológico',
+      en: 'Archaeological Documentation & Field Sketching',
+      fr: 'Documentation et Relevés Archéologiques'
+    },
+    category: {
+      es: 'Investigación',
+      en: 'Research',
+      fr: 'Recherche'
+    },
+    full: './assets/images/dibujando.png',
+    thumb: './assets/images/dibujando.png',
+    file: './assets/images/dibujando.png',
+    desc: {
+      es: 'Trabajos de planimetría y dibujo de campo durante las excavaciones en El Pajarillo.',
+      en: 'Survey mapping and field drawing work during the excavations at El Pajarillo.',
+      fr: 'Travaux de relevés et dessin de terrain durant les fouilles à El Pajarillo.'
+    }
+  },
+  {
+    id: 10,
+    type: 'foto',
+    title: {
+      es: 'Repercusión en Medios y Prensa (1994)',
+      en: 'Media & Press Coverage (1994)',
+      fr: 'Couverture Presse et Médias (1994)'
+    },
+    category: {
+      es: 'Historia',
+      en: 'History',
+      fr: 'Histoire'
+    },
+    full: './assets/images/excavacion_medios.png',
+    thumb: './assets/images/excavacion_medios.png',
+    file: './assets/images/excavacion_medios.png',
+    desc: {
+      es: 'Crónicas periodísticas y difusión internacional tras el hallazgo del conjunto escultórico.',
+      en: 'Journalistic reports and international broadcast following the sculptural discovery.',
+      fr: 'Articles de presse et écho international suite à la découverte du complexe sculptural.'
+    }
   }
 ];
 
