@@ -61,11 +61,23 @@ export class GalleryManager {
           return { es: String(val), en: String(val), fr: String(val) };
         };
 
+        const migratePath = (p) => {
+          if (!p || typeof p !== 'string') return p;
+          return p
+            .replace(/lobo-hero\.jpg/g, 'lobo.png')
+            .replace(/gallery\/exterior\.jpg/g, 'iltiraka.png')
+            .replace(/gallery\/arqueologia\.jpg/g, 'arqueologia.png')
+            .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
+            .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
+            .replace(/gallery\/retablo\.jpg/g, 'gallery/Leon.png')
+            .replace(/lobo\.jpg/g, 'lobo.png');
+        };
+
         const photos = items.filter(i => i.type === 'foto').map(i => ({
           id: 'custom_' + i.id,
           type: 'photo',
-          src: i.full,
-          thumb: i.thumb || i.full,
+          src: migratePath(i.full),
+          thumb: migratePath(i.thumb || i.full),
           caption: toLocObj(i.title),
           author: typeof i.category === 'object' ? (i.category.es || 'Centro de Interpretación') : (i.category || 'Centro de Interpretación'),
           category: typeof i.category === 'object' ? (i.category.es || 'Fototeca') : (i.category || 'Fototeca')
@@ -76,7 +88,7 @@ export class GalleryManager {
           title: toLocObj(i.title),
           description: toLocObj(i.desc),
           badge: typeof i.category === 'object' ? (i.category.es || 'PDF Oficial') : (i.category || 'PDF Oficial'),
-          file: i.file || i.full,
+          file: migratePath(i.file || i.full),
           format: 'PDF / Digital',
           icon: '📄'
         }));
@@ -87,7 +99,7 @@ export class GalleryManager {
           title: toLocObj(i.title),
           description: toLocObj(i.desc),
           duration: i.duration || (i.type === '3d' ? '3D' : '05:00'),
-          thumb: i.thumb || i.full,
+          thumb: migratePath(i.thumb || i.full),
           videoUrl: i.file || i.full
         }));
 

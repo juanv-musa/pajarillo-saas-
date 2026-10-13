@@ -118,14 +118,14 @@ class AudiovisualKiosk {
       const desc = typeof vid.description === 'object' && vid.description !== null
         ? (vid.description.es || Object.values(vid.description)[0] || '')
         : (vid.description || '');
-      const thumb = vid.thumb || './assets/images/gallery/exterior.jpg';
+      const thumb = vid.thumb || './assets/images/lobo.png';
       const duration = vid.duration || '05:00';
       const category = vid.category || 'Documental';
 
       return `
         <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${title}" onclick="window.tvKiosk.playVideoById('${vid.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKiosk.playVideoById('${vid.id}');}">
           <div class="tv-card-media">
-            <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/gallery/exterior.jpg'">
+            <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
             <div class="tv-card-overlay"></div>
             <span class="tv-card-category">${category}</span>
             <span class="tv-card-duration">⏱ ${duration}</span>

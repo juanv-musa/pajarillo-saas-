@@ -708,12 +708,14 @@
                 <div class="admin-form-group" style="margin-bottom: 0;">
                   <label>Imagen de la Escultura (Ruta o URL)</label>
                   <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="text" id="cnt-hero-card-img" class="admin-input" placeholder="./assets/images/lobo-hero.jpg" style="flex: 1;">
+                    <input type="text" id="cnt-hero-card-img" class="admin-input" placeholder="./assets/images/lobo.png" style="flex: 1;">
                     <select id="select-hero-img-preset" class="admin-select" style="width: auto;">
                       <option value="">-- Imágenes disponibles --</option>
-                      <option value="./assets/images/lobo-hero.jpg">Nueva fotografía Lobo (Detalle)</option>
-                      <option value="./assets/images/lobo.png">Lobo silueteado PNG</option>
-                      <option value="./assets/images/gallery/arqueologia.jpg">Yacimiento Arqueológico</option>
+                      <option value="./assets/images/lobo.png">Fotografía Cabeza de Lobo (PNG)</option>
+                      <option value="./assets/images/Leon.png">León Ibérico de El Pajarillo</option>
+                      <option value="./assets/images/arqueologia.png">Yacimiento Arqueológico y Terrazas</option>
+                      <option value="./assets/images/iltiraka.png">Territorio de Iltiraka y Valle</option>
+                      <option value="./assets/images/santuario_ilustracion.png">Santuario Heroico Ilustración</option>
                     </select>
                   </div>
                   <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
@@ -805,14 +807,14 @@
                 <div style="margin-top: 10px;">
                   <label>Imagen de la Pestaña:</label>
                   <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
-                    <input type="text" id="cnt-patrimonio-img-iltiraka" class="admin-input" placeholder="./assets/images/gallery/exterior.jpg" style="flex: 1;">
+                    <input type="text" id="cnt-patrimonio-img-iltiraka" class="admin-input" placeholder="./assets/images/iltiraka.png" style="flex: 1;">
                     <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
                       📁 Subir Imagen
                       <input type="file" id="file-patrimonio-img-iltiraka" accept="image/*" style="display: none;">
                     </label>
                   </div>
                   <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
-                    <img id="preview-patrimonio-img-iltiraka" src="./assets/images/gallery/exterior.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <img id="preview-patrimonio-img-iltiraka" src="./assets/images/iltiraka.png" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
                     <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
                   </div>
                 </div>
@@ -826,14 +828,14 @@
                 <div style="margin-top: 10px;">
                   <label>Imagen de la Pestaña:</label>
                   <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
-                    <input type="text" id="cnt-patrimonio-img-iberico" class="admin-input" placeholder="./assets/images/gallery/arqueologia.jpg" style="flex: 1;">
+                    <input type="text" id="cnt-patrimonio-img-iberico" class="admin-input" placeholder="./assets/images/arqueologia.png" style="flex: 1;">
                     <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
                       📁 Subir Imagen
                       <input type="file" id="file-patrimonio-img-iberico" accept="image/*" style="display: none;">
                     </label>
                   </div>
                   <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
-                    <img id="preview-patrimonio-img-iberico" src="./assets/images/gallery/arqueologia.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <img id="preview-patrimonio-img-iberico" src="./assets/images/arqueologia.png" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
                     <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
                   </div>
                 </div>
@@ -847,14 +849,14 @@
                 <div style="margin-top: 10px;">
                   <label>Imagen de la Pestaña:</label>
                   <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px;">
-                    <input type="text" id="cnt-patrimonio-img-fontanar" class="admin-input" placeholder="./assets/images/gallery/claustro.jpg" style="flex: 1;">
+                    <input type="text" id="cnt-patrimonio-img-fontanar" class="admin-input" placeholder="./assets/images/santuario_ilustracion.png" style="flex: 1;">
                     <label class="btn-admin btn-admin-outline" style="cursor: pointer; margin: 0; padding: 6px 12px; font-size: 0.82rem; white-space: nowrap;">
                       📁 Subir Imagen
                       <input type="file" id="file-patrimonio-img-fontanar" accept="image/*" style="display: none;">
                     </label>
                   </div>
                   <div style="display: flex; align-items: center; gap: 10px; margin-top: 6px;">
-                    <img id="preview-patrimonio-img-fontanar" src="./assets/images/gallery/claustro.jpg" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
+                    <img id="preview-patrimonio-img-fontanar" src="./assets/images/santuario_ilustracion.png" alt="Vista previa" style="height: 48px; width: 72px; object-fit: cover; border-radius: 4px; border: 1px solid var(--admin-border);">
                     <span style="font-size: 0.75rem; color: var(--admin-muted);">Formatos admitidos: JPG, PNG, WebP.</span>
                   </div>
                 </div>

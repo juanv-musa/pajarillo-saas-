@@ -134,11 +134,11 @@ export class AgendaManager {
       const spotsCount = act.spotsLeft !== undefined ? act.spotsLeft : (act.spotsTotal || 25);
       const spotsLabel = this.i18n.t('agenda.plazas_disponibles');
       const reserveLabel = this.i18n.t('agenda.reservar_btn');
-      const actImage = act.image || './assets/images/gallery/exterior.jpg';
+      const actImage = act.image || './assets/images/iltiraka.png';
 
       return `
         <article class="event-card">
-          <img src="${actImage}" alt="${title.replace(/"/g, '&quot;')}" class="event-img" loading="lazy" onerror="this.src='./assets/images/gallery/exterior.jpg'">
+          <img src="${actImage}" alt="${title.replace(/"/g, '&quot;')}" class="event-img" loading="lazy" onerror="this.src='./assets/images/iltiraka.png'">
           <div class="event-body">
             <div class="event-meta">
               <span>📅 ${dateFormatted}</span>

@@ -10,7 +10,7 @@
       "free": true,
       "spotsTotal": 25,
       "spotsLeft": 8,
-      "image": "./assets/images/gallery/exterior.jpg",
+      "image": "./assets/images/iltiraka.png",
       "title": {
         "es": "Visita Guiada Especial: El Mito del Héroe y el Lobo",
         "en": "Special Guided Tour: The Myth of the Hero and the Wolf",
@@ -54,7 +54,7 @@
       "free": true,
       "spotsTotal": 50,
       "spotsLeft": 22,
-      "image": "./assets/images/gallery/arqueologia.jpg",
+      "image": "./assets/images/arqueologia.png",
       "title": {
         "es": "Conferencia: Treinta años de investigaciones en El Pajarillo",
         "en": "Lecture: Thirty Years of Archaeological Research at El Pajarillo",
@@ -76,7 +76,7 @@
       "free": true,
       "spotsTotal": 30,
       "spotsLeft": 14,
-      "image": "./assets/images/gallery/interior.jpg",
+      "image": "./assets/images/santuario_ilustracion.png",
       "title": {
         "es": "Noche en el Santuario: Luces, Sombras y Ritos del Héroe Íbero",
         "en": "Night at the Sanctuary: Lights, Shadows & Rites of the Iberian Hero",

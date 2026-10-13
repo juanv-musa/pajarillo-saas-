@@ -1625,7 +1625,7 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
     spotsTotal: spotsVal,
     spotsLeft: isEditing && existingAct ? (existingAct.spotsLeft ?? spotsVal) : spotsVal,
     free: true,
-    image: (existingAct && existingAct.image) || './assets/images/gallery/exterior.jpg',
+    image: (existingAct && existingAct.image) || './assets/images/iltiraka.png',
     title: {
       es: document.getElementById('act-title-es').value,
       en: (existingAct && existingAct.title && existingAct.title.en) || document.getElementById('act-title-es').value,
@@ -2515,7 +2515,7 @@ function renderKioskVideos() {
   grid.innerHTML = kioskVideos.map(v => {
     const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
     const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
-    const thumb = v.thumb || './assets/images/gallery/exterior.jpg';
+    const thumb = v.thumb || './assets/images/lobo.png';
     const duration = v.duration || '--:--';
     const cat = v.category || 'Audiovisual';
     const url = v.videoUrl || '';
@@ -2527,7 +2527,7 @@ function renderKioskVideos() {
       <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)')}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
         <div>
           <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
-            <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/gallery/exterior.jpg'">
+            <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
             <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #B59A57; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
               ${cat}
             </span>
@@ -2656,7 +2656,7 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-id').value = '';
       document.getElementById('kiosk-video-category').value = 'Recreación 3D';
       document.getElementById('kiosk-video-duration').value = '05:00';
-      document.getElementById('kiosk-video-thumb').value = './assets/images/gallery/exterior.jpg';
+      document.getElementById('kiosk-video-thumb').value = './assets/images/lobo.png';
       const checkP0 = document.getElementById('kiosk-video-show-p0');
       if (checkP0) checkP0.checked = true;
       const checkP1 = document.getElementById('kiosk-video-set-p1');
@@ -2751,7 +2751,7 @@ function setupKioskVideoEditor(onVideosChange) {
         fr: (existing && existing.title && existing.title.fr) || titleVal
       },
       duration: document.getElementById('kiosk-video-duration').value.trim() || '05:00',
-      thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/gallery/exterior.jpg',
+      thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/lobo.png',
       videoUrl: document.getElementById('kiosk-video-url').value.trim(),
       description: {
         es: descVal,
@@ -2937,7 +2937,7 @@ const DEFAULT_LOCALES = {
     hero_desc: "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
     hero_card_title: "Cabeza de Lobo",
     hero_card_sub: "",
-    hero_card_img: "./assets/images/lobo-hero.jpg",
+    hero_card_img: "./assets/images/lobo.png",
     hito1_title: "Siglos VI–V a.n.e. · Primeros Oppida y Escultura Heroica",
     hito1_desc: "Surgimiento de oppida fortificados en el Alto Guadalquivir y monumentos heroicos como Cerrillo Blanco.",
     hito2_title: "1ª mitad S. IV a.n.e. · Fundación del Santuario de El Pajarillo",
@@ -2955,9 +2955,9 @@ const DEFAULT_LOCALES = {
     patrimonio_tab1: "Ubicado estratégicamente sobre una loma dominante en el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular (c. 350 a.n.e.).\n\nEl monumento conmemorativo fue concebido como un gran escenario escalonado en tres terrazas de mampostería y sillares labrados para la apoteosis o heroización de un príncipe o aristócrata oretano. En su cima se alzaba el célebre conjunto escultórico que escenificaba el combate mítico entre un joven aristócrata y una fiera salvaje: la portentosa Cabeza de Lobo, escoltada por leones protectores y grifos alados, símbolo de poder, valor y trascendencia de la cultura ibérica.",
     patrimonio_tab2: "Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka —Úbeda la Vieja— puso los ojos en este valle. Decidió apropiarse de un territorio salvaje: el valle del río Jandulilla.\n\nPara las gentes iberas, el valle del Jandulilla era territorio salvaje (silva): bosque profundo, dominio de lobos y seres fantásticos, un lugar donde el poder humano aún no llegaba. Eran territorios que querían incorporar y para ello hacía falta un héroe capaz de justificarlo.\n\nEl oppidum de Iltiraka desplegó un ambicioso proyecto de ocupación: estableció una población en la Loma del Perro (entre las actuales Úbeda y Jódar), controló las rutas que subían desde el sur y levantó, en la cabecera del río, un santuario en memoria de su héroe fundador: El Pajarillo. Así nació un territorio convertido en dominio de un linaje (pagus).",
     patrimonio_tab3: "Los estudios más recientes proponen que Iltiraka no solo tomó el valle: lo hizo sagrado. Junto al río Jandulilla levantó dos grandes lugares de culto: el santuario de El Pajarillo y el monumento de El Fontanar —con su escena de una unión divina, única en el mundo ibero—, enlazados por un camino ritual.\n\nRecorrerlo rememoraba el viaje del héroe fundador al mundo de los muertos, y todo el valle quedaba consagrado como territorio sagrado del linaje aristocrático.",
-    patrimonio_img_iltiraka: "./assets/images/gallery/exterior.jpg",
-    patrimonio_img_iberico: "./assets/images/gallery/arqueologia.jpg",
-    patrimonio_img_fontanar: "./assets/images/gallery/claustro.jpg",
+    patrimonio_img_iltiraka: "./assets/images/iltiraka.png",
+    patrimonio_img_iberico: "./assets/images/arqueologia.png",
+    patrimonio_img_fontanar: "./assets/images/santuario_ilustracion.png",
     galeria_title: "Fondo Audiovisual y Recursos Multimedia",
     galeria_subtitle: "Explora la fototeca de alta resolución, visor 3D interactivo y fichas de investigación",
     desc_3d: "Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo en 360°, con soporte de realidad aumentada y control orbital.",
@@ -3004,7 +3004,7 @@ const DEFAULT_LOCALES = {
     hero_desc: "Discover the exceptional 4th century BC Oretan heroic monument, the iconic limestone Wolf's Head sculpture, and the sacred landscape of the Jandulilla river in Huelma, Jaén.",
     hero_card_title: "Wolf's Head",
     hero_card_sub: "",
-    hero_card_img: "./assets/images/lobo-hero.jpg",
+    hero_card_img: "./assets/images/lobo.png",
     hito1_title: "6th–5th c. BCE · Early Oppida & Heroic Sculptures",
     hito1_desc: "Fortified oppida emerge in the Upper Guadalquivir alongside dynastic sculptures like Cerrillo Blanco.",
     hito2_title: "Early 4th c. BCE · Foundation of El Pajarillo Sanctuary",
@@ -3068,7 +3068,7 @@ const DEFAULT_LOCALES = {
     hero_desc: "Découvrez le monument héroïque orétan exceptionnel du IVe siècle av. J.-C., la célèbre sculpture en calcaire de la Tête de Loup et le paysage sacré de la vallée du Jandulilla à Huelma, Jaén.",
     hero_card_title: "Tête de Loup",
     hero_card_sub: "",
-    hero_card_img: "./assets/images/lobo-hero.jpg",
+    hero_card_img: "./assets/images/lobo.png",
     hito1_title: "VIe–Ve s. av. J.-C. · Premiers Oppida et Sculpture Héroïque",
     hito1_desc: "Apparition des oppida fortifiés dans le Haut Guadalquivir et de sculptures comme Cerrillo Blanco.",
     hito2_title: "1ère moitié IVe s. av. J.-C. · Fondation d'El Pajarillo",
@@ -3276,9 +3276,9 @@ function populateFormWithLang(lang) {
   setVal('cnt-hero-desc', c.hero_desc);
   setVal('cnt-hero-card-title', c.hero_card_title || 'Cabeza de Lobo');
   setVal('cnt-hero-card-sub', c.hero_card_sub || '');
-  setVal('cnt-hero-card-img', c.hero_card_img || './assets/images/lobo-hero.jpg');
+  setVal('cnt-hero-card-img', c.hero_card_img || './assets/images/lobo.png');
   const imgPrev = document.getElementById('preview-hero-card-img');
-  if (imgPrev) imgPrev.src = c.hero_card_img || './assets/images/lobo-hero.jpg';
+  if (imgPrev) imgPrev.src = c.hero_card_img || './assets/images/lobo.png';
 
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);
@@ -3298,15 +3298,15 @@ function populateFormWithLang(lang) {
   setVal('cnt-patrimonio-tab1', c.patrimonio_tab1);
   setVal('cnt-patrimonio-tab2', c.patrimonio_tab2);
   setVal('cnt-patrimonio-tab3', c.patrimonio_tab3);
-  setVal('cnt-patrimonio-img-iltiraka', c.patrimonio_img_iltiraka || './assets/images/gallery/exterior.jpg');
-  setVal('cnt-patrimonio-img-iberico', c.patrimonio_img_iberico || './assets/images/gallery/arqueologia.jpg');
-  setVal('cnt-patrimonio-img-fontanar', c.patrimonio_img_fontanar || './assets/images/gallery/claustro.jpg');
+  setVal('cnt-patrimonio-img-iltiraka', c.patrimonio_img_iltiraka || './assets/images/iltiraka.png');
+  setVal('cnt-patrimonio-img-iberico', c.patrimonio_img_iberico || './assets/images/arqueologia.png');
+  setVal('cnt-patrimonio-img-fontanar', c.patrimonio_img_fontanar || './assets/images/santuario_ilustracion.png');
   const prevIlt = document.getElementById('preview-patrimonio-img-iltiraka');
-  if (prevIlt) prevIlt.src = c.patrimonio_img_iltiraka || './assets/images/gallery/exterior.jpg';
+  if (prevIlt) prevIlt.src = c.patrimonio_img_iltiraka || './assets/images/iltiraka.png';
   const prevIber = document.getElementById('preview-patrimonio-img-iberico');
-  if (prevIber) prevIber.src = c.patrimonio_img_iberico || './assets/images/gallery/arqueologia.jpg';
+  if (prevIber) prevIber.src = c.patrimonio_img_iberico || './assets/images/arqueologia.png';
   const prevFont = document.getElementById('preview-patrimonio-img-fontanar');
-  if (prevFont) prevFont.src = c.patrimonio_img_fontanar || './assets/images/gallery/claustro.jpg';
+  if (prevFont) prevFont.src = c.patrimonio_img_fontanar || './assets/images/santuario_ilustracion.png';
 
   setVal('cnt-galeria-title', c.galeria_title);
   setVal('cnt-galeria-subtitle', c.galeria_subtitle);
@@ -3497,22 +3497,22 @@ const INITIAL_GALLERY_ITEMS = [
     id: 2,
     type: 'foto',
     title: {
-      es: 'Vista Nocturna y Campanario',
-      en: 'Monumental Night View & Bell Tower',
-      fr: 'Vue Nocturne Monumentale et Clocher'
+      es: 'León Ibérico de El Pajarillo',
+      en: 'Iberian Lion of El Pajarillo',
+      fr: 'Lion Ibérique d\'El Pajarillo'
     },
     category: {
-      es: 'Arquitectura',
-      en: 'Architecture',
-      fr: 'Architecture'
+      es: 'Escultura',
+      en: 'Sculpture',
+      fr: 'Sculpture'
     },
-    full: './assets/images/hero/hero.jpg',
-    thumb: './assets/images/hero/hero.jpg',
-    file: './assets/images/hero/hero.jpg',
+    full: './assets/images/gallery/Leon.png',
+    thumb: './assets/images/gallery/Leon.png',
+    file: './assets/images/gallery/Leon.png',
     desc: {
-      es: 'Perspectiva panorámica del Centro de Interpretación y el paisaje del Jandulilla.',
-      en: 'Panoramic view of the Interpretation Centre and the Jandulilla valley landscape.',
-      fr: 'Perspective panoramique du Centre d\'Interprétation et du paysage du Jandulilla.'
+      es: 'Escultura zoomorfa monumental en caliza, fiera protectora del santuario heroico.',
+      en: 'Monumental zoomorphic limestone sculpture, protective beast of the heroic sanctuary.',
+      fr: 'Sculpture zoomorphe monumentale en calcaire, bête protectrice du sanctuaire héroïque.'
     }
   },
   {
@@ -3528,9 +3528,9 @@ const INITIAL_GALLERY_ITEMS = [
       en: 'Site',
       fr: 'Site'
     },
-    full: './assets/images/gallery/arqueologia.jpg',
-    thumb: './assets/images/gallery/arqueologia.jpg',
-    file: './assets/images/gallery/arqueologia.jpg',
+    full: './assets/images/arqueologia.png',
+    thumb: './assets/images/arqueologia.png',
+    file: './assets/images/arqueologia.png',
     desc: {
       es: 'Terrazas ceremoniales excavadas en la vega del Jandulilla donde se emplazaba el monumento.',
       en: 'Ceremonial terraces excavated in the Jandulilla valley where the monument was erected.',
@@ -3541,22 +3541,22 @@ const INITIAL_GALLERY_ITEMS = [
     id: 4,
     type: 'foto',
     title: {
-      es: 'Patios y Galerías del Centro de Interpretación',
-      en: 'Interpretation Centre Courtyards & Galleries',
-      fr: 'Patios et Galeries du Centre d\'Interprétation'
+      es: 'Santuario Heroico de El Pajarillo',
+      en: 'Heroic Sanctuary of El Pajarillo',
+      fr: 'Sanctuaire Héroïque d\'El Pajarillo'
     },
     category: {
-      es: 'Entorno',
-      en: 'Surroundings',
-      fr: 'Environnement'
+      es: 'Recreación',
+      en: 'Reconstruction',
+      fr: 'Reconstitution'
     },
-    full: './assets/images/gallery/claustro.jpg',
-    thumb: './assets/images/gallery/claustro.jpg',
-    file: './assets/images/gallery/claustro.jpg',
+    full: './assets/images/santuario_ilustracion.png',
+    thumb: './assets/images/santuario_ilustracion.png',
+    file: './assets/images/santuario_ilustracion.png',
     desc: {
-      es: 'Espacio de recepción y tránsito del Centro de Interpretación de El Pajarillo.',
-      en: 'Reception and circulation space of the El Pajarillo Interpretation Centre.',
-      fr: 'Espace d\'accueil et de visite du Centre d\'Interprétation d\'El Pajarillo.'
+      es: 'Recreación ilustrada del conjunto monumental escalonado y el camino ritual.',
+      en: 'Illustrated reconstruction of the stepped monument and ritual path.',
+      fr: 'Restitution illustrée du complexe monumental étagé et du chemin rituel.'
     }
   },
   {
@@ -3595,7 +3595,7 @@ const INITIAL_GALLERY_ITEMS = [
       fr: 'Didactique'
     },
     full: './assets/docs/guia_visita_pajarillo.pdf',
-    thumb: './assets/images/gallery/exterior.jpg',
+    thumb: './assets/images/iltiraka.png',
     file: './assets/docs/guia_visita_pajarillo.pdf',
     desc: {
       es: 'Itinerario de salas, puntos de interés, códigos QR y claves pedagógicas de la visita.',
@@ -3639,7 +3639,7 @@ const INITIAL_GALLERY_ITEMS = [
       fr: 'Audiovisuel'
     },
     full: './audiovisual_p0.html',
-    thumb: './assets/images/gallery/interior.jpg',
+    thumb: './assets/images/santuario_ilustracion.png',
     file: './audiovisual_p0.html',
     desc: {
       es: 'Interfaz interactiva a pantalla completa para salas de exposición y TV de 65 pulgadas.',
@@ -3764,8 +3764,22 @@ function loadGalleryData() {
     const saved = localStorage.getItem('pajarillo_gallery_data');
     if (saved) {
       const parsed = JSON.parse(saved);
-      // Normalizar elementos previos para asegurar que sean multilingües
+      const migratePath = (p) => {
+        if (!p || typeof p !== 'string') return p;
+        return p
+          .replace(/lobo-hero\.jpg/g, 'lobo.png')
+          .replace(/gallery\/exterior\.jpg/g, 'iltiraka.png')
+          .replace(/gallery\/arqueologia\.jpg/g, 'arqueologia.png')
+          .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
+          .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
+          .replace(/gallery\/retablo\.jpg/g, 'gallery/Leon.png')
+          .replace(/lobo\.jpg/g, 'lobo.png');
+      };
+      // Normalizar elementos previos para asegurar que sean multilingües y con rutas actualizadas
       galleryItems = parsed.map(item => {
+        if (item.full) item.full = migratePath(item.full);
+        if (item.thumb) item.thumb = migratePath(item.thumb);
+        if (item.file) item.file = migratePath(item.file);
         if (typeof item.title === 'string') {
           item.title = { es: item.title, en: item.title, fr: item.title };
         }

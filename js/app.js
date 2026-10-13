@@ -458,7 +458,7 @@ async function loadExhibitionPoints(i18n) {
     // Renderizado limpio solicitado: Solo recuadro con la imagen y el título, con enlace a ficha específica
     container.innerHTML = panels.map(panel => {
       const content = (panel.content && (panel.content[lang] || panel.content.es)) || { title: 'Punto Interpretativo' };
-      const img = panel.image || './assets/images/gallery/exterior.jpg';
+      const img = panel.image || './assets/images/lobo.png';
 
       return `
         <a href="punto.html?id=${panel.id}" class="point-card-compact" data-id="${panel.id}" title="Acceder a la ficha de ${content.title}">

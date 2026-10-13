@@ -3,8 +3,8 @@
     {
       "id": "foto_1",
       "type": "photo",
-      "src": "./assets/images/lobo.png",
-      "thumb": "./assets/images/lobo.png",
+      "src": "./assets/images/gallery/lobo.png",
+      "thumb": "./assets/images/gallery/lobo.png",
       "caption": {
         "es": "Cabeza de Lobo Ibérico de El Pajarillo (Siglo IV a.C.)",
         "en": "Iberian Wolf Head of El Pajarillo (4th Century BC)",
@@ -16,21 +16,21 @@
     {
       "id": "foto_2",
       "type": "photo",
-      "src": "./assets/images/hero/hero.jpg",
-      "thumb": "./assets/images/hero/hero.jpg",
+      "src": "./assets/images/gallery/Leon.png",
+      "thumb": "./assets/images/gallery/Leon.png",
       "caption": {
-        "es": "Vista aérea del yacimiento arqueológico del Santuario Ibérico de El Pajarillo y valle del río Jandulilla",
-        "en": "Aerial view of the archaeological site of the Iberian Sanctuary of El Pajarillo and Jandulilla River Valley",
-        "fr": "Vue aérienne du site archéologique du Sanctuaire Ibérique d'El Pajarillo et de la vallée du Jandulilla"
+        "es": "León Ibérico de El Pajarillo (Siglo IV a.C.)",
+        "en": "Iberian Lion of El Pajarillo (4th Century BC)",
+        "fr": "Lion Ibérique d'El Pajarillo (IVe siècle av. J.-C.)"
       },
-      "author": "Archivo Municipal",
-      "category": "Entorno"
+      "author": "Centro de Interpretación",
+      "category": "Escultura"
     },
     {
       "id": "foto_3",
       "type": "photo",
-      "src": "./assets/images/gallery/arqueologia.jpg",
-      "thumb": "./assets/images/gallery/arqueologia.jpg",
+      "src": "./assets/images/arqueologia.png",
+      "thumb": "./assets/images/arqueologia.png",
       "caption": {
         "es": "Excavaciones y terrazas arqueológicas en el Santuario de El Pajarillo",
         "en": "Archaeological excavation terraces at El Pajarillo Sanctuary",
@@ -42,54 +42,41 @@
     {
       "id": "foto_4",
       "type": "photo",
-      "src": "./assets/images/gallery/exterior.jpg",
-      "thumb": "./assets/images/gallery/exterior.jpg",
+      "src": "./assets/images/iltiraka.png",
+      "thumb": "./assets/images/iltiraka.png",
       "caption": {
-        "es": "Plaza exterior y acceso al Centro de Interpretación de El Pajarillo",
-        "en": "Public square and entrance to El Pajarillo Interpretation Centre",
-        "fr": "Place et parvis du Centre d'Interprétation d'El Pajarillo"
+        "es": "El Territorio de Iltiraka y paisaje del valle del río Jandulilla",
+        "en": "Territory of Iltiraka and Jandulilla River Valley landscape",
+        "fr": "Territoire d'Iltiraka et paysage de la vallée du Jandulilla"
       },
-      "author": "Turismo",
+      "author": "Archivo Territorial",
       "category": "Entorno"
     },
     {
       "id": "foto_5",
       "type": "photo",
-      "src": "./assets/images/gallery/claustro.jpg",
-      "thumb": "./assets/images/gallery/claustro.jpg",
+      "src": "./assets/images/santuario_ilustracion.png",
+      "thumb": "./assets/images/santuario_ilustracion.png",
       "caption": {
-        "es": "Patios y galerías del Centro de Interpretación y Yacimiento",
-        "en": "Courtyard and galleries of the Interpretation Centre and Site",
-        "fr": "Cour intérieure et galeries du Centre d'Interprétation"
+        "es": "Recreación ilustrada del Santuario Heroico de El Pajarillo",
+        "en": "Illustrated reconstruction of the Heroic Sanctuary of El Pajarillo",
+        "fr": "Restitution illustrée du Sanctuaire Héroïque d'El Pajarillo"
       },
       "author": "Patrimonio",
-      "category": "Entorno"
+      "category": "Arquitectura"
     },
     {
       "id": "foto_6",
       "type": "photo",
-      "src": "./assets/images/gallery/interior.jpg",
-      "thumb": "./assets/images/gallery/interior.jpg",
+      "src": "./assets/images/hero/hero.jpg",
+      "thumb": "./assets/images/hero/hero.jpg",
       "caption": {
-        "es": "Sala expositiva y museografía del Santuario de El Pajarillo",
-        "en": "Exhibition hall and museography of El Pajarillo Sanctuary",
-        "fr": "Salle d'exposition et scénographie du Sanctuaire d'El Pajarillo"
+        "es": "Vista aérea del yacimiento arqueológico del Santuario Ibérico de El Pajarillo y valle del río Jandulilla",
+        "en": "Aerial view of the archaeological site of the Iberian Sanctuary of El Pajarillo and Jandulilla River Valley",
+        "fr": "Vue aérienne du site archéologique du Sanctuaire Ibérique d'El Pajarillo et de la vallée du Jandulilla"
       },
-      "author": "Patrimonio",
-      "category": "Museografía"
-    },
-    {
-      "id": "foto_7",
-      "type": "photo",
-      "src": "./assets/images/gallery/retablo.jpg",
-      "thumb": "./assets/images/gallery/retablo.jpg",
-      "caption": {
-        "es": "Detalle de relieves y cantería monumental del santuario íbero",
-        "en": "Detail of monumental relief stonework from the Iberian sanctuary",
-        "fr": "Détail des reliefs et pierres sculptées du sanctuaire ibère"
-      },
-      "author": "Patrimonio",
-      "category": "Escultura"
+      "author": "Archivo Municipal",
+      "category": "Entorno"
     }
   ],
   "resources": [
@@ -189,7 +176,7 @@
         "fr": "La Découverte Archéologique : Les Fouilles d'El Pajarillo (1994)"
       },
       "duration": "06:45",
-      "thumb": "./assets/images/gallery/arqueologia.jpg",
+      "thumb": "./assets/images/arqueologia.png",
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
       "description": {
         "es": "Crónica científica del descubrimiento dirigido por el Instituto Universitario de Arqueología Ibérica. El rescate de los sillares tallados y la iconografía del lobo.",
@@ -206,7 +193,7 @@
         "fr": "Visite Immersive 360° : Le Sanctuaire Héroïque et les Terrasses Monumentales"
       },
       "duration": "08:20",
-      "thumb": "./assets/images/gallery/exterior.jpg",
+      "thumb": "./assets/images/iltiraka.png",
       "videoUrl": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4",
       "description": {
         "es": "Exploración en ultra alta definición del paisaje sagrado, las tres terrazas escalonadas, el camino ritual y la restitución del grupo escultórico.",

@@ -29,7 +29,7 @@
     {
       "id": 2,
       "tag": "arquelogia",
-      "image": "./assets/images/gallery/arqueologia.jpg",
+      "image": "./assets/images/arqueologia.png",
       "video": null,
       "audio": null,
       "pdf": null,
@@ -55,7 +55,7 @@
     {
       "id": 3,
       "tag": "arquelogia",
-      "image": "./assets/images/gallery/exterior.jpg",
+      "image": "./assets/images/iltiraka.png",
       "video": null,
       "audio": null,
       "pdf": null,
@@ -74,14 +74,14 @@
         "fr": {
           "title": "Le Territoire d'Iltiraka : Une vallée à conquérir",
           "subtitle": "Colonisation ibère de la vallée du Jandulilla · IVe s. av. J.-C.",
-          "description": "<p>Il y a 2 400 ans, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée sauvage (silva), domaine indompté des bêtes et de la forêt.</p><p>Pour s'approprier ces terres, le lignage noble érigea le sanctuaire d'El Pajarillo en hommage à son héros fondateur et contrôla les voies d'accès méridionales.</p><p>C'est ainsi que la vallée devint le territoire consacré d'une aristocratie dominante (pagus).</p>"
+          "description": "<p>Il y a 2 400 ans, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée sauvage (silva), domaine indompté des bêtes et de la forêt.</p><p>Pour s'approprier ces terres, le lignage noble érigea le sanctuaire d'El Pajarillo en hommage à son héros fondateur et contrôla les voies d'accès méridionales.</p><p>C'est ainsi que la vallée devint le territorio consacré d'une aristocratie dominante (pagus).</p>"
         }
       }
     },
     {
       "id": 4,
       "tag": "arquelogia",
-      "image": "./assets/images/gallery/claustro.jpg",
+      "image": "./assets/images/santuario_ilustracion.png",
       "video": null,
       "audio": null,
       "pdf": null,
@@ -107,7 +107,7 @@
     {
       "id": 5,
       "tag": "escultura",
-      "image": "./assets/images/gallery/retablo.jpg",
+      "image": "./assets/images/Leon.png",
       "video": null,
       "audio": null,
       "pdf": null,
