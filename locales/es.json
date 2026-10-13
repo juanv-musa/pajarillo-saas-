@@ -25,7 +25,17 @@
     "cta_secondary": "Explorar santuario y territorio",
     "scroll": "Descubrir más",
     "card_title": "Cabeza de Lobo",
-    "card_sub": ""
+    "card_sub": "Escultura ibérica en caliza · Siglo IV a.C.",
+    "slide_lobo_title": "Cabeza de Lobo",
+    "slide_lobo_sub": "Escultura ibérica en caliza · Siglo IV a.C.",
+    "slide_leon_title": "León de El Pajarillo",
+    "slide_leon_sub": "Fiera guardiana del santuario heroico",
+    "slide_santuario_title": "Santuario Heroico",
+    "slide_santuario_sub": "Reconstrucción volumétrica del monumento",
+    "slide_yacimiento_title": "Yacimiento Arqueológico",
+    "slide_yacimiento_sub": "Terrazas excavadas en el valle del Jandulilla",
+    "slide_iltiraka_title": "Territorio de Iltiraka",
+    "slide_iltiraka_sub": "Paisaje sagrado y oppidum protohistórico"
   },
   "historia": {
     "section_label": "",

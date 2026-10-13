@@ -24,8 +24,18 @@
     "cta_primary": "Plan Your Visit",
     "cta_secondary": "Explore Sanctuary & Territory",
     "scroll": "Explore more",
-    "card_title": "Wolf's Head",
-    "card_sub": ""
+    "card_title": "The Wolf's Head",
+    "card_sub": "Iberian limestone sculpture · 4th century BC",
+    "slide_lobo_title": "The Wolf's Head",
+    "slide_lobo_sub": "Iberian limestone sculpture · 4th century BC",
+    "slide_leon_title": "Lion of El Pajarillo",
+    "slide_leon_sub": "Guardian beast of the heroic sanctuary",
+    "slide_santuario_title": "Heroic Sanctuary",
+    "slide_santuario_sub": "Volumetric monument reconstruction",
+    "slide_yacimiento_title": "Archaeological Site",
+    "slide_yacimiento_sub": "Excavated terraces in Jandulilla valley",
+    "slide_iltiraka_title": "Territory of Iltiraka",
+    "slide_iltiraka_sub": "Sacred landscape and protohistoric oppidum"
   },
   "historia": {
     "section_label": "",

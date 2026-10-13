@@ -3278,10 +3278,14 @@ function populateFormWithLang(lang) {
   setVal('cnt-hero-cta', c.hero_cta);
   setVal('cnt-hero-desc', c.hero_desc);
   setVal('cnt-hero-card-title', c.hero_card_title || 'Cabeza de Lobo');
-  setVal('cnt-hero-card-sub', c.hero_card_sub || '');
-  setVal('cnt-hero-card-img', c.hero_card_img || './assets/images/lobo.png');
+  setVal('cnt-hero-card-sub', c.hero_card_sub || 'Escultura ibérica en caliza · Siglo IV a.C.');
+  let heroCardImg = c.hero_card_img || './assets/images/lobo.png';
+  if (heroCardImg.includes('lobo-hero') || heroCardImg.includes('lobo.jpg')) {
+    heroCardImg = './assets/images/lobo.png';
+  }
+  setVal('cnt-hero-card-img', heroCardImg);
   const imgPrev = document.getElementById('preview-hero-card-img');
-  if (imgPrev) imgPrev.src = c.hero_card_img || './assets/images/lobo.png';
+  if (imgPrev) imgPrev.src = heroCardImg;
 
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);

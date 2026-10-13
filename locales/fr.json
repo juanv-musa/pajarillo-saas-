@@ -24,8 +24,18 @@
     "cta_primary": "Planifiez votre visite",
     "cta_secondary": "Explorer le sanctuaire et le territoire",
     "scroll": "Découvrir plus",
-    "card_title": "Tête de Loup",
-    "card_sub": ""
+    "card_title": "La Tête de Loup",
+    "card_sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C.",
+    "slide_lobo_title": "La Tête de Loup",
+    "slide_lobo_sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C.",
+    "slide_leon_title": "Lion d'El Pajarillo",
+    "slide_leon_sub": "Fauve gardien du sanctuaire héroïque",
+    "slide_santuario_title": "Sanctuaire Héroïque",
+    "slide_santuario_sub": "Reconstitution volumétrique du monument",
+    "slide_yacimiento_title": "Site Archéologique",
+    "slide_yacimiento_sub": "Terrasses excavées dans la vallée du Jandulilla",
+    "slide_iltiraka_title": "Territoire d'Iltiraka",
+    "slide_iltiraka_sub": "Paysage sacré et oppidum protohistorique"
   },
   "historia": {
     "section_label": "",

@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupHeaderScroll();
   setupMobileNav();
   setupHistoryTabs();
+  setupHeroCarousel(i18n);
   setupBookingForm(i18n);
   setupQrModal();
   setupCookieConsentBanner();
@@ -77,11 +78,21 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v3.3';
+  const CACHE_VERSION = 'v3.5';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
     localStorage.setItem('pajarillo_app_v', CACHE_VERSION);
+  }
+
+  // Purga defensiva: eliminar caché antigua si contiene rutas a archivos eliminados (lobo-hero.jpg o lobo.jpg)
+  const rawLocales = localStorage.getItem('pajarillo_locales') || '';
+  if (rawLocales.includes('lobo-hero') || rawLocales.includes('lobo.jpg')) {
+    localStorage.removeItem('pajarillo_locales');
+  }
+  const rawConfig = localStorage.getItem('pajarillo_site_config') || '';
+  if (rawConfig.includes('lobo-hero') || rawConfig.includes('lobo.jpg')) {
+    localStorage.removeItem('pajarillo_site_config');
   }
 
   const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || 'es';
@@ -200,15 +211,23 @@ function applySiteConfig(config) {
     document.querySelectorAll('[data-i18n="hero.card_title"]').forEach(el => {
       el.textContent = c.hero_card_title;
     });
+    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
+    if (slide0) slide0.dataset.title = c.hero_card_title;
   }
   if (c.hero_card_sub) {
     document.querySelectorAll('[data-i18n="hero.card_sub"]').forEach(el => {
       el.textContent = c.hero_card_sub;
     });
+    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
+    if (slide0) slide0.dataset.sub = c.hero_card_sub;
   }
   if (c.hero_card_img) {
-    document.querySelectorAll('.hero-wolf-img').forEach(el => {
-      el.src = c.hero_card_img;
+    let safeImg = c.hero_card_img;
+    if (safeImg.includes('lobo-hero') || safeImg.includes('lobo.jpg')) {
+      safeImg = './assets/images/lobo.png';
+    }
+    document.querySelectorAll('.hero-carousel-slide[data-index="0"] img, .hero-wolf-img').forEach(el => {
+      el.src = safeImg;
     });
   }
   if (c.tel) {
@@ -529,6 +548,148 @@ function setupHistoryTabs() {
       });
     });
   });
+}
+
+/* ═══════════════════════════════════════════
+   Carrusel Interactivo de la Sección Hero
+   ═══════════════════════════════════════════ */
+function setupHeroCarousel(i18n) {
+  const container = document.getElementById('hero-card-carousel');
+  if (!container) return;
+
+  const slides = container.querySelectorAll('.hero-carousel-slide');
+  const dots = container.querySelectorAll('.hero-dot');
+  const titleEl = document.getElementById('hero-carousel-title');
+  const subEl = document.getElementById('hero-carousel-sub');
+  const prevBtn = document.getElementById('hero-prev-btn');
+  const nextBtn = document.getElementById('hero-next-btn');
+
+  if (!slides.length) return;
+
+  let currentIndex = 0;
+  let timer = null;
+  const INTERVAL_MS = 3500; // Rotación suave cada 3.5 segundos
+
+  function updateTexts(slide) {
+    if (!slide) return;
+    const i18nTitleKey = slide.dataset.i18nTitle;
+    const i18nSubKey = slide.dataset.i18nSub;
+
+    let title = '';
+    let sub = '';
+
+    if (i18n && typeof i18n.t === 'function') {
+      if (i18nTitleKey) title = i18n.t(i18nTitleKey);
+      if (i18nSubKey) sub = i18n.t(i18nSubKey);
+    }
+
+    if (!title || title === i18nTitleKey) title = slide.dataset.title;
+    if (!sub || sub === i18nSubKey) sub = slide.dataset.sub;
+
+    if (titleEl && title) titleEl.textContent = title;
+    if (subEl && sub) subEl.textContent = sub;
+  }
+
+  function goToSlide(index) {
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+    currentIndex = index;
+
+    slides.forEach((slide, i) => {
+      const isActive = i === currentIndex;
+      slide.classList.toggle('active', isActive);
+      slide.setAttribute('aria-hidden', !isActive);
+      if (isActive) {
+        updateTexts(slide);
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  function startAutoplay() {
+    stopAutoplay();
+    timer = setInterval(nextSlide, INTERVAL_MS);
+  }
+
+  function stopAutoplay() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      nextSlide();
+      startAutoplay();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      prevSlide();
+      startAutoplay();
+    });
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.preventDefault();
+      const idx = parseInt(dot.dataset.index, 10);
+      if (!isNaN(idx)) {
+        goToSlide(idx);
+        startAutoplay();
+      }
+    });
+  });
+
+  // Pausar rotación en hover / focus
+  container.addEventListener('mouseenter', stopAutoplay);
+  container.addEventListener('mouseleave', startAutoplay);
+  container.addEventListener('focusin', stopAutoplay);
+  container.addEventListener('focusout', startAutoplay);
+
+  // Soporte de gestos táctiles (swipe) en móviles
+  let touchStartX = 0;
+  let touchEndX = 0;
+  container.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoplay();
+  }, { passive: true });
+
+  container.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    if (touchEndX < touchStartX - 40) {
+      nextSlide();
+    } else if (touchEndX > touchStartX + 40) {
+      prevSlide();
+    }
+    startAutoplay();
+  }, { passive: true });
+
+  // Sincronizar textos al cambiar de idioma
+  if (i18n && typeof i18n.onLanguageChange === 'function') {
+    i18n.onLanguageChange(() => {
+      updateTexts(slides[currentIndex]);
+    });
+  }
+
+  // Inicializar primera diapositiva y arrancar temporizador
+  goToSlide(0);
+  startAutoplay();
 }
 
 /* ═══════════════════════════════════════════
