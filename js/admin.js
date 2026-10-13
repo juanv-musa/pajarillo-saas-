@@ -3131,10 +3131,142 @@ const DEFAULT_LOCALES = {
 
 let localesData = JSON.parse(JSON.stringify(DEFAULT_LOCALES));
 
+const HERO_IMG_PRESETS = [
+  { value: './assets/images/lobo.png', label: 'Cabeza de Lobo (PNG)' },
+  { value: './assets/images/Leon.png', label: 'León Ibérico de El Pajarillo' },
+  { value: './assets/images/santuario_ilustracion.png', label: 'Santuario Heroico Ilustración' },
+  { value: './assets/images/arqueologia.png', label: 'Yacimiento Arqueológico y Terrazas' },
+  { value: './assets/images/iltiraka.png', label: 'Territorio de Iltiraka y Valle' },
+  { value: './assets/images/dibujando.png', label: 'Investigación y Difusión' },
+  { value: './assets/images/excavacion_medios.png', label: 'Excavaciones Arqueológicas' }
+];
+
+function renderAdminHeroCarouselSlides(slides = []) {
+  const container = document.getElementById('hero-carousel-admin-list');
+  if (!container) return;
+
+  if (!Array.isArray(slides) || slides.length === 0) {
+    slides = [
+      { img: './assets/images/lobo.png', title: 'Cabeza de Lobo', sub: 'Escultura ibérica en caliza · Siglo IV a.C.' },
+      { img: './assets/images/Leon.png', title: 'León de El Pajarillo', sub: 'Fiera guardiana del santuario heroico' },
+      { img: './assets/images/santuario_ilustracion.png', title: 'Santuario Heroico', sub: 'Reconstrucción volumétrica del monumento' },
+      { img: './assets/images/arqueologia.png', title: 'Yacimiento Arqueológico', sub: 'Terrazas excavadas en el valle del Jandulilla' },
+      { img: './assets/images/iltiraka.png', title: 'Territorio de Iltiraka', sub: 'Paisaje sagrado y oppidum protohistórico' }
+    ];
+  }
+
+  container.innerHTML = '';
+  slides.forEach((slide, idx) => {
+    const card = document.createElement('div');
+    card.className = 'hero-carousel-admin-slide';
+    card.style = 'background: var(--admin-card-bg, #fff); border: 1px solid var(--admin-border); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 8px;';
+    card.dataset.index = idx;
+
+    const presetOptions = HERO_IMG_PRESETS.map(p => 
+      `<option value="${p.value}" ${slide.img === p.value ? 'selected' : ''}>${p.label}</option>`
+    ).join('');
+
+    card.innerHTML = `
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--admin-border); padding-bottom: 6px;">
+        <strong style="font-size: 0.88rem; color: var(--admin-primary);">Diapositiva #${idx + 1}</strong>
+        <button type="button" class="btn-remove-hero-slide" style="background: none; border: none; color: var(--admin-danger, #d32f2f); cursor: pointer; font-size: 0.82rem; font-weight: 600;">
+          🗑️ Eliminar
+        </button>
+      </div>
+      <div style="display: flex; gap: 12px; align-items: flex-start; margin-top: 4px;">
+        <img class="hero-slide-preview" src="${slide.img || './assets/images/lobo.png'}" alt="Preview" style="width: 58px; height: 58px; object-fit: cover; border-radius: 6px; border: 1px solid var(--admin-border); flex-shrink: 0;" onerror="this.src='./assets/images/lobo.png';">
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
+          <div style="display: flex; gap: 6px; align-items: center;">
+            <input type="text" class="admin-input hero-slide-img-input" value="${slide.img || ''}" placeholder="./assets/images/lobo.png" style="flex: 1; font-size: 0.82rem; padding: 5px 8px;">
+            <select class="admin-select hero-slide-preset-select" style="width: auto; font-size: 0.82rem; padding: 5px 8px;">
+              <option value="">-- Predefinida --</option>
+              ${presetOptions}
+            </select>
+          </div>
+          <div class="grid-2col" style="gap: 8px;">
+            <input type="text" class="admin-input hero-slide-title-input" value="${slide.title || ''}" placeholder="Título (ej: Cabeza de Lobo)" style="font-size: 0.82rem; padding: 5px 8px;">
+            <input type="text" class="admin-input hero-slide-sub-input" value="${slide.sub || ''}" placeholder="Subtítulo descriptivo" style="font-size: 0.82rem; padding: 5px 8px;">
+          </div>
+        </div>
+      </div>
+    `;
+
+    const imgInput = card.querySelector('.hero-slide-img-input');
+    const presetSelect = card.querySelector('.hero-slide-preset-select');
+    const previewImg = card.querySelector('.hero-slide-preview');
+    const btnRemove = card.querySelector('.btn-remove-hero-slide');
+
+    if (presetSelect && imgInput) {
+      presetSelect.addEventListener('change', () => {
+        if (presetSelect.value) {
+          imgInput.value = presetSelect.value;
+          if (previewImg) previewImg.src = presetSelect.value;
+        }
+      });
+    }
+
+    if (imgInput && previewImg) {
+      imgInput.addEventListener('input', () => {
+        if (imgInput.value) previewImg.src = imgInput.value;
+      });
+    }
+
+    if (btnRemove) {
+      btnRemove.addEventListener('click', () => {
+        card.remove();
+        document.querySelectorAll('.hero-carousel-admin-slide').forEach((sl, i) => {
+          const str = sl.querySelector('strong');
+          if (str) str.textContent = `Diapositiva #${i + 1}`;
+        });
+      });
+    }
+
+    container.appendChild(card);
+  });
+}
+
+function getAdminHeroCarouselSlides() {
+  const container = document.getElementById('hero-carousel-admin-list');
+  if (!container) return [];
+
+  const slides = [];
+  container.querySelectorAll('.hero-carousel-admin-slide').forEach(card => {
+    const img = card.querySelector('.hero-slide-img-input')?.value.trim();
+    const title = card.querySelector('.hero-slide-title-input')?.value.trim();
+    const sub = card.querySelector('.hero-slide-sub-input')?.value.trim();
+    if (img || title) {
+      slides.push({
+        img: img || './assets/images/lobo.png',
+        title: title || 'Patrimonio de El Pajarillo',
+        sub: sub || ''
+      });
+    }
+  });
+
+  return slides;
+}
+
+function addAdminHeroSlide() {
+  const currentSlides = getAdminHeroCarouselSlides();
+  currentSlides.push({
+    img: './assets/images/lobo.png',
+    title: 'Nueva Pieza',
+    sub: 'Descripción patrimonial'
+  });
+  renderAdminHeroCarouselSlides(currentSlides);
+}
+
 function setupContentEditor() {
   const form = document.getElementById('form-site-content');
   const btnSave = document.getElementById('btn-save-content');
   const langPills = document.querySelectorAll('.cms-lang-pill[data-cms-lang]');
+  const btnAddHeroSlide = document.getElementById('btn-add-hero-slide');
+
+  if (btnAddHeroSlide) {
+    btnAddHeroSlide.addEventListener('click', () => {
+      addAdminHeroSlide();
+    });
+  }
 
   loadSavedLocales();
 
@@ -3287,6 +3419,12 @@ function populateFormWithLang(lang) {
   const imgPrev = document.getElementById('preview-hero-card-img');
   if (imgPrev) imgPrev.src = heroCardImg;
 
+  // Carrusel Hero
+  const autoplayEl = document.getElementById('cnt-hero-carousel-autoplay');
+  if (autoplayEl) autoplayEl.checked = c.hero_carousel_autoplay !== false;
+  setVal('cnt-hero-carousel-interval', c.hero_carousel_interval || '3500');
+  renderAdminHeroCarouselSlides(c.hero_carousel);
+
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);
   setVal('cnt-hito2-title', c.hito2_title);
@@ -3300,8 +3438,27 @@ function populateFormWithLang(lang) {
   setVal('cnt-hito6-title', c.hito6_title);
   setVal('cnt-hito6-desc', c.hito6_desc);
 
+  // Patrimonio
   setVal('cnt-patrimonio-title', c.patrimonio_title);
   setVal('cnt-patrimonio-subtitle', c.patrimonio_subtitle);
+
+  const setCheck = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.checked = !!val;
+  };
+  setCheck('cnt-patrimonio-enable-iltiraka', c.patrimonio_enable_iltiraka !== false);
+  setVal('cnt-patrimonio-btn-iltiraka', c.patrimonio_btn_iltiraka || 'Territorio de Iltiraka');
+  setVal('cnt-patrimonio-title-iltiraka', c.patrimonio_title_iltiraka || 'El Territorio de Iltiraka: Un valle que domesticar');
+
+  setCheck('cnt-patrimonio-enable-iberico', c.patrimonio_enable_iberico !== false);
+  setVal('cnt-patrimonio-btn-iberico', c.patrimonio_btn_iberico || 'Santuario Heroico');
+  setVal('cnt-patrimonio-title-iberico', c.patrimonio_title_iberico || 'El Santuario Heroico de El Pajarillo (Siglo IV a.n.e.)');
+
+  // Pestaña Paisaje Sagrado y Ritual: Desactivada por defecto (false) tal como solicitó el usuario
+  setCheck('cnt-patrimonio-enable-fontanar', c.patrimonio_enable_fontanar === true);
+  setVal('cnt-patrimonio-btn-fontanar', c.patrimonio_btn_fontanar || 'Paisaje Sagrado y Ritual');
+  setVal('cnt-patrimonio-title-fontanar', c.patrimonio_title_fontanar || 'Un Paisaje Sagrado: El camino ritual y El Fontanar');
+
   setVal('cnt-patrimonio-tab1', c.patrimonio_tab1);
   setVal('cnt-patrimonio-tab2', c.patrimonio_tab2);
   setVal('cnt-patrimonio-tab3', c.patrimonio_tab3);
@@ -3378,6 +3535,11 @@ function saveCurrentFormToLang(lang) {
     hero_card_sub: getVal('cnt-hero-card-sub'),
     hero_card_img: getVal('cnt-hero-card-img'),
 
+    // Carrusel Hero
+    hero_carousel: getAdminHeroCarouselSlides(),
+    hero_carousel_autoplay: document.getElementById('cnt-hero-carousel-autoplay')?.checked !== false,
+    hero_carousel_interval: getVal('cnt-hero-carousel-interval') || '3500',
+
     hito1_title: getVal('cnt-hito1-title'),
     hito1_desc: getVal('cnt-hito1-desc'),
     hito2_title: getVal('cnt-hito2-title'),
@@ -3393,6 +3555,19 @@ function saveCurrentFormToLang(lang) {
 
     patrimonio_title: getVal('cnt-patrimonio-title'),
     patrimonio_subtitle: getVal('cnt-patrimonio-subtitle'),
+
+    patrimonio_enable_iltiraka: document.getElementById('cnt-patrimonio-enable-iltiraka')?.checked !== false,
+    patrimonio_btn_iltiraka: getVal('cnt-patrimonio-btn-iltiraka'),
+    patrimonio_title_iltiraka: getVal('cnt-patrimonio-title-iltiraka'),
+
+    patrimonio_enable_iberico: document.getElementById('cnt-patrimonio-enable-iberico')?.checked !== false,
+    patrimonio_btn_iberico: getVal('cnt-patrimonio-btn-iberico'),
+    patrimonio_title_iberico: getVal('cnt-patrimonio-title-iberico'),
+
+    patrimonio_enable_fontanar: document.getElementById('cnt-patrimonio-enable-fontanar')?.checked === true,
+    patrimonio_btn_fontanar: getVal('cnt-patrimonio-btn-fontanar'),
+    patrimonio_title_fontanar: getVal('cnt-patrimonio-title-fontanar'),
+
     patrimonio_tab1: getVal('cnt-patrimonio-tab1'),
     patrimonio_tab2: getVal('cnt-patrimonio-tab2'),
     patrimonio_tab3: getVal('cnt-patrimonio-tab3'),

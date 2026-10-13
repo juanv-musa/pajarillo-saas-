@@ -21,9 +21,11 @@
   --c-success: #2E7D32;
   --c-danger: #D32F2F;
 
-  /* Tipografías */
+  /* Tipografía unificada: Máximo 2 tamaños de letra en todo el sitio */
   --font-condensed: 'Barlow Condensed', 'DIN Condensed', 'Arial Narrow', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --fs-heading: clamp(1.4rem, 2.8vw, 2.2rem); /* Tamaño 1: Títulos, encabezados y destacados */
+  --fs-body: 1rem;                            /* Tamaño 2: Texto base, lectura, botones y controles UI */
 
   /* Sombras y Radios */
   --radius-sm: 8px;
@@ -81,7 +83,7 @@ button {
 .top-notice-bar {
   background-color: var(--c-accent-purple);
   color: var(--c-stone);
-  font-size: 0.78rem;
+  font-size: var(--fs-body);
   padding: 6px 1.5rem;
   display: flex;
   justify-content: space-between;
@@ -167,7 +169,7 @@ button {
 }
 
 .nav-link {
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
   font-weight: 600;
   color: var(--c-text-dark);
   padding: 0.4rem 0.6rem;
@@ -214,7 +216,7 @@ button {
 
 .lang-btn {
   padding: 4px 10px;
-  font-size: 0.76rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   border-radius: var(--radius-full);
   color: var(--c-text-muted);
@@ -231,7 +233,7 @@ button {
   background: var(--c-primary);
   color: var(--c-white);
   padding: 0.55rem 1.15rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   border-radius: var(--radius-full);
   display: inline-flex;
@@ -248,7 +250,7 @@ button {
 
 .menu-toggle-btn {
   display: none;
-  font-size: 1.5rem;
+  font-size: var(--fs-heading);
   color: var(--c-primary);
 }
 
@@ -319,7 +321,7 @@ button {
   color: var(--c-accent-gold);
   padding: 6px 14px;
   border-radius: var(--radius-full);
-  font-size: 0.82rem;
+  font-size: var(--fs-body);
   font-weight: 600;
   letter-spacing: 0.5px;
   margin-bottom: 1.25rem;
@@ -328,7 +330,7 @@ button {
 
 .hero-title {
   font-family: var(--font-condensed);
-  font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+  font-size: var(--fs-heading);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.5px;
@@ -338,7 +340,7 @@ button {
 }
 
 .hero-subtitle {
-  font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+  font-size: var(--fs-body);
   line-height: 1.6;
   color: #E2E8E4;
   margin-bottom: 2rem;
@@ -358,7 +360,7 @@ button {
   font-weight: 800;
   padding: 0.9rem 1.8rem;
   border-radius: var(--radius-full);
-  font-size: 1rem;
+  font-size: var(--fs-body);
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -416,7 +418,7 @@ button {
   font-weight: 700;
   padding: 0.9rem 1.6rem;
   border-radius: var(--radius-full);
-  font-size: 1rem;
+  font-size: var(--fs-body);
   transition: var(--transition);
 }
 
@@ -558,7 +560,7 @@ button {
   color: var(--c-white);
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.72rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -566,7 +568,7 @@ button {
 
 .hero-card-title {
   font-family: var(--font-condensed);
-  font-size: 1.45rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-white);
   margin-bottom: 0.15rem;
@@ -575,7 +577,7 @@ button {
 
 .hero-card-sub {
   color: var(--c-accent-gold);
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   font-weight: 500;
   margin-top: 0;
   line-height: 1.35;
@@ -640,7 +642,7 @@ button {
 
 .section-title {
   font-family: var(--font-condensed);
-  font-size: clamp(2rem, 3.8vw, 3rem);
+  font-size: var(--fs-heading);
   font-weight: 800;
   color: var(--c-primary);
   line-height: 1.15;
@@ -649,7 +651,7 @@ button {
 }
 
 .section-subtitle {
-  font-size: 1.05rem;
+  font-size: var(--fs-body);
   color: var(--c-text-muted);
   line-height: 1.6;
 }
@@ -667,7 +669,7 @@ button {
 
 .tab-btn {
   padding: 0.75rem 1.6rem;
-  font-size: 0.95rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   border-radius: var(--radius-full);
   background: var(--c-white);
@@ -708,7 +710,7 @@ button {
 
 .story-text h3 {
   font-family: var(--font-condensed);
-  font-size: 2rem;
+  font-size: var(--fs-heading);
   font-weight: 800;
   color: var(--c-primary);
   margin-bottom: 1.25rem;
@@ -717,7 +719,7 @@ button {
 .story-text p {
   color: var(--c-text-dark);
   margin-bottom: 1.25rem;
-  font-size: 1rem;
+  font-size: var(--fs-body);
   line-height: 1.7;
 }
 
@@ -737,7 +739,7 @@ button {
   gap: 0.4rem;
   background: var(--c-primary);
   color: var(--c-white);
-  font-size: 0.72rem;
+  font-size: var(--fs-body);
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -748,11 +750,11 @@ button {
 
 .lectura-facil-badge::before {
   content: "📖";
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
 }
 
 .lectura-facil-text {
-  font-size: 0.96rem !important;
+  font-size: var(--fs-body) !important;
   line-height: 1.6 !important;
   color: #223026 !important;
   margin-bottom: 0 !important;
@@ -783,7 +785,7 @@ button {
 
 .timeline-title {
   font-family: var(--font-condensed);
-  font-size: 1.7rem;
+  font-size: var(--fs-heading);
   font-weight: 800;
   color: var(--c-primary);
   margin-bottom: 2rem;
@@ -819,14 +821,14 @@ button {
 
 .timeline-year {
   font-family: var(--font-condensed);
-  font-size: 1.35rem;
+  font-size: var(--fs-heading);
   font-weight: 800;
   color: var(--c-accent-purple);
   margin-bottom: 0.5rem;
 }
 
 .timeline-desc {
-  font-size: 0.88rem;
+  font-size: var(--fs-body);
   color: var(--c-text-dark);
   line-height: 1.5;
 }
@@ -888,7 +890,7 @@ button {
   right: 12px;
   background: rgba(56, 79, 62, 0.88);
   color: var(--c-white);
-  font-size: 0.72rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   padding: 3px 9px;
   border-radius: var(--radius-full);
@@ -908,7 +910,7 @@ button {
 
 .point-compact-title {
   font-family: var(--font-condensed);
-  font-size: 1.35rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-primary);
   line-height: 1.25;
@@ -921,7 +923,7 @@ button {
 }
 
 .point-compact-action {
-  font-size: 0.82rem;
+  font-size: var(--fs-heading);
   font-weight: 600;
   color: var(--c-accent-gold-text);
   display: inline-flex;
@@ -988,7 +990,7 @@ button {
   color: var(--c-white);
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   text-transform: uppercase;
 }
@@ -1001,7 +1003,7 @@ button {
   color: var(--c-stone);
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.75rem;
+  font-size: var(--fs-body);
   font-weight: 700;
 }
 
@@ -1014,21 +1016,21 @@ button {
 
 .point-title {
   font-family: var(--font-condensed);
-  font-size: 1.55rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-primary);
   margin-bottom: 0.25rem;
 }
 
 .point-subtitle {
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   color: var(--c-accent-gold-text);
   font-weight: 700;
   margin-bottom: 0.85rem;
 }
 
 .point-description {
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
   color: var(--c-text-dark);
   line-height: 1.55;
   margin-bottom: 1.25rem;
@@ -1045,7 +1047,7 @@ button {
 
 .btn-point-action {
   padding: 0.5rem 0.9rem;
-  font-size: 0.82rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   border-radius: var(--radius-sm);
   display: inline-flex;
@@ -1083,7 +1085,7 @@ button {
 
 .visit-card-title {
   font-family: var(--font-condensed);
-  font-size: 1.75rem;
+  font-size: var(--fs-heading);
   font-weight: 800;
   color: var(--c-primary);
   margin-bottom: 1.5rem;
@@ -1101,7 +1103,7 @@ button {
 }
 
 .hours-block h4 {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-primary);
   margin-bottom: 0.5rem;
@@ -1110,7 +1112,7 @@ button {
 .hours-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   margin-bottom: 0.35rem;
   color: var(--c-text-dark);
 }
@@ -1125,19 +1127,19 @@ button {
 
 .tarifa-info h4,
 .tarifa-info h5 {
-  font-size: 1rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-text-dark);
 }
 
 .tarifa-info p {
-  font-size: 0.82rem;
+  font-size: var(--fs-body);
   color: var(--c-text-muted);
 }
 
 .tarifa-price {
   font-family: var(--font-condensed);
-  font-size: 1.15rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   color: var(--c-primary);
   white-space: nowrap;
@@ -1180,7 +1182,7 @@ button {
 
 .filter-btn {
   padding: 0.5rem 1.25rem;
-  font-size: 0.88rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   border-radius: var(--radius-full);
   background: var(--c-white);
@@ -1233,7 +1235,7 @@ button {
 .event-meta {
   display: flex;
   gap: 12px;
-  font-size: 0.8rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   color: var(--c-accent-gold-text);
   margin-bottom: 0.5rem;
@@ -1242,7 +1244,7 @@ button {
 
 .event-title {
   font-family: var(--font-condensed);
-  font-size: 1.45rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-primary);
   line-height: 1.2;
@@ -1250,7 +1252,7 @@ button {
 }
 
 .event-desc {
-  font-size: 0.88rem;
+  font-size: var(--fs-body);
   color: var(--c-text-dark);
   line-height: 1.5;
   margin-bottom: 1.25rem;
@@ -1266,7 +1268,7 @@ button {
 }
 
 .spots-badge {
-  font-size: 0.78rem;
+  font-size: var(--fs-body);
   color: var(--c-primary);
   font-weight: 700;
 }
@@ -1334,7 +1336,7 @@ button {
 }
 
 .gallery-caption {
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 
@@ -1363,20 +1365,20 @@ button {
 }
 
 .resource-icon {
-  font-size: 2.2rem;
+  font-size: var(--fs-heading);
 }
 
 .resource-content h3,
 .resource-content h4 {
   font-family: var(--font-condensed);
-  font-size: 1.25rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-primary);
   margin-bottom: 0.25rem;
 }
 
 .resource-content p {
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   color: var(--c-text-muted);
   margin-bottom: 0.75rem;
 }
@@ -1405,7 +1407,7 @@ button {
 
 .booking-hero-pane h3 {
   font-family: var(--font-condensed);
-  font-size: 2.4rem;
+  font-size: var(--fs-heading);
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1rem;
@@ -1423,7 +1425,7 @@ button {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 0.95rem;
+  font-size: var(--fs-body);
 }
 
 .booking-form-pane {
@@ -1444,7 +1446,7 @@ button {
 
 .form-field label {
   display: block;
-  font-size: 0.82rem;
+  font-size: var(--fs-body);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1461,7 +1463,7 @@ button {
   border-radius: var(--radius-sm);
   border: 1.5px solid var(--c-border);
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: var(--fs-body);
   background: var(--c-stone-light);
   color: var(--c-text-dark);
   transition: border-color 0.2s;
@@ -1499,7 +1501,7 @@ input[type="date"].form-input {
   font-weight: 800;
   padding: 1rem;
   border-radius: var(--radius-full);
-  font-size: 1rem;
+  font-size: var(--fs-body);
   transition: var(--transition);
   margin-top: 0.5rem;
 }
@@ -1559,7 +1561,7 @@ input[type="date"].form-input {
   align-items: center;
   justify-content: center;
   color: var(--c-primary);
-  font-size: 1.2rem;
+  font-size: var(--fs-body);
   flex-shrink: 0;
   overflow: hidden;
 }
@@ -1589,7 +1591,7 @@ input[type="date"].form-input {
 }
 
 .footer-brand p {
-  font-size: 0.9rem;
+  font-size: var(--fs-body);
   color: #A3B5AA;
   line-height: 1.6;
   margin-top: 1rem;
@@ -1597,7 +1599,7 @@ input[type="date"].form-input {
 
 .footer-col h4 {
   font-family: var(--font-condensed);
-  font-size: 1.2rem;
+  font-size: var(--fs-heading);
   font-weight: 700;
   color: var(--c-accent-gold);
   margin-bottom: 1.25rem;
@@ -1610,7 +1612,7 @@ input[type="date"].form-input {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  font-size: 0.88rem;
+  font-size: var(--fs-body);
 }
 
 .footer-links a {
@@ -1631,7 +1633,7 @@ input[type="date"].form-input {
   justify-content: center;
   align-items: center;
   text-align: center;
-  font-size: 0.8rem;
+  font-size: var(--fs-body);
   color: #8A9E92;
   flex-wrap: wrap;
   gap: 1rem;
@@ -1678,7 +1680,7 @@ input[type="date"].form-input {
   padding: 4px 12px;
   border-radius: var(--radius-full);
   color: var(--c-stone);
-  font-size: 0.75rem;
+  font-size: var(--fs-body);
   font-weight: 600;
   transition: var(--transition);
 }
@@ -1741,7 +1743,7 @@ input[type="date"].form-input {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   border: 1px solid rgba(220, 220, 214, 0.2);
 }
 
@@ -1796,7 +1798,7 @@ img, video, canvas, svg {
   .nav-menu.open .nav-link {
     display: block;
     padding: 0.75rem 0.5rem;
-    font-size: 1.05rem;
+    font-size: var(--fs-body);
     color: var(--c-primary);
     border-bottom: 1px solid var(--c-stone-warm);
   }
@@ -1887,12 +1889,12 @@ img, video, canvas, svg {
 
   .btn-book-nav {
     padding: 0.45rem 0.65rem;
-    font-size: 0.95rem;
+    font-size: var(--fs-heading);
   }
 
   .lang-btn {
     padding: 3px 6px;
-    font-size: 0.72rem;
+    font-size: var(--fs-body);
   }
 
   .hero-section {
@@ -1906,19 +1908,19 @@ img, video, canvas, svg {
   }
 
   .hero-badge {
-    font-size: 0.74rem;
+    font-size: var(--fs-body);
     padding: 4px 10px;
     margin-bottom: 0.75rem;
   }
 
   .hero-title {
-    font-size: clamp(1.85rem, 8vw, 2.45rem);
+    font-size: var(--fs-heading);
     line-height: 1.1;
     margin-bottom: 0.85rem;
   }
 
   .hero-subtitle {
-    font-size: 0.92rem;
+    font-size: var(--fs-body);
     line-height: 1.5;
     margin-bottom: 1.5rem;
   }
@@ -1934,7 +1936,7 @@ img, video, canvas, svg {
     width: 100%;
     justify-content: center;
     padding: 0.85rem 1.25rem;
-    font-size: 0.95rem;
+    font-size: var(--fs-body);
   }
 
   .hero-card-featured {
@@ -1944,7 +1946,7 @@ img, video, canvas, svg {
   }
 
   .hero-card-title {
-    font-size: 1.3rem;
+    font-size: var(--fs-heading);
   }
 
   /* Secciones y Encabezados */
@@ -1957,15 +1959,15 @@ img, video, canvas, svg {
   }
 
   .section-label {
-    font-size: 0.75rem;
+    font-size: var(--fs-body);
   }
 
   .section-title {
-    font-size: clamp(1.65rem, 6.5vw, 2.1rem);
+    font-size: var(--fs-heading);
   }
 
   .section-subtitle {
-    font-size: 0.88rem;
+    font-size: var(--fs-body);
     line-height: 1.5;
   }
 
@@ -1993,7 +1995,7 @@ img, video, canvas, svg {
 
   .tab-btn {
     padding: 0.55rem 0.9rem;
-    font-size: 0.82rem;
+    font-size: var(--fs-body);
   }
 
   .story-grid {
@@ -2002,12 +2004,12 @@ img, video, canvas, svg {
   }
 
   .story-text h3 {
-    font-size: 1.4rem;
+    font-size: var(--fs-heading);
     margin-bottom: 0.75rem;
   }
 
   .story-text p {
-    font-size: 0.88rem;
+    font-size: var(--fs-heading);
     line-height: 1.6;
     margin-bottom: 0.85rem;
   }
@@ -2027,17 +2029,17 @@ img, video, canvas, svg {
 
   .point-title,
   .event-title {
-    font-size: 1.3rem;
+    font-size: var(--fs-heading);
   }
 
   .point-description,
   .event-desc {
-    font-size: 0.86rem;
+    font-size: var(--fs-heading);
   }
 
   .filter-btn {
     padding: 0.4rem 0.85rem;
-    font-size: 0.78rem;
+    font-size: var(--fs-body);
   }
 
   .resource-card {
@@ -2053,7 +2055,7 @@ img, video, canvas, svg {
   }
 
   .visit-card-title {
-    font-size: 1.4rem;
+    font-size: var(--fs-heading);
     margin-bottom: 1rem;
   }
 
@@ -2067,7 +2069,7 @@ img, video, canvas, svg {
   }
 
   .tarifa-price {
-    font-size: 1.05rem;
+    font-size: var(--fs-body);
     flex-shrink: 0;
   }
 
@@ -2077,7 +2079,7 @@ img, video, canvas, svg {
   }
 
   .booking-hero-pane h3 {
-    font-size: 1.75rem;
+    font-size: var(--fs-heading);
   }
 
   .booking-perks {
@@ -2086,7 +2088,7 @@ img, video, canvas, svg {
   }
 
   .booking-perk-item {
-    font-size: 0.88rem;
+    font-size: var(--fs-body);
   }
 
   .booking-form-pane {
@@ -2098,7 +2100,7 @@ img, video, canvas, svg {
   }
 
   .form-input, .form-select, .form-textarea {
-    font-size: 0.9rem;
+    font-size: var(--fs-body);
     padding: 0.65rem 0.85rem;
   }
 
@@ -2157,7 +2159,7 @@ img, video, canvas, svg {
   }
 
   .qr-modal-card h3 {
-    font-size: 1.35rem;
+    font-size: var(--fs-heading);
   }
 
   .lightbox-content {
@@ -2177,12 +2179,12 @@ img, video, canvas, svg {
   }
 
   .hero-title {
-    font-size: 1.75rem;
+    font-size: var(--fs-heading);
   }
 
   .lang-btn {
     padding: 2px 4px;
-    font-size: 0.68rem;
+    font-size: var(--fs-heading);
   }
 
   .tarifa-item {

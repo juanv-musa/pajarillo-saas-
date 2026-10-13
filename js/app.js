@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // 4. Setup Interacciones de UI
+  window.currentI18n = i18n;
   setupHeaderScroll();
   setupMobileNav();
   setupHistoryTabs();
@@ -431,6 +432,64 @@ function applySiteConfig(config) {
     const el = document.getElementById('img-tab-fontanar');
     if (el) el.src = c.patrimonio_img_fontanar;
   }
+
+  // Control dinámico de visibilidad de pestañas en Santuario y Territorio (Patrimonio)
+  const tabIltirakaBtn = document.querySelector('.history-tabs button[data-tab="iltiraka"]');
+  const tabIbericoBtn = document.querySelector('.history-tabs button[data-tab="iberico"]');
+  const tabFontanarBtn = document.querySelector('.history-tabs button[data-tab="fontanar"]');
+  const tabIltirakaPane = document.getElementById('tab-iltiraka');
+  const tabIbericoPane = document.getElementById('tab-iberico');
+  const tabFontanarPane = document.getElementById('tab-fontanar');
+
+  const showIltiraka = c.patrimonio_enable_iltiraka !== false;
+  const showIberico = c.patrimonio_enable_iberico !== false;
+  const showFontanar = c.patrimonio_enable_fontanar === true; // Deshabilitado/oculto por defecto según requerimiento
+
+  if (tabIltirakaBtn) tabIltirakaBtn.style.display = showIltiraka ? '' : 'none';
+  if (tabIltirakaPane) tabIltirakaPane.style.display = showIltiraka ? '' : 'none';
+
+  if (tabIbericoBtn) tabIbericoBtn.style.display = showIberico ? '' : 'none';
+  if (tabIbericoPane) tabIbericoPane.style.display = showIberico ? '' : 'none';
+
+  if (tabFontanarBtn) tabFontanarBtn.style.display = showFontanar ? '' : 'none';
+  if (tabFontanarPane) tabFontanarPane.style.display = showFontanar ? '' : 'none';
+
+  // Si la pestaña activa actual fue deshabilitada u ocultada, conmutar a la primera visible
+  const activeTabBtn = document.querySelector('.history-tabs button.active');
+  if (activeTabBtn && activeTabBtn.style.display === 'none') {
+    activeTabBtn.classList.remove('active');
+    const firstVisible = [tabIltirakaBtn, tabIbericoBtn, tabFontanarBtn].find(b => b && b.style.display !== 'none');
+    if (firstVisible) {
+      firstVisible.classList.add('active');
+      const target = firstVisible.dataset.tab;
+      [tabIltirakaPane, tabIbericoPane, tabFontanarPane].forEach(p => {
+        if (p) p.classList.toggle('active', p.id === `tab-${target}`);
+      });
+    }
+  }
+
+  // Títulos personalizados de botones y artículos en Santuario y Territorio
+  if (c.patrimonio_btn_iltiraka && tabIltirakaBtn) tabIltirakaBtn.textContent = c.patrimonio_btn_iltiraka;
+  if (c.patrimonio_btn_iberico && tabIbericoBtn) tabIbericoBtn.textContent = c.patrimonio_btn_iberico;
+  if (c.patrimonio_btn_fontanar && tabFontanarBtn) tabFontanarBtn.textContent = c.patrimonio_btn_fontanar;
+
+  if (c.patrimonio_title_iltiraka && tabIltirakaPane) {
+    const h3 = tabIltirakaPane.querySelector('h3');
+    if (h3) h3.textContent = c.patrimonio_title_iltiraka;
+  }
+  if (c.patrimonio_title_iberico && tabIbericoPane) {
+    const h3 = tabIbericoPane.querySelector('h3');
+    if (h3) h3.textContent = c.patrimonio_title_iberico;
+  }
+  if (c.patrimonio_title_fontanar && tabFontanarPane) {
+    const h3 = tabFontanarPane.querySelector('h3');
+    if (h3) h3.textContent = c.patrimonio_title_fontanar;
+  }
+
+  // Aplicar Carrusel Hero si existen diapositivas o ajustes en la configuración
+  if (c.hero_carousel || c.hero_carousel_interval || c.hero_carousel_autoplay !== undefined) {
+    setupHeroCarousel(window.currentI18n, c);
+  }
 }
 
 
@@ -553,9 +612,42 @@ function setupHistoryTabs() {
 /* ═══════════════════════════════════════════
    Carrusel Interactivo de la Sección Hero
    ═══════════════════════════════════════════ */
-function setupHeroCarousel(i18n) {
+function setupHeroCarousel(i18n, customConfig) {
   const container = document.getElementById('hero-card-carousel');
   if (!container) return;
+
+  // Limpiar temporizador y listeners previos si se reconfigura dinámicamente
+  if (typeof window._heroCarouselCleanup === 'function') {
+    window._heroCarouselCleanup();
+  }
+
+  // 1. Renderizar diapositivas dinámicas desde configuración del CMS si existen
+  if (customConfig && Array.isArray(customConfig.hero_carousel) && customConfig.hero_carousel.length > 0) {
+    const viewport = container.querySelector('.hero-carousel-viewport');
+    const dotsWrap = container.querySelector('#hero-carousel-dots');
+    
+    if (viewport) {
+      viewport.innerHTML = customConfig.hero_carousel.map((slide, i) => {
+        let safeImg = slide.img || './assets/images/lobo.png';
+        if (safeImg.includes('lobo-hero') || safeImg.includes('lobo.jpg')) {
+          safeImg = './assets/images/lobo.png';
+        }
+        const titleSafe = (slide.title || '').replace(/"/g, '&quot;');
+        const subSafe = (slide.sub || '').replace(/"/g, '&quot;');
+        return `
+          <div class="hero-carousel-slide ${i === 0 ? 'active' : ''}" data-index="${i}" data-title="${titleSafe}" data-sub="${subSafe}">
+            <img src="${safeImg}" alt="${titleSafe || 'Diapositiva ' + (i+1)}" class="hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
+          </div>
+        `;
+      }).join('');
+    }
+
+    if (dotsWrap) {
+      dotsWrap.innerHTML = customConfig.hero_carousel.map((slide, i) => `
+        <button class="hero-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="${i + 1}. ${(slide.title || '').replace(/"/g, '&quot;')}"></button>
+      `).join('');
+    }
+  }
 
   const slides = container.querySelectorAll('.hero-carousel-slide');
   const dots = container.querySelectorAll('.hero-dot');
@@ -568,7 +660,11 @@ function setupHeroCarousel(i18n) {
 
   let currentIndex = 0;
   let timer = null;
-  const INTERVAL_MS = 3500; // Rotación suave cada 3.5 segundos
+
+  // Configuración de autoplay e intervalo
+  const isAutoplay = customConfig ? (customConfig.hero_carousel_autoplay !== false) : true;
+  const rawInterval = customConfig && customConfig.hero_carousel_interval ? parseInt(customConfig.hero_carousel_interval, 10) : 3500;
+  const INTERVAL_MS = (!isNaN(rawInterval) && rawInterval >= 1000) ? rawInterval : 3500;
 
   function updateTexts(slide) {
     if (!slide) return;
@@ -619,6 +715,7 @@ function setupHeroCarousel(i18n) {
 
   function startAutoplay() {
     stopAutoplay();
+    if (!isAutoplay || slides.length <= 1) return;
     timer = setInterval(nextSlide, INTERVAL_MS);
   }
 
@@ -629,31 +726,33 @@ function setupHeroCarousel(i18n) {
     }
   }
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      nextSlide();
-      startAutoplay();
-    });
-  }
+  const handleNextClick = (e) => {
+    e.preventDefault();
+    nextSlide();
+    startAutoplay();
+  };
 
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      prevSlide();
-      startAutoplay();
-    });
-  }
+  const handlePrevClick = (e) => {
+    e.preventDefault();
+    prevSlide();
+    startAutoplay();
+  };
 
+  if (nextBtn) nextBtn.addEventListener('click', handleNextClick);
+  if (prevBtn) prevBtn.addEventListener('click', handlePrevClick);
+
+  const dotClickHandlers = [];
   dots.forEach(dot => {
-    dot.addEventListener('click', (e) => {
+    const handler = (e) => {
       e.preventDefault();
       const idx = parseInt(dot.dataset.index, 10);
       if (!isNaN(idx)) {
         goToSlide(idx);
         startAutoplay();
       }
-    });
+    };
+    dot.addEventListener('click', handler);
+    dotClickHandlers.push({ dot, handler });
   });
 
   // Pausar rotación en hover / focus
@@ -662,15 +761,14 @@ function setupHeroCarousel(i18n) {
   container.addEventListener('focusin', stopAutoplay);
   container.addEventListener('focusout', startAutoplay);
 
-  // Soporte de gestos táctiles (swipe) en móviles
+  // Soporte de gestos táctiles (swipe) en dispositivos móviles
   let touchStartX = 0;
   let touchEndX = 0;
-  container.addEventListener('touchstart', (e) => {
+  const handleTouchStart = (e) => {
     touchStartX = e.changedTouches[0].screenX;
     stopAutoplay();
-  }, { passive: true });
-
-  container.addEventListener('touchend', (e) => {
+  };
+  const handleTouchEnd = (e) => {
     touchEndX = e.changedTouches[0].screenX;
     if (touchEndX < touchStartX - 40) {
       nextSlide();
@@ -678,16 +776,26 @@ function setupHeroCarousel(i18n) {
       prevSlide();
     }
     startAutoplay();
-  }, { passive: true });
+  };
 
-  // Sincronizar textos al cambiar de idioma
-  if (i18n && typeof i18n.onLanguageChange === 'function') {
-    i18n.onLanguageChange(() => {
-      updateTexts(slides[currentIndex]);
-    });
-  }
+  container.addEventListener('touchstart', handleTouchStart, { passive: true });
+  container.addEventListener('touchend', handleTouchEnd, { passive: true });
 
-  // Inicializar primera diapositiva y arrancar temporizador
+  // Guardar limpiador para reconfiguración sin fugas ni listeners duplicados
+  window._heroCarouselCleanup = () => {
+    stopAutoplay();
+    if (nextBtn) nextBtn.removeEventListener('click', handleNextClick);
+    if (prevBtn) prevBtn.removeEventListener('click', handlePrevClick);
+    dotClickHandlers.forEach(({ dot, handler }) => dot.removeEventListener('click', handler));
+    container.removeEventListener('mouseenter', stopAutoplay);
+    container.removeEventListener('mouseleave', startAutoplay);
+    container.removeEventListener('focusin', stopAutoplay);
+    container.removeEventListener('focusout', startAutoplay);
+    container.removeEventListener('touchstart', handleTouchStart);
+    container.removeEventListener('touchend', handleTouchEnd);
+  };
+
+  // Inicializar diapositiva inicial y temporizador
   goToSlide(0);
   startAutoplay();
 }

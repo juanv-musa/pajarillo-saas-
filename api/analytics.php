@@ -42,6 +42,12 @@ if ($method === 'POST') {
         exit;
     }
 
+    // Descartar automáticamente cualquier tráfico procedente del panel de administración
+    if (!empty($payload['is_admin'])) {
+        echo json_encode(['success' => true, 'ignored' => 'admin_traffic']);
+        exit;
+    }
+
     $data = getAnalytics();
     $type = $payload['type'];
     $lang = $payload['lang'] ?? 'es';
@@ -66,17 +72,26 @@ if ($method === 'POST') {
 
     // Incrementar contadores globales y buckets permanentes
     if ($type === 'page_view') {
-        $data['summary']['totalVisits'] = ($data['summary']['totalVisits'] ?? 0) + 1;
-        $data['historyByDay'][$todayStr]['visits']++;
-        $data['historyByMonth'][$monthStr]['visits']++;
-        $data['historyByYear'][$yearStr]['visits']++;
+        if (!empty($payload['is_new_session'])) {
+            $data['summary']['totalVisits'] = ($data['summary']['totalVisits'] ?? 0) + 1;
+            $data['historyByDay'][$todayStr]['visits']++;
+            $data['historyByMonth'][$monthStr]['visits']++;
+            $data['historyByYear'][$yearStr]['visits']++;
+        }
 
-        if (!empty($payload['is_unique'])) {
+        if (!empty($payload['is_unique_ever'])) {
             $data['summary']['uniqueVisitors'] = ($data['summary']['uniqueVisitors'] ?? 0) + 1;
+        }
+        if (!empty($payload['is_unique_today'])) {
             $data['historyByDay'][$todayStr]['unique']++;
+        }
+        if (!empty($payload['is_unique_month'])) {
             $data['historyByMonth'][$monthStr]['unique']++;
+        }
+        if (!empty($payload['is_unique_year'])) {
             $data['historyByYear'][$yearStr]['unique']++;
         }
+
         if (isset($data['languages'][$lang])) {
             $data['languages'][$lang]++;
         }

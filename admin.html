@@ -19,8 +19,10 @@
   <!-- Chart.js para analíticas visuales de visitantes -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-  <!-- Módulo de Analítica Oficial -->
-  <script type="module" src="./js/analytics.js?v=3.4"></script>
+  <!-- Bandera de exclusión: el panel de administración nunca rastrea visitas -->
+  <script>window.PAJARILLO_IS_ADMIN = true;</script>
+  <!-- Módulo de Analítica Oficial (solo para lectura y reset) -->
+  <script type="module" src="./js/analytics.js?v=3.5"></script>
 
   <link rel="stylesheet" href="./css/admin.css?v=3.8">
 </head>
@@ -692,36 +694,37 @@
                 <textarea id="cnt-hero-desc" class="admin-textarea" rows="3" required></textarea>
               </div>
 
-              <!-- Tarjeta Escultura Hero (Imagen, Título y Subtítulo) -->
-              <div style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 1rem; border: 1px solid var(--admin-border);">
-                <strong style="font-size: 0.88rem; color: var(--admin-primary); display: block; margin-bottom: 8px;">🖼️ Tarjeta Destacada de la Escultura (Hero Card)</strong>
-                <div class="grid-2col">
-                  <div class="admin-form-group">
-                    <label>Título de la Tarjeta</label>
-                    <input type="text" id="cnt-hero-card-title" class="admin-input" placeholder="Ej: Cabeza de Lobo">
-                  </div>
-                  <div class="admin-form-group">
-                    <label>Subtítulo de la Tarjeta (Opcional)</label>
-                    <input type="text" id="cnt-hero-card-sub" class="admin-input" placeholder="Opcional (dejar vacío si no se desea)">
-                  </div>
-                </div>
-                <div class="admin-form-group" style="margin-bottom: 0;">
-                  <label>Imagen de la Escultura (Ruta o URL)</label>
-                  <div style="display: flex; gap: 8px; align-items: center;">
-                    <input type="text" id="cnt-hero-card-img" class="admin-input" placeholder="./assets/images/lobo.png" style="flex: 1;">
-                    <select id="select-hero-img-preset" class="admin-select" style="width: auto;">
-                      <option value="">-- Imágenes disponibles --</option>
-                      <option value="./assets/images/lobo.png">Fotografía Cabeza de Lobo (PNG)</option>
-                      <option value="./assets/images/Leon.png">León Ibérico de El Pajarillo</option>
-                      <option value="./assets/images/arqueologia.png">Yacimiento Arqueológico y Terrazas</option>
-                      <option value="./assets/images/iltiraka.png">Territorio de Iltiraka y Valle</option>
-                      <option value="./assets/images/santuario_ilustracion.png">Santuario Heroico Ilustración</option>
+              <!-- Gestor de Carrusel Hero (Diapositivas, Imágenes, Títulos y Rotación) -->
+              <div style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-top: 1.25rem; border: 1px solid var(--admin-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+                  <strong style="font-size: 0.95rem; color: var(--admin-primary);">🎠 Carrusel Destacado de Esculturas y Patrimonio (Hero Carousel)</strong>
+                  <div style="display: flex; gap: 12px; align-items: center;">
+                    <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer;">
+                      <input type="checkbox" id="cnt-hero-carousel-autoplay" checked style="accent-color: var(--admin-primary);">
+                      Rotación automática
+                    </label>
+                    <select id="cnt-hero-carousel-interval" class="admin-select" style="width: auto; padding: 4px 8px; font-size: 0.82rem;">
+                      <option value="3000">Cada 3 segundos</option>
+                      <option value="3500" selected>Cada 3.5 segundos</option>
+                      <option value="4000">Cada 4 segundos</option>
+                      <option value="5000">Cada 5 segundos</option>
                     </select>
                   </div>
-                  <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
-                    <img id="preview-hero-card-img" src="./assets/images/lobo.png" alt="Previsualización" style="width: 54px; height: 54px; object-fit: cover; border-radius: 6px; border: 1px solid var(--admin-border);">
-                    <span style="font-size: 0.78rem; color: var(--admin-muted);">Puedes escribir cualquier ruta o elegir una imagen predefinida. Se actualiza automáticamente.</span>
-                  </div>
+                </div>
+
+                <p style="font-size: 0.82rem; color: var(--admin-muted); margin-bottom: 12px;">
+                  Edita las piezas y vistas que rotan en la portada: ajusta la imagen, el título y subtítulo, añade nuevas diapositivas o elimina las que desees.
+                </p>
+
+                <!-- Contenedor dinámico de diapositivas -->
+                <div id="hero-carousel-admin-list" style="display: flex; flex-direction: column; gap: 10px;">
+                  <!-- Se genera por JavaScript según el idioma seleccionado -->
+                </div>
+
+                <div style="margin-top: 12px;">
+                  <button type="button" id="btn-add-hero-slide" class="btn-admin btn-admin-outline" style="font-size: 0.85rem; padding: 6px 14px;">
+                    ➕ Añadir Diapositiva al Carrusel
+                  </button>
                 </div>
               </div>
             </div>
@@ -800,8 +803,24 @@
               </div>
 
               <!-- Pestaña 1: Territorio de Iltiraka -->
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
-                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 1 · Territorio de Iltiraka (Principal)</strong>
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: var(--admin-primary); font-size: 0.92rem;">Pestaña 1 · Territorio de Iltiraka</strong>
+                  <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="cnt-patrimonio-enable-iltiraka" checked style="accent-color: var(--admin-primary);">
+                    Mostrar en web
+                  </label>
+                </div>
+                <div class="grid-2col" style="margin-bottom: 8px;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Botón de la Pestaña</label>
+                    <input type="text" id="cnt-patrimonio-btn-iltiraka" class="admin-input" placeholder="Ej: Territorio de Iltiraka">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Artículo Interior</label>
+                    <input type="text" id="cnt-patrimonio-title-iltiraka" class="admin-input" placeholder="Ej: El Territorio de Iltiraka: Un valle que domesticar">
+                  </div>
+                </div>
                 <label>Texto Completo:</label>
                 <textarea id="cnt-patrimonio-tab2" class="admin-textarea" rows="4"></textarea>
                 <div style="margin-top: 10px;">
@@ -821,8 +840,24 @@
               </div>
 
               <!-- Pestaña 2: Santuario Heroico -->
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
-                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 2 · Santuario Heroico</strong>
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: var(--admin-primary); font-size: 0.92rem;">Pestaña 2 · Santuario Heroico</strong>
+                  <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="cnt-patrimonio-enable-iberico" checked style="accent-color: var(--admin-primary);">
+                    Mostrar en web
+                  </label>
+                </div>
+                <div class="grid-2col" style="margin-bottom: 8px;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Botón de la Pestaña</label>
+                    <input type="text" id="cnt-patrimonio-btn-iberico" class="admin-input" placeholder="Ej: Santuario Heroico">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Artículo Interior</label>
+                    <input type="text" id="cnt-patrimonio-title-iberico" class="admin-input" placeholder="Ej: El Santuario Heroico de El Pajarillo (Siglo IV a.n.e.)">
+                  </div>
+                </div>
                 <label>Texto Completo:</label>
                 <textarea id="cnt-patrimonio-tab1" class="admin-textarea" rows="4"></textarea>
                 <div style="margin-top: 10px;">
@@ -842,8 +877,24 @@
               </div>
 
               <!-- Pestaña 3: Paisaje Sagrado y Ritual -->
-              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
-                <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;">Pestaña 3 · Paisaje Sagrado y Ritual</strong>
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-top: 0.75rem; border: 1px solid var(--admin-border);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                  <strong style="color: var(--admin-primary); font-size: 0.92rem;">Pestaña 3 · Paisaje Sagrado y Ritual</strong>
+                  <label style="display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer;">
+                    <input type="checkbox" id="cnt-patrimonio-enable-fontanar" style="accent-color: var(--admin-primary);">
+                    Mostrar en web (Desmarcar para ocultar)
+                  </label>
+                </div>
+                <div class="grid-2col" style="margin-bottom: 8px;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Botón de la Pestaña</label>
+                    <input type="text" id="cnt-patrimonio-btn-fontanar" class="admin-input" placeholder="Ej: Paisaje Sagrado y Ritual">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label>Título del Artículo Interior</label>
+                    <input type="text" id="cnt-patrimonio-title-fontanar" class="admin-input" placeholder="Ej: Un Paisaje Sagrado: El camino ritual y El Fontanar">
+                  </div>
+                </div>
                 <label>Texto Completo:</label>
                 <textarea id="cnt-patrimonio-tab3" class="admin-textarea" rows="4"></textarea>
                 <div style="margin-top: 10px;">
