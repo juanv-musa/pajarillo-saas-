@@ -115,7 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupGalleryManager();
   setupDropzone();
   setupQrModalEvents();
-  setupPanelsExport();
   setupKioskSection();
   setupCsvExport();
 });
@@ -899,23 +898,7 @@ function setupPeriodFilters() {
     });
   });
 
-  // Botón Exportar Copia de Seguridad JSON
-  const btnExportJson = document.getElementById('btn-export-analytics-json');
-  if (btnExportJson) {
-    btnExportJson.addEventListener('click', () => {
-      const data = cachedAnalyticsData || getRealAnalyticsData();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `analitica_pajarillo_${new Date().toISOString().slice(0, 10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-      showToast('📥 Copia de seguridad JSON de estadísticas guardada con éxito');
-    });
-  }
+
 
   const btnPrint = document.getElementById('btn-print-report');
   if (btnPrint) {
@@ -956,34 +939,7 @@ function setupPeriodFilters() {
     });
   }
 
-  // Botón para importar / restaurar copia JSON
-  const btnImportJson = document.getElementById('btn-import-analytics-json');
-  const inputImportFile = document.getElementById('input-import-analytics-file');
-  if (btnImportJson && inputImportFile) {
-    btnImportJson.addEventListener('click', () => inputImportFile.click());
-    inputImportFile.addEventListener('change', (e) => {
-      const file = e.target.files && e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const parsed = JSON.parse(event.target.result);
-          if (parsed && parsed.summary) {
-            localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(parsed));
-            cachedAnalyticsData = parsed;
-            renderAnalyticsForPeriod(currentAnalyticsPeriod);
-            showToast('📂 Copia de seguridad de métricas restaurada con éxito.');
-          } else {
-            showToast('⚠️ El archivo JSON no tiene una estructura de métricas válida.');
-          }
-        } catch (err) {
-          showToast('❌ Error al procesar el archivo JSON.');
-        }
-      };
-      reader.readAsText(file);
-      inputImportFile.value = '';
-    });
-  }
+
 
   // Botón para resetear todos los contadores a 0
   const btnReset = document.getElementById('btn-reset-analytics');
@@ -2397,25 +2353,7 @@ async function handlePdfSelected(file) {
   reader.readAsDataURL(file);
 }
 
-// Exportación de data/paneles.json
-function setupPanelsExport() {
-  const btnExport = document.getElementById('btn-export-panels-json');
-  if (!btnExport) return;
 
-  btnExport.addEventListener('click', () => {
-    const jsonStr = JSON.stringify({ panels: panelsData }, null, 2);
-    const blob = new Blob([jsonStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `paneles_${Date.now()}.json`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('📥 Archivo de datos paneles.json descargado');
-  });
-}
 
 // Configuración y Gestor de Contenidos de Pantallas 65" (P0 y P1)
 const KIOSK_VIDEOS_STORAGE_KEY = 'pajarillo_kiosk_videos';

@@ -229,13 +229,6 @@
             <button id="btn-reset-analytics" class="btn-admin btn-admin-outline" style="border-color: #dc3545; color: #dc3545;" title="Reiniciar contadores a 0">
               <img src="./assets/icons/icon-refresh.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Poner Contadores a 0
             </button>
-            <button id="btn-export-analytics-json" class="btn-admin btn-admin-outline" title="Descargar copia de seguridad de analíticas">
-              💾 Guardar / Copia JSON
-            </button>
-            <button id="btn-import-analytics-json" class="btn-admin btn-admin-outline" title="Restaurar o importar copia de seguridad de métricas">
-              📂 Cargar Copia JSON
-            </button>
-            <input type="file" id="input-import-analytics-file" accept=".json" style="display: none;">
             <button id="btn-export-csv" class="btn-admin btn-admin-outline">
               <img src="./assets/icons/icon-document.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Exportar Métricas (CSV)
             </button>
@@ -1333,11 +1326,8 @@
 
           <!-- Lista de Paneles Ordenables con SortableJS -->
           <div class="admin-card">
-            <div class="card-title-row" style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card-title-row">
               <h3>Paneles Activos (Arrastra para reordenar)</h3>
-              <button type="button" id="btn-export-panels-json" class="btn-admin btn-admin-outline" style="font-size: 0.8rem; padding: 6px 12px;" title="Descargar copia de data/paneles.json">
-                📥 Exportar JSON
-              </button>
             </div>
             <ul id="admin-panels-sortable-list" class="panel-admin-list">
               <!-- Inyectado por admin.js -->
@@ -2063,6 +2053,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=4.1"></script>
+  <script type="module" src="./js/admin.js?v=4.2"></script>
 </body>
 </html>
