@@ -48,8 +48,26 @@ if ($method === 'POST') {
         exit;
     }
 
-    $data = getAnalytics();
     $type = $payload['type'];
+
+    // Restablecer analíticas a cero si se solicita desde administración
+    if ($type === 'reset_all') {
+        $fresh = [
+            'summary' => ['totalVisits' => 0, 'uniqueVisitors' => 0, 'qrScans' => 0, 'tourBookings' => 0, 'audioListens' => 0, 'downloads' => 0],
+            'languages' => ['es' => 0, 'en' => 0, 'fr' => 0],
+            'historyByDay' => [],
+            'historyByMonth' => [],
+            'historyByYear' => [],
+            'topSections' => [],
+            'topPanels' => [],
+            'recentEvents' => []
+        ];
+        saveAnalytics($fresh);
+        echo json_encode(['success' => true, 'reset' => true]);
+        exit;
+    }
+
+    $data = getAnalytics();
     $lang = $payload['lang'] ?? 'es';
 
     $todayStr = date('Y-m-d');

@@ -359,26 +359,77 @@ async function initAnalyticsData() {
     localStorage.setItem('pajarillo_analytics_cleared', '1');
   }
 
-  // Si ya tenemos datos válidos en localStorage, son la ÚNICA fuente de verdad (NUNCA mezclar con datos demo)
-  if (local && local.summary) {
-    cachedAnalyticsData = local;
-    return local;
-  }
+  // Sincronizar siempre con backend (data/analytics.json o api/analytics.php) para reflejar visitas de otros dispositivos y sesiones
+  try {
+    const res = await fetch('./data/analytics.json?t=' + Date.now());
+    if (res.ok) {
+      const serverData = await res.json();
+      if (serverData && serverData.summary) {
+        if (!local || !local.summary) {
+          local = serverData;
+        } else {
+          // Fusionar tomando el valor más actualizado para no perder datos
+          local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, serverData.summary.totalVisits || 0);
+          local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, serverData.summary.uniqueVisitors || 0);
+          local.summary.qrScans = Math.max(local.summary.qrScans || 0, serverData.summary.qrScans || 0);
+          local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, serverData.summary.tourBookings || 0);
+          local.summary.audioListens = Math.max(local.summary.audioListens || 0, serverData.summary.audioListens || 0);
+          local.summary.downloads = Math.max(local.summary.downloads || 0, serverData.summary.downloads || 0);
 
-  // Si no hay datos y nunca se ha reseteado, cargar baseline limpio
-  const hasBeenCleared = localStorage.getItem('pajarillo_analytics_cleared');
-  if (!hasBeenCleared) {
-    try {
-      const res = await fetch('./data/analytics.json?t=' + Date.now());
-      if (res.ok) {
-        const fileData = await res.json();
-        if (fileData && fileData.summary) {
-          local = fileData;
-          localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+          if (serverData.languages) {
+            local.languages = local.languages || { es: 0, en: 0, fr: 0 };
+            local.languages.es = Math.max(local.languages.es || 0, serverData.languages.es || 0);
+            local.languages.en = Math.max(local.languages.en || 0, serverData.languages.en || 0);
+            local.languages.fr = Math.max(local.languages.fr || 0, serverData.languages.fr || 0);
+          }
+
+          if (serverData.historyByDay) {
+            local.historyByDay = local.historyByDay || {};
+            for (const [day, b] of Object.entries(serverData.historyByDay)) {
+              if (!local.historyByDay[day]) {
+                local.historyByDay[day] = b;
+              } else {
+                local.historyByDay[day].visits = Math.max(local.historyByDay[day].visits || 0, b.visits || 0);
+                local.historyByDay[day].unique = Math.max(local.historyByDay[day].unique || 0, b.unique || 0);
+                local.historyByDay[day].qr = Math.max(local.historyByDay[day].qr || 0, b.qr || 0);
+              }
+            }
+          }
+
+          if (serverData.historyByMonth) {
+            local.historyByMonth = local.historyByMonth || {};
+            for (const [month, b] of Object.entries(serverData.historyByMonth)) {
+              if (!local.historyByMonth[month]) {
+                local.historyByMonth[month] = b;
+              } else {
+                local.historyByMonth[month].visits = Math.max(local.historyByMonth[month].visits || 0, b.visits || 0);
+                local.historyByMonth[month].unique = Math.max(local.historyByMonth[month].unique || 0, b.unique || 0);
+                local.historyByMonth[month].qr = Math.max(local.historyByMonth[month].qr || 0, b.qr || 0);
+              }
+            }
+          }
+
+          if (serverData.historyByYear) {
+            local.historyByYear = local.historyByYear || {};
+            for (const [year, b] of Object.entries(serverData.historyByYear)) {
+              if (!local.historyByYear[year]) {
+                local.historyByYear[year] = b;
+              } else {
+                local.historyByYear[year].visits = Math.max(local.historyByYear[year].visits || 0, b.visits || 0);
+                local.historyByYear[year].unique = Math.max(local.historyByYear[year].unique || 0, b.unique || 0);
+                local.historyByYear[year].qr = Math.max(local.historyByYear[year].qr || 0, b.qr || 0);
+              }
+            }
+          }
+
+          if (Array.isArray(serverData.recentEvents) && serverData.recentEvents.length > 0) {
+            local.events = serverData.recentEvents;
+          }
         }
+        localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
       }
-    } catch (e) {}
-  }
+    }
+  } catch (e) {}
 
   if (!local) {
     local = {
@@ -941,7 +992,18 @@ function setupPeriodFilters() {
       const ok = confirm('⚠️ ¿Deseas restablecer todos los contadores y analíticas a 0?\n\nEsta acción reiniciará los contadores de visitas reales, visitantes únicos, códigos QR y reservas a cero permanentemente.');
       if (ok) {
         localStorage.setItem('pajarillo_analytics_cleared', '1');
+        localStorage.removeItem('pajarillo_unique_ever');
+        localStorage.removeItem('pajarillo_unique_day');
+        localStorage.removeItem('pajarillo_unique_month');
+        localStorage.removeItem('pajarillo_unique_year');
+        localStorage.removeItem('pajarillo_visited_ever');
+        localStorage.removeItem('pajarillo_visited_day');
+        localStorage.removeItem('pajarillo_visited_month');
+        localStorage.removeItem('pajarillo_visited_year');
         localStorage.removeItem('pajarillo_has_visited');
+        localStorage.removeItem('pajarillo_cookie_consent');
+        sessionStorage.removeItem('pajarillo_session_visit_ts');
+        sessionStorage.removeItem('pajarillo_session_active');
         sessionStorage.removeItem('pajarillo_session_counted');
 
         const fresh = {
@@ -967,6 +1029,14 @@ function setupPeriodFilters() {
         if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.saveStoredData === 'function') {
           window.PajarilloAnalytics.saveStoredData(fresh);
         }
+
+        try {
+          fetch('./api/analytics.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'reset_all' })
+          }).catch(() => {});
+        } catch (e) {}
 
         renderAnalyticsForPeriod(currentAnalyticsPeriod);
         showToast('🔄 Todos los contadores se han puesto a 0 de forma permanente.');

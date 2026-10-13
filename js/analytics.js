@@ -25,13 +25,9 @@ class AnalyticsTracker {
     if (window.PAJARILLO_IS_ADMIN === true) return true;
     const path = (window.location.pathname || '').toLowerCase();
     const href = (window.location.href || '').toLowerCase();
-    if (path.includes('admin') || href.includes('admin.html')) return true;
-    if (document.getElementById('login-view') || document.getElementById('dashboard-view')) return true;
-    try {
-      if (localStorage.getItem('pajarillo_admin_auth') || localStorage.getItem('pajarillo_logged_user')) {
-        return true;
-      }
-    } catch (e) {}
+    // Excluir ÚNICAMENTE si la página en ejecución es el panel de control (admin.html)
+    if (path.includes('admin.html') || path.endsWith('/admin') || href.includes('admin.html')) return true;
+    if (document.getElementById('login-view') || document.getElementById('dashboard-view') || document.getElementById('admin-sidebar')) return true;
     return false;
   }
 
@@ -114,11 +110,17 @@ class AnalyticsTracker {
 
   resetAll() {
     localStorage.setItem('pajarillo_analytics_cleared', '1');
+    localStorage.removeItem('pajarillo_unique_ever');
+    localStorage.removeItem('pajarillo_unique_day');
+    localStorage.removeItem('pajarillo_unique_month');
+    localStorage.removeItem('pajarillo_unique_year');
     localStorage.removeItem('pajarillo_visited_ever');
     localStorage.removeItem('pajarillo_visited_day');
     localStorage.removeItem('pajarillo_visited_month');
     localStorage.removeItem('pajarillo_visited_year');
     localStorage.removeItem('pajarillo_has_visited');
+    localStorage.removeItem('pajarillo_cookie_consent');
+    sessionStorage.removeItem('pajarillo_session_visit_ts');
     sessionStorage.removeItem('pajarillo_session_active');
     sessionStorage.removeItem('pajarillo_session_counted');
     const fresh = {
@@ -139,6 +141,13 @@ class AnalyticsTracker {
       events: []
     };
     this.saveStoredData(fresh);
+    try {
+      fetch(this.endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'reset_all' })
+      }).catch(() => {});
+    } catch (e) {}
     return fresh;
   }
 
@@ -146,15 +155,12 @@ class AnalyticsTracker {
     const now = Date.now();
     let isNewSession = false;
     try {
-      const activeSession = sessionStorage.getItem('pajarillo_session_active');
-      const lastActive = parseInt(localStorage.getItem('pajarillo_last_active_ts') || '0', 10);
-
-      // Una sesión nueva ocurre si no hay sesión activa en esta pestaña o si han pasado más de 30 minutos de inactividad
-      if (!activeSession || (now - lastActive > 30 * 60 * 1000)) {
+      const lastRecorded = parseInt(sessionStorage.getItem('pajarillo_session_visit_ts') || '0', 10);
+      // Es una nueva visita si entra en una pestaña nueva (sessionStorage vacío) o si han pasado más de 10 segundos entre cargas
+      if (!lastRecorded || (now - lastRecorded > 10 * 1000)) {
         isNewSession = true;
-        sessionStorage.setItem('pajarillo_session_active', '1');
+        sessionStorage.setItem('pajarillo_session_visit_ts', now.toString());
       }
-      localStorage.setItem('pajarillo_last_active_ts', now.toString());
     } catch (e) {
       isNewSession = true;
     }
@@ -169,30 +175,30 @@ class AnalyticsTracker {
 
     try {
       // 1. Visitante único global (por dispositivo)
-      if (!localStorage.getItem('pajarillo_visited_ever')) {
+      if (!localStorage.getItem('pajarillo_unique_ever')) {
         isUniqueEver = true;
-        localStorage.setItem('pajarillo_visited_ever', '1');
+        localStorage.setItem('pajarillo_unique_ever', '1');
       }
 
       // 2. Visitante único hoy
-      const lastDay = localStorage.getItem('pajarillo_visited_day');
+      const lastDay = localStorage.getItem('pajarillo_unique_day');
       if (lastDay !== todayStr) {
         isUniqueToday = true;
-        localStorage.setItem('pajarillo_visited_day', todayStr);
+        localStorage.setItem('pajarillo_unique_day', todayStr);
       }
 
       // 3. Visitante único este mes
-      const lastMonth = localStorage.getItem('pajarillo_visited_month');
+      const lastMonth = localStorage.getItem('pajarillo_unique_month');
       if (lastMonth !== monthStr) {
         isUniqueMonth = true;
-        localStorage.setItem('pajarillo_visited_month', monthStr);
+        localStorage.setItem('pajarillo_unique_month', monthStr);
       }
 
       // 4. Visitante único este año
-      const lastYear = localStorage.getItem('pajarillo_visited_year');
+      const lastYear = localStorage.getItem('pajarillo_unique_year');
       if (lastYear !== yearStr) {
         isUniqueYear = true;
-        localStorage.setItem('pajarillo_visited_year', yearStr);
+        localStorage.setItem('pajarillo_unique_year', yearStr);
       }
     } catch (e) {}
 
@@ -200,11 +206,6 @@ class AnalyticsTracker {
   }
 
   async init() {
-    // 1. Respetar rechazo expreso de cookies de analítica si existe
-    if (localStorage.getItem('pajarillo_cookie_consent') === 'rejected') {
-      return;
-    }
-
     if (this.isAdminContext()) {
       return;
     }
@@ -219,10 +220,9 @@ class AnalyticsTracker {
     const currentLang = localStorage.getItem('pajarillo_lang') || 'es';
     const pageTitle = document.title || 'Centro de Interpretación El Pajarillo';
 
-    // REGISTRO RIGUROSO DE VISITA:
-    // Solo si es una NUEVA SESIÓN se contabiliza visita (+1 sesión).
-    // Si el usuario simplemente recarga la página, NO se vuelve a incrementar.
-    if (isNewSession || uniqueStatus.isUniqueToday) {
+    // REGISTRO DE VISITA:
+    // Cuenta la visita y el visitante único
+    if (isNewSession || uniqueStatus.isUniqueToday || uniqueStatus.isUniqueEver) {
       this.track('page_view', {
         is_new_session: isNewSession,
         is_unique_today: uniqueStatus.isUniqueToday,
@@ -253,10 +253,6 @@ class AnalyticsTracker {
 
   track(type, payload = {}) {
     if (this.isAdminContext()) {
-      return;
-    }
-
-    if (localStorage.getItem('pajarillo_cookie_consent') === 'rejected') {
       return;
     }
 
