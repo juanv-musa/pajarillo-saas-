@@ -2507,93 +2507,143 @@ async function loadKioskVideos() {
 
 function renderKioskVideos() {
   const grid = document.getElementById('kiosk-videos-grid');
-  if (!grid) return;
+  const galleryGrid = document.getElementById('gallery-audiovisuals-preview-grid');
 
-  if (kioskVideos.length === 0) {
-    grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; background: var(--admin-bg); border-radius: 8px; border: 1px dashed var(--admin-border); color: var(--admin-muted);">
-        No hay vídeos configurados en el Fondo Audiovisual. Haz clic en "Añadir Nuevo Vídeo" para agregar uno.
-      </div>
-    `;
-    return;
+  if (grid) {
+    if (kioskVideos.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2.5rem; background: var(--admin-bg); border-radius: 8px; border: 1px dashed var(--admin-border); color: var(--admin-muted);">
+          No hay vídeos configurados en el Fondo Audiovisual. Haz clic en "Añadir Nuevo Vídeo" para agregar uno.
+        </div>
+      `;
+    } else {
+      const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+
+      grid.innerHTML = kioskVideos.map(v => {
+        const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+        const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
+        const thumb = v.thumb || './assets/images/lobo.png';
+        const duration = v.duration || '--:--';
+        const cat = v.category || 'Audiovisual';
+        const url = v.videoUrl || '';
+
+        const isP0 = v.showInP0 !== false;
+        const isP1 = savedP1 === v.id || savedP1 === v.videoUrl;
+
+        return `
+          <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)')}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
+            <div>
+              <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
+                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
+                <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #B59A57; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
+                  ${cat}
+                </span>
+                <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
+                  ⏱ ${duration}
+                </span>
+              </div>
+
+              <!-- Badges de estado en P0 y P1 -->
+              <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
+                ${isP0 
+                  ? '<span style="background: rgba(181, 154, 87, 0.2); color: #D4AF37; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(181, 154, 87, 0.4);">📺 P0: Activo (Entrada)</span>' 
+                  : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">📺 P0: Oculto</span>'}
+                ${isP1 
+                  ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ P1: Proyectando (Alta)</span>' 
+                  : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🏛️ P1: Inactivo</span>'}
+              </div>
+
+              <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.45rem; line-height: 1.3;">
+                ${title}
+              </h4>
+
+              <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0 0 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                ${desc}
+              </p>
+
+              <div style="background: var(--admin-bg); padding: 0.45rem 0.65rem; border-radius: 6px; font-family: monospace; font-size: 0.74rem; color: #76A0DC; word-break: break-all; margin-bottom: 0.85rem;">
+                🔗 <a href="${url}" target="_blank" style="color: inherit; text-decoration: none;" title="Abrir enlace del vídeo">${url.length > 38 ? url.substring(0, 38) + '...' : url}</a>
+              </div>
+            </div>
+
+            <div>
+              <!-- Botones de Conmutación Rápida P0 / P1 -->
+              <div style="display: flex; gap: 0.4rem; margin-bottom: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--admin-border);">
+                <button type="button" class="btn-admin ${isP0 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP0 ? 'background: #B59A57; color: #111;' : ''}" onclick="window.toggleKioskP0('${v.id}')" title="Habilitar o deshabilitar de la pantalla táctil de la entrada (P0)">
+                  ${isP0 ? '✓ En Pantalla P0' : '+ Activar en P0'}
+                </button>
+                <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
+                  ${isP1 ? '✓ En Pantalla P1' : '🏛️ Asignar a P1'}
+                </button>
+              </div>
+
+              <!-- Acciones secundarias -->
+              <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
+                <a href="${url}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem; text-decoration: none;" title="Probar vídeo en nueva pestaña">
+                  ▶ Ver
+                </a>
+                <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.editKioskVideo('${v.id}')" title="Editar detalles del vídeo">
+                  ✏️ Editar
+                </button>
+                <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar vídeo">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
   }
 
-  const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
-
-  grid.innerHTML = kioskVideos.map(v => {
-    const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
-    const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
-    const thumb = v.thumb || './assets/images/lobo.png';
-    const duration = v.duration || '--:--';
-    const cat = v.category || 'Audiovisual';
-    const url = v.videoUrl || '';
-
-    const isP0 = v.showInP0 !== false;
-    const isP1 = savedP1 === v.id || savedP1 === v.videoUrl;
-
-    return `
-      <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)')}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
-        <div>
-          <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
-            <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
-            <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #B59A57; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
-              ${cat}
-            </span>
-            <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
-              ⏱ ${duration}
-            </span>
-          </div>
-
-          <!-- Badges de estado en P0 y P1 -->
-          <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
-            ${isP0 
-              ? '<span style="background: rgba(181, 154, 87, 0.2); color: #D4AF37; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(181, 154, 87, 0.4);">📺 P0: Activo (Entrada)</span>' 
-              : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">📺 P0: Oculto</span>'}
-            ${isP1 
-              ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ P1: Proyectando (Alta)</span>' 
-              : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🏛️ P1: Inactivo</span>'}
-          </div>
-
-          <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.45rem; line-height: 1.3;">
-            ${title}
-          </h4>
-
-          <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0 0 0.85rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
-            ${desc}
-          </p>
-
-          <div style="background: var(--admin-bg); padding: 0.45rem 0.65rem; border-radius: 6px; font-family: monospace; font-size: 0.74rem; color: #76A0DC; word-break: break-all; margin-bottom: 0.85rem;">
-            🔗 <a href="${url}" target="_blank" style="color: inherit; text-decoration: none;" title="Abrir enlace del vídeo">${url.length > 38 ? url.substring(0, 38) + '...' : url}</a>
-          </div>
+  // Sincronizar también con la vista de Galería & Audiovisuales si está presente
+  if (galleryGrid) {
+    if (kioskVideos.length === 0) {
+      galleryGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 2rem; color: #A3B5AA;">
+          No hay vídeos configurados. Haz clic en "➕ Añadir Nuevo Vídeo" para agregar uno.
         </div>
+      `;
+    } else {
+      galleryGrid.innerHTML = kioskVideos.map(v => {
+        const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+        const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
+        const thumb = v.thumb || './assets/images/lobo.png';
+        const duration = v.duration || '--:--';
+        const cat = v.category || 'Audiovisual';
 
-        <div>
-          <!-- Botones de Conmutación Rápida P0 / P1 -->
-          <div style="display: flex; gap: 0.4rem; margin-bottom: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--admin-border);">
-            <button type="button" class="btn-admin ${isP0 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP0 ? 'background: #B59A57; color: #111;' : ''}" onclick="window.toggleKioskP0('${v.id}')" title="Habilitar o deshabilitar de la pantalla táctil de la entrada (P0)">
-              ${isP0 ? '✓ En Pantalla P0' : '+ Activar en P0'}
-            </button>
-            <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; justify-content: center; padding: 5px 8px; font-size: 0.76rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
-              ${isP1 ? '✓ En Pantalla P1' : '🏛️ Asignar a P1'}
-            </button>
+        return `
+          <div style="background: rgba(0, 0, 0, 0.45); border: 1.5px solid rgba(181, 154, 87, 0.35); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+            <div>
+              <div style="position: relative; height: 145px; overflow: hidden; background: #000;">
+                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
+                <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #D4AF37; font-size: 0.75rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(181, 154, 87, 0.4);">
+                  ⏱ ${duration}
+                </span>
+                <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
+                  ${cat}
+                </span>
+              </div>
+              <div style="padding: 1rem 1rem 0.5rem;">
+                <h4 style="color: #fff; font-size: 1rem; font-weight: 700; margin: 0 0 0.4rem; line-height: 1.3;">
+                  ${title}
+                </h4>
+                <p style="color: #A3B5AA; font-size: 0.8rem; line-height: 1.45; margin: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                  ${desc}
+                </p>
+              </div>
+            </div>
+            <div style="padding: 0.75rem 1rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3);">
+              <span style="font-size: 0.74rem; color: #76A085; font-weight: 700;">● Pestaña Audiovisuales</span>
+              <button type="button" class="btn-admin btn-admin-primary" style="padding: 5px 12px; font-size: 0.8rem; background: #B59A57; color: #111; font-weight: 700; border-radius: 6px;" onclick="window.editKioskVideo('${v.id}')">
+                ✏️ Editar Vídeo
+              </button>
+            </div>
           </div>
-
-          <!-- Acciones secundarias -->
-          <div style="display: flex; gap: 0.4rem; justify-content: flex-end;">
-            <a href="${url}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem; text-decoration: none;" title="Probar vídeo en nueva pestaña">
-              ▶ Ver
-            </a>
-            <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.editKioskVideo('${v.id}')" title="Editar detalles del vídeo">
-              ✏️ Editar
-            </button>
-            <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 9px; font-size: 0.78rem;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar vídeo">
-              🗑️
-            </button>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
+        `;
+      }).join('');
+    }
+  }
 }
 
 function setupKioskVideoEditor(onVideosChange) {
@@ -2684,6 +2734,10 @@ function setupKioskVideoEditor(onVideosChange) {
   window.editKioskVideo = (id) => {
     const vid = kioskVideos.find(v => v.id === id);
     if (vid) openModal(vid);
+  };
+
+  window.openAddKioskVideoModal = () => {
+    openModal(null);
   };
 
   window.toggleKioskP0 = (id) => {

@@ -180,7 +180,7 @@
 
       <button class="sidebar-btn" data-view="gallery">
         <img src="./assets/icons/icon-photo.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
-        <span>Galería y Recursos</span>
+        <span>Galería & Audiovisuales</span>
         <span class="badge-counter" id="gallery-count-badge">7</span>
       </button>
 
@@ -1450,8 +1450,42 @@
             </p>
           </div>
           <button id="btn-add-gallery-item" type="button" class="btn-admin btn-admin-primary">
-            ➕ Añadir Nuevo Contenido
+            ➕ Añadir Fotografía / PDF
           </button>
+        </div>
+
+        <!-- Sección Directa: Vídeos y Documentales de la pestaña Audiovisuales de la Web Pública -->
+        <div class="admin-card" style="border: 1.5px solid rgba(181, 154, 87, 0.45); background: linear-gradient(145deg, #1A241E 0%, #111914 100%); color: white; margin-top: 1.25rem; margin-bottom: 1.5rem; padding: 1.5rem; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.12);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px;">
+                <span style="font-size: 1.3rem;">🎬</span>
+                <h3 style="color: #D4AF37; margin: 0; font-size: 1.35rem; font-weight: 800; font-family: var(--font-condensed); letter-spacing: 0.5px;">
+                  Vídeos y Documentales de la Web Pública (Pestaña "Audiovisuales")
+                </h3>
+              </div>
+              <p style="color: #A3B5AA; font-size: 0.86rem; margin: 0; line-height: 1.5;">
+                Estos son los 4 documentales y reconstrucciones que se muestran en la sección <strong>Galería Multimedia → Audiovisuales</strong> del portal público (y en las pantallas de 65"). Puedes editar sus títulos, descripciones, miniaturas o enlaces directos con el botón ✏️ Editar.
+              </p>
+            </div>
+            <button type="button" class="btn-admin btn-admin-primary" style="background: #B59A57; color: #111; font-weight: 700;" onclick="window.openAddKioskVideoModal()">
+              ➕ Añadir Nuevo Vídeo
+            </button>
+          </div>
+
+          <!-- Cuadrícula de los Vídeos Audiovisuales -->
+          <div id="gallery-audiovisuals-preview-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.15rem;">
+            <!-- Inyectado dinámicamente por admin.js -->
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid var(--admin-border); margin: 1.75rem 0 1rem; padding-top: 1.25rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--admin-primary); margin-bottom: 0.35rem;">
+            🖼️ Fotografías de Alta Resolución, Fichas Didácticas y Modelo 3D
+          </h3>
+          <p style="font-size: 0.84rem; color: var(--admin-muted); margin: 0;">
+            Recursos publicados en las pestañas <em>Fotografías HD</em>, <em>Modelo 3D Interactivo</em> y <em>Recursos Digitales e Interactivos</em>.
+          </p>
         </div>
 
         <!-- Barra de Filtros de la Galería -->
@@ -2053,6 +2087,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=4.2"></script>
+  <script type="module" src="./js/admin.js?v=4.3"></script>
 </body>
 </html>
