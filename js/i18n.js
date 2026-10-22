@@ -69,6 +69,14 @@ export class I18nManager {
           if (l.como_llegar_direccion) this.translations[lang].horarios.direccion_val = l.como_llegar_direccion;
           if (l.como_llegar_parking) this.translations[lang].horarios.parking_val = l.como_llegar_parking;
           if (l.como_llegar_accesibilidad) this.translations[lang].horarios.accesibilidad_val = l.como_llegar_accesibilidad;
+
+          if (!this.translations[lang].galeria) this.translations[lang].galeria = {};
+          if (l.galeria_title) this.translations[lang].galeria.title = l.galeria_title;
+          if (l.galeria_subtitle) this.translations[lang].galeria.subtitle = l.galeria_subtitle;
+          if (l.galeria_tab_fotos) this.translations[lang].galeria.tab_fotos = l.galeria_tab_fotos;
+          if (l.galeria_tab_modelo3d) this.translations[lang].galeria.tab_modelo3d = l.galeria_tab_modelo3d;
+          if (l.galeria_tab_recursos) this.translations[lang].galeria.tab_recursos = l.galeria_tab_recursos;
+          if (l.galeria_tab_videos) this.translations[lang].galeria.tab_videos = l.galeria_tab_videos;
         }
       }
     } catch (e) {}

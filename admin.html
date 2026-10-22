@@ -911,20 +911,44 @@
           <!-- 4. Fondo Audiovisual y Modelo 3D -->
           <div class="cms-section-accordion">
             <div class="cms-accordion-header">
-              <span>🎬 4. Fondo Audiovisual & Modelo 3D Interactivo</span>
-              <span style="font-size: 0.82rem; color: var(--admin-muted);">Textos de la galería y visor 3D Sketchfab</span>
+              <span>🎬 4. Galería Multimedia, Recursos & Visor 3D</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Título, subtítulo, nombres de pestañas y visor 3D</span>
             </div>
             <div class="cms-accordion-body">
               <div class="grid-2col">
                 <div class="admin-form-group">
-                  <label>Título Sección Audiovisual</label>
-                  <input type="text" id="cnt-galeria-title" class="admin-input">
+                  <label>Título Sección Galería Multimedia</label>
+                  <input type="text" id="cnt-galeria-title" class="admin-input" placeholder="Galería Multimedia y Recursos Digitales">
                 </div>
                 <div class="admin-form-group">
-                  <label>Subtítulo Sección Audiovisual</label>
-                  <input type="text" id="cnt-galeria-subtitle" class="admin-input">
+                  <label>Subtítulo Sección Galería Multimedia</label>
+                  <input type="text" id="cnt-galeria-subtitle" class="admin-input" placeholder="Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.">
                 </div>
               </div>
+
+              <!-- Nombres de las 4 pestañas -->
+              <div class="admin-form-group" style="background: var(--admin-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--admin-border); margin-bottom: 1rem;">
+                <label style="font-weight: 700; color: var(--admin-primary); margin-bottom: 0.5rem; display: block;">Nombres de las 4 Pestañas de la Galería:</label>
+                <div class="grid-2col" style="gap: 0.75rem;">
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--admin-muted);">📸 Pestaña 1 (Fotografías HD)</label>
+                    <input type="text" id="cnt-galeria-tab-fotos" class="admin-input" placeholder="Fotografías HD">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--admin-muted);">🏛️ Pestaña 2 (Modelo 3D Interactivo)</label>
+                    <input type="text" id="cnt-galeria-tab-modelo3d" class="admin-input" placeholder="Modelo 3D Interactivo">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--admin-muted);">📄 Pestaña 3 (Recursos y Fichas)</label>
+                    <input type="text" id="cnt-galeria-tab-recursos" class="admin-input" placeholder="Recursos Digitales e Interactivos">
+                  </div>
+                  <div>
+                    <label style="font-size: 0.8rem; color: var(--admin-muted);">🎬 Pestaña 4 (Audiovisuales)</label>
+                    <input type="text" id="cnt-galeria-tab-videos" class="admin-input" placeholder="Audiovisuales">
+                  </div>
+                </div>
+              </div>
+
               <div class="admin-form-group">
                 <label>Descripción del Visor 3D Interactivo (Santuario y Escultura)</label>
                 <textarea id="cnt-3d-desc" class="admin-textarea" rows="3"></textarea>
@@ -1452,6 +1476,88 @@
           <button id="btn-add-gallery-item" type="button" class="btn-admin btn-admin-primary">
             ➕ Añadir Fotografía / PDF
           </button>
+        </div>
+
+        <!-- Card: Edición de Cabecera y Pestañas de la Galería Multimedia -->
+        <div class="admin-card" style="margin-top: 1.25rem; margin-bottom: 1.5rem; border: 1.5px solid var(--admin-border); background: var(--admin-surface); border-radius: 12px; padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 1rem;">
+            <div>
+              <h3 style="color: var(--admin-primary); margin: 0 0 0.35rem; font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 8px;">
+                <span>🏷️</span> Título, Subtítulo y Pestañas de la Galería Web
+              </h3>
+              <p style="color: var(--admin-muted); font-size: 0.85rem; margin: 0;">
+                Personaliza los textos de cabecera de la sección y renombra o activa/desactiva cualquiera de las 4 pestañas públicas.
+              </p>
+            </div>
+            <button type="button" id="btn-save-gallery-header" class="btn-admin btn-admin-primary" style="padding: 9px 18px; font-weight: 700;">
+              💾 Guardar Cabecera y Pestañas
+            </button>
+          </div>
+
+          <div class="grid-2col" style="gap: 1.25rem; margin-bottom: 1.25rem;">
+            <div class="admin-form-group" style="margin-bottom: 0;">
+              <label style="font-weight: 700; color: var(--admin-primary); margin-bottom: 0.4rem; display: block;">Título Principal de la Sección *</label>
+              <input type="text" id="gallery-cfg-title" class="admin-input" placeholder="Galería Multimedia y Recursos Digitales" value="Galería Multimedia y Recursos Digitales">
+            </div>
+            <div class="admin-form-group" style="margin-bottom: 0;">
+              <label style="font-weight: 700; color: var(--admin-primary); margin-bottom: 0.4rem; display: block;">Subtítulo de la Sección</label>
+              <input type="text" id="gallery-cfg-subtitle" class="admin-input" placeholder="Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.">
+            </div>
+          </div>
+
+          <!-- Parrilla de las 4 pestañas -->
+          <h4 style="font-size: 0.92rem; font-weight: 800; color: var(--admin-primary); margin: 1rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">
+            🗂️ Control de Pestañas (Nombre y Visibilidad en la Web)
+          </h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem;">
+            <!-- Pestaña 1: Fotos -->
+            <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-weight: 700; font-size: 0.85rem; color: var(--admin-primary);">📸 Pestaña 1</span>
+                <label class="switch" title="Mostrar u ocultar pestaña">
+                  <input type="checkbox" id="gallery-tab-toggle-fotos" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <input type="text" id="gallery-tab-name-fotos" class="admin-input" placeholder="Fotografías HD" value="Fotografías HD" style="font-size: 0.85rem; padding: 7px 10px;">
+            </div>
+
+            <!-- Pestaña 2: Modelo 3D -->
+            <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-weight: 700; font-size: 0.85rem; color: var(--admin-primary);">🏛️ Pestaña 2</span>
+                <label class="switch" title="Mostrar u ocultar pestaña">
+                  <input type="checkbox" id="gallery-tab-toggle-modelo3d" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <input type="text" id="gallery-tab-name-modelo3d" class="admin-input" placeholder="Modelo 3D Interactivo" value="Modelo 3D Interactivo" style="font-size: 0.85rem; padding: 7px 10px;">
+            </div>
+
+            <!-- Pestaña 3: Recursos -->
+            <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-weight: 700; font-size: 0.85rem; color: var(--admin-primary);">📄 Pestaña 3</span>
+                <label class="switch" title="Mostrar u ocultar pestaña">
+                  <input type="checkbox" id="gallery-tab-toggle-recursos" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <input type="text" id="gallery-tab-name-recursos" class="admin-input" placeholder="Recursos Digitales e Interactivos" value="Recursos Digitales e Interactivos" style="font-size: 0.85rem; padding: 7px 10px;">
+            </div>
+
+            <!-- Pestaña 4: Videos -->
+            <div style="background: var(--admin-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--admin-border);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <span style="font-weight: 700; font-size: 0.85rem; color: var(--admin-primary);">🎬 Pestaña 4</span>
+                <label class="switch" title="Mostrar u ocultar pestaña">
+                  <input type="checkbox" id="gallery-tab-toggle-videos" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+              <input type="text" id="gallery-tab-name-videos" class="admin-input" placeholder="Audiovisuales" value="Audiovisuales" style="font-size: 0.85rem; padding: 7px 10px;">
+            </div>
+          </div>
         </div>
 
         <!-- Sección Directa: Vídeos y Documentales de la pestaña Audiovisuales de la Web Pública -->
@@ -2113,6 +2219,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=4.4"></script>
+  <script type="module" src="./js/admin.js?v=4.5"></script>
 </body>
 </html>

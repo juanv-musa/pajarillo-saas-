@@ -282,10 +282,19 @@
 
         <!-- Tabs de galería -->
         <div class="tabs-nav gallery-tabs">
-          <button class="tab-btn active" data-tab="fotos" data-i18n="galeria.tab_fotos">Fotografías HD</button>
-          <button class="tab-btn" data-tab="modelo3d"><img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Modelo 3D Interactivo</button>
-          <button class="tab-btn" data-tab="recursos" data-i18n="galeria.tab_recursos">Recursos Digitales e Interactivos</button>
-          <button class="tab-btn" data-tab="videos" data-i18n="galeria.tab_videos">Audiovisuales</button>
+          <button class="tab-btn active" data-tab="fotos" id="gallery-tab-btn-fotos">
+            <span data-i18n="galeria.tab_fotos">Fotografías HD</span>
+          </button>
+          <button class="tab-btn" data-tab="modelo3d" id="gallery-tab-btn-modelo3d">
+            <img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> 
+            <span data-i18n="galeria.tab_modelo3d">Modelo 3D Interactivo</span>
+          </button>
+          <button class="tab-btn" data-tab="recursos" id="gallery-tab-btn-recursos">
+            <span data-i18n="galeria.tab_recursos">Recursos Digitales e Interactivos</span>
+          </button>
+          <button class="tab-btn" data-tab="videos" id="gallery-tab-btn-videos">
+            <span data-i18n="galeria.tab_videos">Audiovisuales</span>
+          </button>
         </div>
 
         <!-- Paneles de Galería -->
@@ -819,6 +828,6 @@
   </div>
 
   <!-- Lógica Principal -->
-  <script type="module" src="./js/app.js?v=4.0"></script>
+  <script type="module" src="./js/app.js?v=4.1"></script>
 </body>
 </html>

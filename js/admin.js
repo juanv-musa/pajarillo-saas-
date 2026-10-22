@@ -306,6 +306,11 @@ function setupSidebarNavigation() {
       if (targetView === 'bookings') {
         loadBookings();
       }
+
+      if (targetView === 'gallery') {
+        setupGalleryHeaderAndTabs();
+        renderKioskVideos();
+      }
     });
   });
 }
@@ -3115,8 +3120,12 @@ const DEFAULT_LOCALES = {
     patrimonio_img_iltiraka: "./assets/images/iltiraka.png",
     patrimonio_img_iberico: "./assets/images/arqueologia.png",
     patrimonio_img_fontanar: "./assets/images/santuario_ilustracion.png",
-    galeria_title: "Fondo Audiovisual y Recursos Multimedia",
-    galeria_subtitle: "Explora la fototeca de alta resolución, visor 3D interactivo y fichas de investigación",
+    galeria_title: "Galería Multimedia y Recursos Digitales",
+    galeria_subtitle: "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
+    galeria_tab_fotos: "Fotografías HD",
+    galeria_tab_modelo3d: "Modelo 3D Interactivo",
+    galeria_tab_recursos: "Recursos Digitales e Interactivos",
+    galeria_tab_videos: "Audiovisuales",
     desc_3d: "Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo en 360°, con soporte de realidad aumentada y control orbital.",
     horarios_title: "Horarios de Apertura",
     horario_verano_titulo: "Horario de Verano (Jun–Sep)",
@@ -3180,8 +3189,12 @@ const DEFAULT_LOCALES = {
     patrimonio_tab1: "The Heroic Sanctuary of El Pajarillo represents one of the summit discoveries of Iberian protohistory...",
     patrimonio_tab2: "The Territory of Iltiraka: claiming a wild valley (silva) via a founding hero and the Loma del Perro settlement...",
     patrimonio_tab3: "A Sacred Landscape & El Fontanar: two sanctuaries articulated by a ceremonial ritual path...",
-    galeria_title: "Audiovisual Archives & Multimedia Resources",
-    galeria_subtitle: "Explore high-resolution photographs, 3D interactive models and educational research factsheets",
+    galeria_title: "Photo Archive & Digital Resources",
+    galeria_subtitle: "High-definition photography, 3D reconstructions, video guides, and downloadable research sheets.",
+    galeria_tab_fotos: "HD Photos",
+    galeria_tab_modelo3d: "Interactive 3D Model",
+    galeria_tab_recursos: "Digital & Interactive Assets",
+    galeria_tab_videos: "Documentaries & Videos",
     desc_3d: "Explore the 3D digital reconstruction of the Iberian sculpture and El Pajarillo sanctuary in 360°, with VR/orbit controls.",
     horarios_title: "Opening Hours",
     horario_verano_titulo: "Summer Hours (Jun–Sep)",
@@ -3245,8 +3258,12 @@ const DEFAULT_LOCALES = {
     patrimonio_tab1: "Le Sanctuaire Héroïque d'El Pajarillo constitue l'une des découvertes majeures de la protohistoire ibérique...",
     patrimonio_tab2: "Le Territoire d'Iltiraka : conquête d'une vallée sauvage (silva) par un héros fondateur et le site de Loma del Perro...",
     patrimonio_tab3: "Un Paysage Sacré et El Fontanar : deux sanctuaires reliés par un chemin rituel cérémoniel...",
-    galeria_title: "Fonds Audiovisuel et Ressources Multimédias",
-    galeria_subtitle: "Explorez la photothèque haute résolution, le visualiseur 3D interactif et les fiches didactiques",
+    galeria_title: "Galerie Médias et Ressources Numériques",
+    galeria_subtitle: "Photographies haute résolution, restitutions en 3D, vidéos documentaires et fiches scientifiques.",
+    galeria_tab_fotos: "Photos HD",
+    galeria_tab_modelo3d: "Modèle 3D Interactif",
+    galeria_tab_recursos: "Ressources Numériques et 3D",
+    galeria_tab_videos: "Vidéos et Documentaires",
     desc_3d: "Explorez la reconstitution 3D interactive de la sculpture ibérique et du sanctuaire d'El Pajarillo à 360°.",
     horarios_title: "Horaires d'Ouverture",
     horario_verano_titulo: "Horaires d'Été (Juin–Sept)",
@@ -3629,8 +3646,12 @@ function populateFormWithLang(lang) {
   const prevFont = document.getElementById('preview-patrimonio-img-fontanar');
   if (prevFont) prevFont.src = c.patrimonio_img_fontanar || './assets/images/santuario_ilustracion.png';
 
-  setVal('cnt-galeria-title', c.galeria_title);
-  setVal('cnt-galeria-subtitle', c.galeria_subtitle);
+  setVal('cnt-galeria-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
+  setVal('cnt-galeria-subtitle', c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.');
+  setVal('cnt-galeria-tab-fotos', c.galeria_tab_fotos || 'Fotografías HD');
+  setVal('cnt-galeria-tab-modelo3d', c.galeria_tab_modelo3d || 'Modelo 3D Interactivo');
+  setVal('cnt-galeria-tab-recursos', c.galeria_tab_recursos || 'Recursos Digitales e Interactivos');
+  setVal('cnt-galeria-tab-videos', c.galeria_tab_videos || 'Audiovisuales');
   setVal('cnt-3d-desc', c.desc_3d);
 
   // 5. Horarios y Tarifas
@@ -3734,6 +3755,10 @@ function saveCurrentFormToLang(lang) {
 
     galeria_title: getVal('cnt-galeria-title'),
     galeria_subtitle: getVal('cnt-galeria-subtitle'),
+    galeria_tab_fotos: getVal('cnt-galeria-tab-fotos'),
+    galeria_tab_modelo3d: getVal('cnt-galeria-tab-modelo3d'),
+    galeria_tab_recursos: getVal('cnt-galeria-tab-recursos'),
+    galeria_tab_videos: getVal('cnt-galeria-tab-videos'),
     desc_3d: getVal('cnt-3d-desc'),
 
     // 5. Horarios y Tarifas
@@ -4034,7 +4059,107 @@ const INITIAL_GALLERY_ITEMS = [
   }
 ];
 
+function setupGalleryHeaderAndTabs() {
+  const inputTitle = document.getElementById('gallery-cfg-title');
+  const inputSubtitle = document.getElementById('gallery-cfg-subtitle');
+  const inputTabFotos = document.getElementById('gallery-tab-name-fotos');
+  const inputTabModelo3d = document.getElementById('gallery-tab-name-modelo3d');
+  const inputTabRecursos = document.getElementById('gallery-tab-name-recursos');
+  const inputTabVideos = document.getElementById('gallery-tab-name-videos');
+
+  const toggleFotos = document.getElementById('gallery-tab-toggle-fotos');
+  const toggleModelo3d = document.getElementById('gallery-tab-toggle-modelo3d');
+  const toggleRecursos = document.getElementById('gallery-tab-toggle-recursos');
+  const toggleVideos = document.getElementById('gallery-tab-toggle-videos');
+
+  const btnSave = document.getElementById('btn-save-gallery-header');
+
+  // Cargar datos actuales
+  loadSavedLocales();
+  const c = (localesData && localesData.es) || {};
+
+  if (inputTitle) inputTitle.value = c.galeria_title || 'Galería Multimedia y Recursos Digitales';
+  if (inputSubtitle) inputSubtitle.value = c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.';
+  if (inputTabFotos) inputTabFotos.value = c.galeria_tab_fotos || 'Fotografías HD';
+  if (inputTabModelo3d) inputTabModelo3d.value = c.galeria_tab_modelo3d || 'Modelo 3D Interactivo';
+  if (inputTabRecursos) inputTabRecursos.value = c.galeria_tab_recursos || 'Recursos Digitales e Interactivos';
+  if (inputTabVideos) inputTabVideos.value = c.galeria_tab_videos || 'Audiovisuales';
+
+  // Visibilidad de pestañas
+  let tabsVis = {};
+  try {
+    const rawVis = localStorage.getItem('pajarillo_gallery_tabs_visibility');
+    if (rawVis) tabsVis = JSON.parse(rawVis);
+  } catch(e) {}
+
+  if (toggleFotos) toggleFotos.checked = tabsVis.fotos !== false;
+  if (toggleModelo3d) toggleModelo3d.checked = tabsVis.modelo3d !== false;
+  if (toggleRecursos) toggleRecursos.checked = tabsVis.recursos !== false;
+  if (toggleVideos) toggleVideos.checked = tabsVis.videos !== false;
+
+  if (btnSave) {
+    btnSave.addEventListener('click', () => {
+      // 1. Guardar en localesData (español y propagar)
+      if (!localesData.es) localesData.es = {};
+      localesData.es.galeria_title = inputTitle ? inputTitle.value.trim() : 'Galería Multimedia y Recursos Digitales';
+      localesData.es.galeria_subtitle = inputSubtitle ? inputSubtitle.value.trim() : '';
+      localesData.es.galeria_tab_fotos = inputTabFotos ? inputTabFotos.value.trim() : 'Fotografías HD';
+      localesData.es.galeria_tab_modelo3d = inputTabModelo3d ? inputTabModelo3d.value.trim() : 'Modelo 3D Interactivo';
+      localesData.es.galeria_tab_recursos = inputTabRecursos ? inputTabRecursos.value.trim() : 'Recursos Digitales e Interactivos';
+      localesData.es.galeria_tab_videos = inputTabVideos ? inputTabVideos.value.trim() : 'Audiovisuales';
+
+      // Sincronizar en tiempo real con los campos de `#subview-contents` si están en el DOM
+      const cntTitle = document.getElementById('cnt-galeria-title');
+      const cntSubtitle = document.getElementById('cnt-galeria-subtitle');
+      const cntTabFotos = document.getElementById('cnt-galeria-tab-fotos');
+      const cntTab3D = document.getElementById('cnt-galeria-tab-modelo3d');
+      const cntTabRecursos = document.getElementById('cnt-galeria-tab-recursos');
+      const cntTabVideos = document.getElementById('cnt-galeria-tab-videos');
+
+      if (cntTitle) cntTitle.value = localesData.es.galeria_title;
+      if (cntSubtitle) cntSubtitle.value = localesData.es.galeria_subtitle;
+      if (cntTabFotos) cntTabFotos.value = localesData.es.galeria_tab_fotos;
+      if (cntTab3D) cntTab3D.value = localesData.es.galeria_tab_modelo3d;
+      if (cntTabRecursos) cntTabRecursos.value = localesData.es.galeria_tab_recursos;
+      if (cntTabVideos) cntTabVideos.value = localesData.es.galeria_tab_videos;
+
+      localStorage.setItem('pajarillo_locales', JSON.stringify(localesData));
+
+      // 2. Guardar visibilidad de pestañas
+      const newTabsVis = {
+        fotos: toggleFotos ? toggleFotos.checked : true,
+        modelo3d: toggleModelo3d ? toggleModelo3d.checked : true,
+        recursos: toggleRecursos ? toggleRecursos.checked : true,
+        videos: toggleVideos ? toggleVideos.checked : true
+      };
+      localStorage.setItem('pajarillo_gallery_tabs_visibility', JSON.stringify(newTabsVis));
+
+      // 3. Sincronizar con siteConfigData
+      if (!siteConfigData.sections) siteConfigData.sections = {};
+      siteConfigData.sections.gallery_tabs = newTabsVis;
+      if (!siteConfigData.content) siteConfigData.content = {};
+      siteConfigData.content.galeria_title = localesData.es.galeria_title;
+      siteConfigData.content.galeria_subtitle = localesData.es.galeria_subtitle;
+      siteConfigData.content.galeria_tab_fotos = localesData.es.galeria_tab_fotos;
+      siteConfigData.content.galeria_tab_modelo3d = localesData.es.galeria_tab_modelo3d;
+      siteConfigData.content.galeria_tab_recursos = localesData.es.galeria_tab_recursos;
+      siteConfigData.content.galeria_tab_videos = localesData.es.galeria_tab_videos;
+      localStorage.setItem('pajarillo_site_config', JSON.stringify(siteConfigData));
+
+      // 4. Notificar a las demás pestañas y ventanas
+      try {
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_locales' }));
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_site_config' }));
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_tabs_visibility' }));
+      } catch(e) {}
+
+      showToast('✅ Título, subtítulo y pestañas de la Galería guardados con éxito');
+    });
+  }
+}
+
 function setupGalleryManager() {
+  setupGalleryHeaderAndTabs();
   loadGalleryData();
 
   const btnAdd = document.getElementById('btn-add-gallery-item');

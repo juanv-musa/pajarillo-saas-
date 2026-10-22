@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v3.5';
+  const CACHE_VERSION = 'v3.6';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -347,6 +347,61 @@ function applySiteConfig(config) {
       el.textContent = c.footer_copy;
     });
   }
+  // Galería Multimedia y Recursos Digitales (Títulos y Textos Editables)
+  if (c.galeria_title) {
+    document.querySelectorAll('[data-i18n="galeria.title"]').forEach(el => el.textContent = c.galeria_title);
+  }
+  if (c.galeria_subtitle) {
+    document.querySelectorAll('[data-i18n="galeria.subtitle"]').forEach(el => el.textContent = c.galeria_subtitle);
+  }
+  if (c.galeria_tab_fotos) {
+    document.querySelectorAll('[data-i18n="galeria.tab_fotos"]').forEach(el => el.textContent = c.galeria_tab_fotos);
+  }
+  if (c.galeria_tab_modelo3d) {
+    document.querySelectorAll('[data-i18n="galeria.tab_modelo3d"]').forEach(el => el.textContent = c.galeria_tab_modelo3d);
+  }
+  if (c.galeria_tab_recursos) {
+    document.querySelectorAll('[data-i18n="galeria.tab_recursos"]').forEach(el => el.textContent = c.galeria_tab_recursos);
+  }
+  if (c.galeria_tab_videos) {
+    document.querySelectorAll('[data-i18n="galeria.tab_videos"]').forEach(el => el.textContent = c.galeria_tab_videos);
+  }
+
+  // Visibilidad de Pestañas de la Galería
+  const tabsVis = (s && s.gallery_tabs) || JSON.parse(localStorage.getItem('pajarillo_gallery_tabs_visibility') || '{}');
+  const galleryTabMap = {
+    fotos: { btn: document.getElementById('gallery-tab-btn-fotos'), pane: document.getElementById('tab-fotos') },
+    modelo3d: { btn: document.getElementById('gallery-tab-btn-modelo3d'), pane: document.getElementById('tab-modelo3d') },
+    recursos: { btn: document.getElementById('gallery-tab-btn-recursos'), pane: document.getElementById('tab-recursos') },
+    videos: { btn: document.getElementById('gallery-tab-btn-videos'), pane: document.getElementById('tab-videos') }
+  };
+
+  let activeTabStillVisible = false;
+  for (const [tKey, tEls] of Object.entries(galleryTabMap)) {
+    if (!tEls.btn) continue;
+    const isTabVis = tabsVis[tKey] !== false;
+    tEls.btn.style.display = isTabVis ? '' : 'none';
+    if (!isTabVis && tEls.pane) {
+      tEls.pane.classList.remove('active');
+    }
+    if (isTabVis && tEls.btn.classList.contains('active')) {
+      activeTabStillVisible = true;
+    }
+  }
+
+  // Si la pestaña que estaba activa se ocultó, activar la primera pestaña que sí esté visible
+  if (!activeTabStillVisible) {
+    for (const [tKey, tEls] of Object.entries(galleryTabMap)) {
+      if (tEls.btn && tEls.btn.style.display !== 'none') {
+        document.querySelectorAll('.gallery-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.gallery-pane').forEach(p => p.classList.remove('active'));
+        tEls.btn.classList.add('active');
+        if (tEls.pane) tEls.pane.classList.add('active');
+        break;
+      }
+    }
+  }
+
   if (c.desc_3d) {
     const desc3dEl = document.querySelector('#tab-modelo3d p');
     if (desc3dEl) desc3dEl.textContent = c.desc_3d;
