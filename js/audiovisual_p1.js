@@ -61,8 +61,11 @@ class AudiovisualP1 {
 
     let selectedVideo = null;
 
-    if (idParam) {
-      selectedVideo = videos.find(v => v.id === idParam);
+    const savedConfig = localStorage.getItem('pajarillo_kiosk_p1_video');
+    const targetKey = savedConfig || idParam;
+
+    if (targetKey) {
+      selectedVideo = videos.find(v => v.id === targetKey || v.videoUrl === targetKey);
     }
 
     if (!selectedVideo && videoParam) {
@@ -75,20 +78,13 @@ class AudiovisualP1 {
       };
     }
 
-    if (!selectedVideo) {
-      // Revisar si en localStorage hay un vídeo guardado por la administración
-      const savedConfig = localStorage.getItem('pajarillo_kiosk_p1_video');
-      if (savedConfig) {
-        selectedVideo = videos.find(v => v.id === savedConfig || v.videoUrl === savedConfig);
-        if (!selectedVideo) {
-          selectedVideo = {
-            title: { es: 'Proyección Oficial · Planta Alta' },
-            category: 'Fondo Audiovisual 2',
-            description: { es: 'Proyección continua en pantalla de 65 pulgadas.' },
-            videoUrl: savedConfig
-          };
-        }
-      }
+    if (!selectedVideo && savedConfig) {
+      selectedVideo = {
+        title: { es: 'Proyección Oficial · Planta Alta' },
+        category: 'Fondo Audiovisual 2',
+        description: { es: 'Proyección continua en pantalla de 65 pulgadas.' },
+        videoUrl: savedConfig
+      };
     }
 
     // Si aún no hay vídeo, usar el primero de la galería o fallback

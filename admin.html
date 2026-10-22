@@ -1788,15 +1788,17 @@
               
               <!-- Selector de vídeo para Salvapantallas P0 -->
               <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(181, 154, 87, 0.35); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.8rem;">
-                <label for="select-p0-screensaver" style="display: block; font-size: 0.78rem; font-weight: 700; color: #D4AF37; margin-bottom: 0.4rem; text-transform: uppercase;">
-                  🎬 Vídeo de Salvapantallas (Modo Reposo P0):
-                </label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 8px;">
+                  <label for="select-p0-screensaver" style="font-size: 0.78rem; font-weight: 700; color: #D4AF37; margin: 0; text-transform: uppercase;">
+                    🎬 Vídeo de Salvapantallas (Modo Reposo P0):
+                  </label>
+                  <button type="button" id="btn-browse-p0-video" class="btn-admin btn-admin-outline" style="border-color: rgba(181, 154, 87, 0.5); color: #D4AF37; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo desde ordenador para P0">
+                    📁 Subir Vídeo
+                  </button>
+                  <input type="file" id="input-file-p0-video" accept="video/mp4,video/webm,video/*" style="display: none;">
+                </div>
                 <select id="select-p0-screensaver" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(181, 154, 87, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.86rem; margin-bottom: 0.4rem;">
-                  <option value="vid_1">Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo</option>
-                  <option value="vid_2">Documental: La Huella Íbera en el Valle del Jandulilla</option>
-                  <option value="vid_3">El Hallazgo Arqueológico: Las Excavaciones (1994)</option>
-                  <option value="vid_4">Paseo Inmersivo 360°: El Santuario Heroico</option>
-                  <option value="custom">-- Otra URL de vídeo personalizada --</option>
+                  <!-- Inyectado dinámicamente -->
                 </select>
 
                 <div id="p0-screensaver-custom-url-wrap" class="hidden" style="margin-bottom: 0.4rem;">
@@ -1840,22 +1842,28 @@
                 Pantalla dedicada para la planta de arriba. Proyecta un solo documental continuo sin menús distractores, con reinicio en bucle automático.
               </p>
 
-              <!-- Selector de vídeo a proyectar en Planta 1 -->
+              <!-- Selector de vídeo para Salvapantallas P1 -->
               <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(118, 160, 220, 0.25); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.8rem;">
-                <label for="select-p1-video" style="display: block; font-size: 0.78rem; font-weight: 700; color: #94BDF2; margin-bottom: 0.4rem; text-transform: uppercase;">
-                  🎬 Seleccionar Vídeo para Planta Alta:
-                </label>
-                <select id="select-p1-video" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(118, 160, 220, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.86rem; margin-bottom: 0.5rem;">
-                  <option value="vid_1">Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo</option>
-                  <option value="vid_2">Documental: La Huella Íbera en el Valle del Jandulilla</option>
-                  <option value="vid_3">El Hallazgo Arqueológico: Las Excavaciones (1994)</option>
-                  <option value="vid_4">Paseo Inmersivo 360°: El Santuario Heroico</option>
-                  <option value="custom">-- Otra URL de vídeo personalizada --</option>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 8px;">
+                  <label for="select-p1-video" style="font-size: 0.78rem; font-weight: 700; color: #94BDF2; margin: 0; text-transform: uppercase;">
+                    🎬 Vídeo de Salvapantallas (Modo Reposo P1):
+                  </label>
+                  <button type="button" id="btn-browse-p1-video" class="btn-admin btn-admin-outline" style="border-color: rgba(118, 160, 220, 0.5); color: #94BDF2; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo desde ordenador para P1">
+                    📁 Subir Vídeo
+                  </button>
+                  <input type="file" id="input-file-p1-video" accept="video/mp4,video/webm,video/*" style="display: none;">
+                </div>
+                <select id="select-p1-video" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(118, 160, 220, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.86rem; margin-bottom: 0.4rem;">
+                  <!-- Inyectado dinámicamente -->
                 </select>
 
-                <div id="p1-custom-url-wrap" class="hidden" style="margin-top: 0.4rem;">
+                <div id="p1-custom-url-wrap" class="hidden" style="margin-bottom: 0.4rem;">
                   <input type="url" id="input-p1-custom-url" placeholder="https://ejemplo.com/video.mp4" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(118, 160, 220, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.84rem;">
                 </div>
+
+                <p style="font-size: 0.74rem; color: #A8B8C8; margin: 0; line-height: 1.4;">
+                  Vídeo en bucle continuo que se reproduce a pantalla completa en la sala de la planta alta como proyección y salvapantallas.
+                </p>
               </div>
               
               <!-- URL Directa P1 -->
@@ -2219,6 +2227,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=4.5"></script>
+  <script type="module" src="./js/admin.js?v=4.6"></script>
 </body>
 </html>

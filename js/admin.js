@@ -311,6 +311,11 @@ function setupSidebarNavigation() {
         setupGalleryHeaderAndTabs();
         renderKioskVideos();
       }
+
+      if (targetView === 'kiosco') {
+        refreshKioskSelects();
+        renderKioskVideos();
+      }
     });
   });
 }
@@ -326,8 +331,10 @@ async function loadAllData() {
     loadPanels(),
     loadAgenda(),
     loadGalleryAdmin(),
-    loadBookings()
+    loadBookings(),
+    loadKioskVideos()
   ]);
+  refreshKioskSelects();
 }
 
 
@@ -2370,34 +2377,64 @@ async function setupKioskSection() {
   const kioskP1UrlEl = document.getElementById('kiosk-p1-url-text');
   const btnCopyP1 = document.getElementById('btn-copy-kiosk-p1-url');
   const btnOpenP1 = document.getElementById('btn-open-kiosk-p1');
+
+  const selectP0Screensaver = document.getElementById('select-p0-screensaver');
+  const customP0ScreensaverWrap = document.getElementById('p0-screensaver-custom-url-wrap');
+  const inputP0ScreensaverCustom = document.getElementById('input-p0-screensaver-custom-url');
+  const btnBrowseP0Video = document.getElementById('btn-browse-p0-video');
+  const inputFileP0Video = document.getElementById('input-file-p0-video');
+
   const selectP1 = document.getElementById('select-p1-video');
   const customUrlWrap = document.getElementById('p1-custom-url-wrap');
   const inputCustomUrl = document.getElementById('input-p1-custom-url');
+  const btnBrowseP1Video = document.getElementById('btn-browse-p1-video');
+  const inputFileP1Video = document.getElementById('input-file-p1-video');
 
   const origin = window.location.origin;
   const basePath = window.location.pathname.replace(/(admin|index)\.html$/, '').replace(/\/$/, '');
 
-  // 1. Configuración de P0 (Planta Baja · Selector de 4 vídeos)
+  // 1. Cargar PRIMERO los vídeos para que ambos desplegables tengan los datos listos
+  await loadKioskVideos();
+
+  // 2. URLs de Sala
   const fullKioskP0Url = `${origin}${basePath}/audiovisual_p0.html`;
-  if (kioskUrlEl) {
-    kioskUrlEl.textContent = fullKioskP0Url;
-  }
+  if (kioskUrlEl) kioskUrlEl.textContent = fullKioskP0Url;
   if (btnCopyP0) {
     btnCopyP0.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(fullKioskP0Url);
-        showToast('📋 Enlace Fondo Audiovisual 1 (P0) copiado al portapapeles');
+        showToast('📋 Enlace Pantalla P0 (Entrada) copiado');
       } catch (e) {
-        showToast('⚠️ No se pudo copiar automáticamente');
+        showToast('⚠️ No se pudo copiar');
       }
     });
   }
 
-  // Selector de Salvapantallas para Pantalla 0 (Planta Baja)
-  const selectP0Screensaver = document.getElementById('select-p0-screensaver');
-  const customP0ScreensaverWrap = document.getElementById('p0-screensaver-custom-url-wrap');
-  const inputP0ScreensaverCustom = document.getElementById('input-p0-screensaver-custom-url');
+  const updateP1Url = (videoVal) => {
+    let p1Url = `${origin}${basePath}/audiovisual_p1.html`;
+    if (videoVal && videoVal !== 'vid_1' && videoVal !== 'custom') {
+      p1Url += `?id=${encodeURIComponent(videoVal)}`;
+    } else if (videoVal === 'custom' && inputCustomUrl && inputCustomUrl.value.trim()) {
+      p1Url += `?video=${encodeURIComponent(inputCustomUrl.value.trim())}`;
+    }
+    if (kioskP1UrlEl) kioskP1UrlEl.textContent = p1Url;
+    if (btnOpenP1) btnOpenP1.href = p1Url;
+    return p1Url;
+  };
 
+  if (btnCopyP1) {
+    btnCopyP1.addEventListener('click', async () => {
+      const currentUrl = kioskP1UrlEl ? kioskP1UrlEl.textContent : `${origin}${basePath}/audiovisual_p1.html`;
+      try {
+        await navigator.clipboard.writeText(currentUrl);
+        showToast('📋 Enlace Pantalla P1 (Planta Alta) copiado');
+      } catch (e) {
+        showToast('⚠️ No se pudo copiar');
+      }
+    });
+  }
+
+  // 3. Funciones para poblar los selectores de P0 y P1
   function updateP0ScreensaverSelect() {
     if (!selectP0Screensaver) return;
     const currentVal = selectP0Screensaver.value || localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
@@ -2414,10 +2451,29 @@ async function setupKioskSection() {
     }
   }
 
-  // Cargar estado previo de Salvapantallas P0
+  function updateP1Select() {
+    if (!selectP1) return;
+    const currentVal = selectP1.value || localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    selectP1.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+
+    const exists = Array.from(selectP1.options).some(opt => opt.value === currentVal);
+    if (exists) {
+      selectP1.value = currentVal;
+    } else if (currentVal && (currentVal.startsWith('http') || currentVal.includes('/'))) {
+      selectP1.value = 'custom';
+    }
+  }
+
+  // Poblar ambos selectores con los vídeos ya cargados
+  updateP0ScreensaverSelect();
+  updateP1Select();
+
+  // Configuración del Selector de Salvapantallas P0
   const savedP0ScreensaverInit = localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || 'vid_1';
   if (selectP0Screensaver) {
-    updateP0ScreensaverSelect();
     const optExists = Array.from(selectP0Screensaver.options).some(opt => opt.value === savedP0ScreensaverInit);
     if (optExists) {
       selectP0Screensaver.value = savedP0ScreensaverInit;
@@ -2454,42 +2510,39 @@ async function setupKioskSection() {
     }
   }
 
-  // 2. Configuración de P1 (Planta Alta · Vídeo único en bucle)
-  const updateP1Url = (videoVal) => {
-    let p1Url = `${origin}${basePath}/audiovisual_p1.html`;
-    if (videoVal && videoVal !== 'vid_1' && videoVal !== 'custom') {
-      p1Url += `?id=${encodeURIComponent(videoVal)}`;
-    } else if (videoVal === 'custom' && inputCustomUrl && inputCustomUrl.value.trim()) {
-      p1Url += `?video=${encodeURIComponent(inputCustomUrl.value.trim())}`;
-    }
-    if (kioskP1UrlEl) kioskP1UrlEl.textContent = p1Url;
-    if (btnOpenP1) btnOpenP1.href = p1Url;
-    return p1Url;
-  };
-
-  // 3. Cargar y gestionar los vídeos de los Fondos Audiovisuales
-  await loadKioskVideos();
-
-  function updateP1Select() {
-    if (!selectP1) return;
-    const currentVal = selectP1.value || localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
-    selectP1.innerHTML = kioskVideos.map(v => {
-      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
-      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
-    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
-
-    const exists = Array.from(selectP1.options).some(opt => opt.value === currentVal);
-    if (exists) {
-      selectP1.value = currentVal;
-    } else if (currentVal && (currentVal.startsWith('http') || currentVal.includes('/'))) {
-      selectP1.value = 'custom';
-    }
+  // Subida directa de vídeo para P0 desde ordenador
+  if (btnBrowseP0Video && inputFileP0Video) {
+    btnBrowseP0Video.addEventListener('click', () => inputFileP0Video.click());
+    inputFileP0Video.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
+      const newId = `vid_upload_${Date.now()}`;
+      const newVideo = {
+        id: newId,
+        title: { es: cleanName, en: cleanName, fr: cleanName },
+        category: 'Salvapantallas P0',
+        duration: '05:00',
+        thumb: './assets/images/lobo.png',
+        videoUrl: `./assets/videos/${file.name}`,
+        description: { es: `Vídeo de salvapantallas subido localmente: ${file.name}` },
+        showInP0: true
+      };
+      kioskVideos.push(newVideo);
+      localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+      localStorage.setItem('pajarillo_kiosk_p0_screensaver_video', newId);
+      window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+      window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p0_screensaver_video' }));
+      updateP0ScreensaverSelect();
+      updateP1Select();
+      renderKioskVideos();
+      showToast(`📁 Vídeo "${file.name}" cargado y asignado como Salvapantallas P0`);
+    });
   }
 
-  // Cargar estado previo de P1
+  // Configuración del Selector de Salvapantallas P1
   const savedP1Video = localStorage.getItem('pajarillo_kiosk_p1_video') || 'vid_1';
   if (selectP1) {
-    updateP1Select();
     const optionExists = Array.from(selectP1.options).some(opt => opt.value === savedP1Video);
     if (optionExists) {
       selectP1.value = savedP1Video;
@@ -2511,31 +2564,52 @@ async function setupKioskSection() {
         localStorage.setItem('pajarillo_kiosk_p1_video', val);
         window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
         updateP1Url(val);
-        showToast('💾 Vídeo de Planta Alta actualizado');
+        renderKioskVideos();
+        showToast('🌟 Vídeo de Salvapantallas P1 actualizado');
       }
     });
+
+    if (inputCustomUrl) {
+      inputCustomUrl.addEventListener('input', () => {
+        const customVal = inputCustomUrl.value.trim();
+        if (customVal) {
+          localStorage.setItem('pajarillo_kiosk_p1_video', customVal);
+          window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
+          updateP1Url('custom');
+          renderKioskVideos();
+        }
+      });
+    }
   }
 
-  if (inputCustomUrl) {
-    inputCustomUrl.addEventListener('input', () => {
-      const customVal = inputCustomUrl.value.trim();
-      if (customVal) {
-        localStorage.setItem('pajarillo_kiosk_p1_video', customVal);
-        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
-        updateP1Url('custom');
-      }
-    });
-  }
-
-  if (btnCopyP1) {
-    btnCopyP1.addEventListener('click', async () => {
-      const currentUrl = kioskP1UrlEl ? kioskP1UrlEl.textContent : `${origin}${basePath}/audiovisual_p1.html`;
-      try {
-        await navigator.clipboard.writeText(currentUrl);
-        showToast('📋 Enlace Fondo Audiovisual 2 (P1) copiado al portapapeles');
-      } catch (e) {
-        showToast('⚠️ No se pudo copiar automáticamente');
-      }
+  // Subida directa de vídeo para P1 desde ordenador
+  if (btnBrowseP1Video && inputFileP1Video) {
+    btnBrowseP1Video.addEventListener('click', () => inputFileP1Video.click());
+    inputFileP1Video.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
+      const newId = `vid_upload_${Date.now()}`;
+      const newVideo = {
+        id: newId,
+        title: { es: cleanName, en: cleanName, fr: cleanName },
+        category: 'Salvapantallas P1',
+        duration: '05:00',
+        thumb: './assets/images/lobo.png',
+        videoUrl: `./assets/videos/${file.name}`,
+        description: { es: `Vídeo de salvapantallas subido localmente: ${file.name}` },
+        showInP0: false
+      };
+      kioskVideos.push(newVideo);
+      localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+      localStorage.setItem('pajarillo_kiosk_p1_video', newId);
+      window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+      window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
+      updateP0ScreensaverSelect();
+      updateP1Select();
+      updateP1Url(newId);
+      renderKioskVideos();
+      showToast(`📁 Vídeo "${file.name}" cargado y asignado como Salvapantallas P1`);
     });
   }
 
@@ -2546,6 +2620,29 @@ async function setupKioskSection() {
   });
 }
 
+function refreshKioskSelects() {
+  const selectP0 = document.getElementById('select-p0-screensaver');
+  const selectP1 = document.getElementById('select-p1-video');
+  if (selectP0 && kioskVideos.length > 0) {
+    const curP0 = selectP0.value || localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    selectP0.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+    if (Array.from(selectP0.options).some(o => o.value === curP0)) selectP0.value = curP0;
+    else if (curP0 && (curP0.startsWith('http') || curP0.includes('/'))) selectP0.value = 'custom';
+  }
+  if (selectP1 && kioskVideos.length > 0) {
+    const curP1 = selectP1.value || localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    selectP1.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+    if (Array.from(selectP1.options).some(o => o.value === curP1)) selectP1.value = curP1;
+    else if (curP1 && (curP1.startsWith('http') || curP1.includes('/'))) selectP1.value = 'custom';
+  }
+}
+
 async function loadKioskVideos() {
   const saved = localStorage.getItem(KIOSK_VIDEOS_STORAGE_KEY);
   if (saved) {
@@ -2553,6 +2650,7 @@ async function loadKioskVideos() {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
         kioskVideos = parsed;
+        refreshKioskSelects();
         renderKioskVideos();
         return;
       }
@@ -2571,6 +2669,7 @@ async function loadKioskVideos() {
     kioskVideos = [];
   }
 
+  refreshKioskSelects();
   renderKioskVideos();
 }
 
