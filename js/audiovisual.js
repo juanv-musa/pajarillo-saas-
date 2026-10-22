@@ -46,9 +46,9 @@ class AudiovisualKiosk {
       if (e.key === 'pajarillo_kiosk_videos') {
         await this.loadVideos();
         this.renderCards();
-        if (this.dom.screensaverVideo && this.videos[0]) {
-          this.dom.screensaverVideo.src = this.videos[0].videoUrl;
-        }
+        this.updateScreensaverSource();
+      } else if (e.key === 'pajarillo_kiosk_p0_screensaver_video') {
+        this.updateScreensaverSource();
       }
     });
   }
@@ -143,20 +143,45 @@ class AudiovisualKiosk {
     }).join('');
   }
 
+  updateScreensaverSource() {
+    if (!this.dom.screensaverVideo) return;
+
+    // 1. Revisar si hay parámetro en URL (?screensaver=... o ?video=...)
+    const params = new URLSearchParams(window.location.search);
+    const paramScreensaver = params.get('screensaver') || params.get('video');
+
+    // 2. Revisar configuración en localStorage guardada desde el panel de Administración
+    const savedScreensaver = localStorage.getItem('pajarillo_kiosk_p0_screensaver_video');
+
+    const target = paramScreensaver || savedScreensaver;
+    let selectedVid = null;
+    if (target && this.videos && this.videos.length > 0) {
+      selectedVid = this.videos.find(v => v.id === target || v.videoUrl === target);
+    }
+
+    let videoSrc = '';
+    if (selectedVid) {
+      videoSrc = selectedVid.videoUrl;
+    } else if (target && (target.startsWith('http') || target.includes('/'))) {
+      videoSrc = target;
+    } else if (this.videos && this.videos.length > 0) {
+      videoSrc = this.videos[0].videoUrl;
+    }
+
+    if (videoSrc && this.dom.screensaverVideo.src !== videoSrc) {
+      this.dom.screensaverVideo.src = videoSrc;
+      this.dom.screensaverVideo.load();
+      if (this.dom.screensaver && this.dom.screensaver.classList.contains('active')) {
+        this.dom.screensaverVideo.play().catch(() => {});
+      }
+    }
+  }
+
   setupScreensaver() {
     if (!this.dom.screensaver) return;
 
     // Configurar vídeo en bucle para el salvapantallas
-    const setScreensaverSrc = () => {
-      if (this.videos && this.videos.length > 0 && this.dom.screensaverVideo) {
-        const vUrl = this.videos[0].videoUrl;
-        if (this.dom.screensaverVideo.src !== vUrl) {
-          this.dom.screensaverVideo.src = vUrl;
-          this.dom.screensaverVideo.load();
-        }
-      }
-    };
-    setScreensaverSrc();
+    this.updateScreensaverSource();
 
     // Arrancar el salvapantallas inicialmente en bucle
     this.showScreensaver();
