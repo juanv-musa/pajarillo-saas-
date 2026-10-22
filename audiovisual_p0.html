@@ -20,39 +20,62 @@
   <!-- Fondo dinámico sutil -->
   <div class="tv-background-glow"></div>
 
-  <!-- Contenedor Principal Kiosco -->
+  <!-- ═══════════════════════════════════════════
+       MODO SALVAPANTALLAS INTERACTIVO (VIDEO RESUMEN EN BUCLE)
+       ═══════════════════════════════════════════ -->
+  <div id="tv-screensaver" class="tv-screensaver active" role="button" tabindex="0" aria-label="Modo salvapantallas. Toca para explorar documentales">
+    <div class="tv-screensaver-video-wrap">
+      <video id="tv-screensaver-video" class="tv-screensaver-video" playsinline muted loop preload="auto">
+        Tu navegador no soporta vídeo HTML5.
+      </video>
+    </div>
+    <div class="tv-screensaver-overlay">
+      <div class="tv-screensaver-header">
+        <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
+      </div>
+      <div class="tv-screensaver-center">
+        <h1 class="tv-screensaver-title">SANTUARIO IBÉRICO DE “EL PAJARILLO”</h1>
+        <div class="tv-screensaver-prompt">
+          <span class="tv-screensaver-hand">👆</span>
+          <span>Toca la pantalla para comenzar</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor Principal Kiosco (Menú de los 4 Vídeos) -->
   <div class="tv-app-shell">
     
-    <!-- Cabecera Institucional y Reloj -->
+    <!-- Cabecera Institucional Mínima: Logotipo Centro y Logotipo Ayuntamiento -->
     <header class="tv-header">
       <div class="tv-brand-wrap">
         <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
         <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
         <div class="tv-brand-titles">
           <h1>Santuario Ibérico de “El Pajarillo”</h1>
-          <p>Sala Audiovisual Oficial · Ayuntamiento de Huelma</p>
         </div>
+      </div>
+      <div class="tv-header-actions">
+        <button type="button" id="btn-trigger-screensaver" class="tv-btn-screensaver" title="Activar modo salvapantallas">
+          <span>📺 Salvapantallas</span>
+        </button>
       </div>
     </header>
 
-    <!-- Zona Central: Parrilla de los 4 Vídeos Documentales -->
+    <!-- Zona Central: Parrilla limpia de los 4 Vídeos Documentales -->
     <main class="tv-main-content">
-      <div class="tv-selection-prompt">
-        <span>Fondo Audiovisual y Recursos Digitales</span>
-        <h2>Selecciona un documental o recreación 3D para reproducir</h2>
-      </div>
-
-      <!-- Inyectado por js/audiovisual.js -->
+      <!-- Inyectado por js/audiovisual.js: (foto, tiempo, título) sin texto resumen ni duplicación de botones -->
       <div id="tv-video-grid" class="tv-grid-4"></div>
     </main>
 
-    <!-- Pie Informativo de Sala -->
+    <!-- Pie Informativo Minimalista -->
     <footer class="tv-footer">
       <div class="tv-instructions">
-        <span>👆 Toca o selecciona cualquier contenido para reproducir a gran resolución</span>
+        <span>👆 Toca cualquier documental para reproducir en pantalla</span>
       </div>
       <div>
-        <span>© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo · Excmo. Ayuntamiento de Huelma</span>
+        <span>Centro de Interpretación Santuario Ibérico de El Pajarillo · Excmo. Ayuntamiento de Huelma</span>
       </div>
     </footer>
 
@@ -103,6 +126,6 @@
   <!-- Telemetría y Analítica Real -->
   <script type="module" src="./js/analytics.js"></script>
   <!-- Controlador Lógico -->
-  <script src="./js/audiovisual.js?v=2.0"></script>
+  <script src="./js/audiovisual.js?v=3.0"></script>
 </body>
 </html>

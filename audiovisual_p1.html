@@ -121,42 +121,41 @@
 
     .p1-video-info {
       max-width: 65%;
-      background: rgba(26, 36, 30, 0.8);
+      background: rgba(26, 36, 30, 0.85);
       backdrop-filter: blur(16px);
       border: 1px solid rgba(220, 220, 214, 0.15);
       border-radius: 16px;
-      padding: 1.25rem 2rem;
+      padding: 1.2rem 1.8rem;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .p1-video-category {
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--tv-accent-gold-text);
-      margin-bottom: 0.25rem;
-      display: block;
     }
 
     .p1-video-title {
       font-family: var(--font-condensed);
-      font-size: 2.2rem;
+      font-size: clamp(1.8rem, 2.2vw, 2.6rem);
       font-weight: 800;
       color: #fff;
       line-height: 1.15;
-      margin: 0 0 0.4rem 0;
+      margin: 0;
     }
 
-    .p1-video-desc {
-      font-size: 0.95rem;
-      color: var(--tv-text-muted);
-      line-height: 1.45;
-      margin: 0;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .p1-time-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(181, 154, 87, 0.45);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
+      font-family: var(--font-condensed);
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--tv-accent-gold-text);
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    .p1-time-icon {
+      font-size: 1.05rem;
     }
 
     /* Barra de control flotante */
@@ -279,39 +278,34 @@
     <p>Toca la pantalla o pulsa cualquier tecla para activar el audio en esta sala.</p>
   </div>
 
-  <!-- Capa de interfaz superpuesta (se oculta automáticamente tras 3.5s de inactividad) -->
+  <!-- Capa de interfaz superpuesta (Modo salvapantallas: se oculta automáticamente tras 3.5s) -->
   <div id="p1-overlay" class="p1-overlay">
     
-    <!-- Cabecera Institucional P1 -->
+    <!-- Cabecera reducida a lo mínimo: Logotipo Centro y Logotipo Ayuntamiento -->
     <header class="p1-header">
       <div class="tv-brand-wrap p1-interactive">
         <img src="./assets/images/logo-pajarillo.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
         <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
-        <div class="tv-brand-titles">
-          <h1>Santuario Ibérico de “El Pajarillo”</h1>
-          <p>Fondo Audiovisual 2 · Planta Alta (Sala Expositiva)</p>
-        </div>
       </div>
 
-      <div class="p1-badge p1-interactive">
-        <span class="p1-badge-dot"></span>
-        <span>Planta 1 · Bucle Continuo TV 65"</span>
-      </div>
+      <button type="button" id="btn-p1-toggle-screensaver" class="p1-btn p1-interactive" title="Modo Salvapantallas (Ocultar información)">
+        📺
+      </button>
     </header>
 
-    <!-- Barra inferior con datos del documental y controles rápidos -->
+    <!-- Barra inferior: Título, Tiempo y controles mínimos -->
     <footer class="p1-bottom-bar">
       <div class="p1-video-info p1-interactive">
-        <span id="p1-category" class="p1-video-category">Fondo Audiovisual 2 · Documental</span>
         <h2 id="p1-title" class="p1-video-title">Cargando audiovisual...</h2>
-        <p id="p1-desc" class="p1-video-desc">Proyección continua de alta resolución en la sala de la planta alta.</p>
+        <div class="p1-time-badge">
+          <span class="p1-time-icon">⏱</span>
+          <span id="p1-time-current">00:00</span> / <span id="p1-time-total">00:00</span>
+        </div>
       </div>
 
       <div class="p1-controls-group p1-interactive">
         <button type="button" id="btn-p1-playpause" class="p1-btn" title="Pausar / Reanudar">⏸</button>
-        <button type="button" id="btn-p1-replay" class="p1-btn" title="Reiniciar vídeo">↺</button>
-        <button type="button" id="btn-p1-mute" class="p1-btn" title="Sonido">🔊</button>
-        <button type="button" id="btn-p1-fullscreen" class="p1-btn" title="Pantalla Completa">⛶</button>
+        <button type="button" id="btn-p1-mute" class="p1-btn" title="Activar / Desactivar Sonido">🔊</button>
       </div>
     </footer>
 
@@ -320,6 +314,6 @@
   <!-- Telemetría y Analítica Real -->
   <script type="module" src="./js/analytics.js"></script>
   <!-- Controlador Lógico de Planta 1 -->
-  <script src="./js/audiovisual_p1.js?v=2.0"></script>
+  <script src="./js/audiovisual_p1.js?v=3.0"></script>
 </body>
 </html>

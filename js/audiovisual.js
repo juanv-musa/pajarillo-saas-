@@ -9,6 +9,7 @@ class AudiovisualKiosk {
     this.activeVideoIndex = null;
     this.idleTimer = null;
     this.controlsTimer = null;
+    this.screensaverIdleTimer = null;
 
     // Elementos DOM
     this.dom = {
@@ -25,7 +26,10 @@ class AudiovisualKiosk {
       timeCurrent: document.getElementById('tv-time-current'),
       timeTotal: document.getElementById('tv-time-total'),
       topbar: document.querySelector('.tv-player-topbar'),
-      controlsBar: document.querySelector('.tv-player-controls')
+      controlsBar: document.querySelector('.tv-player-controls'),
+      screensaver: document.getElementById('tv-screensaver'),
+      screensaverVideo: document.getElementById('tv-screensaver-video'),
+      btnTriggerScreensaver: document.getElementById('btn-trigger-screensaver')
     };
   }
 
@@ -34,6 +38,7 @@ class AudiovisualKiosk {
     this.setupAutoFullscreen();
     await this.loadVideos();
     this.renderCards();
+    this.setupScreensaver();
     this.setupKioskInactivity();
 
     // Sincronización en tiempo real al editar vídeos en el panel de Administración
@@ -41,6 +46,9 @@ class AudiovisualKiosk {
       if (e.key === 'pajarillo_kiosk_videos') {
         await this.loadVideos();
         this.renderCards();
+        if (this.dom.screensaverVideo && this.videos[0]) {
+          this.dom.screensaverVideo.src = this.videos[0].videoUrl;
+        }
       }
     });
   }
@@ -111,38 +119,112 @@ class AudiovisualKiosk {
       return;
     }
 
+    // Información mínima: (foto, tiempo, título). Un único icono de reproducción (no duplicado con botones).
     this.dom.grid.innerHTML = activeVideos.map(vid => {
       const title = typeof vid.title === 'object' && vid.title !== null
         ? (vid.title.es || Object.values(vid.title)[0] || '')
         : (vid.title || '');
-      const desc = typeof vid.description === 'object' && vid.description !== null
-        ? (vid.description.es || Object.values(vid.description)[0] || '')
-        : (vid.description || '');
       const thumb = vid.thumb || './assets/images/lobo.png';
       const duration = vid.duration || '05:00';
-      const category = vid.category || 'Documental';
 
       return `
         <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${title}" onclick="window.tvKiosk.playVideoById('${vid.id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKiosk.playVideoById('${vid.id}');}">
           <div class="tv-card-media">
             <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
             <div class="tv-card-overlay"></div>
-            <span class="tv-card-category">${category}</span>
             <span class="tv-card-duration">⏱ ${duration}</span>
-            <div class="tv-card-play-icon">▶</div>
+            <div class="tv-card-play-icon" aria-hidden="true">▶</div>
           </div>
           <div class="tv-card-body">
-            <div>
-              <h3 class="tv-card-title">${title}</h3>
-              <p class="tv-card-desc">${desc}</p>
-            </div>
-            <div class="tv-card-btn">
-              <span>▶ Reproducir en Pantalla</span>
-            </div>
+            <h3 class="tv-card-title">${title}</h3>
           </div>
         </article>
       `;
     }).join('');
+  }
+
+  setupScreensaver() {
+    if (!this.dom.screensaver) return;
+
+    // Configurar vídeo en bucle para el salvapantallas
+    const setScreensaverSrc = () => {
+      if (this.videos && this.videos.length > 0 && this.dom.screensaverVideo) {
+        const vUrl = this.videos[0].videoUrl;
+        if (this.dom.screensaverVideo.src !== vUrl) {
+          this.dom.screensaverVideo.src = vUrl;
+          this.dom.screensaverVideo.load();
+        }
+      }
+    };
+    setScreensaverSrc();
+
+    // Arrancar el salvapantallas inicialmente en bucle
+    this.showScreensaver();
+
+    // Salir del salvapantallas al tocarlo
+    const onExitScreensaver = (e) => {
+      e.stopPropagation();
+      this.hideScreensaver();
+    };
+
+    this.dom.screensaver.addEventListener('click', onExitScreensaver);
+    this.dom.screensaver.addEventListener('touchstart', onExitScreensaver, { passive: true });
+    this.dom.screensaver.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+        e.preventDefault();
+        onExitScreensaver(e);
+      }
+    });
+
+    // Botón manual en cabecera
+    if (this.dom.btnTriggerScreensaver) {
+      this.dom.btnTriggerScreensaver.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.showScreensaver();
+      });
+    }
+
+    // Si nadie toca la pantalla en 45 segundos en el menú de los 4 vídeos, activar salvapantallas
+    const restartScreensaverInactivity = () => {
+      if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) {
+        return;
+      }
+      clearTimeout(this.screensaverIdleTimer);
+      this.screensaverIdleTimer = setTimeout(() => {
+        if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
+          this.showScreensaver();
+        }
+      }, 45000);
+    };
+
+    window.addEventListener('click', restartScreensaverInactivity, { passive: true });
+    window.addEventListener('touchstart', restartScreensaverInactivity, { passive: true });
+    window.addEventListener('mousemove', restartScreensaverInactivity, { passive: true });
+    window.addEventListener('keydown', restartScreensaverInactivity, { passive: true });
+    restartScreensaverInactivity();
+  }
+
+  showScreensaver() {
+    if (!this.dom.screensaver) return;
+    this.dom.screensaver.classList.add('active');
+    if (this.dom.screensaverVideo) {
+      this.dom.screensaverVideo.play().catch(() => {});
+    }
+  }
+
+  hideScreensaver() {
+    if (!this.dom.screensaver) return;
+    this.dom.screensaver.classList.remove('active');
+    if (this.dom.screensaverVideo) {
+      this.dom.screensaverVideo.pause();
+    }
+    // Reiniciar temporizador de inactividad
+    clearTimeout(this.screensaverIdleTimer);
+    this.screensaverIdleTimer = setTimeout(() => {
+      if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
+        this.showScreensaver();
+      }
+    }, 45000);
   }
 
   playVideoById(id) {
@@ -243,6 +325,13 @@ class AudiovisualKiosk {
       document.documentElement.requestFullscreen().catch(() => {});
     }
 
+    // Detener temporizador de salvapantallas durante la reproducción
+    clearTimeout(this.screensaverIdleTimer);
+    if (this.dom.screensaver) {
+      this.dom.screensaver.classList.remove('active');
+      if (this.dom.screensaverVideo) this.dom.screensaverVideo.pause();
+    }
+
     this.activeVideoIndex = index;
     const title = vid.title.es || vid.title;
 
@@ -290,6 +379,14 @@ class AudiovisualKiosk {
       this.dom.playerModal.classList.remove('active');
     }
     this.activeVideoIndex = null;
+
+    // Reiniciar temporizador para volver al salvapantallas tras 45s de inactividad
+    clearTimeout(this.screensaverIdleTimer);
+    this.screensaverIdleTimer = setTimeout(() => {
+      if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
+        this.showScreensaver();
+      }
+    }, 45000);
   }
 
   onTimeUpdate() {

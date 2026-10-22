@@ -10,14 +10,13 @@ class AudiovisualP1 {
     this.overlayEl = document.getElementById('p1-overlay');
     this.soundAlertEl = document.getElementById('p1-sound-alert');
     this.titleEl = document.getElementById('p1-title');
-    this.categoryEl = document.getElementById('p1-category');
-    this.descEl = document.getElementById('p1-desc');
     this.progressFillEl = document.getElementById('p1-progress-fill');
+    this.timeCurrentEl = document.getElementById('p1-time-current');
+    this.timeTotalEl = document.getElementById('p1-time-total');
 
     this.btnPlayPause = document.getElementById('btn-p1-playpause');
-    this.btnReplay = document.getElementById('btn-p1-replay');
     this.btnMute = document.getElementById('btn-p1-mute');
-    this.btnFullscreen = document.getElementById('btn-p1-fullscreen');
+    this.btnToggleScreensaver = document.getElementById('btn-p1-toggle-screensaver');
 
     this.inactivityTimer = null;
     this.hasUserInteracted = false;
@@ -111,12 +110,8 @@ class AudiovisualP1 {
 
   applyVideo(video) {
     const title = typeof video.title === 'object' ? (video.title.es || Object.values(video.title)[0]) : video.title;
-    const desc = typeof video.description === 'object' ? (video.description.es || Object.values(video.description)[0]) : (video.description || '');
-    const cat = video.category || 'Fondo Audiovisual 2';
 
     if (this.titleEl) this.titleEl.textContent = title;
-    if (this.categoryEl) this.categoryEl.textContent = cat;
-    if (this.descEl) this.descEl.textContent = desc;
     document.title = `${title} · Fondo Audiovisual 2 (TV 65")`;
 
     if (this.videoEl) {
@@ -168,12 +163,21 @@ class AudiovisualP1 {
     window.addEventListener('touchstart', unlockSound, { passive: true });
     window.addEventListener('keydown', unlockSound);
 
-    // Barra de progreso y bucle continuo
+    // Barra de progreso y tiempo en vivo
     if (this.videoEl) {
       this.videoEl.addEventListener('timeupdate', () => {
-        if (this.videoEl.duration && this.progressFillEl) {
-          const percent = (this.videoEl.currentTime / this.videoEl.duration) * 100;
+        const cur = this.videoEl.currentTime || 0;
+        const dur = this.videoEl.duration || 0;
+        if (dur > 0 && this.progressFillEl) {
+          const percent = (cur / dur) * 100;
           this.progressFillEl.style.width = `${percent}%`;
+        }
+
+        if (this.timeCurrentEl) {
+          this.timeCurrentEl.textContent = this.formatSeconds(cur);
+        }
+        if (this.timeTotalEl && dur > 0) {
+          this.timeTotalEl.textContent = this.formatSeconds(dur);
         }
       });
 
@@ -205,17 +209,6 @@ class AudiovisualP1 {
       });
     }
 
-    if (this.btnReplay) {
-      this.btnReplay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        if (this.videoEl) {
-          this.videoEl.currentTime = 0;
-          this.videoEl.play();
-        }
-        this.resetInactivity();
-      });
-    }
-
     if (this.btnMute) {
       this.btnMute.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -230,15 +223,19 @@ class AudiovisualP1 {
       });
     }
 
-    if (this.btnFullscreen) {
-      this.btnFullscreen.addEventListener('click', (e) => {
+    // Botón para alternar modo salvapantallas inmediatamente
+    if (this.btnToggleScreensaver) {
+      this.btnToggleScreensaver.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().catch(() => {});
-        } else {
-          document.exitFullscreen().catch(() => {});
+        if (this.overlayEl) {
+          this.overlayEl.classList.toggle('hidden-overlay');
+          if (this.overlayEl.classList.contains('hidden-overlay')) {
+            document.body.style.cursor = 'none';
+          } else {
+            document.body.style.cursor = 'default';
+            this.resetInactivity();
+          }
         }
-        this.resetInactivity();
       });
     }
 
@@ -272,6 +269,13 @@ class AudiovisualP1 {
       window.addEventListener(ev, () => this.resetInactivity(), { passive: true });
     });
     this.resetInactivity();
+  }
+
+  formatSeconds(sec) {
+    if (isNaN(sec) || sec < 0) return '00:00';
+    const m = Math.floor(sec / 60);
+    const s = Math.floor(sec % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
 
   resetInactivity() {
