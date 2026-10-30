@@ -21,7 +21,7 @@ function getAnalytics() {
 
 function saveAnalytics($data) {
     global $analyticsFile;
-    file_put_contents($analyticsFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+    file_put_contents($analyticsFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
