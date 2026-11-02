@@ -36,6 +36,9 @@ export class I18nManager {
           if (!this.translations[lang].hero) this.translations[lang].hero = {};
           if (!this.translations[lang].historia) this.translations[lang].historia = {};
 
+          if (l.patrimonio_title) this.translations[lang].historia.title = l.patrimonio_title;
+          if (l.patrimonio_subtitle) this.translations[lang].historia.subtitle = l.patrimonio_subtitle;
+
           if (l.hero_eyebrow) this.translations[lang].hero.eyebrow = l.hero_eyebrow;
           if (l.site_title) this.translations[lang].hero.title = l.site_title;
           if (l.site_tagline) this.translations[lang].hero.subtitle = l.site_tagline;

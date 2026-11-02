@@ -3710,8 +3710,8 @@ function populateFormWithLang(lang) {
   setVal('cnt-hito6-desc', c.hito6_desc);
 
   // Patrimonio
-  setVal('cnt-patrimonio-title', c.patrimonio_title);
-  setVal('cnt-patrimonio-subtitle', c.patrimonio_subtitle);
+  setVal('cnt-patrimonio-title', c.patrimonio_title || 'Santuario y Territorio Íbero');
+  setVal('cnt-patrimonio-subtitle', c.patrimonio_subtitle !== undefined ? c.patrimonio_subtitle : 'Hace 2.400 años, la aristocracia de Iltiraka domesticó el valle salvaje del río Jandulilla');
 
   const setCheck = (id, val) => {
     const el = document.getElementById(id);
