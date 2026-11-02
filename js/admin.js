@@ -3677,11 +3677,9 @@ function populateFormWithLang(lang) {
     if (el) el.value = val !== undefined ? val : '';
   };
 
-  setVal('cnt-hero-eyebrow', c.hero_eyebrow);
   setVal('cnt-site-title', c.site_title);
   setVal('cnt-site-tagline', c.site_tagline);
   setVal('cnt-hero-cta', c.hero_cta);
-  setVal('cnt-hero-desc', c.hero_desc);
   setVal('cnt-hero-card-title', c.hero_card_title || 'Cabeza de Lobo');
   setVal('cnt-hero-card-sub', c.hero_card_sub || 'Escultura ibérica en caliza · Siglo IV a.C.');
   let heroCardImg = c.hero_card_img || './assets/images/lobo.png';
@@ -3803,11 +3801,9 @@ function saveCurrentFormToLang(lang) {
 
   localesData[lang] = {
     ...localesData[lang],
-    hero_eyebrow: getVal('cnt-hero-eyebrow'),
     site_title: getVal('cnt-site-title'),
     site_tagline: getVal('cnt-site-tagline'),
     hero_cta: getVal('cnt-hero-cta'),
-    hero_desc: getVal('cnt-hero-desc'),
     hero_card_title: getVal('cnt-hero-card-title'),
     hero_card_sub: getVal('cnt-hero-card-sub'),
     hero_card_img: getVal('cnt-hero-card-img'),
