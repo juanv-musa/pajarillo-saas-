@@ -6,6 +6,7 @@ $panelesFile = '../data/paneles.json';
 $agendaFile = '../data/agenda.json';
 $reservasFile = '../data/reservas.json';
 $configFile = '../data/site_config.json';
+$localesFile = '../data/locales.json';
 
 // Helper para leer archivo
 function readJson($filepath, $default = []) {
@@ -31,6 +32,8 @@ $entity = $_GET['entity'] ?? 'panels'; // 'panels', 'agenda', 'bookings', 'confi
 if ($method === 'GET') {
     if ($entity === 'config') {
         echo json_encode(readJson($configFile, ['sections' => [], 'content' => []]));
+    } elseif ($entity === 'locales') {
+        echo json_encode(readJson($localesFile, []));
     } elseif ($entity === 'agenda') {
         echo json_encode(readJson($agendaFile, ['activities' => []]));
     } elseif ($entity === 'bookings') {
@@ -88,6 +91,29 @@ if ($method === 'POST') {
         $config = $input['config'] ?? [];
         writeJson($configFile, $config);
         echo json_encode(['success' => true, 'config' => $config]);
+        exit;
+    }
+
+    // Guardar traducciones / textos multilingüe en el servidor
+    if (isset($input['action']) && $input['action'] === 'save_locales') {
+        $locales = $input['locales'] ?? [];
+        writeJson($localesFile, $locales);
+
+        // Si incluye español, sincronizar claves clave en locales/es.json
+        if (isset($locales['es']) && is_array($locales['es'])) {
+            $esFile = '../locales/es.json';
+            $esData = readJson($esFile, []);
+            if (!isset($esData['galeria'])) $esData['galeria'] = [];
+            if (!empty($locales['es']['galeria_tab_fotos'])) $esData['galeria']['tab_fotos'] = $locales['es']['galeria_tab_fotos'];
+            if (!empty($locales['es']['galeria_tab_modelo3d'])) $esData['galeria']['tab_modelo3d'] = $locales['es']['galeria_tab_modelo3d'];
+            if (!empty($locales['es']['galeria_tab_recursos'])) $esData['galeria']['tab_recursos'] = $locales['es']['galeria_tab_recursos'];
+            if (!empty($locales['es']['galeria_tab_videos'])) $esData['galeria']['tab_videos'] = $locales['es']['galeria_tab_videos'];
+            if (!empty($locales['es']['galeria_title'])) $esData['galeria']['title'] = $locales['es']['galeria_title'];
+            if (!empty($locales['es']['galeria_subtitle'])) $esData['galeria']['subtitle'] = $locales['es']['galeria_subtitle'];
+            writeJson($esFile, $esData);
+        }
+
+        echo json_encode(['success' => true]);
         exit;
     }
 

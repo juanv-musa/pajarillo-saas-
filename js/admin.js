@@ -3751,6 +3751,15 @@ function populateFormWithLang(lang) {
   setVal('cnt-galeria-tab-videos', c.galeria_tab_videos || 'Audiovisuales');
   setVal('cnt-3d-desc', c.desc_3d);
 
+  if (lang === 'es') {
+    setVal('gallery-cfg-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
+    setVal('gallery-cfg-subtitle', c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.');
+    setVal('gallery-tab-name-fotos', c.galeria_tab_fotos || 'Fotografías HD');
+    setVal('gallery-tab-name-modelo3d', c.galeria_tab_modelo3d || 'Modelo 3D Interactivo');
+    setVal('gallery-tab-name-recursos', c.galeria_tab_recursos || 'Recursos Digitales e Interactivos');
+    setVal('gallery-tab-name-videos', c.galeria_tab_videos || 'Audiovisuales');
+  }
+
   // 5. Horarios y Tarifas
   setVal('cnt-horarios-title', c.horarios_title || 'Horarios de Apertura');
   setVal('cnt-horario-verano-titulo', c.horario_verano_titulo || 'Horario de Verano (Jun–Sep)');
@@ -3907,13 +3916,45 @@ async function saveAllLocales() {
 
   // Sincronizar también con siteConfigData para retrocompatibilidad
   if (localesData.es) {
-    siteConfigData.content = { ...localesData.es };
+    if (!siteConfigData.content) siteConfigData.content = {};
+    siteConfigData.content = { ...siteConfigData.content, ...localesData.es };
     localStorage.setItem('pajarillo_site_config', JSON.stringify(siteConfigData));
   }
+
+  // Sincronizar inputs de la vista Galería si existen en el DOM
+  const curEs = localesData.es || {};
+  const inputTabFotos = document.getElementById('gallery-tab-name-fotos');
+  const inputTabModelo3d = document.getElementById('gallery-tab-name-modelo3d');
+  const inputTabRecursos = document.getElementById('gallery-tab-name-recursos');
+  const inputTabVideos = document.getElementById('gallery-tab-name-videos');
+  const inputGalTitle = document.getElementById('gallery-cfg-title');
+  const inputGalSubtitle = document.getElementById('gallery-cfg-subtitle');
+
+  if (inputTabFotos && curEs.galeria_tab_fotos) inputTabFotos.value = curEs.galeria_tab_fotos;
+  if (inputTabModelo3d && curEs.galeria_tab_modelo3d) inputTabModelo3d.value = curEs.galeria_tab_modelo3d;
+  if (inputTabRecursos && curEs.galeria_tab_recursos) inputTabRecursos.value = curEs.galeria_tab_recursos;
+  if (inputTabVideos && curEs.galeria_tab_videos) inputTabVideos.value = curEs.galeria_tab_videos;
+  if (inputGalTitle && curEs.galeria_title) inputGalTitle.value = curEs.galeria_title;
+  if (inputGalSubtitle && curEs.galeria_subtitle) inputGalSubtitle.value = curEs.galeria_subtitle;
+
+  // Persistir en servidor (API PHP / JSON) para sincronización entre dispositivos y navegadores
+  try {
+    await fetch('./api/data.php?entity=config', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_config', config: siteConfigData })
+    });
+    await fetch('./api/data.php?entity=locales', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_locales', locales: localesData })
+    });
+  } catch (e) {}
 
   // Notificar a otras pestañas
   try {
     window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_locales' }));
+    window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_site_config' }));
   } catch (e) {}
 
   const langNames = { es: 'Español', en: 'Inglés', fr: 'Francés' };
@@ -4192,8 +4233,32 @@ function setupGalleryHeaderAndTabs() {
   if (toggleRecursos) toggleRecursos.checked = tabsVis.recursos !== false;
   if (toggleVideos) toggleVideos.checked = tabsVis.videos !== false;
 
+  // Configurar sincronización en tiempo real entre subview-contents y subview-gallery
+  const syncPairs = [
+    { cnt: 'cnt-galeria-title', gal: 'gallery-cfg-title' },
+    { cnt: 'cnt-galeria-subtitle', gal: 'gallery-cfg-subtitle' },
+    { cnt: 'cnt-galeria-tab-fotos', gal: 'gallery-tab-name-fotos' },
+    { cnt: 'cnt-galeria-tab-modelo3d', gal: 'gallery-tab-name-modelo3d' },
+    { cnt: 'cnt-galeria-tab-recursos', gal: 'gallery-tab-name-recursos' },
+    { cnt: 'cnt-galeria-tab-videos', gal: 'gallery-tab-name-videos' }
+  ];
+  syncPairs.forEach(({ cnt, gal }) => {
+    const elCnt = document.getElementById(cnt);
+    const elGal = document.getElementById(gal);
+    if (elCnt && elGal) {
+      if (!elCnt._hasGallerySync) {
+        elCnt._hasGallerySync = true;
+        elCnt.addEventListener('input', () => { elGal.value = elCnt.value; });
+      }
+      if (!elGal._hasGallerySync) {
+        elGal._hasGallerySync = true;
+        elGal.addEventListener('input', () => { elCnt.value = elGal.value; });
+      }
+    }
+  });
+
   if (btnSave) {
-    btnSave.addEventListener('click', () => {
+    btnSave.onclick = async () => {
       // 1. Guardar en localesData (español y propagar)
       if (!localesData.es) localesData.es = {};
       localesData.es.galeria_title = inputTitle ? inputTitle.value.trim() : 'Galería Multimedia y Recursos Digitales';
@@ -4241,7 +4306,21 @@ function setupGalleryHeaderAndTabs() {
       siteConfigData.content.galeria_tab_videos = localesData.es.galeria_tab_videos;
       localStorage.setItem('pajarillo_site_config', JSON.stringify(siteConfigData));
 
-      // 4. Notificar a las demás pestañas y ventanas
+      // 4. Persistir en servidor (API PHP / JSON) para sincronización entre dispositivos y navegadores
+      try {
+        await fetch('./api/data.php?entity=config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'save_config', config: siteConfigData })
+        });
+        await fetch('./api/data.php?entity=locales', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'save_locales', locales: localesData })
+        });
+      } catch (e) {}
+
+      // 5. Notificar a las demás pestañas y ventanas
       try {
         window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_locales' }));
         window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_site_config' }));
@@ -4249,7 +4328,7 @@ function setupGalleryHeaderAndTabs() {
       } catch(e) {}
 
       showToast('✅ Título, subtítulo y pestañas de la Galería guardados con éxito');
-    });
+    };
   }
 }
 

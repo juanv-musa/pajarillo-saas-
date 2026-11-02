@@ -26,13 +26,21 @@ export class I18nManager {
       if (!this.translations[lang]) this.translations[lang] = {};
     }
 
-    // Sobrescribir con cambios guardados en el panel de administración
+    // Sobrescribir con cambios guardados en el panel de administración (localStorage o servidor)
     try {
-      const savedLocales = localStorage.getItem('pajarillo_locales');
+      let savedLocales = localStorage.getItem('pajarillo_locales');
+      let parsed = null;
       if (savedLocales) {
-        const parsed = JSON.parse(savedLocales);
-        if (parsed[lang]) {
-          const l = parsed[lang];
+        try { parsed = JSON.parse(savedLocales); } catch(e) {}
+      }
+      if (!parsed) {
+        try {
+          const resLoc = await fetch(`./data/locales.json?t=${Date.now()}`);
+          if (resLoc.ok) parsed = await resLoc.json();
+        } catch(e) {}
+      }
+      if (parsed && parsed[lang]) {
+        const l = parsed[lang];
           if (!this.translations[lang].hero) this.translations[lang].hero = {};
           if (!this.translations[lang].historia) this.translations[lang].historia = {};
 
@@ -110,13 +118,10 @@ export class I18nManager {
   }
 
   async setLanguage(lang) {
-    if (!this.translations[lang]) {
-      await this.loadLanguage(lang);
-    } else {
-      this.currentLang = lang;
-      localStorage.setItem('pajarillo_lang', lang);
-      document.documentElement.lang = lang;
-    }
+    await this.loadLanguage(lang);
+    this.currentLang = lang;
+    localStorage.setItem('pajarillo_lang', lang);
+    document.documentElement.lang = lang;
     this.updateActiveButton();
     this.applyTranslations();
 
