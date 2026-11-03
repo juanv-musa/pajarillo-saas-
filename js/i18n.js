@@ -88,6 +88,14 @@ export class I18nManager {
           if (l.galeria_tab_modelo3d) this.translations[lang].galeria.tab_modelo3d = l.galeria_tab_modelo3d;
           if (l.galeria_tab_recursos) this.translations[lang].galeria.tab_recursos = l.galeria_tab_recursos;
           if (l.galeria_tab_videos) this.translations[lang].galeria.tab_videos = l.galeria_tab_videos;
+
+          if (!this.translations[lang].agenda) this.translations[lang].agenda = {};
+          if (l.agenda_title) this.translations[lang].agenda.title = l.agenda_title;
+          if (l.agenda_subtitle) this.translations[lang].agenda.subtitle = l.agenda_subtitle;
+
+          if (!this.translations[lang].reservas) this.translations[lang].reservas = {};
+          if (l.reservas_title) this.translations[lang].reservas.title = l.reservas_title;
+          if (l.reservas_subtitle) this.translations[lang].reservas.subtitle = l.reservas_subtitle;
         }
       }
     } catch (e) {}
@@ -100,7 +108,8 @@ export class I18nManager {
   bindButtons() {
     const buttons = document.querySelectorAll('.lang-btn');
     buttons.forEach(btn => {
-      btn.addEventListener('click', async () => {
+      btn.addEventListener('click', async (e) => {
+        if (e && typeof e.preventDefault === 'function') e.preventDefault();
         const lang = btn.dataset.lang;
         if (lang && lang !== this.currentLang) {
           await this.setLanguage(lang);

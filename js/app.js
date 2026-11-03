@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', async () => {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v3.6';
+  const CACHE_VERSION = 'v3.7';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -96,7 +96,7 @@ async function initSiteConfig() {
     localStorage.removeItem('pajarillo_site_config');
   }
 
-  const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || 'es';
+  const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || localStorage.getItem('pajarillo_lang') || 'es';
   let config = null;
   const local = localStorage.getItem('pajarillo_site_config');
   if (local) {
@@ -123,17 +123,13 @@ async function initSiteConfig() {
       if (resLoc && resLoc.ok) locales = await resLoc.json();
     } catch(e) {}
   }
-  if (locales && locales[currentLang]) {
-    if (!config) config = { sections: {}, content: {} };
-    config.content = { ...config.content, ...locales[currentLang] };
-  }
 
   if (config) {
-    applySiteConfig(config);
+    applySiteConfig(config, currentLang, locales);
   }
 }
 
-function applySiteConfig(config) {
+function applySiteConfig(config, currentLang = 'es', locales = null) {
   if (!config) return;
 
   // 1. Visibilidad Dinámica de Secciones
@@ -186,47 +182,9 @@ function applySiteConfig(config) {
     btnBookNav.style.display = showHeaderReservas ? '' : 'none';
   }
 
-  // 2. Personalización de Textos y Contenidos
   const c = config.content || {};
-  if (c.hero_eyebrow) {
-    document.querySelectorAll('[data-i18n="hero.eyebrow"]').forEach(el => {
-      el.textContent = c.hero_eyebrow;
-    });
-  }
-  if (c.site_title) {
-    document.querySelectorAll('.brand-text strong, [data-i18n="hero.title"]').forEach(el => {
-      el.textContent = c.site_title;
-    });
-  }
-  if (c.site_tagline) {
-    document.querySelectorAll('.brand-text span, [data-i18n="hero.subtitle"]').forEach(el => {
-      el.textContent = c.site_tagline;
-    });
-  }
-  if (c.hero_cta) {
-    document.querySelectorAll('[data-i18n="hero.cta_primary"], [data-i18n="hero.btn_plan"]').forEach(el => {
-      el.textContent = c.hero_cta;
-    });
-  }
-  if (c.hero_desc) {
-    document.querySelectorAll('[data-i18n="hero.card_desc"]').forEach(el => {
-      el.textContent = c.hero_desc;
-    });
-  }
-  if (c.hero_card_title) {
-    document.querySelectorAll('[data-i18n="hero.card_title"]').forEach(el => {
-      el.textContent = c.hero_card_title;
-    });
-    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
-    if (slide0) slide0.dataset.title = c.hero_card_title;
-  }
-  if (c.hero_card_sub) {
-    document.querySelectorAll('[data-i18n="hero.card_sub"]').forEach(el => {
-      el.textContent = c.hero_card_sub;
-    });
-    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
-    if (slide0) slide0.dataset.sub = c.hero_card_sub;
-  }
+
+  // Propiedades técnicas y multimedia (independientes del idioma)
   if (c.hero_card_img) {
     let safeImg = c.hero_card_img;
     if (safeImg.includes('lobo-hero') || safeImg.includes('lobo.jpg')) {
@@ -248,98 +206,6 @@ function applySiteConfig(config) {
       if (el.tagName === 'A') el.href = 'mailto:' + c.email;
     });
   }
-  if (c.ayto) {
-    document.querySelectorAll('[data-i18n="contacto.ayto_val"]').forEach(el => {
-      el.textContent = c.ayto;
-    });
-  }
-  if (c.horario_atencion) {
-    document.querySelectorAll('[data-i18n="contacto.horario_atencion"]').forEach(el => {
-      el.textContent = c.horario_atencion;
-    });
-  }
-  // 5. Horarios de Apertura y Tarifas
-  if (c.horarios_title) {
-    document.querySelectorAll('[data-i18n="horarios.horarios_title"]').forEach(el => el.textContent = c.horarios_title);
-  }
-  if (c.horario_verano_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.temporada_alta"]').forEach(el => el.textContent = c.horario_verano_titulo);
-  }
-  if (c.horario_verano) {
-    document.querySelectorAll('[data-i18n="horarios.alta_dias"]').forEach(el => {
-      el.textContent = c.horario_verano;
-    });
-  }
-  if (c.horario_verano_dom) {
-    document.querySelectorAll('[data-i18n="horarios.alta_dom"]').forEach(el => el.textContent = c.horario_verano_dom);
-  }
-  if (c.horario_invierno_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.temporada_baja"]').forEach(el => el.textContent = c.horario_invierno_titulo);
-  }
-  if (c.horario_invierno) {
-    document.querySelectorAll('[data-i18n="horarios.baja_dias"]').forEach(el => {
-      el.textContent = c.horario_invierno;
-    });
-  }
-  if (c.horario_invierno_dom) {
-    document.querySelectorAll('[data-i18n="horarios.baja_dom"]').forEach(el => el.textContent = c.horario_invierno_dom);
-  }
-  if (c.horario_aviso) {
-    document.querySelectorAll('[data-i18n="horarios.aviso_lunes"]').forEach(el => el.textContent = c.horario_aviso);
-  }
-
-  // Tarifas
-  if (c.tarifas_title) {
-    document.querySelectorAll('[data-i18n="horarios.tarifas_title"]').forEach(el => el.textContent = c.tarifas_title);
-  }
-  if (c.tarifa_general_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general"]').forEach(el => el.textContent = c.tarifa_general_titulo);
-  }
-  if (c.tarifa_general_desc) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general_desc"]').forEach(el => el.textContent = c.tarifa_general_desc);
-  }
-  if (c.tarifa_general) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general_price"]').forEach(el => {
-      el.textContent = c.tarifa_general;
-    });
-  }
-  if (c.tarifa_reducida_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida"]').forEach(el => el.textContent = c.tarifa_reducida_titulo);
-  }
-  if (c.tarifa_reducida_desc) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_desc"]').forEach(el => el.textContent = c.tarifa_reducida_desc);
-  }
-  if (c.tarifa_reducida) {
-    const cleanReducida = c.tarifa_reducida.includes('(') ? '1,50 €' : c.tarifa_reducida;
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_price"]').forEach(el => {
-      el.textContent = cleanReducida;
-    });
-  }
-  if (c.tarifa_gratuita_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita"]').forEach(el => el.textContent = c.tarifa_gratuita_titulo);
-  }
-  if (c.tarifa_gratuita || c.tarifa_gratuita_desc) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_desc"]').forEach(el => {
-      el.textContent = c.tarifa_gratuita_desc || c.tarifa_gratuita;
-    });
-  }
-  if (c.tarifa_gratuita_precio) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_price"]').forEach(el => el.textContent = c.tarifa_gratuita_precio);
-  }
-
-  // Cómo llegar y Localización
-  if (c.como_llegar_titulo) {
-    document.querySelectorAll('[data-i18n="horarios.localizacion_title"]').forEach(el => el.textContent = c.como_llegar_titulo);
-  }
-  if (c.como_llegar_direccion) {
-    document.querySelectorAll('[data-i18n="horarios.direccion_val"]').forEach(el => el.textContent = c.como_llegar_direccion);
-  }
-  if (c.como_llegar_parking) {
-    document.querySelectorAll('[data-i18n="horarios.parking_val"]').forEach(el => el.textContent = c.como_llegar_parking);
-  }
-  if (c.como_llegar_accesibilidad) {
-    document.querySelectorAll('[data-i18n="horarios.accesibilidad_val"]').forEach(el => el.textContent = c.como_llegar_accesibilidad);
-  }
   if (c.como_llegar_mapa_url) {
     document.querySelectorAll('#btn-google-maps, a[href*="maps.google.com"]').forEach(el => el.href = c.como_llegar_mapa_url);
   }
@@ -347,48 +213,51 @@ function applySiteConfig(config) {
     const mapIframe = document.getElementById('osm-map-iframe');
     if (mapIframe) mapIframe.src = c.como_llegar_mapa_embed;
   }
-  if (c.footer_copy) {
-    document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => {
-      el.textContent = c.footer_copy;
-    });
+  if (c.patrimonio_img_iltiraka) {
+    const el = document.getElementById('img-tab-iltiraka');
+    if (el) el.src = c.patrimonio_img_iltiraka;
   }
-  // Galería Multimedia y Recursos Digitales (Títulos y Textos Editables)
-  if (c.galeria_title) {
-    document.querySelectorAll('[data-i18n="galeria.title"]').forEach(el => el.textContent = c.galeria_title);
+  if (c.patrimonio_img_iberico) {
+    const el = document.getElementById('img-tab-iberico');
+    if (el) el.src = c.patrimonio_img_iberico;
   }
-  if (c.galeria_subtitle) {
-    document.querySelectorAll('[data-i18n="galeria.subtitle"]').forEach(el => el.textContent = c.galeria_subtitle);
+  if (c.patrimonio_img_fontanar) {
+    const el = document.getElementById('img-tab-fontanar');
+    if (el) el.src = c.patrimonio_img_fontanar;
   }
-  if (c.galeria_tab_fotos) {
-    document.querySelectorAll('[data-i18n="galeria.tab_fotos"]').forEach(el => el.textContent = c.galeria_tab_fotos);
-    const btnFotos = document.getElementById('gallery-tab-btn-fotos');
-    if (btnFotos) {
-      const sp = btnFotos.querySelector('[data-i18n="galeria.tab_fotos"]') || btnFotos.querySelector('span');
-      if (sp) sp.textContent = c.galeria_tab_fotos;
-    }
-  }
-  if (c.galeria_tab_modelo3d) {
-    document.querySelectorAll('[data-i18n="galeria.tab_modelo3d"]').forEach(el => el.textContent = c.galeria_tab_modelo3d);
-    const btn3d = document.getElementById('gallery-tab-btn-modelo3d');
-    if (btn3d) {
-      const sp = btn3d.querySelector('[data-i18n="galeria.tab_modelo3d"]') || btn3d.querySelector('span');
-      if (sp) sp.textContent = c.galeria_tab_modelo3d;
-    }
-  }
-  if (c.galeria_tab_recursos) {
-    document.querySelectorAll('[data-i18n="galeria.tab_recursos"]').forEach(el => el.textContent = c.galeria_tab_recursos);
-    const btnRec = document.getElementById('gallery-tab-btn-recursos');
-    if (btnRec) {
-      const sp = btnRec.querySelector('[data-i18n="galeria.tab_recursos"]') || btnRec.querySelector('span');
-      if (sp) sp.textContent = c.galeria_tab_recursos;
-    }
-  }
-  if (c.galeria_tab_videos) {
-    document.querySelectorAll('[data-i18n="galeria.tab_videos"]').forEach(el => el.textContent = c.galeria_tab_videos);
-    const btnVid = document.getElementById('gallery-tab-btn-videos');
-    if (btnVid) {
-      const sp = btnVid.querySelector('[data-i18n="galeria.tab_videos"]') || btnVid.querySelector('span');
-      if (sp) sp.textContent = c.galeria_tab_videos;
+
+  // Visibilidad de pestañas en Santuario y Territorio (Patrimonio)
+  const tabIltirakaBtn = document.querySelector('.history-tabs button[data-tab="iltiraka"]');
+  const tabIbericoBtn = document.querySelector('.history-tabs button[data-tab="iberico"]');
+  const tabFontanarBtn = document.querySelector('.history-tabs button[data-tab="fontanar"]');
+  const tabIltirakaPane = document.getElementById('tab-iltiraka');
+  const tabIbericoPane = document.getElementById('tab-iberico');
+  const tabFontanarPane = document.getElementById('tab-fontanar');
+
+  const showIltiraka = c.patrimonio_enable_iltiraka !== false;
+  const showIberico = c.patrimonio_enable_iberico !== false;
+  const showFontanar = c.patrimonio_enable_fontanar === true; // Deshabilitado/oculto por defecto según requerimiento
+
+  if (tabIltirakaBtn) tabIltirakaBtn.style.display = showIltiraka ? '' : 'none';
+  if (tabIltirakaPane) tabIltirakaPane.style.display = showIltiraka ? '' : 'none';
+
+  if (tabIbericoBtn) tabIbericoBtn.style.display = showIberico ? '' : 'none';
+  if (tabIbericoPane) tabIbericoPane.style.display = showIberico ? '' : 'none';
+
+  if (tabFontanarBtn) tabFontanarBtn.style.display = showFontanar ? '' : 'none';
+  if (tabFontanarPane) tabFontanarPane.style.display = showFontanar ? '' : 'none';
+
+  // Si la pestaña activa actual fue deshabilitada u ocultada, conmutar a la primera visible
+  const activeTabBtn = document.querySelector('.history-tabs button.active');
+  if (activeTabBtn && activeTabBtn.style.display === 'none') {
+    activeTabBtn.classList.remove('active');
+    const firstVisible = [tabIltirakaBtn, tabIbericoBtn, tabFontanarBtn].find(b => b && b.style.display !== 'none');
+    if (firstVisible) {
+      firstVisible.classList.add('active');
+      const target = firstVisible.dataset.tab;
+      [tabIltirakaPane, tabIbericoPane, tabFontanarPane].forEach(p => {
+        if (p) p.classList.toggle('active', p.id === `tab-${target}`);
+      });
     }
   }
 
@@ -427,143 +296,303 @@ function applySiteConfig(config) {
     }
   }
 
-  if (c.desc_3d) {
+  // 2. Personalización de Textos y Contenidos Multilingües
+  // REGLA FUNDAMENTAL: Los textos del CMS solo sobreescriben la traducción por defecto
+  // si estamos en español (idioma original de la BD) o si existe una traducción personalizada
+  // explícita para el idioma actual en localesData.
+  const isSpanish = (currentLang === 'es');
+  const langOverrides = (locales && locales[currentLang]) ? locales[currentLang] : null;
+
+  const getCustomText = (field) => {
+    if (langOverrides && langOverrides[field] !== undefined && langOverrides[field] !== '') {
+      return langOverrides[field];
+    }
+    if (isSpanish && c[field] !== undefined && c[field] !== '') {
+      return c[field];
+    }
+    return null;
+  };
+
+  const heroEyebrow = getCustomText('hero_eyebrow');
+  if (heroEyebrow !== null) {
+    document.querySelectorAll('[data-i18n="hero.eyebrow"]').forEach(el => el.textContent = heroEyebrow);
+  }
+  const siteTitle = getCustomText('site_title');
+  if (siteTitle !== null) {
+    document.querySelectorAll('.brand-text strong, [data-i18n="hero.title"]').forEach(el => el.textContent = siteTitle);
+  }
+  const siteTagline = getCustomText('site_tagline');
+  if (siteTagline !== null) {
+    document.querySelectorAll('.brand-text span, [data-i18n="hero.subtitle"]').forEach(el => el.textContent = siteTagline);
+  }
+  const heroCta = getCustomText('hero_cta');
+  if (heroCta !== null) {
+    document.querySelectorAll('[data-i18n="hero.cta_primary"], [data-i18n="hero.btn_plan"]').forEach(el => el.textContent = heroCta);
+  }
+  const heroDesc = getCustomText('hero_desc');
+  if (heroDesc !== null) {
+    document.querySelectorAll('[data-i18n="hero.card_desc"]').forEach(el => el.textContent = heroDesc);
+  }
+  const heroCardTitle = getCustomText('hero_card_title');
+  if (heroCardTitle !== null) {
+    document.querySelectorAll('[data-i18n="hero.card_title"]').forEach(el => el.textContent = heroCardTitle);
+    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
+    if (slide0) slide0.dataset.title = heroCardTitle;
+  }
+  const heroCardSub = getCustomText('hero_card_sub');
+  if (heroCardSub !== null) {
+    document.querySelectorAll('[data-i18n="hero.card_sub"]').forEach(el => el.textContent = heroCardSub);
+    const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
+    if (slide0) slide0.dataset.sub = heroCardSub;
+  }
+
+  const ayto = getCustomText('ayto');
+  if (ayto !== null) {
+    document.querySelectorAll('[data-i18n="contacto.ayto_val"]').forEach(el => el.textContent = ayto);
+  }
+  const horarioAtencion = getCustomText('horario_atencion');
+  if (horarioAtencion !== null) {
+    document.querySelectorAll('[data-i18n="contacto.horario_atencion"]').forEach(el => el.textContent = horarioAtencion);
+  }
+
+  // 5. Horarios de Apertura y Tarifas
+  const horariosTitle = getCustomText('horarios_title');
+  if (horariosTitle !== null) {
+    document.querySelectorAll('[data-i18n="horarios.horarios_title"]').forEach(el => el.textContent = horariosTitle);
+  }
+  const horarioVeranoTitulo = getCustomText('horario_verano_titulo');
+  if (horarioVeranoTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.temporada_alta"]').forEach(el => el.textContent = horarioVeranoTitulo);
+  }
+  const horarioVerano = getCustomText('horario_verano');
+  if (horarioVerano !== null) {
+    document.querySelectorAll('[data-i18n="horarios.alta_dias"]').forEach(el => el.textContent = horarioVerano);
+  }
+  const horarioVeranoDom = getCustomText('horario_verano_dom');
+  if (horarioVeranoDom !== null) {
+    document.querySelectorAll('[data-i18n="horarios.alta_dom"]').forEach(el => el.textContent = horarioVeranoDom);
+  }
+  const horarioInviernoTitulo = getCustomText('horario_invierno_titulo');
+  if (horarioInviernoTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.temporada_baja"]').forEach(el => el.textContent = horarioInviernoTitulo);
+  }
+  const horarioInvierno = getCustomText('horario_invierno');
+  if (horarioInvierno !== null) {
+    document.querySelectorAll('[data-i18n="horarios.baja_dias"]').forEach(el => el.textContent = horarioInvierno);
+  }
+  const horarioInviernoDom = getCustomText('horario_invierno_dom');
+  if (horarioInviernoDom !== null) {
+    document.querySelectorAll('[data-i18n="horarios.baja_dom"]').forEach(el => el.textContent = horarioInviernoDom);
+  }
+  const horarioAviso = getCustomText('horario_aviso');
+  if (horarioAviso !== null) {
+    document.querySelectorAll('[data-i18n="horarios.aviso_lunes"]').forEach(el => el.textContent = horarioAviso);
+  }
+
+  // Tarifas
+  const tarifasTitle = getCustomText('tarifas_title');
+  if (tarifasTitle !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifas_title"]').forEach(el => el.textContent = tarifasTitle);
+  }
+  const tarifaGeneralTitulo = getCustomText('tarifa_general_titulo');
+  if (tarifaGeneralTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_general"]').forEach(el => el.textContent = tarifaGeneralTitulo);
+  }
+  const tarifaGeneralDesc = getCustomText('tarifa_general_desc');
+  if (tarifaGeneralDesc !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_general_desc"]').forEach(el => el.textContent = tarifaGeneralDesc);
+  }
+  const tarifaGeneral = getCustomText('tarifa_general');
+  if (tarifaGeneral !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_general_price"]').forEach(el => el.textContent = tarifaGeneral);
+  }
+  const tarifaReducidaTitulo = getCustomText('tarifa_reducida_titulo');
+  if (tarifaReducidaTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida"]').forEach(el => el.textContent = tarifaReducidaTitulo);
+  }
+  const tarifaReducidaDesc = getCustomText('tarifa_reducida_desc');
+  if (tarifaReducidaDesc !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_desc"]').forEach(el => el.textContent = tarifaReducidaDesc);
+  }
+  const tarifaReducida = getCustomText('tarifa_reducida');
+  if (tarifaReducida !== null) {
+    const cleanReducida = tarifaReducida.includes('(') ? (currentLang === 'en' ? '€1.50' : '1,50 €') : tarifaReducida;
+    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_price"]').forEach(el => el.textContent = cleanReducida);
+  }
+  const tarifaGratuitaTitulo = getCustomText('tarifa_gratuita_titulo');
+  if (tarifaGratuitaTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita"]').forEach(el => el.textContent = tarifaGratuitaTitulo);
+  }
+  const tarifaGratuitaDesc = getCustomText('tarifa_gratuita_desc') || getCustomText('tarifa_gratuita');
+  if (tarifaGratuitaDesc !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_desc"]').forEach(el => el.textContent = tarifaGratuitaDesc);
+  }
+  const tarifaGratuitaPrecio = getCustomText('tarifa_gratuita_precio');
+  if (tarifaGratuitaPrecio !== null) {
+    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_price"]').forEach(el => el.textContent = tarifaGratuitaPrecio);
+  }
+
+  // Cómo llegar y Localización
+  const comoLlegarTitulo = getCustomText('como_llegar_titulo');
+  if (comoLlegarTitulo !== null) {
+    document.querySelectorAll('[data-i18n="horarios.localizacion_title"]').forEach(el => el.textContent = comoLlegarTitulo);
+  }
+  const comoLlegarDireccion = getCustomText('como_llegar_direccion');
+  if (comoLlegarDireccion !== null) {
+    document.querySelectorAll('[data-i18n="horarios.direccion_val"]').forEach(el => el.textContent = comoLlegarDireccion);
+  }
+  const comoLlegarParking = getCustomText('como_llegar_parking');
+  if (comoLlegarParking !== null) {
+    document.querySelectorAll('[data-i18n="horarios.parking_val"]').forEach(el => el.textContent = comoLlegarParking);
+  }
+  const comoLlegarAccesibilidad = getCustomText('como_llegar_accesibilidad');
+  if (comoLlegarAccesibilidad !== null) {
+    document.querySelectorAll('[data-i18n="horarios.accesibilidad_val"]').forEach(el => el.textContent = comoLlegarAccesibilidad);
+  }
+  const footerCopy = getCustomText('footer_copy');
+  if (footerCopy !== null) {
+    document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => el.textContent = footerCopy);
+  }
+
+  // Galería Multimedia y Recursos Digitales (Títulos y Textos Editables)
+  const galeriaTitle = getCustomText('galeria_title');
+  if (galeriaTitle !== null) {
+    document.querySelectorAll('[data-i18n="galeria.title"]').forEach(el => el.textContent = galeriaTitle);
+  }
+  const galeriaSubtitle = getCustomText('galeria_subtitle');
+  if (galeriaSubtitle !== null) {
+    document.querySelectorAll('[data-i18n="galeria.subtitle"]').forEach(el => el.textContent = galeriaSubtitle);
+  }
+  const galeriaTabFotos = getCustomText('galeria_tab_fotos');
+  if (galeriaTabFotos !== null) {
+    document.querySelectorAll('[data-i18n="galeria.tab_fotos"]').forEach(el => el.textContent = galeriaTabFotos);
+    const btnFotos = document.getElementById('gallery-tab-btn-fotos');
+    if (btnFotos) {
+      const sp = btnFotos.querySelector('[data-i18n="galeria.tab_fotos"]') || btnFotos.querySelector('span');
+      if (sp) sp.textContent = galeriaTabFotos;
+    }
+  }
+  const galeriaTabModelo3d = getCustomText('galeria_tab_modelo3d');
+  if (galeriaTabModelo3d !== null) {
+    document.querySelectorAll('[data-i18n="galeria.tab_modelo3d"]').forEach(el => el.textContent = galeriaTabModelo3d);
+    const btn3d = document.getElementById('gallery-tab-btn-modelo3d');
+    if (btn3d) {
+      const sp = btn3d.querySelector('[data-i18n="galeria.tab_modelo3d"]') || btn3d.querySelector('span');
+      if (sp) sp.textContent = galeriaTabModelo3d;
+    }
+  }
+  const galeriaTabRecursos = getCustomText('galeria_tab_recursos');
+  if (galeriaTabRecursos !== null) {
+    document.querySelectorAll('[data-i18n="galeria.tab_recursos"]').forEach(el => el.textContent = galeriaTabRecursos);
+    const btnRec = document.getElementById('gallery-tab-btn-recursos');
+    if (btnRec) {
+      const sp = btnRec.querySelector('[data-i18n="galeria.tab_recursos"]') || btnRec.querySelector('span');
+      if (sp) sp.textContent = galeriaTabRecursos;
+    }
+  }
+  const galeriaTabVideos = getCustomText('galeria_tab_videos');
+  if (galeriaTabVideos !== null) {
+    document.querySelectorAll('[data-i18n="galeria.tab_videos"]').forEach(el => el.textContent = galeriaTabVideos);
+    const btnVid = document.getElementById('gallery-tab-btn-videos');
+    if (btnVid) {
+      const sp = btnVid.querySelector('[data-i18n="galeria.tab_videos"]') || btnVid.querySelector('span');
+      if (sp) sp.textContent = galeriaTabVideos;
+    }
+  }
+
+  const desc3d = getCustomText('desc_3d');
+  if (desc3d !== null) {
     const desc3dEl = document.querySelector('#tab-modelo3d p');
-    if (desc3dEl) desc3dEl.textContent = c.desc_3d;
+    if (desc3dEl) desc3dEl.textContent = desc3d;
   }
-  if (c.agenda_title) {
-    document.querySelectorAll('[data-i18n="agenda.title"]').forEach(el => {
-      el.textContent = c.agenda_title;
-    });
+  const agendaTitle = getCustomText('agenda_title');
+  if (agendaTitle !== null) {
+    document.querySelectorAll('[data-i18n="agenda.title"]').forEach(el => el.textContent = agendaTitle);
   }
-  if (c.agenda_subtitle) {
-    document.querySelectorAll('[data-i18n="agenda.subtitle"]').forEach(el => {
-      el.textContent = c.agenda_subtitle;
-    });
+  const agendaSubtitle = getCustomText('agenda_subtitle');
+  if (agendaSubtitle !== null) {
+    document.querySelectorAll('[data-i18n="agenda.subtitle"]').forEach(el => el.textContent = agendaSubtitle);
   }
-  if (c.reservas_title) {
-    document.querySelectorAll('[data-i18n="reservas.title"]').forEach(el => {
-      el.textContent = c.reservas_title;
-    });
+  const reservasTitle = getCustomText('reservas_title');
+  if (reservasTitle !== null) {
+    document.querySelectorAll('[data-i18n="reservas.title"]').forEach(el => el.textContent = reservasTitle);
   }
-  if (c.reservas_subtitle) {
-    document.querySelectorAll('[data-i18n="reservas.subtitle"]').forEach(el => {
-      el.textContent = c.reservas_subtitle;
-    });
+  const reservasSubtitle = getCustomText('reservas_subtitle');
+  if (reservasSubtitle !== null) {
+    document.querySelectorAll('[data-i18n="reservas.subtitle"]').forEach(el => el.textContent = reservasSubtitle);
   }
 
   // 3. Cronología / Línea de Tiempo (Hitos 1 a 6)
   for (let i = 1; i <= 6; i++) {
     const idx = i - 1;
-    if (c[`hito${i}_title`]) {
+    const hitoTitle = getCustomText(`hito${i}_title`);
+    if (hitoTitle !== null) {
       document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.year"]`).forEach(el => {
-        el.textContent = c[`hito${i}_title`];
+        el.textContent = hitoTitle;
       });
     }
-    if (c[`hito${i}_desc`]) {
+    const hitoDesc = getCustomText(`hito${i}_desc`);
+    if (hitoDesc !== null) {
       document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.text"]`).forEach(el => {
-        el.textContent = c[`hito${i}_desc`];
+        el.textContent = hitoDesc;
       });
     }
   }
 
   // 4. Patrimonio Milenario / Santuario y Territorio
-  if (c.patrimonio_title) {
-    document.querySelectorAll('[data-i18n="historia.title"]').forEach(el => {
-      el.textContent = c.patrimonio_title;
-    });
+  const patrimonioTitle = getCustomText('patrimonio_title');
+  if (patrimonioTitle !== null) {
+    document.querySelectorAll('[data-i18n="historia.title"]').forEach(el => el.textContent = patrimonioTitle);
   }
-  if (c.patrimonio_subtitle) {
-    document.querySelectorAll('[data-i18n="historia.subtitle"]').forEach(el => {
-      el.textContent = c.patrimonio_subtitle;
-    });
+  const patrimonioSubtitle = getCustomText('patrimonio_subtitle');
+  if (patrimonioSubtitle !== null) {
+    document.querySelectorAll('[data-i18n="historia.subtitle"]').forEach(el => el.textContent = patrimonioSubtitle);
   }
   const formatStoryParagraphs = (txt) => {
     if (!txt) return '';
     return txt.split(/\n\s*\n/).map(p => `<p>${p.trim()}</p>`).join('');
   };
 
-  if (c.patrimonio_tab1) {
+  const patrimonioTab1 = getCustomText('patrimonio_tab1');
+  if (patrimonioTab1 !== null) {
     document.querySelectorAll('[data-i18n="historia.iberico_content.body"]').forEach(el => {
-      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab1);
+      el.innerHTML = formatStoryParagraphs(patrimonioTab1);
     });
   }
-  if (c.patrimonio_tab2) {
+  const patrimonioTab2 = getCustomText('patrimonio_tab2');
+  if (patrimonioTab2 !== null) {
     document.querySelectorAll('[data-i18n="historia.iltiraka_content.body"]').forEach(el => {
-      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab2);
+      el.innerHTML = formatStoryParagraphs(patrimonioTab2);
     });
   }
-  if (c.patrimonio_tab3) {
+  const patrimonioTab3 = getCustomText('patrimonio_tab3');
+  if (patrimonioTab3 !== null) {
     document.querySelectorAll('[data-i18n="historia.fontanar_content.body"]').forEach(el => {
-      el.innerHTML = formatStoryParagraphs(c.patrimonio_tab3);
+      el.innerHTML = formatStoryParagraphs(patrimonioTab3);
     });
   }
 
-  // Imágenes personalizables de las 3 pestañas
-  if (c.patrimonio_img_iltiraka) {
-    const el = document.getElementById('img-tab-iltiraka');
-    if (el) el.src = c.patrimonio_img_iltiraka;
-  }
-  if (c.patrimonio_img_iberico) {
-    const el = document.getElementById('img-tab-iberico');
-    if (el) el.src = c.patrimonio_img_iberico;
-  }
-  if (c.patrimonio_img_fontanar) {
-    const el = document.getElementById('img-tab-fontanar');
-    if (el) el.src = c.patrimonio_img_fontanar;
-  }
+  const btnIltiraka = getCustomText('patrimonio_btn_iltiraka');
+  if (btnIltiraka !== null && tabIltirakaBtn) tabIltirakaBtn.textContent = btnIltiraka;
+  const btnIberico = getCustomText('patrimonio_btn_iberico');
+  if (btnIberico !== null && tabIbericoBtn) tabIbericoBtn.textContent = btnIberico;
+  const btnFontanar = getCustomText('patrimonio_btn_fontanar');
+  if (btnFontanar !== null && tabFontanarBtn) tabFontanarBtn.textContent = btnFontanar;
 
-  // Control dinámico de visibilidad de pestañas en Santuario y Territorio (Patrimonio)
-  const tabIltirakaBtn = document.querySelector('.history-tabs button[data-tab="iltiraka"]');
-  const tabIbericoBtn = document.querySelector('.history-tabs button[data-tab="iberico"]');
-  const tabFontanarBtn = document.querySelector('.history-tabs button[data-tab="fontanar"]');
-  const tabIltirakaPane = document.getElementById('tab-iltiraka');
-  const tabIbericoPane = document.getElementById('tab-iberico');
-  const tabFontanarPane = document.getElementById('tab-fontanar');
-
-  const showIltiraka = c.patrimonio_enable_iltiraka !== false;
-  const showIberico = c.patrimonio_enable_iberico !== false;
-  const showFontanar = c.patrimonio_enable_fontanar === true; // Deshabilitado/oculto por defecto según requerimiento
-
-  if (tabIltirakaBtn) tabIltirakaBtn.style.display = showIltiraka ? '' : 'none';
-  if (tabIltirakaPane) tabIltirakaPane.style.display = showIltiraka ? '' : 'none';
-
-  if (tabIbericoBtn) tabIbericoBtn.style.display = showIberico ? '' : 'none';
-  if (tabIbericoPane) tabIbericoPane.style.display = showIberico ? '' : 'none';
-
-  if (tabFontanarBtn) tabFontanarBtn.style.display = showFontanar ? '' : 'none';
-  if (tabFontanarPane) tabFontanarPane.style.display = showFontanar ? '' : 'none';
-
-  // Si la pestaña activa actual fue deshabilitada u ocultada, conmutar a la primera visible
-  const activeTabBtn = document.querySelector('.history-tabs button.active');
-  if (activeTabBtn && activeTabBtn.style.display === 'none') {
-    activeTabBtn.classList.remove('active');
-    const firstVisible = [tabIltirakaBtn, tabIbericoBtn, tabFontanarBtn].find(b => b && b.style.display !== 'none');
-    if (firstVisible) {
-      firstVisible.classList.add('active');
-      const target = firstVisible.dataset.tab;
-      [tabIltirakaPane, tabIbericoPane, tabFontanarPane].forEach(p => {
-        if (p) p.classList.toggle('active', p.id === `tab-${target}`);
-      });
-    }
-  }
-
-  // Títulos personalizados de botones y artículos en Santuario y Territorio
-  if (c.patrimonio_btn_iltiraka && tabIltirakaBtn) tabIltirakaBtn.textContent = c.patrimonio_btn_iltiraka;
-  if (c.patrimonio_btn_iberico && tabIbericoBtn) tabIbericoBtn.textContent = c.patrimonio_btn_iberico;
-  if (c.patrimonio_btn_fontanar && tabFontanarBtn) tabFontanarBtn.textContent = c.patrimonio_btn_fontanar;
-
-  if (c.patrimonio_title_iltiraka && tabIltirakaPane) {
+  const titleIltiraka = getCustomText('patrimonio_title_iltiraka');
+  if (titleIltiraka !== null && tabIltirakaPane) {
     const h3 = tabIltirakaPane.querySelector('h3');
-    if (h3) h3.textContent = c.patrimonio_title_iltiraka;
+    if (h3) h3.textContent = titleIltiraka;
   }
-  if (c.patrimonio_title_iberico && tabIbericoPane) {
+  const titleIberico = getCustomText('patrimonio_title_iberico');
+  if (titleIberico !== null && tabIbericoPane) {
     const h3 = tabIbericoPane.querySelector('h3');
-    if (h3) h3.textContent = c.patrimonio_title_iberico;
+    if (h3) h3.textContent = titleIberico;
   }
-  if (c.patrimonio_title_fontanar && tabFontanarPane) {
+  const titleFontanar = getCustomText('patrimonio_title_fontanar');
+  if (titleFontanar !== null && tabFontanarPane) {
     const h3 = tabFontanarPane.querySelector('h3');
-    if (h3) h3.textContent = c.patrimonio_title_fontanar;
+    if (h3) h3.textContent = titleFontanar;
   }
 
   // Aplicar Carrusel Hero si existen diapositivas o ajustes en la configuración
@@ -878,6 +907,13 @@ function setupHeroCarousel(i18n, customConfig) {
   // Inicializar diapositiva inicial y temporizador
   goToSlide(0);
   startAutoplay();
+
+  // Actualizar textos del slide activo si cambia el idioma
+  if (i18n && typeof i18n.onLanguageChange === 'function') {
+    i18n.onLanguageChange(() => {
+      updateTexts(slides[currentIndex]);
+    });
+  }
 }
 
 /* ═══════════════════════════════════════════
