@@ -1,0 +1,51 @@
+========================================================================
+CENTRO DE INTERPRETACIÓN SANTUARIO IBÉRICO DE "EL PAJARILLO"
+INSTRUCCIONES DE DESPLIEGUE EN SERVIDOR WEB (PARA EL TÉCNICO / INFORMÁTICO)
+========================================================================
+
+1. REQUISITOS DEL SERVIDOR:
+---------------------------
+- Servidor web: Apache o Nginx (Linux / cPanel / Plesk).
+- Soporte PHP: Versión 7.4 o superior (PHP 8.x recomendado).
+- Módulos PHP habituales: JSON y soporte de sesiones habilitado (por defecto en cualquier hosting).
+- Soporte HTTPS recomendado para la web pública y la geolocalización.
+
+2. ESTRUCTURA DE ARCHIVOS:
+--------------------------
+Subir todo el contenido directamente al directorio raíz público de la web 
+(habitualmente public_html, www o httpdocs):
+
+├── index.html              -> Portal público oficial multilingüe (ES / EN / FR)
+├── admin.html              -> Panel de administración y CMS municipal
+├── punto.html              -> Ficha interactiva de visita física y códigos QR de sala
+├── legal.html              -> Aviso Legal, Privacidad, Cookies y Accesibilidad
+├── audiovisual_p0.html     -> Kiosco audiovisual Planta Baja (pantallas 65")
+├── audiovisual_p1.html     -> Kiosco audiovisual Planta Primera
+├── api/                    -> Backend PHP ligero (data.php, auth.php, analytics.php, upload.php)
+├── assets/                 -> Logotipos institucionales, imágenes e iconos
+├── css/                    -> Hojas de estilo y accesibilidad universal
+├── data/                   -> Bases de datos JSON locales del CMS y analíticas
+├── js/                     -> Lógica de cliente, i18n, agenda, accesibilidad y multimedia
+├── locales/                -> Archivos de idiomas (es.json, en.json, fr.json)
+└── uploads/                -> Directorio de almacenamiento para archivos subidos desde el panel
+
+3. PERMISOS DE ESCRITURA OBLIGATORIOS (CRÍTICO):
+------------------------------------------------
+Para que el gestor municipal pueda guardar cambios desde admin.html 
+(crear puntos QR, editar textos, añadir eventos o registrar visitas y analíticas),
+el servidor web (usuario www-data / apache) debe tener permisos de escritura en:
+
+  - Directorio 'data/' y todos sus archivos .json interiores:
+      chmod 775 data/
+      chmod 664 data/*.json
+      (o permisos de lectura y escritura para el servidor web).
+
+  - Directorio 'uploads/':
+      chmod 775 uploads/
+
+4. NOTA PARA FUTURAS ACTUALIZACIONES:
+--------------------------------------
+Si en el futuro se suben nuevas versiones de los archivos HTML, CSS o JS:
+NO sobrescribir la carpeta 'data/' ni 'uploads/' para no perder los datos 
+creados in situ desde el panel de administración (reservas, códigos QR y analíticas).
+========================================================================

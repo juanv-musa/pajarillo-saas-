@@ -9,3 +9,7 @@ uploads/temp_*
 
 # Logs
 *.log
+
+# Paquetes y temporales locales
+*.zip
+generate_canvas_ui.js

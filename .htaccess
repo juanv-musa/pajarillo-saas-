@@ -1,0 +1,16 @@
+# Configuración Servidor Web Apache · Santuario Ibérico de El Pajarillo
+AddDefaultCharset UTF-8
+
+# Tipos MIME correctos
+AddType application/json .json
+AddType image/svg+xml .svg
+AddType application/javascript .js
+AddType text/css .css
+
+# Opciones de seguridad: evitar listado de directorios
+Options -Indexes
+
+# Cabeceras de seguridad y CORS para recursos internos
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+</IfModule>
