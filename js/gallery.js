@@ -45,8 +45,10 @@ export class GalleryManager {
 
   async loadData() {
     try {
-      const res = await fetch('./data/gallery.json?t=' + Date.now());
-      this.data = await res.json();
+      const res = await fetch('./data/gallery.json?t=' + Date.now()).catch(() => null);
+      if (res && res.ok) {
+        this.data = await res.json();
+      }
     } catch (err) {
       console.warn('Error cargando datos de galería:', err);
     }

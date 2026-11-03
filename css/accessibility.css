@@ -7,24 +7,26 @@
 /* Raíz del widget para aislamiento de estilos y filtros */
 #acc-widget-root,
 .acc-widget-root {
-  position: fixed !important;
-  z-index: 999999 !important;
+  position: static !important;
   filter: none !important;
   font-family: var(--font-base, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
 }
 
 /* ═══════════════════════════════════════════
-   1. BOTÓN PESTAÑA LATERAL (MEDIO A LA DERECHA)
+   1. BOTÓN PESTAÑA LATERAL (MEDIO A LA DERECHA PERMANENTE)
    ═══════════════════════════════════════════ */
 .acc-tab-wrapper {
-  position: fixed;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  z-index: 999990;
-  display: flex;
-  align-items: center;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+  position: fixed !important;
+  top: 50% !important;
+  right: 0 !important;
+  transform: translateY(-50%) !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  pointer-events: auto !important;
+  transition: transform 0.25s ease, opacity 0.25s ease !important;
 }
 
 .acc-floating-btn {
@@ -95,42 +97,7 @@
   display: flex;
 }
 
-/* Pestañita pequeña para esconder / revelar */
-.acc-hide-handle-btn {
-  background: #14281b;
-  color: #FFDE82;
-  border: 1px solid #B59A57;
-  border-right: none;
-  border-left: 1px solid rgba(255, 255, 255, 0.15);
-  width: 20px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 0.72rem;
-  transition: background 0.15s ease, color 0.15s ease;
-  outline: none;
-}
 
-.acc-hide-handle-btn:hover {
-  background: #1B3624;
-  color: #FFFFFF;
-}
-
-/* Estado Minimizado / Escondido a la derecha: Mantiene el icono accesible siempre a la vista */
-.acc-tab-wrapper.is-hidden {
-  transform: translateY(-50%) translateX(calc(100% - 48px));
-}
-
-.acc-tab-wrapper.is-hidden:hover {
-  transform: translateY(-50%) translateX(0);
-}
-
-.acc-tab-wrapper.is-hidden .acc-hide-handle-btn span {
-  display: inline-block;
-  transform: rotate(180deg);
-}
 
 /* ═══════════════════════════════════════════
    2. PANEL DESPLEGABLE DE ACCESIBILIDAD
@@ -601,22 +568,18 @@ body.acc-tts-on [data-tts-hover="true"] {
    ═══════════════════════════════════════════ */
 @media (max-width: 600px) {
   .acc-tab-wrapper {
-    top: auto;
-    bottom: 24px;
-    right: 0;
-    transform: none;
-  }
-
-  .acc-tab-wrapper.is-hidden {
-    transform: translateX(calc(100% - 30px));
+    top: auto !important;
+    bottom: 24px !important;
+    right: 0 !important;
+    transform: none !important;
   }
 
   .acc-tab-label {
-    display: none;
+    display: none !important;
   }
 
   .acc-floating-btn {
-    padding: 10px 12px;
+    padding: 10px 12px !important;
   }
 
   .acc-panel {

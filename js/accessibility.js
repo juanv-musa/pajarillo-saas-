@@ -27,6 +27,7 @@ export class AccessibilityWidget {
       tabHidden: false
     };
 
+    window.accessibilityInstance = this;
     this.loadState();
   }
 
@@ -37,7 +38,6 @@ export class AccessibilityWidget {
         this.state = { ...this.state, ...JSON.parse(saved) };
       }
     } catch (e) {}
-    // Garantizar que la pestaña esté siempre visible al cargar la página
     this.state.tabHidden = false;
   }
 
@@ -74,15 +74,12 @@ export class AccessibilityWidget {
     root.id = 'acc-widget-root';
     root.className = 'acc-widget-root';
     root.innerHTML = `
-      <!-- Contenedor Pestaña Lateral (Medio a la derecha) -->
-      <div id="acc-tab-wrapper" class="acc-tab-wrapper${this.state.tabHidden ? ' is-hidden' : ''}">
+      <!-- Contenedor Pestaña Lateral Permanente (Medio a la derecha) -->
+      <div id="acc-tab-wrapper" class="acc-tab-wrapper">
         <button type="button" id="acc-trigger-btn" class="acc-floating-btn" aria-label="${this.t('btn_label', 'Opciones de Accesibilidad')}" title="${this.t('btn_label', 'Opciones de Accesibilidad')}" aria-expanded="false" aria-controls="acc-panel">
           <span class="acc-tab-icon">♿</span>
           <span class="acc-tab-label" data-acc-i18n="tab_text">${this.t('tab_text', 'Accesibilidad')}</span>
           <span id="acc-active-badge" class="acc-floating-btn-badge">0</span>
-        </button>
-        <button type="button" id="acc-toggle-hide-btn" class="acc-hide-handle-btn" aria-label="${this.state.tabHidden ? this.t('show_tab', 'Mostrar pestaña') : this.t('hide_tab', 'Ocultar pestaña')}" title="${this.state.tabHidden ? this.t('show_tab', 'Mostrar pestaña') : this.t('hide_tab', 'Ocultar pestaña')}">
-          <span id="acc-hide-arrow">▶</span>
         </button>
       </div>
 
@@ -252,52 +249,26 @@ export class AccessibilityWidget {
       </div>
     `;
 
-    document.body.appendChild(root);
+    if (document.body) {
+      document.body.appendChild(root);
+    } else if (document.documentElement) {
+      document.documentElement.appendChild(root);
+    }
   }
 
   bindEvents() {
     const triggerBtn = document.getElementById('acc-trigger-btn');
-    const toggleHideBtn = document.getElementById('acc-toggle-hide-btn');
-    const tabWrapper = document.getElementById('acc-tab-wrapper');
     const overlay = document.getElementById('acc-overlay');
     const closeBtn = document.getElementById('acc-close-btn');
     const resetAllBtn = document.getElementById('acc-btn-reset-all');
 
-    if (toggleHideBtn) {
-      toggleHideBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        this.toggleTabVisibility();
-      });
-    }
-
     if (triggerBtn) {
-      triggerBtn.addEventListener('click', () => {
-        if (tabWrapper && tabWrapper.classList.contains('is-hidden')) {
-          tabWrapper.classList.remove('is-hidden');
-          this.state.tabHidden = false;
-          this.saveState();
-        }
+      triggerBtn.addEventListener('click', (e) => {
+        if (e) e.preventDefault();
         this.togglePanel();
       });
     }
 
-    const headerAccBtn = document.getElementById('header-acc-btn');
-    if (headerAccBtn) {
-      headerAccBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.togglePanel();
-      });
-    }
-
-    const mobileNavAccBtn = document.getElementById('mobile-nav-acc-btn');
-    if (mobileNavAccBtn) {
-      mobileNavAccBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const navMenu = document.getElementById('nav-menu');
-        if (navMenu) navMenu.classList.remove('open');
-        this.togglePanel();
-      });
-    }
     if (overlay) {
       overlay.addEventListener('click', () => this.closePanel());
     }
@@ -350,23 +321,6 @@ export class AccessibilityWidget {
 
     // Setup Text-to-Speech (lector al hacer clic o seleccionar texto)
     this.setupTTS();
-  }
-
-  toggleTabVisibility() {
-    const tabWrapper = document.getElementById('acc-tab-wrapper');
-    const toggleHideBtn = document.getElementById('acc-toggle-hide-btn');
-    if (!tabWrapper) return;
-
-    this.state.tabHidden = !this.state.tabHidden;
-    tabWrapper.classList.toggle('is-hidden', this.state.tabHidden);
-    if (toggleHideBtn) {
-      const label = this.state.tabHidden
-        ? this.t('show_tab', 'Mostrar pestaña')
-        : this.t('hide_tab', 'Ocultar pestaña');
-      toggleHideBtn.setAttribute('aria-label', label);
-      toggleHideBtn.setAttribute('title', label);
-    }
-    this.saveState();
   }
 
   togglePanel() {

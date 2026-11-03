@@ -9,46 +9,77 @@ import { GalleryManager } from './gallery.js?v=4.5';
 import { AccessibilityWidget } from './accessibility.js';
 import './analytics.js?v=4.9';
 
-document.addEventListener('DOMContentLoaded', async () => {
-  // 1. Inicializar Internacionalización
-  const i18n = new I18nManager();
-  await i18n.init();
-  window.pajarilloI18n = i18n;
+const initApp = async () => {
+  // 1. Inicializar Internacionalización (inmediata con diccionarios base en memoria)
+  let i18n = null;
+  try {
+    i18n = new I18nManager();
+    await i18n.init();
+    window.pajarilloI18n = i18n;
+    window.currentI18n = i18n;
+  } catch (err) {
+    console.error('Error inicializando i18n:', err);
+  }
 
-  // 2. Inicializar Módulos Dinámicos
-  const agenda = new AgendaManager(i18n);
-  await agenda.init();
+  // 2. Inicializar Widget de Accesibilidad Universal (INMEDIATO e INDEPENDIENTE)
+  try {
+    const accessibility = new AccessibilityWidget(i18n);
+    accessibility.init();
+    window.accessibilityInstance = accessibility;
+  } catch (err) {
+    console.error('Error inicializando Accesibilidad:', err);
+  }
 
-  const gallery = new GalleryManager(i18n);
-  await gallery.init();
-  window.galleryInstance = gallery;
+  // 3. Inicializar Módulos Dinámicos de forma desacoplada
+  let agenda = null;
+  try {
+    agenda = new AgendaManager(i18n);
+    await agenda.init();
+  } catch (err) {
+    console.warn('Error inicializando Agenda:', err);
+  }
 
-  // 3. Inicializar Widget de Accesibilidad Universal
-  const accessibility = new AccessibilityWidget(i18n);
-  accessibility.init();
-  window.accessibilityInstance = accessibility;
+  let gallery = null;
+  try {
+    gallery = new GalleryManager(i18n);
+    await gallery.init();
+    window.galleryInstance = gallery;
+  } catch (err) {
+    console.warn('Error inicializando Galería:', err);
+  }
 
-  // 3. Cargar Puntos de Visita y Paneles
-  await loadExhibitionPoints(i18n);
-  i18n.onLanguageChange(() => {
-    loadExhibitionPoints(i18n);
-  });
+  // 4. Cargar Puntos de Visita y Paneles
+  try {
+    await loadExhibitionPoints(i18n);
+    if (i18n) {
+      i18n.onLanguageChange(() => {
+        loadExhibitionPoints(i18n);
+      });
+    }
+  } catch (err) {
+    console.warn('Error cargando puntos:', err);
+  }
 
-  // 4. Setup Interacciones de UI
-  window.currentI18n = i18n;
-  setupHeaderScroll();
-  setupMobileNav();
-  setupHistoryTabs();
-  setupHeroCarousel(i18n);
-  setupBookingForm(i18n);
-  setupQrModal();
-  setupCookieConsentBanner();
+  // 5. Setup Interacciones de UI
+  try { setupHeaderScroll(); } catch(e) {}
+  try { setupMobileNav(); } catch(e) {}
+  try { setupHistoryTabs(); } catch(e) {}
+  try { setupHeroCarousel(i18n); } catch(e) {}
+  try { setupBookingForm(i18n); } catch(e) {}
+  try { setupQrModal(); } catch(e) {}
+  try { setupCookieConsentBanner(); } catch(e) {}
 
-  // 5. Cargar y Aplicar Configuración de Secciones y Textos del CMS
-  await initSiteConfig();
-  i18n.onLanguageChange(() => {
-    initSiteConfig();
-  });
+  // 6. Cargar y Aplicar Configuración de Secciones y Textos del CMS
+  try {
+    await initSiteConfig();
+    if (i18n) {
+      i18n.onLanguageChange(() => {
+        initSiteConfig();
+      });
+    }
+  } catch (err) {
+    console.warn('Error configurando CMS:', err);
+  }
 
   // Escuchar cambios de configuración desde otras pestañas (Panel de Control)
   window.addEventListener('storage', async (e) => {
@@ -73,7 +104,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       } catch(err) {}
     }
   });
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initApp);
+} else {
+  initApp();
+}
 
 /* ═══════════════════════════════════════════
    Configuración de Secciones y Textos (CMS)
