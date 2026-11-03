@@ -17,7 +17,11 @@ class AudiovisualP1 {
     this.btnPlayPause = document.getElementById('btn-p1-playpause');
     this.btnMute = document.getElementById('btn-p1-mute');
     this.btnToggleScreensaver = document.getElementById('btn-p1-toggle-screensaver');
+    this.btnTrack = document.getElementById('btn-p1-track');
+    this.btnTrackLabel = document.getElementById('btn-p1-track-label');
 
+    this.currentVideo = null;
+    this.activeTrack = 'normal';
     this.inactivityTimer = null;
     this.hasUserInteracted = false;
   }
@@ -103,10 +107,20 @@ class AudiovisualP1 {
   }
 
   applyVideo(video) {
+    this.currentVideo = video;
+    this.activeTrack = 'normal';
     const title = typeof video.title === 'object' ? (video.title.es || Object.values(video.title)[0]) : video.title;
 
     if (this.titleEl) this.titleEl.textContent = title;
     document.title = `${title} · Fondo Audiovisual 2 (TV 65")`;
+
+    const hasAudioDesc = Boolean(video.videoUrlAudioDesc || video.videoAudiodescripcionUrl);
+    if (this.btnTrack) {
+      this.btnTrack.style.display = hasAudioDesc ? 'inline-flex' : 'none';
+      if (this.btnTrackLabel) this.btnTrackLabel.textContent = '🎬 Vídeo Estándar';
+      this.btnTrack.style.background = 'rgba(255, 255, 255, 0.08)';
+      this.btnTrack.style.color = '#fff';
+    }
 
     if (this.videoEl) {
       this.videoEl.src = video.videoUrl;
@@ -191,6 +205,38 @@ class AudiovisualP1 {
     }
 
     // Botones de control
+    if (this.btnTrack) {
+      this.btnTrack.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!this.currentVideo) return;
+        const hasAudioDesc = Boolean(this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl);
+        if (!hasAudioDesc) return;
+
+        const curTime = this.videoEl.currentTime || 0;
+        const wasPaused = this.videoEl.paused;
+
+        if (this.activeTrack === 'normal') {
+          this.activeTrack = 'audiodesc';
+          this.videoEl.src = this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl;
+          if (this.btnTrackLabel) this.btnTrackLabel.textContent = '👁️ Audiodescripción';
+          this.btnTrack.style.background = 'var(--tv-accent-gold)';
+          this.btnTrack.style.color = '#111';
+        } else {
+          this.activeTrack = 'normal';
+          this.videoEl.src = this.currentVideo.videoUrl;
+          if (this.btnTrackLabel) this.btnTrackLabel.textContent = '🎬 Vídeo Estándar';
+          this.btnTrack.style.background = 'rgba(255, 255, 255, 0.08)';
+          this.btnTrack.style.color = '#fff';
+        }
+
+        this.videoEl.currentTime = curTime;
+        if (!wasPaused) {
+          this.videoEl.play().catch(() => {});
+        }
+        this.resetInactivity();
+      });
+    }
+
     if (this.btnPlayPause) {
       this.btnPlayPause.addEventListener('click', (e) => {
         e.stopPropagation();

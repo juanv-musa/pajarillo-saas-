@@ -91,6 +91,17 @@
       <button type="button" id="btn-back-menu" class="btn-back-menu" aria-label="Volver al menú de vídeos">
         ← Volver a la Selección de Vídeos
       </button>
+
+      <!-- Selector de Versión Normal vs Audiodescripción -->
+      <div id="tv-track-selector" class="tv-track-selector" style="display: none;">
+        <button type="button" id="btn-tv-track-normal" class="btn-tv-track active" title="Vídeo estándar locutado y subtitulado">
+          🎬 Vídeo Estándar
+        </button>
+        <button type="button" id="btn-tv-track-audiodesc" class="btn-tv-track" title="Vídeo adaptado con audiodescripción accesible">
+          👁️ Audiodescripción
+        </button>
+      </div>
+
       <div id="tv-playing-title" class="tv-current-playing-title">Cargando contenido...</div>
     </div>
 
@@ -126,6 +137,6 @@
   <!-- Telemetría y Analítica Real -->
   <script type="module" src="./js/analytics.js"></script>
   <!-- Controlador Lógico -->
-  <script src="./js/audiovisual.js?v=3.1"></script>
+  <script src="./js/audiovisual.js?v=3.2"></script>
 </body>
 </html>

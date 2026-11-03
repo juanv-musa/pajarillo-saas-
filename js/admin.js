@@ -2747,6 +2747,9 @@ function renderKioskVideos() {
                 ${isP1 
                   ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ Proyección P1 (Alta)</span>' 
                   : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🏛️ Inactivo en P1</span>'}
+                ${v.videoUrlAudioDesc 
+                  ? '<span style="background: rgba(46, 125, 50, 0.25); color: #2e7d32; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(46, 125, 50, 0.4);">👁️ Con Audiodescripción</span>' 
+                  : ''}
               </div>
 
               <h4 style="font-size: 1.05rem; font-weight: 800; color: var(--admin-primary); margin: 0 0 0.45rem; line-height: 1.3;">
@@ -2822,6 +2825,7 @@ function renderKioskVideos() {
                 <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
                   ${cat}
                 </span>
+                ${v.videoUrlAudioDesc ? '<span style="position: absolute; top: 8px; right: 8px; background: rgba(46, 125, 50, 0.9); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.4);">👁️ Con Audiodescripción</span>' : ''}
               </div>
               <div style="padding: 1rem 1rem 0.5rem;">
                 <h4 style="color: #fff; font-size: 1rem; font-weight: 700; margin: 0 0 0.4rem; line-height: 1.3;">
@@ -2866,6 +2870,18 @@ function setupKioskVideoEditor(onVideosChange) {
     });
   }
 
+  const btnBrowseVideoAd = document.getElementById('btn-browse-kiosk-video-ad');
+  const fileInputVideoAd = document.getElementById('kiosk-video-ad-file-input');
+  if (btnBrowseVideoAd && fileInputVideoAd) {
+    btnBrowseVideoAd.addEventListener('click', () => fileInputVideoAd.click());
+    fileInputVideoAd.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      document.getElementById('kiosk-video-ad-url').value = `./assets/videos/${file.name}`;
+      showToast(`👁️ Archivo de audiodescripción "${file.name}" seleccionado`);
+    });
+  }
+
   const btnBrowseThumb = document.getElementById('btn-browse-kiosk-thumb');
   const fileInputThumb = document.getElementById('kiosk-thumb-file-input');
   if (btnBrowseThumb && fileInputThumb) {
@@ -2901,6 +2917,8 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-category').value = video.category || 'Recreación 3D';
       document.getElementById('kiosk-video-duration').value = video.duration || '05:00';
       document.getElementById('kiosk-video-url').value = video.videoUrl || '';
+      const adInput = document.getElementById('kiosk-video-ad-url');
+      if (adInput) adInput.value = video.videoUrlAudioDesc || video.videoAudiodescripcionUrl || '';
       document.getElementById('kiosk-video-thumb').value = video.thumb || '';
       document.getElementById('kiosk-video-desc').value = (typeof video.description === 'object' ? (video.description.es || Object.values(video.description)[0]) : video.description) || '';
       
@@ -2919,6 +2937,8 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-category').value = 'Recreación 3D';
       document.getElementById('kiosk-video-duration').value = '05:00';
       document.getElementById('kiosk-video-thumb').value = './assets/images/lobo.png';
+      const adInput = document.getElementById('kiosk-video-ad-url');
+      if (adInput) adInput.value = '';
       const checkP0 = document.getElementById('kiosk-video-show-p0');
       if (checkP0) checkP0.checked = true;
       const checkP0Screensaver = document.getElementById('kiosk-video-set-p0-screensaver');
@@ -3032,6 +3052,7 @@ function setupKioskVideoEditor(onVideosChange) {
       duration: document.getElementById('kiosk-video-duration').value.trim() || '05:00',
       thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/lobo.png',
       videoUrl: document.getElementById('kiosk-video-url').value.trim(),
+      videoUrlAudioDesc: document.getElementById('kiosk-video-ad-url') ? document.getElementById('kiosk-video-ad-url').value.trim() : '',
       description: {
         es: descVal,
         en: (existing && existing.description && existing.description.en) || descVal,

@@ -19,12 +19,17 @@ export class GalleryManager {
     this.lightbox = document.getElementById('gallery-lightbox');
     this.lightboxImg = document.getElementById('lightbox-img');
     this.lightboxCaption = document.getElementById('lightbox-caption');
+
+    this.activeVideoIndex = null;
+    this.activeVideoTrack = 'normal';
+    window.galleryInstance = this;
   }
 
   async init() {
     await this.loadData();
     this.bindTabs();
     this.bindLightbox();
+    this.bindVideoLightbox();
     this.render();
 
     this.i18n.onLanguageChange(() => {
@@ -159,6 +164,153 @@ export class GalleryManager {
     });
   }
 
+  bindVideoLightbox() {
+    this.videoLightbox = document.getElementById('video-lightbox');
+    this.videoLightboxElement = document.getElementById('video-lightbox-element');
+    this.videoLightboxTitle = document.getElementById('video-lightbox-title');
+    this.videoLightboxDesc = document.getElementById('video-lightbox-desc');
+    this.videoTrackSelector = document.getElementById('video-lightbox-track-selector');
+    this.btnTrackNormal = document.getElementById('btn-web-track-normal');
+    this.btnTrackAudiodesc = document.getElementById('btn-web-track-audiodesc');
+    this.videoBadgeMode = document.getElementById('video-lightbox-badge-mode');
+    this.videoCloseBtn = document.getElementById('video-lightbox-close');
+
+    if (this.videoCloseBtn) {
+      this.videoCloseBtn.addEventListener('click', () => this.closeVideoModal());
+    }
+
+    if (this.videoLightbox) {
+      this.videoLightbox.addEventListener('click', (e) => {
+        if (e.target === this.videoLightbox) this.closeVideoModal();
+      });
+    }
+
+    if (this.btnTrackNormal) {
+      this.btnTrackNormal.addEventListener('click', () => this.switchVideoTrack('normal'));
+    }
+    if (this.btnTrackAudiodesc) {
+      this.btnTrackAudiodesc.addEventListener('click', () => this.switchVideoTrack('audiodesc'));
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (this.videoLightbox && !this.videoLightbox.classList.contains('hidden')) {
+        if (e.key === 'Escape') this.closeVideoModal();
+      }
+    });
+  }
+
+  openVideoModal(index, track = 'normal') {
+    const vid = this.data.videos[index];
+    if (!vid || !this.videoLightbox || !this.videoLightboxElement) return;
+
+    this.activeVideoIndex = index;
+    this.activeVideoTrack = track;
+
+    const lang = this.i18n.currentLang || 'es';
+    const getLang = (obj, fallback = '') => {
+      if (!obj) return fallback;
+      if (typeof obj === 'string') return obj;
+      return obj[lang] || obj.es || obj.en || obj.fr || fallback;
+    };
+
+    const title = getLang(vid.title, 'Audiovisual');
+    const desc = getLang(vid.description || vid.desc, '');
+
+    if (this.videoLightboxTitle) this.videoLightboxTitle.textContent = title;
+    if (this.videoLightboxDesc) this.videoLightboxDesc.textContent = desc;
+
+    // Si tiene vídeo con audiodescripción, mostrar el selector
+    const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
+    if (this.videoTrackSelector) {
+      this.videoTrackSelector.style.display = hasAudioDesc ? 'flex' : 'none';
+    }
+
+    const targetUrl = (track === 'audiodesc' && hasAudioDesc)
+      ? (vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl)
+      : vid.videoUrl;
+
+    this.updateTrackButtonsUI(track);
+
+    this.videoLightboxElement.src = targetUrl;
+    this.videoLightboxElement.load();
+    this.videoLightbox.classList.remove('hidden');
+
+    const playPromise = this.videoLightboxElement.play();
+    if (playPromise) playPromise.catch(() => {});
+
+    if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
+      window.PajarilloAnalytics.track('video_play', {
+        title: title,
+        track_mode: track,
+        has_audiodesc: hasAudioDesc
+      });
+    }
+  }
+
+  switchVideoTrack(track) {
+    if (this.activeVideoIndex === null) return;
+    const vid = this.data.videos[this.activeVideoIndex];
+    if (!vid || !this.videoLightboxElement) return;
+
+    const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
+    if (track === 'audiodesc' && !hasAudioDesc) return;
+
+    this.activeVideoTrack = track;
+    const curTime = this.videoLightboxElement.currentTime || 0;
+    const wasPaused = this.videoLightboxElement.paused;
+
+    const targetUrl = track === 'audiodesc'
+      ? (vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl)
+      : vid.videoUrl;
+
+    this.updateTrackButtonsUI(track);
+
+    this.videoLightboxElement.src = targetUrl;
+    this.videoLightboxElement.currentTime = curTime;
+    if (!wasPaused) {
+      this.videoLightboxElement.play().catch(() => {});
+    }
+  }
+
+  updateTrackButtonsUI(track) {
+    if (this.btnTrackNormal && this.btnTrackAudiodesc) {
+      if (track === 'audiodesc') {
+        this.btnTrackAudiodesc.style.background = 'var(--c-accent-gold)';
+        this.btnTrackAudiodesc.style.color = '#111';
+        this.btnTrackNormal.style.background = 'transparent';
+        this.btnTrackNormal.style.color = '#c4d6cb';
+        if (this.videoBadgeMode) {
+          this.videoBadgeMode.textContent = 'Modo: 👁️ Con Audiodescripción Accesible';
+          this.videoBadgeMode.style.color = '#fff';
+          this.videoBadgeMode.style.background = 'rgba(46, 125, 50, 0.7)';
+          this.videoBadgeMode.style.borderColor = '#81c784';
+        }
+      } else {
+        this.btnTrackNormal.style.background = 'var(--c-primary)';
+        this.btnTrackNormal.style.color = '#fff';
+        this.btnTrackAudiodesc.style.background = 'transparent';
+        this.btnTrackAudiodesc.style.color = '#c4d6cb';
+        if (this.videoBadgeMode) {
+          this.videoBadgeMode.textContent = 'Modo: 🎬 Locutado / Subtitulado estándar';
+          this.videoBadgeMode.style.color = 'var(--c-accent-gold-text)';
+          this.videoBadgeMode.style.background = 'rgba(181, 154, 87, 0.2)';
+          this.videoBadgeMode.style.borderColor = 'rgba(181, 154, 87, 0.4)';
+        }
+      }
+    }
+  }
+
+  closeVideoModal() {
+    if (this.videoLightboxElement) {
+      this.videoLightboxElement.pause();
+      this.videoLightboxElement.src = '';
+    }
+    if (this.videoLightbox) {
+      this.videoLightbox.classList.add('hidden');
+    }
+    this.activeVideoIndex = null;
+  }
+
   openLightbox(index) {
     this.currentPhotoIndex = index;
     const item = this.data.media[index];
@@ -268,23 +420,56 @@ export class GalleryManager {
           </div>
         `;
       } else {
-        this.videosContainer.innerHTML = this.data.videos.map(vid => {
+        this.videosContainer.innerHTML = this.data.videos.map((vid, idx) => {
           const title = getLang(vid.title, 'Audiovisual');
           const desc = getLang(vid.description || vid.desc, '');
+          const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
+          const cat = vid.category || 'Audiovisual';
+
           return `
-            <div class="event-card" style="border: 1.5px solid var(--c-border); cursor: pointer;" onclick="window.open('./audiovisual_p0.html', '_blank')">
-              <div style="position: relative; height: 220px; overflow: hidden; background: #000;">
-                <img src="${vid.thumb}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75;">
-                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
-                  <button type="button" aria-label="Reproducir ${title} en sala audiovisual" class="btn-cta-gold" style="padding: 12px 20px; border-radius: 50%; font-size: 1.5rem; width: 56px; height: 56px; justify-content: center;">
-                    ▶
-                  </button>
+            <div class="event-card" style="border: 1.5px solid var(--c-border); display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-sm);">
+              <div>
+                <div style="position: relative; height: 210px; overflow: hidden; background: #000; cursor: pointer;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
+                  <img src="${vid.thumb || './assets/images/lobo.png'}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: transform 0.4s ease;" onerror="this.src='./assets/images/lobo.png'">
+                  <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
+                    <div class="btn-cta-gold" style="padding: 12px 18px; border-radius: 50%; font-size: 1.4rem; width: 54px; height: 54px; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+                      ▶
+                    </div>
+                  </div>
+                  <span style="position: absolute; top: 10px; left: 10px; background: rgba(26,36,30,0.85); color: #fff; padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;">
+                    ${cat}
+                  </span>
+                  <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #D4AF37; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">
+                    ⏱ ${vid.duration || '05:00'}
+                  </span>
                 </div>
-                <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${vid.duration || '05:00'}</span>
+                
+                <div class="event-body" style="padding: 1.25rem 1.25rem 0.5rem;">
+                  <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
+                    <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
+                      🔊 Locutado / Subtítulos
+                    </span>
+                    ${hasAudioDesc ? `
+                      <span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(46, 125, 50, 0.3);">
+                        👁️ Audiodescripción disponible
+                      </span>
+                    ` : ''}
+                  </div>
+                  <h3 class="event-title" style="font-size: 1.2rem; line-height: 1.35; margin-bottom: 0.5rem; color: var(--c-primary);">${title}</h3>
+                  <p class="event-desc" style="font-size: 0.88rem; line-height: 1.5; color: var(--c-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${desc}</p>
+                </div>
               </div>
-              <div class="event-body">
-                <h3 class="event-title" style="font-size: 1.3rem;">${title}</h3>
-                <p class="event-desc">${desc}</p>
+
+              <!-- Botonera interactiva para elegir versión directamente -->
+              <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--c-border); display: flex; gap: 0.5rem; flex-wrap: wrap; background: var(--c-stone-light);">
+                <button type="button" class="btn-point-action" style="flex: 1; min-width: 140px; padding: 6px 12px; font-size: 0.8rem; justify-content: center; background: var(--c-primary); color: white;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
+                  🎬 Ver Vídeo Estándar
+                </button>
+                ${hasAudioDesc ? `
+                  <button type="button" class="btn-point-action btn-point-qr" style="flex: 1; min-width: 140px; padding: 6px 12px; font-size: 0.8rem; justify-content: center; background: var(--c-accent-gold); color: #111; font-weight: 800;" onclick="window.galleryInstance.openVideoModal(${idx}, 'audiodesc')">
+                    👁️ Con Audiodescripción
+                  </button>
+                ` : ''}
               </div>
             </div>
           `;

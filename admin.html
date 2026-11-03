@@ -2162,7 +2162,21 @@
             </button>
           </div>
           <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
-            Acepta enlaces directos a vídeos MP4 en la nube (Google Storage, S3, CDN) o archivos locales.
+            Vídeo principal con locución o subtítulos en español e inglés. Acepta enlaces directos MP4 o archivos locales.
+          </small>
+        </div>
+
+        <div class="admin-form-group">
+          <label>👁️ Vídeo Alternativo con Audiodescripción (Accesibilidad / Opcional)</label>
+          <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="text" id="kiosk-video-ad-url" class="admin-input" placeholder="https://dominio.com/video_audiodescripcion.mp4 o ./assets/videos/ad.mp4" style="flex: 1;">
+            <input type="file" id="kiosk-video-ad-file-input" accept="video/mp4,video/webm,video/*" style="display: none;">
+            <button type="button" id="btn-browse-kiosk-video-ad" class="btn-admin btn-admin-outline" style="white-space: nowrap; padding: 7px 11px; font-size: 0.8rem;" title="Seleccionar vídeo con audiodescripción">
+              👁️ Subir Audiodescripción
+            </button>
+          </div>
+          <small style="color: var(--admin-muted); font-size: 0.76rem; display: block; margin-top: 4px;">
+            Vídeo con narración descriptiva de escenas para personas con discapacidad visual. El reproductor mostrará un botón selector para alternar entre la versión estándar y la audiodescripción.
           </small>
         </div>
 
@@ -2219,6 +2233,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=4.9"></script>
+  <script type="module" src="./js/admin.js?v=5.0"></script>
 </body>
 </html>

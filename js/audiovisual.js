@@ -29,8 +29,12 @@ class AudiovisualKiosk {
       controlsBar: document.querySelector('.tv-player-controls'),
       screensaver: document.getElementById('tv-screensaver'),
       screensaverVideo: document.getElementById('tv-screensaver-video'),
-      btnTriggerScreensaver: document.getElementById('btn-trigger-screensaver')
+      btnTriggerScreensaver: document.getElementById('btn-trigger-screensaver'),
+      trackSelector: document.getElementById('tv-track-selector'),
+      btnTrackNormal: document.getElementById('btn-tv-track-normal'),
+      btnTrackAudiodesc: document.getElementById('btn-tv-track-audiodesc')
     };
+    this.activeTrack = 'normal';
   }
 
   async init() {
@@ -129,6 +133,7 @@ class AudiovisualKiosk {
           <div class="tv-card-media">
             <img src="${thumb}" alt="${title}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
             <div class="tv-card-overlay"></div>
+            ${(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl) ? '<span style="position: absolute; top: 12px; left: 12px; background: rgba(46, 125, 50, 0.9); color: #fff; font-size: 0.85rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; z-index: 2; border: 1px solid rgba(255,255,255,0.3);">👁️ Audiodescripción</span>' : ''}
             <span class="tv-card-duration">⏱ ${duration}</span>
             <div class="tv-card-play-icon" aria-hidden="true">▶</div>
           </div>
@@ -325,6 +330,20 @@ class AudiovisualKiosk {
       this.dom.playerModal.addEventListener('click', resetControlsVisibility);
     }
 
+    // Botones conmutadores de pista de vídeo (Estándar vs Audiodescripción)
+    if (this.dom.btnTrackNormal) {
+      this.dom.btnTrackNormal.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.switchTrack('normal');
+      });
+    }
+    if (this.dom.btnTrackAudiodesc) {
+      this.dom.btnTrackAudiodesc.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.switchTrack('audiodesc');
+      });
+    }
+
     // Control por teclado (mando TV o atajos)
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' || e.key === 'Backspace') {
@@ -338,7 +357,7 @@ class AudiovisualKiosk {
     });
   }
 
-  playVideo(index) {
+  playVideo(index, track = 'normal') {
     const vid = this.videos[index];
     if (!vid || !this.dom.videoElement) return;
 
@@ -355,20 +374,34 @@ class AudiovisualKiosk {
     }
 
     this.activeVideoIndex = index;
+    this.activeTrack = track;
     const title = vid.title.es || vid.title;
 
     if (this.dom.playingTitle) {
       this.dom.playingTitle.textContent = title;
     }
 
-    this.dom.videoElement.src = vid.videoUrl;
+    const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
+    if (this.dom.trackSelector) {
+      this.dom.trackSelector.style.display = hasAudioDesc ? 'flex' : 'none';
+    }
+
+    const targetSrc = (track === 'audiodesc' && hasAudioDesc)
+      ? (vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl)
+      : vid.videoUrl;
+
+    this.updateTrackButtonsUI(track);
+
+    this.dom.videoElement.src = targetSrc;
     this.dom.videoElement.load();
     this.dom.playerModal.classList.add('active');
 
     if (window.PajarilloAnalytics) {
       window.PajarilloAnalytics.track('video_view', {
         video_id: vid.id,
-        detail: `Kiosco TV 65": ${title}`
+        track_mode: track,
+        has_audiodesc: hasAudioDesc,
+        detail: `Kiosco TV 65": ${title} (${track})`
       });
     }
 
@@ -379,6 +412,43 @@ class AudiovisualKiosk {
         this.dom.videoElement.play();
         if (this.dom.btnMute) this.dom.btnMute.textContent = '🔇';
       });
+    }
+  }
+
+  switchTrack(track) {
+    if (this.activeVideoIndex === null) return;
+    const vid = this.videos[this.activeVideoIndex];
+    if (!vid || !this.dom.videoElement) return;
+
+    const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
+    if (track === 'audiodesc' && !hasAudioDesc) return;
+
+    this.activeTrack = track;
+    const curTime = this.dom.videoElement.currentTime || 0;
+    const wasPaused = this.dom.videoElement.paused;
+
+    const targetSrc = track === 'audiodesc'
+      ? (vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl)
+      : vid.videoUrl;
+
+    this.updateTrackButtonsUI(track);
+
+    this.dom.videoElement.src = targetSrc;
+    this.dom.videoElement.currentTime = curTime;
+    if (!wasPaused) {
+      this.dom.videoElement.play().catch(() => {});
+    }
+  }
+
+  updateTrackButtonsUI(track) {
+    if (this.dom.btnTrackNormal && this.dom.btnTrackAudiodesc) {
+      if (track === 'audiodesc') {
+        this.dom.btnTrackAudiodesc.classList.add('active');
+        this.dom.btnTrackNormal.classList.remove('active');
+      } else {
+        this.dom.btnTrackNormal.classList.add('active');
+        this.dom.btnTrackAudiodesc.classList.remove('active');
+      }
     }
   }
 

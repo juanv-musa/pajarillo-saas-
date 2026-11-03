@@ -813,6 +813,57 @@
     </div>
   </div>
 
+  <!-- ═══════════════════════════════════════════
+       MODAL REPRODUCTOR DE VÍDEO ACCESIBLE (ESTÁNDAR / AUDIODESCRIPCIÓN)
+       ═══════════════════════════════════════════ -->
+  <div id="video-lightbox" class="qr-modal-overlay hidden" role="dialog" aria-modal="true" aria-label="Reproductor audiovisual accesible" style="z-index: 9999;">
+    <div style="position: relative; max-width: 960px; width: 94%; background: #0f1612; border-radius: 16px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.85); border: 1.5px solid rgba(181, 154, 87, 0.35);">
+      
+      <!-- Barra superior con Título, Selector de Pistas y Cerrar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.4rem; background: rgba(26, 36, 30, 0.95); border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 0.75rem;">
+        <div style="flex: 1; min-width: 200px;">
+          <h4 id="video-lightbox-title" style="color: #fff; font-size: 1.15rem; font-weight: 700; margin: 0 0 3px; font-family: var(--font-condensed); letter-spacing: 0.5px;">Audiovisual</h4>
+          <span id="video-lightbox-meta" style="font-size: 0.76rem; color: #a3b5aa;">Fondo Audiovisual Oficial · Centro de Interpretación El Pajarillo</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <!-- Selector conmutador de vídeo: Estándar vs Audiodescripción -->
+          <div id="video-lightbox-track-selector" style="display: none; background: rgba(0, 0, 0, 0.45); border-radius: 999px; padding: 3px; border: 1px solid rgba(181, 154, 87, 0.4);">
+            <button type="button" id="btn-web-track-normal" class="btn-video-track active" style="background: var(--c-primary); color: #fff; border: none; border-radius: 999px; padding: 5px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+              🎬 Estándar (Subtítulos)
+            </button>
+            <button type="button" id="btn-web-track-audiodesc" class="btn-video-track" style="background: transparent; color: #c4d6cb; border: none; border-radius: 999px; padding: 5px 14px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+              👁️ Audiodescripción
+            </button>
+          </div>
+
+          <button id="video-lightbox-close" aria-label="Cerrar reproductor" style="color: white; font-size: 1.4rem; background: rgba(255,255,255,0.12); border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s ease;">✕</button>
+        </div>
+      </div>
+
+      <!-- Pantalla de Vídeo HTML5 -->
+      <div style="position: relative; width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center;">
+        <video id="video-lightbox-element" controls playsinline preload="auto" style="width: 100%; height: 100%; object-fit: contain;">
+          Tu navegador no soporta vídeo HTML5.
+        </video>
+      </div>
+
+      <!-- Pie explicativo -->
+      <div style="padding: 0.85rem 1.4rem; background: rgba(26, 36, 30, 0.95); border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.6rem; font-size: 0.82rem; color: #a3b5aa;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; flex: 1; min-width: 240px;">
+          <span id="video-lightbox-badge-mode" style="background: rgba(181, 154, 87, 0.2); color: var(--c-accent-gold-text); border: 1px solid rgba(181, 154, 87, 0.4); padding: 2px 8px; border-radius: 4px; font-weight: 700; font-size: 0.75rem; white-space: nowrap;">
+            Modo: 🎬 Locutado estándar
+          </span>
+          <span id="video-lightbox-desc" style="color: #c4d6cb; font-size: 0.82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"></span>
+        </div>
+        <a href="./audiovisual_p0.html" target="_blank" style="color: var(--c-accent-gold-text); text-decoration: none; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;">
+          📺 Sala Audiovisual TV 65" →
+        </a>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Banner Informativo de Cookies (Conforme a Guía AEPD) -->
   <div class="cookie-banner" id="analytics-banner" role="region" aria-label="Aviso de cookies analíticas" style="display: none;">
     <span data-i18n="analytics_banner.msg">Utilizamos cookies analíticas estrictamente anónimas para mejorar la experiencia turística y medir el interés del conjunto monumental.</span>
@@ -828,6 +879,6 @@
   </div>
 
   <!-- Lógica Principal -->
-  <script type="module" src="./js/app.js?v=4.4"></script>
+  <script type="module" src="./js/app.js?v=4.5"></script>
 </body>
 </html>

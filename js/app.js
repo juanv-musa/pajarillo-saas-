@@ -5,7 +5,7 @@
 
 import { I18nManager } from './i18n.js';
 import { AgendaManager } from './agenda.js';
-import { GalleryManager } from './gallery.js';
+import { GalleryManager } from './gallery.js?v=4.5';
 import { AccessibilityWidget } from './accessibility.js';
 import './analytics.js?v=4.9';
 
