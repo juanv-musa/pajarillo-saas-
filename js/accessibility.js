@@ -37,6 +37,8 @@ export class AccessibilityWidget {
         this.state = { ...this.state, ...JSON.parse(saved) };
       }
     } catch (e) {}
+    // Garantizar que la pestaña esté siempre visible al cargar la página
+    this.state.tabHidden = false;
   }
 
   saveState() {
@@ -275,6 +277,24 @@ export class AccessibilityWidget {
           this.state.tabHidden = false;
           this.saveState();
         }
+        this.togglePanel();
+      });
+    }
+
+    const headerAccBtn = document.getElementById('header-acc-btn');
+    if (headerAccBtn) {
+      headerAccBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.togglePanel();
+      });
+    }
+
+    const mobileNavAccBtn = document.getElementById('mobile-nav-acc-btn');
+    if (mobileNavAccBtn) {
+      mobileNavAccBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const navMenu = document.getElementById('nav-menu');
+        if (navMenu) navMenu.classList.remove('open');
         this.togglePanel();
       });
     }

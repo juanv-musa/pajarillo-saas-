@@ -38,16 +38,21 @@
           <li><a href="#horarios" class="nav-link" data-i18n="nav.horarios">Horarios</a></li>
           <li><a href="#agenda" class="nav-link" data-i18n="nav.agenda">Agenda</a></li>
           <li><a href="#contacto" class="nav-link" data-i18n="nav.contacto">Contacto</a></li>
+          <li class="mobile-only"><a href="javascript:void(0)" class="nav-link" id="mobile-nav-acc-btn">♿ Accesibilidad</a></li>
         </ul>
       </nav>
 
-      <!-- Selector de Idioma & CTA -->
+      <!-- Selector de Idioma, Accesibilidad & CTA -->
       <div class="header-actions">
         <div class="lang-switcher" aria-label="Seleccionar idioma / Select language">
           <button class="lang-btn active" data-lang="es">ES</button>
           <button class="lang-btn" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="fr">FR</button>
         </div>
+
+        <button type="button" class="header-acc-btn" id="header-acc-btn" title="Opciones de Accesibilidad (WCAG 2.1 AA)" aria-label="Herramientas de Accesibilidad">
+          <span aria-hidden="true">♿</span>
+        </button>
 
         <a href="#reservas" class="btn-book-nav">
           <img src="./assets/icons/icon-ticket.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;">

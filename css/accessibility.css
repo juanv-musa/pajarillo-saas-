@@ -118,9 +118,9 @@
   color: #FFFFFF;
 }
 
-/* Estado Minimizado / Escondido a la derecha */
+/* Estado Minimizado / Escondido a la derecha: Mantiene el icono accesible siempre a la vista */
 .acc-tab-wrapper.is-hidden {
-  transform: translateY(-50%) translateX(calc(100% - 32px));
+  transform: translateY(-50%) translateX(calc(100% - 48px));
 }
 
 .acc-tab-wrapper.is-hidden:hover {

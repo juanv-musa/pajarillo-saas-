@@ -482,6 +482,9 @@
           <button class="lang-btn" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="fr">FR</button>
         </div>
+        <button type="button" class="header-acc-btn" id="header-acc-btn" title="Opciones de Accesibilidad (WCAG 2.1 AA)" aria-label="Herramientas de Accesibilidad">
+          <span aria-hidden="true">♿</span>
+        </button>
       </div>
     </div>
   </header>
@@ -989,6 +992,16 @@
       // Iniciar al cargar el DOM
       document.addEventListener('DOMContentLoaded', init);
     })();
+  </script>
+
+  <!-- Widget de Accesibilidad Universal -->
+  <script type="module">
+    import { AccessibilityWidget } from './js/accessibility.js';
+    document.addEventListener('DOMContentLoaded', () => {
+      const a11y = new AccessibilityWidget();
+      a11y.init();
+      window.accessibilityInstance = a11y;
+    });
   </script>
 </body>
 </html>

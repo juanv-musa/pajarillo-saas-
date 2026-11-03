@@ -247,6 +247,43 @@ button {
   transform: translateY(-1px);
 }
 
+/* Botón Accesibilidad Universal en Cabecera */
+.header-acc-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: var(--c-stone-warm);
+  border: 1.5px solid var(--c-accent-gold);
+  color: var(--c-primary);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition);
+  padding: 0;
+  box-shadow: var(--shadow-sm);
+  outline: none;
+}
+
+.header-acc-btn:hover {
+  background: var(--c-primary);
+  color: var(--c-white);
+  border-color: var(--c-primary);
+  transform: scale(1.08);
+  box-shadow: 0 3px 10px rgba(56, 79, 62, 0.3);
+}
+
+.header-acc-btn:focus-visible {
+  outline: 3px solid var(--c-accent-gold);
+  outline-offset: 2px;
+}
+
+.mobile-only {
+  display: none !important;
+}
+
 .menu-toggle-btn {
   display: none;
   font-size: 1.5rem;
@@ -1810,6 +1847,10 @@ img, video, canvas, svg {
     font-size: 1.05rem;
     color: var(--c-primary);
     border-bottom: 1px solid var(--c-stone-warm);
+  }
+
+  .mobile-only {
+    display: block !important;
   }
 
   .menu-toggle-btn {
