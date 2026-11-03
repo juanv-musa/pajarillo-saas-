@@ -137,6 +137,8 @@
     "tab_modelo3d": "Interactive 3D Model",
     "tab_recursos": "Digital & Interactive Assets",
     "tab_videos": "Documentaries & Videos",
+    "empty_videos": "No audiovisual media configured",
+    "empty_videos_desc": "There are currently no active videos in this section. You can add or manage documentaries from the Administration Panel.",
     "open_lightbox": "View full size",
     "download_resource": "Download resource (PDF / Fact Sheet)",
     "download_btn": "⬇ Download",

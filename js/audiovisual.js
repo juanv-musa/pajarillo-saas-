@@ -80,12 +80,12 @@ class AudiovisualKiosk {
   }
 
   async loadVideos() {
-    // 1. Prioridad: vídeos modificados o añadidos en el panel de Administración
+    // 1. Prioridad: vídeos modificados o añadidos en el panel de Administración (incluso si está vacío [])
     const saved = localStorage.getItem('pajarillo_kiosk_videos');
-    if (saved) {
+    if (saved !== null) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           this.videos = parsed;
           return;
         }
@@ -96,9 +96,6 @@ class AudiovisualKiosk {
       const res = await fetch('./data/gallery.json?t=' + Date.now());
       const data = await res.json();
       this.videos = data.videos || [];
-      if (this.videos.length > 0 && !saved) {
-        localStorage.setItem('pajarillo_kiosk_videos', JSON.stringify(this.videos));
-      }
     } catch (e) {
       console.warn('Error cargando vídeos:', e);
       this.videos = [];

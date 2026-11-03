@@ -109,12 +109,12 @@ export class GalleryManager {
       }
     } catch (e) {}
 
-    // Si hay vídeos personalizados del Kiosco / Fondos Audiovisuales, usarlos
+    // Si hay vídeos personalizados del Kiosco / Fondos Audiovisuales, usarlos directamente (incluso si está vacío [])
     try {
       const customKiosk = localStorage.getItem('pajarillo_kiosk_videos');
-      if (customKiosk) {
+      if (customKiosk !== null) {
         const parsedKiosk = JSON.parse(customKiosk);
-        if (Array.isArray(parsedKiosk) && parsedKiosk.length > 0) {
+        if (Array.isArray(parsedKiosk)) {
           this.data.videos = parsedKiosk;
         }
       }
@@ -258,28 +258,38 @@ export class GalleryManager {
     }
 
     // 3. Vídeos y 3D
-    if (this.videosContainer && this.data.videos) {
-      this.videosContainer.innerHTML = this.data.videos.map(vid => {
-        const title = getLang(vid.title, 'Audiovisual');
-        const desc = getLang(vid.description || vid.desc, '');
-        return `
-          <div class="event-card" style="border: 1.5px solid var(--c-border); cursor: pointer;" onclick="window.open('./audiovisual_p0.html', '_blank')">
-            <div style="position: relative; height: 220px; overflow: hidden; background: #000;">
-              <img src="${vid.thumb}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75;">
-              <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
-                <button type="button" aria-label="Reproducir ${title} en sala audiovisual" class="btn-cta-gold" style="padding: 12px 20px; border-radius: 50%; font-size: 1.5rem; width: 56px; height: 56px; justify-content: center;">
-                  ▶
-                </button>
-              </div>
-              <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${vid.duration || '05:00'}</span>
-            </div>
-            <div class="event-body">
-              <h3 class="event-title" style="font-size: 1.3rem;">${title}</h3>
-              <p class="event-desc">${desc}</p>
-            </div>
+    if (this.videosContainer) {
+      if (!this.data.videos || this.data.videos.length === 0) {
+        this.videosContainer.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; color: var(--c-text-muted); background: var(--c-stone-light); border-radius: var(--radius-lg); border: 1.5px dashed var(--c-border); margin: 1rem 0;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🎬</div>
+            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--c-primary); margin-bottom: 0.5rem;" data-i18n="galeria.empty_videos">No hay audiovisuales configurados</h4>
+            <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto; color: var(--c-text-muted);" data-i18n="galeria.empty_videos_desc">Actualmente no hay vídeos activos en esta sección. Puedes añadir o gestionar documentales desde el Panel de Administración.</p>
           </div>
         `;
-      }).join('');
+      } else {
+        this.videosContainer.innerHTML = this.data.videos.map(vid => {
+          const title = getLang(vid.title, 'Audiovisual');
+          const desc = getLang(vid.description || vid.desc, '');
+          return `
+            <div class="event-card" style="border: 1.5px solid var(--c-border); cursor: pointer;" onclick="window.open('./audiovisual_p0.html', '_blank')">
+              <div style="position: relative; height: 220px; overflow: hidden; background: #000;">
+                <img src="${vid.thumb}" alt="${title}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.75;">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;">
+                  <button type="button" aria-label="Reproducir ${title} en sala audiovisual" class="btn-cta-gold" style="padding: 12px 20px; border-radius: 50%; font-size: 1.5rem; width: 56px; height: 56px; justify-content: center;">
+                    ▶
+                  </button>
+                </div>
+                <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem;">${vid.duration || '05:00'}</span>
+              </div>
+              <div class="event-body">
+                <h3 class="event-title" style="font-size: 1.3rem;">${title}</h3>
+                <p class="event-desc">${desc}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
     }
   }
 }

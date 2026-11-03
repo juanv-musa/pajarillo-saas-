@@ -137,6 +137,8 @@
     "tab_modelo3d": "Modelo 3D Interactivo",
     "tab_recursos": "Recursos Digitales e Interactivos",
     "tab_videos": "Audiovisuales",
+    "empty_videos": "No hay audiovisuales configurados",
+    "empty_videos_desc": "Actualmente no hay vídeos activos en esta sección. Puedes añadir o gestionar documentales desde el Panel de Administración.",
     "open_lightbox": "Ampliar imagen",
     "download_resource": "Descargar recurso informativo (PDF/Ficha)",
     "download_btn": "⬇ Descargar",

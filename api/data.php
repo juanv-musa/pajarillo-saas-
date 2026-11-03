@@ -7,6 +7,7 @@ $agendaFile = '../data/agenda.json';
 $reservasFile = '../data/reservas.json';
 $configFile = '../data/site_config.json';
 $localesFile = '../data/locales.json';
+$galleryFile = '../data/gallery.json';
 
 // Helper para leer archivo
 function readJson($filepath, $default = []) {
@@ -34,6 +35,8 @@ if ($method === 'GET') {
         echo json_encode(readJson($configFile, ['sections' => [], 'content' => []]));
     } elseif ($entity === 'locales') {
         echo json_encode(readJson($localesFile, []));
+    } elseif ($entity === 'gallery') {
+        echo json_encode(readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]));
     } elseif ($entity === 'agenda') {
         echo json_encode(readJson($agendaFile, ['activities' => []]));
     } elseif ($entity === 'bookings') {
@@ -113,6 +116,58 @@ if ($method === 'POST') {
             writeJson($esFile, $esData);
         }
 
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
+    // Guardar o sincronizar vídeos del kiosco y web pública
+    if (isset($input['action']) && ($input['action'] === 'save_kiosk_videos' || $input['action'] === 'delete_kiosk_video')) {
+        $galleryData = readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]);
+        if ($input['action'] === 'save_kiosk_videos') {
+            $galleryData['videos'] = $input['videos'] ?? [];
+        } elseif ($input['action'] === 'delete_kiosk_video') {
+            $delId = $input['id'] ?? '';
+            $galleryData['videos'] = array_values(array_filter($galleryData['videos'] ?? [], fn($v) => ($v['id'] ?? '') !== $delId));
+        }
+        writeJson($galleryFile, $galleryData);
+        echo json_encode(['success' => true, 'videos' => $galleryData['videos']]);
+        exit;
+    }
+
+    // Guardar o sincronizar elementos de galería (fotos, pdf, etc.)
+    if (isset($input['action']) && $input['action'] === 'save_gallery_items') {
+        $galleryData = readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]);
+        $items = $input['items'] ?? [];
+        $media = [];
+        $resources = [];
+        foreach ($items as $item) {
+            $type = $item['type'] ?? 'foto';
+            if ($type === 'foto') {
+                $media[] = [
+                    'id' => 'foto_' . ($item['id'] ?? uniqid()),
+                    'type' => 'photo',
+                    'src' => $item['full'] ?? '',
+                    'thumb' => $item['thumb'] ?? ($item['full'] ?? ''),
+                    'caption' => $item['title'] ?? '',
+                    'author' => 'Centro de Interpretación',
+                    'category' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? 'Patrimonio') : ($item['category'] ?? 'Patrimonio')
+                ];
+            } elseif ($type === 'pdf') {
+                $resources[] = [
+                    'id' => 'res_' . ($item['id'] ?? uniqid()),
+                    'title' => $item['title'] ?? '',
+                    'file' => $item['file'] ?? ($item['full'] ?? ''),
+                    'format' => 'PDF / Digital',
+                    'icon' => '📄',
+                    'badge' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? 'Documentación') : ($item['category'] ?? 'Documentación'),
+                    'description' => $item['desc'] ?? '',
+                    'url' => $item['file'] ?? ($item['full'] ?? '')
+                ];
+            }
+        }
+        $galleryData['media'] = $media;
+        $galleryData['resources'] = $resources;
+        writeJson($galleryFile, $galleryData);
         echo json_encode(['success' => true]);
         exit;
     }

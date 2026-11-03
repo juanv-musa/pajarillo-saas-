@@ -43,13 +43,11 @@ class AudiovisualP1 {
 
     let videos = [];
     const savedKioskVideos = localStorage.getItem('pajarillo_kiosk_videos');
-    if (savedKioskVideos) {
+    if (savedKioskVideos !== null) {
       try {
         videos = JSON.parse(savedKioskVideos) || [];
       } catch (e) {}
-    }
-
-    if (!videos || videos.length === 0) {
+    } else {
       try {
         const res = await fetch('./data/gallery.json?t=' + Date.now());
         const data = await res.json();

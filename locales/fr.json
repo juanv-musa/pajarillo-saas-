@@ -137,6 +137,8 @@
     "tab_modelo3d": "Modèle 3D Interactif",
     "tab_recursos": "Ressources Numériques et 3D",
     "tab_videos": "Vidéos et Documentaires",
+    "empty_videos": "Aucun média audiovisuel configuré",
+    "empty_videos_desc": "Il n'y a actuellement aucune vidéo active dans cette section. Vous pouvez ajouter ou gérer des documentaires depuis le Panneau d'Administration.",
     "open_lightbox": "Agrandir l'image",
     "download_resource": "Télécharger la ressource (PDF/Fiche)",
     "download_btn": "⬇ Télécharger",

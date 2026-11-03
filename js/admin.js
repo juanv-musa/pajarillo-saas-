@@ -2645,10 +2645,10 @@ function refreshKioskSelects() {
 
 async function loadKioskVideos() {
   const saved = localStorage.getItem(KIOSK_VIDEOS_STORAGE_KEY);
-  if (saved) {
+  if (saved !== null) {
     try {
       const parsed = JSON.parse(saved);
-      if (Array.isArray(parsed) && parsed.length > 0) {
+      if (Array.isArray(parsed)) {
         kioskVideos = parsed;
         refreshKioskSelects();
         renderKioskVideos();
@@ -2661,9 +2661,6 @@ async function loadKioskVideos() {
     const res = await fetch('./data/gallery.json?t=' + Date.now());
     const data = await res.json();
     kioskVideos = data.videos || [];
-    if (kioskVideos.length > 0 && !saved) {
-      localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
-    }
   } catch (e) {
     console.warn('Error cargando vídeos del kiosco:', e);
     kioskVideos = [];
@@ -2976,7 +2973,7 @@ function setupKioskVideoEditor(onVideosChange) {
       fetch('./api/data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete_kiosk_video', id })
+        body: JSON.stringify({ action: 'save_kiosk_videos', videos: kioskVideos })
       }).catch(() => {});
     } catch(e) {}
 
@@ -3042,7 +3039,7 @@ function setupKioskVideoEditor(onVideosChange) {
       fetch('./api/data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'save_kiosk_video', video: videoItem })
+        body: JSON.stringify({ action: 'save_kiosk_videos', videos: kioskVideos })
       }).catch(() => {});
     } catch(e) {}
 
@@ -4128,28 +4125,6 @@ const INITIAL_GALLERY_ITEMS = [
     }
   },
   {
-    id: 8,
-    type: 'video',
-    title: {
-      es: 'Fondo Audiovisual Kiosco TV (audiovisual_p0)',
-      en: 'Audiovisual Kiosk TV (audiovisual_p0)',
-      fr: 'Kiosque Audiovisuel TV (audiovisual_p0)'
-    },
-    category: {
-      es: 'Audiovisual',
-      en: 'Audiovisual',
-      fr: 'Audiovisuel'
-    },
-    full: './audiovisual_p0.html',
-    thumb: './assets/images/santuario_ilustracion.png',
-    file: './audiovisual_p0.html',
-    desc: {
-      es: 'Interfaz interactiva a pantalla completa para salas de exposición y TV de 65 pulgadas.',
-      en: 'Interactive fullscreen display interface designed for exhibition halls and 65" TV screens.',
-      fr: 'Interface interactive plein écran dédiée aux salles d\'exposition et écrans TV 65 pouces.'
-    }
-  },
-  {
     id: 9,
     type: 'foto',
     title: {
@@ -4600,6 +4575,16 @@ window.deleteGalleryItem = function(id) {
 
   galleryItems = galleryItems.filter(i => i.id !== id);
   localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_data' }));
+
+  try {
+    fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
+    }).catch(() => {});
+  } catch(e) {}
+
   updateGalleryCounts();
   renderGalleryGrid(currentGalleryFilter);
   showToast('🗑️ Contenido eliminado correctamente de la galería');
@@ -4736,6 +4721,16 @@ function handleSaveGalleryItem(e) {
   }
 
   localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_data' }));
+
+  try {
+    fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
+    }).catch(() => {});
+  } catch(e) {}
+
   updateGalleryCounts();
   renderGalleryGrid(currentGalleryFilter);
   closeGalleryModal();
