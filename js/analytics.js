@@ -156,15 +156,76 @@ class AnalyticsTracker {
     let isNewSession = false;
     try {
       const lastRecorded = parseInt(sessionStorage.getItem('pajarillo_session_visit_ts') || '0', 10);
-      // Es una nueva visita si entra en una pestaña nueva (sessionStorage vacío) o si han pasado más de 10 segundos entre cargas
-      if (!lastRecorded || (now - lastRecorded > 10 * 1000)) {
+      // Se considera nueva visita si es una pestaña/sesión nueva o si han transcurrido más de 30 minutos de inactividad
+      if (!lastRecorded || (now - lastRecorded > 30 * 60 * 1000)) {
         isNewSession = true;
-        sessionStorage.setItem('pajarillo_session_visit_ts', now.toString());
       }
+      sessionStorage.setItem('pajarillo_session_visit_ts', now.toString());
     } catch (e) {
       isNewSession = true;
     }
     return isNewSession;
+  }
+
+  async syncBaselineFromServer() {
+    try {
+      let serverData = null;
+      try {
+        const apiRes = await fetch(this.endpoint + '?t=' + Date.now(), { cache: 'no-store' });
+        if (apiRes.ok) serverData = await apiRes.json();
+      } catch (e) {}
+
+      if (!serverData || !serverData.summary) {
+        const jsonRes = await fetch('./data/analytics.json?t=' + Date.now(), { cache: 'no-store' });
+        if (jsonRes.ok) serverData = await jsonRes.json();
+      }
+
+      if (serverData && serverData.summary) {
+        const local = this.getStoredData();
+        // Sincronizar y adoptar el conteo consolidado centralizado
+        if (!local.summary || (local.summary.totalVisits || 0) < (serverData.summary.totalVisits || 0)) {
+          local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, serverData.summary.totalVisits || 0);
+          local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, serverData.summary.uniqueVisitors || 0);
+          local.summary.qrScans = Math.max(local.summary.qrScans || 0, serverData.summary.qrScans || 0);
+          local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, serverData.summary.tourBookings || 0);
+          local.summary.audioListens = Math.max(local.summary.audioListens || 0, serverData.summary.audioListens || 0);
+          local.summary.downloads = Math.max(local.summary.downloads || 0, serverData.summary.downloads || 0);
+
+          if (serverData.languages) {
+            local.languages = local.languages || { es: 0, en: 0, fr: 0 };
+            local.languages.es = Math.max(local.languages.es || 0, serverData.languages.es || 0);
+            local.languages.en = Math.max(local.languages.en || 0, serverData.languages.en || 0);
+            local.languages.fr = Math.max(local.languages.fr || 0, serverData.languages.fr || 0);
+          }
+
+          if (serverData.historyByMonth) {
+            local.historyByMonth = local.historyByMonth || {};
+            for (const [m, b] of Object.entries(serverData.historyByMonth)) {
+              if (!local.historyByMonth[m]) {
+                local.historyByMonth[m] = b;
+              } else {
+                local.historyByMonth[m].visits = Math.max(local.historyByMonth[m].visits || 0, b.visits || 0);
+                local.historyByMonth[m].unique = Math.max(local.historyByMonth[m].unique || 0, b.unique || 0);
+              }
+            }
+          }
+
+          if (serverData.historyByYear) {
+            local.historyByYear = local.historyByYear || {};
+            for (const [y, b] of Object.entries(serverData.historyByYear)) {
+              if (!local.historyByYear[y]) {
+                local.historyByYear[y] = b;
+              } else {
+                local.historyByYear[y].visits = Math.max(local.historyByYear[y].visits || 0, b.visits || 0);
+                local.historyByYear[y].unique = Math.max(local.historyByYear[y].unique || 0, b.unique || 0);
+              }
+            }
+          }
+
+          this.saveStoredData(local);
+        }
+      }
+    } catch (e) {}
   }
 
   checkUniqueStatus(todayStr, monthStr, yearStr) {
@@ -209,6 +270,8 @@ class AnalyticsTracker {
     if (this.isAdminContext()) {
       return;
     }
+
+    await this.syncBaselineFromServer();
 
     const todayStr = new Date().toISOString().slice(0, 10);
     const monthStr = todayStr.slice(0, 7);

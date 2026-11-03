@@ -372,72 +372,94 @@ async function initAnalyticsData() {
 
   // Sincronizar siempre con backend (data/analytics.json o api/analytics.php) para reflejar visitas de otros dispositivos y sesiones
   try {
-    const res = await fetch('./data/analytics.json?t=' + Date.now());
-    if (res.ok) {
-      const serverData = await res.json();
-      if (serverData && serverData.summary) {
-        if (!local || !local.summary) {
-          local = serverData;
-        } else {
-          // Fusionar tomando el valor más actualizado para no perder datos
-          local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, serverData.summary.totalVisits || 0);
-          local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, serverData.summary.uniqueVisitors || 0);
-          local.summary.qrScans = Math.max(local.summary.qrScans || 0, serverData.summary.qrScans || 0);
-          local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, serverData.summary.tourBookings || 0);
-          local.summary.audioListens = Math.max(local.summary.audioListens || 0, serverData.summary.audioListens || 0);
-          local.summary.downloads = Math.max(local.summary.downloads || 0, serverData.summary.downloads || 0);
+    let serverData = null;
+    try {
+      const apiRes = await fetch('./api/analytics.php?t=' + Date.now(), { cache: 'no-store' });
+      if (apiRes.ok) {
+        serverData = await apiRes.json();
+      }
+    } catch (e) {}
 
-          if (serverData.languages) {
-            local.languages = local.languages || { es: 0, en: 0, fr: 0 };
-            local.languages.es = Math.max(local.languages.es || 0, serverData.languages.es || 0);
-            local.languages.en = Math.max(local.languages.en || 0, serverData.languages.en || 0);
-            local.languages.fr = Math.max(local.languages.fr || 0, serverData.languages.fr || 0);
-          }
+    if (!serverData || !serverData.summary) {
+      const res = await fetch('./data/analytics.json?t=' + Date.now(), { cache: 'no-store' });
+      if (res.ok) {
+        serverData = await res.json();
+      }
+    }
 
-          if (serverData.historyByDay) {
-            local.historyByDay = local.historyByDay || {};
-            for (const [day, b] of Object.entries(serverData.historyByDay)) {
-              if (!local.historyByDay[day]) {
-                local.historyByDay[day] = b;
-              } else {
-                local.historyByDay[day].visits = Math.max(local.historyByDay[day].visits || 0, b.visits || 0);
-                local.historyByDay[day].unique = Math.max(local.historyByDay[day].unique || 0, b.unique || 0);
-                local.historyByDay[day].qr = Math.max(local.historyByDay[day].qr || 0, b.qr || 0);
-              }
+    if (serverData && serverData.summary) {
+      if (!local || !local.summary) {
+        local = serverData;
+      } else {
+        // Fusionar tomando el valor más actualizado para no perder datos
+        local.summary.totalVisits = Math.max(local.summary.totalVisits || 0, serverData.summary.totalVisits || 0);
+        local.summary.uniqueVisitors = Math.max(local.summary.uniqueVisitors || 0, serverData.summary.uniqueVisitors || 0);
+        local.summary.qrScans = Math.max(local.summary.qrScans || 0, serverData.summary.qrScans || 0);
+        local.summary.tourBookings = Math.max(local.summary.tourBookings || 0, serverData.summary.tourBookings || 0);
+        local.summary.audioListens = Math.max(local.summary.audioListens || 0, serverData.summary.audioListens || 0);
+        local.summary.downloads = Math.max(local.summary.downloads || 0, serverData.summary.downloads || 0);
+
+        if (serverData.languages) {
+          local.languages = local.languages || { es: 0, en: 0, fr: 0 };
+          local.languages.es = Math.max(local.languages.es || 0, serverData.languages.es || 0);
+          local.languages.en = Math.max(local.languages.en || 0, serverData.languages.en || 0);
+          local.languages.fr = Math.max(local.languages.fr || 0, serverData.languages.fr || 0);
+        }
+
+        if (serverData.historyByDay) {
+          local.historyByDay = local.historyByDay || {};
+          for (const [day, b] of Object.entries(serverData.historyByDay)) {
+            if (!local.historyByDay[day]) {
+              local.historyByDay[day] = b;
+            } else {
+              local.historyByDay[day].visits = Math.max(local.historyByDay[day].visits || 0, b.visits || 0);
+              local.historyByDay[day].unique = Math.max(local.historyByDay[day].unique || 0, b.unique || 0);
+              local.historyByDay[day].qr = Math.max(local.historyByDay[day].qr || 0, b.qr || 0);
             }
-          }
-
-          if (serverData.historyByMonth) {
-            local.historyByMonth = local.historyByMonth || {};
-            for (const [month, b] of Object.entries(serverData.historyByMonth)) {
-              if (!local.historyByMonth[month]) {
-                local.historyByMonth[month] = b;
-              } else {
-                local.historyByMonth[month].visits = Math.max(local.historyByMonth[month].visits || 0, b.visits || 0);
-                local.historyByMonth[month].unique = Math.max(local.historyByMonth[month].unique || 0, b.unique || 0);
-                local.historyByMonth[month].qr = Math.max(local.historyByMonth[month].qr || 0, b.qr || 0);
-              }
-            }
-          }
-
-          if (serverData.historyByYear) {
-            local.historyByYear = local.historyByYear || {};
-            for (const [year, b] of Object.entries(serverData.historyByYear)) {
-              if (!local.historyByYear[year]) {
-                local.historyByYear[year] = b;
-              } else {
-                local.historyByYear[year].visits = Math.max(local.historyByYear[year].visits || 0, b.visits || 0);
-                local.historyByYear[year].unique = Math.max(local.historyByYear[year].unique || 0, b.unique || 0);
-                local.historyByYear[year].qr = Math.max(local.historyByYear[year].qr || 0, b.qr || 0);
-              }
-            }
-          }
-
-          if (Array.isArray(serverData.recentEvents) && serverData.recentEvents.length > 0) {
-            local.events = serverData.recentEvents;
           }
         }
-        localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+
+        if (serverData.historyByMonth) {
+          local.historyByMonth = local.historyByMonth || {};
+          for (const [month, b] of Object.entries(serverData.historyByMonth)) {
+            if (!local.historyByMonth[month]) {
+              local.historyByMonth[month] = b;
+            } else {
+              local.historyByMonth[month].visits = Math.max(local.historyByMonth[month].visits || 0, b.visits || 0);
+              local.historyByMonth[month].unique = Math.max(local.historyByMonth[month].unique || 0, b.unique || 0);
+              local.historyByMonth[month].qr = Math.max(local.historyByMonth[month].qr || 0, b.qr || 0);
+            }
+          }
+        }
+
+        if (serverData.historyByYear) {
+          local.historyByYear = local.historyByYear || {};
+          for (const [year, b] of Object.entries(serverData.historyByYear)) {
+            if (!local.historyByYear[year]) {
+              local.historyByYear[year] = b;
+            } else {
+              local.historyByYear[year].visits = Math.max(local.historyByYear[year].visits || 0, b.visits || 0);
+              local.historyByYear[year].unique = Math.max(local.historyByYear[year].unique || 0, b.unique || 0);
+              local.historyByYear[year].qr = Math.max(local.historyByYear[year].qr || 0, b.qr || 0);
+            }
+          }
+        }
+
+        if (Array.isArray(serverData.recentEvents) && serverData.recentEvents.length > 0) {
+          local.events = serverData.recentEvents;
+        }
+      }
+      localStorage.setItem(ANALYTICS_STORAGE_KEY, JSON.stringify(local));
+
+      // Si local tiene datos consolidados que superan al backend, sincronizarlo vía API
+      if (local && local.summary && (local.summary.totalVisits > (serverData.summary.totalVisits || 0))) {
+        try {
+          fetch('./api/analytics.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type: 'sync_analytics', data: local })
+          }).catch(() => {});
+        } catch (e) {}
       }
     }
   } catch (e) {}
@@ -779,6 +801,9 @@ function computePeriodMetrics(periodKey) {
           enFr: v > 0 ? `${Math.round((((mData.en || 0) + (mData.fr || 0)) / v) * 100)}%` : '0%'
         });
       });
+      if (data.summary && data.summary.uniqueVisitors) {
+        periodUnique = Math.min(periodUnique, data.summary.uniqueVisitors);
+      }
     } else {
       const curM = monthNames[now.getMonth()];
       labels = [curM];
@@ -1028,8 +1053,9 @@ function setupPeriodFilters() {
 async function loadAnalytics() {
   await initAnalyticsData();
 
-  // Cargar periodo guardado (por defecto 'total' para que nunca esté a 0)
-  currentAnalyticsPeriod = localStorage.getItem('pajarillo_admin_period') || 'total';
+  // Siempre priorizar 'total' de entrada para que el administrador vea el acumulado completo consolidado con todos los meses
+  currentAnalyticsPeriod = 'total';
+  localStorage.setItem('pajarillo_admin_period', 'total');
 
   // Sincronizar clase activa en los botones
   const periodBtns = document.querySelectorAll('.btn-filter-period[data-period]');

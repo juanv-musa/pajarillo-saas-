@@ -7,7 +7,7 @@ import { I18nManager } from './i18n.js';
 import { AgendaManager } from './agenda.js';
 import { GalleryManager } from './gallery.js';
 import { AccessibilityWidget } from './accessibility.js';
-import './analytics.js';
+import './analytics.js?v=4.9';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // 1. Inicializar Internacionalización

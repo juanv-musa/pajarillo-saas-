@@ -1,6 +1,8 @@
 <?php
 session_start();
 header('Content-Type: application/json; charset=utf-8');
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
 
 $analyticsFile = '../data/analytics.json';
 
@@ -64,6 +66,70 @@ if ($method === 'POST') {
         ];
         saveAnalytics($fresh);
         echo json_encode(['success' => true, 'reset' => true]);
+        exit;
+    }
+
+    // Sincronización bidireccional desde administración para unificar métricas entre navegadores
+    if ($type === 'sync_analytics' && !empty($payload['data'])) {
+        $inc = $payload['data'];
+        $cur = getAnalytics();
+
+        if (isset($inc['summary'])) {
+            $cur['summary']['totalVisits'] = max((int)($cur['summary']['totalVisits'] ?? 0), (int)($inc['summary']['totalVisits'] ?? 0));
+            $cur['summary']['uniqueVisitors'] = max((int)($cur['summary']['uniqueVisitors'] ?? 0), (int)($inc['summary']['uniqueVisitors'] ?? 0));
+            $cur['summary']['qrScans'] = max((int)($cur['summary']['qrScans'] ?? 0), (int)($inc['summary']['qrScans'] ?? 0));
+            $cur['summary']['tourBookings'] = max((int)($cur['summary']['tourBookings'] ?? 0), (int)($inc['summary']['tourBookings'] ?? 0));
+            $cur['summary']['audioListens'] = max((int)($cur['summary']['audioListens'] ?? 0), (int)($inc['summary']['audioListens'] ?? 0));
+            $cur['summary']['downloads'] = max((int)($cur['summary']['downloads'] ?? 0), (int)($inc['summary']['downloads'] ?? 0));
+        }
+
+        if (isset($inc['languages'])) {
+            $cur['languages']['es'] = max((int)($cur['languages']['es'] ?? 0), (int)($inc['languages']['es'] ?? 0));
+            $cur['languages']['en'] = max((int)($cur['languages']['en'] ?? 0), (int)($inc['languages']['en'] ?? 0));
+            $cur['languages']['fr'] = max((int)($cur['languages']['fr'] ?? 0), (int)($inc['languages']['fr'] ?? 0));
+        }
+
+        if (isset($inc['historyByMonth']) && is_array($inc['historyByMonth'])) {
+            if (!isset($cur['historyByMonth'])) $cur['historyByMonth'] = [];
+            foreach ($inc['historyByMonth'] as $mKey => $mData) {
+                if (!isset($cur['historyByMonth'][$mKey])) {
+                    $cur['historyByMonth'][$mKey] = $mData;
+                } else {
+                    $cur['historyByMonth'][$mKey]['visits'] = max((int)($cur['historyByMonth'][$mKey]['visits'] ?? 0), (int)($mData['visits'] ?? 0));
+                    $cur['historyByMonth'][$mKey]['unique'] = max((int)($cur['historyByMonth'][$mKey]['unique'] ?? 0), (int)($mData['unique'] ?? 0));
+                    $cur['historyByMonth'][$mKey]['qr'] = max((int)($cur['historyByMonth'][$mKey]['qr'] ?? 0), (int)($mData['qr'] ?? 0));
+                }
+            }
+        }
+
+        if (isset($inc['historyByYear']) && is_array($inc['historyByYear'])) {
+            if (!isset($cur['historyByYear'])) $cur['historyByYear'] = [];
+            foreach ($inc['historyByYear'] as $yKey => $yData) {
+                if (!isset($cur['historyByYear'][$yKey])) {
+                    $cur['historyByYear'][$yKey] = $yData;
+                } else {
+                    $cur['historyByYear'][$yKey]['visits'] = max((int)($cur['historyByYear'][$yKey]['visits'] ?? 0), (int)($yData['visits'] ?? 0));
+                    $cur['historyByYear'][$yKey]['unique'] = max((int)($cur['historyByYear'][$yKey]['unique'] ?? 0), (int)($yData['unique'] ?? 0));
+                    $cur['historyByYear'][$yKey]['qr'] = max((int)($cur['historyByYear'][$yKey]['qr'] ?? 0), (int)($yData['qr'] ?? 0));
+                }
+            }
+        }
+
+        if (isset($inc['historyByDay']) && is_array($inc['historyByDay'])) {
+            if (!isset($cur['historyByDay'])) $cur['historyByDay'] = [];
+            foreach ($inc['historyByDay'] as $dKey => $dData) {
+                if (!isset($cur['historyByDay'][$dKey])) {
+                    $cur['historyByDay'][$dKey] = $dData;
+                } else {
+                    $cur['historyByDay'][$dKey]['visits'] = max((int)($cur['historyByDay'][$dKey]['visits'] ?? 0), (int)($dData['visits'] ?? 0));
+                    $cur['historyByDay'][$dKey]['unique'] = max((int)($cur['historyByDay'][$dKey]['unique'] ?? 0), (int)($dData['unique'] ?? 0));
+                    $cur['historyByDay'][$dKey]['qr'] = max((int)($cur['historyByDay'][$dKey]['qr'] ?? 0), (int)($dData['qr'] ?? 0));
+                }
+            }
+        }
+
+        saveAnalytics($cur);
+        echo json_encode(['success' => true, 'data' => $cur]);
         exit;
     }
 

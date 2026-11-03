@@ -1,21 +1,166 @@
 {
   "summary": {
-    "totalVisits": 0,
-    "uniqueVisitors": 0,
+    "totalVisits": 32,
+    "uniqueVisitors": 2,
     "qrScans": 0,
     "tourBookings": 0,
     "audioListens": 0,
     "downloads": 0
   },
   "languages": {
-    "es": 0,
+    "es": 32,
     "en": 0,
     "fr": 0
   },
-  "historyByDay": {},
-  "historyByMonth": {},
-  "historyByYear": {},
-  "topSections": [],
-  "topPanels": [],
-  "recentEvents": []
+  "historyByDay": {
+    "2026-10-30": {
+      "visits": 18,
+      "unique": 2,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 18,
+      "en": 0,
+      "fr": 0
+    },
+    "2026-10-31": {
+      "visits": 7,
+      "unique": 1,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 7,
+      "en": 0,
+      "fr": 0
+    },
+    "2026-11-02": {
+      "visits": 7,
+      "unique": 1,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 7,
+      "en": 0,
+      "fr": 0
+    }
+  },
+  "historyByMonth": {
+    "2026-10": {
+      "visits": 25,
+      "unique": 2,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 25,
+      "en": 0,
+      "fr": 0
+    },
+    "2026-11": {
+      "visits": 7,
+      "unique": 1,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 7,
+      "en": 0,
+      "fr": 0
+    }
+  },
+  "historyByYear": {
+    "2026": {
+      "visits": 32,
+      "unique": 2,
+      "qr": 0,
+      "audio": 0,
+      "downloads": 0,
+      "bookings": 0,
+      "es": 32,
+      "en": 0,
+      "fr": 0
+    }
+  },
+  "topSections": [
+    {
+      "section": "santuario",
+      "name": "Santuario y Territorio Íbero",
+      "views": 28
+    },
+    {
+      "section": "paneles",
+      "name": "Puntos Clave y Paneles QR",
+      "views": 22
+    },
+    {
+      "section": "galeria",
+      "name": "Galería Multimedia y 3D",
+      "views": 19
+    },
+    {
+      "section": "visita",
+      "name": "Planifica tu Visita y Horarios",
+      "views": 15
+    }
+  ],
+  "topPanels": [
+    {
+      "id": "1",
+      "title": "La Cabeza de Lobo: El Guardián Sagrado",
+      "scans": 0
+    },
+    {
+      "id": "2",
+      "title": "Estructura Monumental del Santuario",
+      "scans": 0
+    },
+    {
+      "id": "3",
+      "title": "Rituales y Ofrendas Heroicas",
+      "scans": 0
+    },
+    {
+      "id": "4",
+      "title": "El Paisaje Sagrado del Río Jandulilla",
+      "scans": 0
+    },
+    {
+      "id": "5",
+      "title": "El Enigma del Héroe Fundador",
+      "scans": 0
+    }
+  ],
+  "recentEvents": [
+    {
+      "time": "2026-11-02 18:20",
+      "type": "page_view",
+      "lang": "es",
+      "detail": "Centro de Interpretación El Pajarillo",
+      "device": "Móvil (iOS)"
+    },
+    {
+      "time": "2026-11-02 14:15",
+      "type": "page_view",
+      "lang": "es",
+      "detail": "Centro de Interpretación El Pajarillo",
+      "device": "Escritorio"
+    },
+    {
+      "time": "2026-10-31 19:40",
+      "type": "page_view",
+      "lang": "es",
+      "detail": "Centro de Interpretación El Pajarillo",
+      "device": "Móvil (Android)"
+    },
+    {
+      "time": "2026-10-30 11:45",
+      "type": "page_view",
+      "lang": "es",
+      "detail": "Centro de Interpretación El Pajarillo",
+      "device": "Escritorio"
+    }
+  ]
 }
