@@ -263,6 +263,21 @@ export class AccessibilityWidget {
     const resetAllBtn = document.getElementById('acc-btn-reset-all');
 
     if (triggerBtn) {
+      let touchTimer = null;
+      triggerBtn.addEventListener('pointerenter', () => {
+        triggerBtn.classList.add('touch-expanded');
+      });
+      triggerBtn.addEventListener('pointerleave', () => {
+        triggerBtn.classList.remove('touch-expanded');
+      });
+      triggerBtn.addEventListener('touchstart', () => {
+        triggerBtn.classList.add('touch-expanded');
+        clearTimeout(touchTimer);
+        touchTimer = setTimeout(() => {
+          triggerBtn.classList.remove('touch-expanded');
+        }, 3000);
+      }, { passive: true });
+
       triggerBtn.addEventListener('click', (e) => {
         if (e) e.preventDefault();
         this.togglePanel();

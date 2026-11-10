@@ -32,13 +32,13 @@
 .acc-floating-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0;
   background: #1B3624;
   color: #FFFFFF;
   border: 2px solid #B59A57;
   border-right: none;
-  border-radius: 12px 0 0 12px;
-  padding: 10px 14px 10px 12px;
+  border-radius: 14px 0 0 14px;
+  padding: 10px 12px;
   box-shadow: -4px 6px 20px rgba(0, 0, 0, 0.35);
   cursor: pointer;
   font-family: var(--font-condensed, 'Barlow Condensed', sans-serif);
@@ -46,15 +46,18 @@
   font-weight: 700;
   letter-spacing: 0.03em;
   outline: none;
-  transition: background-color 0.2s ease, padding-left 0.2s ease, box-shadow 0.2s ease;
+  transition: background-color 0.25s ease, padding 0.25s ease, box-shadow 0.25s ease;
   position: relative;
   user-select: none;
 }
 
-.acc-floating-btn:hover {
+.acc-floating-btn:hover,
+.acc-floating-btn:focus-visible,
+.acc-tab-wrapper:hover .acc-floating-btn,
+.acc-floating-btn.touch-expanded {
   background: #254B32;
   box-shadow: -6px 8px 24px rgba(181, 154, 87, 0.45);
-  padding-left: 18px;
+  padding: 10px 16px 10px 14px;
 }
 
 .acc-floating-btn:focus-visible {
@@ -68,13 +71,32 @@
 }
 
 .acc-tab-icon {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .acc-tab-label {
   font-size: 0.92rem;
   white-space: nowrap;
+  max-width: 0;
+  opacity: 0;
+  overflow: hidden;
+  display: inline-block;
+  transition: max-width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease, margin 0.2s ease;
+  margin-left: 0;
+}
+
+.acc-floating-btn:hover .acc-tab-label,
+.acc-floating-btn:focus-visible .acc-tab-label,
+.acc-tab-wrapper:hover .acc-tab-label,
+.acc-floating-btn.touch-expanded .acc-tab-label {
+  max-width: 140px;
+  opacity: 1;
+  margin-left: 8px;
 }
 
 /* Badge de contadores de ajustes activos */
