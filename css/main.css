@@ -1590,8 +1590,8 @@ input[type="date"].form-input {
 
 .footer-top-grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1fr;
-  gap: 3rem;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 3.5rem;
   max-width: 1280px;
   margin: 0 auto 3rem;
 }
