@@ -3033,6 +3033,7 @@ function renderKioskVideos() {
     } else {
       const savedP0Screensaver = localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
       const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+      const savedP1Screensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || savedP1;
 
       grid.innerHTML = kioskVideos.map(v => {
         const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
@@ -3045,6 +3046,7 @@ function renderKioskVideos() {
         const isP0 = v.showInP0 !== false;
         const isP0Screensaver = savedP0Screensaver === v.id || savedP0Screensaver === v.videoUrl;
         const isP1 = savedP1 === v.id || savedP1 === v.videoUrl;
+        const isP1Screensaver = savedP1Screensaver === v.id || savedP1Screensaver === v.videoUrl;
 
         return `
           <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0Screensaver ? '#D4AF37' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)'))}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
@@ -3059,7 +3061,7 @@ function renderKioskVideos() {
                 </span>
               </div>
 
-              <!-- Badges de estado en P0, Salvapantallas y P1 -->
+              <!-- Badges de estado en P0, Salvapantallas P0, P1 y Salvapantallas 1 -->
               <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.65rem;">
                 ${isP0 
                   ? '<span style="background: rgba(181, 154, 87, 0.2); color: #D4AF37; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(181, 154, 87, 0.4);">📺 Menú P0</span>' 
@@ -3068,8 +3070,11 @@ function renderKioskVideos() {
                   ? '<span style="background: rgba(212, 175, 55, 0.25); color: #D4AF37; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid #D4AF37;">🌟 Salvapantallas P0</span>' 
                   : ''}
                 ${isP1 
-                  ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ Proyección P1 (Alta)</span>' 
+                  ? '<span style="background: rgba(77, 133, 209, 0.25); color: #94BDF2; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(77, 133, 209, 0.4);">🏛️ Proyección P1</span>' 
                   : '<span style="background: rgba(150, 150, 150, 0.15); color: #888; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🏛️ Inactivo en P1</span>'}
+                ${isP1Screensaver 
+                  ? '<span style="background: rgba(126, 87, 194, 0.25); color: #D1C4E9; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(126, 87, 194, 0.5);">✨ Salvapantallas 1</span>' 
+                  : ''}
                 ${v.videoUrlAudioDesc 
                   ? '<span style="background: rgba(46, 125, 50, 0.25); color: #2e7d32; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(46, 125, 50, 0.4);">👁️ Con Audiodescripción</span>' 
                   : ''}
@@ -3089,16 +3094,19 @@ function renderKioskVideos() {
             </div>
 
             <div>
-              <!-- Botones de Conmutación Rápida P0 / Salvapantallas / P1 -->
+              <!-- Botones de Conmutación Rápida P0 / Salvapantallas P0 / P1 / Salvapantallas 1 -->
               <div style="display: flex; gap: 0.35rem; margin-bottom: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--admin-border); flex-wrap: wrap;">
-                <button type="button" class="btn-admin ${isP0 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 85px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP0 ? 'background: #B59A57; color: #111;' : ''}" onclick="window.toggleKioskP0('${v.id}')" title="Habilitar o deshabilitar del menú táctil de la entrada (P0)">
+                <button type="button" class="btn-admin ${isP0 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 80px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP0 ? 'background: #B59A57; color: #111;' : ''}" onclick="window.toggleKioskP0('${v.id}')" title="Habilitar o deshabilitar del menú táctil de la entrada (P0)">
                   ${isP0 ? '✓ Menú P0' : '+ En P0'}
                 </button>
-                <button type="button" class="btn-admin ${isP0Screensaver ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 105px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP0Screensaver ? 'background: #D4AF37; color: #111; font-weight: 800;' : ''}" onclick="window.assignKioskP0Screensaver('${v.id}')" title="Asignar como vídeo de salvapantallas para Pantalla 0">
-                  ${isP0Screensaver ? '★ Salvapantallas' : '☆ Salvapantallas'}
+                <button type="button" class="btn-admin ${isP0Screensaver ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 95px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP0Screensaver ? 'background: #D4AF37; color: #111; font-weight: 800;' : ''}" onclick="window.assignKioskP0Screensaver('${v.id}')" title="Asignar como vídeo de salvapantallas para Pantalla 0">
+                  ${isP0Screensaver ? '★ Salvap. P0' : '☆ Salvap. P0'}
                 </button>
-                <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 90px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
-                  ${isP1 ? '✓ Proyección P1' : '🏛️ Asignar P1'}
+                <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 85px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
+                  ${isP1 ? '✓ Proy. P1' : '🏛️ Asignar P1'}
+                </button>
+                <button type="button" class="btn-admin ${isP1Screensaver ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 95px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1Screensaver ? 'background: #7E57C2; color: white; font-weight: 800;' : ''}" onclick="window.assignKioskP1Screensaver('${v.id}')" title="Asignar como vídeo de salvapantallas para Pantalla 1">
+                  ${isP1Screensaver ? '✨ Salvap. 1' : '☆ Salvap. 1'}
                 </button>
               </div>
 
@@ -3231,6 +3239,7 @@ function setupKioskVideoEditor(onVideosChange) {
 
   const openModal = (video = null) => {
     const savedP1 = localStorage.getItem('pajarillo_kiosk_p1_video');
+    const savedP1Screensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || savedP1;
     const savedP0Screensaver = localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
 
     if (video) {
@@ -3253,6 +3262,9 @@ function setupKioskVideoEditor(onVideosChange) {
 
       const checkP1 = document.getElementById('kiosk-video-set-p1');
       if (checkP1) checkP1.checked = (savedP1 === video.id || savedP1 === video.videoUrl);
+
+      const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
+      if (checkP1Screensaver) checkP1Screensaver.checked = (savedP1Screensaver === video.id || savedP1Screensaver === video.videoUrl);
     } else {
       if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
       form.reset();
@@ -3268,6 +3280,8 @@ function setupKioskVideoEditor(onVideosChange) {
       if (checkP0Screensaver) checkP0Screensaver.checked = false;
       const checkP1 = document.getElementById('kiosk-video-set-p1');
       if (checkP1) checkP1.checked = false;
+      const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
+      if (checkP1Screensaver) checkP1Screensaver.checked = false;
     }
     modal.classList.remove('hidden');
   };
@@ -3327,6 +3341,19 @@ function setupKioskVideoEditor(onVideosChange) {
 
     renderKioskVideos();
     showToast('🏛️ Vídeo asignado como proyección en bucle para Pantalla 1 (Planta Alta)');
+  };
+
+  window.assignKioskP1Screensaver = (id) => {
+    localStorage.setItem('pajarillo_kiosk_p1_screensaver_video', id);
+    window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_screensaver_video' }));
+
+    // Si no está asignado P1, asignarlo también para asegurar reproducción
+    if (!localStorage.getItem('pajarillo_kiosk_p1_video')) {
+      window.assignKioskP1(id);
+    } else {
+      renderKioskVideos();
+    }
+    showToast('✨ Vídeo asignado como Salvapantallas 1 (Pantalla 1 · Planta Alta)');
   };
 
   window.deleteKioskVideo = (id) => {
@@ -3403,6 +3430,11 @@ function setupKioskVideoEditor(onVideosChange) {
 
     if (checkP1 && checkP1.checked) {
       window.assignKioskP1(targetId);
+    }
+
+    const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
+    if (checkP1Screensaver && checkP1Screensaver.checked) {
+      window.assignKioskP1Screensaver(targetId);
     }
 
     try {

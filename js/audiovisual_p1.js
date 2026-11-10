@@ -34,7 +34,7 @@ class AudiovisualP1 {
 
     // Sincronización en tiempo real desde el panel de Administración
     window.addEventListener('storage', async (e) => {
-      if (e.key === 'pajarillo_kiosk_videos' || e.key === 'pajarillo_kiosk_p1_video') {
+      if (e.key === 'pajarillo_kiosk_videos' || e.key === 'pajarillo_kiosk_p1_video' || e.key === 'pajarillo_kiosk_p1_screensaver_video') {
         await this.resolveAndLoadVideo();
       }
     });
@@ -63,7 +63,8 @@ class AudiovisualP1 {
 
     let selectedVideo = null;
 
-    const savedConfig = localStorage.getItem('pajarillo_kiosk_p1_video');
+    const savedScreensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video');
+    const savedConfig = savedScreensaver || localStorage.getItem('pajarillo_kiosk_p1_video');
     const targetKey = savedConfig || idParam;
 
     if (targetKey) {
