@@ -1649,31 +1649,34 @@ input[type="date"].form-input {
 }
 
 .footer-funding {
-  max-width: 1280px;
+  max-width: 1040px;
   margin: 2.5rem auto 1.5rem;
-  padding: 1.25rem 2rem;
-  background: rgba(255, 255, 255, 0.96);
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  padding: 1.15rem 2.5rem;
+  background: #ffffff;
+  border-radius: 28px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .footer-funding-grid {
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 1.5rem 2.5rem;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 1.5rem;
   width: 100%;
 }
 
 .footer-funding-grid .funding-logo {
-  height: 34px;
+  height: 36px;
+  max-height: 38px;
   width: auto;
-  max-width: 100%;
+  max-width: 19%;
   object-fit: contain;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.04));
   transition: transform 0.2s ease, opacity 0.2s ease;
   display: block;
+  flex-shrink: 0;
 }
 
 .footer-funding-grid .funding-logo:hover {
