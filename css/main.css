@@ -148,16 +148,13 @@ button {
 }
 
 .footer-logo-img {
-  height: 68px;
+  height: 58px;
   width: auto;
   max-width: none;
-  aspect-ratio: 1024 / 815;
   object-fit: contain;
   flex-shrink: 0;
-  background: rgba(255, 255, 255, 0.95);
-  padding: 6px 12px;
-  border-radius: 8px;
   display: block;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
 }
 
 .nav-menu {
