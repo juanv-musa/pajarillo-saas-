@@ -10,6 +10,9 @@ uploads/temp_*
 # Logs
 *.log
 
+# Dependencias
+node_modules/
+
 # Paquetes y temporales locales
 *.zip
 generate_canvas_ui.js

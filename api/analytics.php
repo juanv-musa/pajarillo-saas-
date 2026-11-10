@@ -1,8 +1,24 @@
 <?php
+// Configuración de cookies de sesión segura
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    ini_set('session.cookie_secure', 1);
+}
+if (PHP_VERSION_ID >= 70300) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+}
+
 session_start();
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
 header('Pragma: no-cache');
+header('X-Content-Type-Options: nosniff');
 
 $analyticsFile = '../data/analytics.json';
 
@@ -18,27 +34,36 @@ function getAnalytics() {
             'recentEvents' => []
         ];
     }
-    return json_decode(file_get_contents($analyticsFile), true) ?: [];
+    $raw = @file_get_contents($analyticsFile);
+    $decoded = $raw ? json_decode($raw, true) : null;
+    return is_array($decoded) ? $decoded : [];
 }
 
 function saveAnalytics($data) {
     global $analyticsFile;
-    file_put_contents($analyticsFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+    $encoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    @file_put_contents($analyticsFile, $encoded, LOCK_EX);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// GET: Devolver analíticas (disponible para el panel de administración)
+// GET: Devolver analíticas (restringido exclusivamente a gestores autenticados)
 if ($method === 'GET') {
+    if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+        http_response_code(401);
+        echo json_encode(['error' => 'No autorizado']);
+        exit;
+    }
     $data = getAnalytics();
     echo json_encode($data);
     exit;
 }
 
-// POST: Registrar un evento anónimo de visitante
+// POST: Registrar un evento anónimo de visitante o acciones administrativas
 if ($method === 'POST') {
-    $payload = json_decode(file_get_contents('php://input'), true);
-    if (!$payload || !isset($payload['type'])) {
+    $raw = file_get_contents('php://input');
+    $payload = json_decode($raw, true);
+    if (!is_array($payload) || !isset($payload['type'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Evento inválido']);
         exit;
@@ -52,8 +77,13 @@ if ($method === 'POST') {
 
     $type = $payload['type'];
 
-    // Restablecer analíticas a cero si se solicita desde administración
+    // Restablecer analíticas a cero (exige sesión administrativa)
     if ($type === 'reset_all') {
+        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
         $fresh = [
             'summary' => ['totalVisits' => 0, 'uniqueVisitors' => 0, 'qrScans' => 0, 'tourBookings' => 0, 'audioListens' => 0, 'downloads' => 0],
             'languages' => ['es' => 0, 'en' => 0, 'fr' => 0],
@@ -69,8 +99,13 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Sincronización bidireccional desde administración para unificar métricas entre navegadores
+    // Sincronización analítica desde administración (exige sesión administrativa)
     if ($type === 'sync_analytics' && !empty($payload['data'])) {
+        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+            http_response_code(401);
+            echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
         $inc = $payload['data'];
         $cur = getAnalytics();
 

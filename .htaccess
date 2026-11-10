@@ -6,11 +6,48 @@ AddType application/json .json
 AddType image/svg+xml .svg
 AddType application/javascript .js
 AddType text/css .css
+AddType audio/mpeg .mp3
+AddType application/pdf .pdf
 
 # Opciones de seguridad: evitar listado de directorios
-Options -Indexes
+Options -Indexes -MultiViews
 
-# Cabeceras de seguridad y CORS para recursos internos
+# Proteger archivos ocultos y de configuración
+<FilesMatch "^\.(?!well-known)">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Proteger archivos de documentación interna o bases de datos directas
+<FilesMatch "(?i)\.(md|log|sql|bak|conf)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Bloquear acceso HTTP directo a reservas y datos personales sensibles
+<Files "reservas.json">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+# Cabeceras de seguridad
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>

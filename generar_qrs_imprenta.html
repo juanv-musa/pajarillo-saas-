@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generador y Descargador de Códigos QR para Imprenta | Santuario de El Pajarillo</title>
+
+  <!-- Favicon Oficial Multidispositivo -->
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Librería QRCode.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <!-- JSZip para descargar todos en un solo ZIP si lo desean -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+
+  <style>
+    :root {
+      --primary: #384F3E;
+      --primary-dark: #27382c;
+      --accent: #C28B38;
+      --bg: #F4F6F4;
+      --card-bg: #FFFFFF;
+      --text: #222523;
+      --muted: #555E57;
+      --border: #D8DFD9;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 2rem 1rem 4rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    header {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+    }
+    h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    p.lead {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.35rem;
+    }
+    .btn-pack {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.2s;
+    }
+    .btn-pack:hover {
+      background: var(--primary-dark);
+    }
+    .banner-urgent {
+      background: #FFF8E1;
+      border-left: 5px solid var(--accent);
+      padding: 1rem 1.25rem;
+      border-radius: 6px;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: rgba(56, 79, 62, 0.1);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    .card-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 1.8rem;
+      margin-bottom: 0.25rem;
+      color: var(--primary);
+    }
+    .card-subtitle {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+    }
+    .qr-box {
+      width: 220px;
+      height: 220px;
+      background: #fafafa;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .url-text {
+      background: #f1f3f1;
+      font-family: monospace;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      word-break: break-all;
+      margin-bottom: 1.25rem;
+      color: #333;
+      width: 100%;
+    }
+    .btn-download {
+      background: white;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 6px;
+      transition: all 0.2s;
+    }
+    .btn-download:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .add-section-box {
+      background: white;
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 1.75rem;
+      margin-top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div>
+      <h1>Códigos QR Oficiales · Imprenta y Producción</h1>
+      <p class="lead">Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Ayuntamiento de Huelma</p>
+    </div>
+    <button id="btn-download-all" class="btn-pack">
+      📦 Descargar Todos los QR (Pack Imprenta)
+    </button>
+  </header>
+
+  <div class="banner-urgent">
+    <strong>💡 Información clave para producción física de los paneles:</strong>
+    <p>Los códigos QR impresos en los paneles físicos <strong>apuntan únicamente a la dirección URL fija y definitiva</strong>. El texto, las fotos, los audios y los documentos pueden cambiarse o actualizarse en cualquier momento en el sistema web sin que el código QR impreso caduque ni cambie jamás. <strong>Puedes enviar estos códigos QR a producción gráfica de inmediato.</strong></p>
+  </div>
+
+  <div class="grid" id="qr-grid">
+    <!-- Generado dinámicamente -->
+  </div>
+
+  <!-- Añadir Puntos Adicionales si se necesitan más -->
+  <div class="add-section-box">
+    <h3 style="color: var(--primary); font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem;">
+      ¿Necesitas añadir más puntos QR para la imprenta? (Punto 6, 7, 8...)
+    </h3>
+    <p style="font-size: 0.9rem; color: var(--muted);">
+      Introduce el número de punto y el título provisional para generar su código QR definitivo al instante:
+    </p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <input type="number" id="new-qr-id" placeholder="Nº de Punto (Ej. 6)" style="padding: 10px; border: 1px solid var(--border); border-radius: 6px; width: 140px;">
+      <input type="text" id="new-qr-title" placeholder="Título del Punto (Ej. Sala de Audiovisuales)" style="padding: 10px; border: 1px solid var(--border); border-radius: 6px; flex: 1; min-width: 250px;">
+      <button id="btn-add-qr" class="btn-pack" style="background: var(--accent);">+ Generar QR Adicional</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const BASE_URL = "https://www.aytohuelma.es/cipajarillo/";
+
+  // Puntos base del santuario
+  const PANELS = [
+    {
+      id: "portal",
+      num: "GENERAL",
+      title: "Portal Web Oficial",
+      subtitle: "Acceso global al centro de interpretación",
+      url: BASE_URL + "index.html"
+    },
+    {
+      id: 1,
+      num: "01",
+      title: "La Cabeza de Lobo",
+      subtitle: "Escultura en caliza · Siglo IV a.C.",
+      url: BASE_URL + "punto.html?id=1"
+    },
+    {
+      id: 2,
+      num: "02",
+      title: "El Monumento Heroico Escalonado",
+      subtitle: "Arquitectura y terrazas monumentales",
+      url: BASE_URL + "punto.html?id=2"
+    },
+    {
+      id: 3,
+      num: "03",
+      title: "El Territorio de Iltiraka",
+      subtitle: "Colonización de la silva del Jandulilla",
+      url: BASE_URL + "punto.html?id=3"
+    },
+    {
+      id: 4,
+      num: "04",
+      title: "Un Paisaje Sagrado",
+      subtitle: "El camino ritual y El Fontanar",
+      url: BASE_URL + "punto.html?id=4"
+    },
+    {
+      id: 5,
+      num: "05",
+      title: "El Guerrero y los Leones",
+      subtitle: "El combate heroico y las fieras míticas",
+      url: BASE_URL + "punto.html?id=5"
+    }
+  ];
+
+  const grid = document.getElementById('qr-grid');
+
+  function renderCard(item) {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `card-qr-${item.id}`;
+
+    card.innerHTML = `
+      <span class="badge">PUNTO ${item.num}</span>
+      <h3 class="card-title">${item.title}</h3>
+      <div class="card-subtitle">${item.subtitle}</div>
+      <div class="qr-box" id="qr-box-${item.id}"></div>
+      <div class="url-text">${item.url}</div>
+      <button class="btn-download" onclick="downloadSingleQR('${item.id}', '${item.num}', '${item.title.replace(/'/g, "\\'")}')">
+        ⬇ Descargar PNG (Alta Calidad)
+      </button>
+    `;
+    grid.appendChild(card);
+
+    // Generar QR con nivel de corrección H (30%)
+    setTimeout(() => {
+      new QRCode(document.getElementById(`qr-box-${item.id}`), {
+        text: item.url,
+        width: 600,
+        height: 600,
+        colorDark: "#384F3E", // Verde corporativo oficial
+        colorLight: "#FFFFFF",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }, 50);
+  }
+
+  PANELS.forEach(renderCard);
+
+  window.downloadSingleQR = function(id, num, title) {
+    const box = document.getElementById(`qr-box-${id}`);
+    const img = box.querySelector('img') || box.querySelector('canvas');
+    if (!img) return;
+
+    let src = '';
+    if (img.tagName.toLowerCase() === 'img') {
+      src = img.src;
+    } else {
+      src = img.toDataURL('image/png');
+    }
+
+    const a = document.createElement('a');
+    a.href = src;
+    a.download = `QR_PAJARILLO_PUNTO_${num}_${title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // Descarga en masa (ZIP)
+  document.getElementById('btn-download-all').addEventListener('click', async () => {
+    if (typeof JSZip === 'undefined') {
+      alert('Descargando individualmente cada código QR...');
+      PANELS.forEach(p => downloadSingleQR(p.id, p.num, p.title));
+      return;
+    }
+
+    const zip = new JSZip();
+    const folder = zip.folder("QR_SANTUARIO_PAJARILLO_PRODUCCION");
+
+    let count = 0;
+    for (const item of PANELS) {
+      const box = document.getElementById(`qr-box-${item.id}`);
+      const img = box ? (box.querySelector('img') || box.querySelector('canvas')) : null;
+      if (img) {
+        let base64Data = '';
+        if (img.tagName.toLowerCase() === 'img') {
+          base64Data = img.src.replace(/^data:image\/png;base64,/, "");
+        } else {
+          base64Data = img.toDataURL('image/png').replace(/^data:image\/png;base64,/, "");
+        }
+        const fileName = `QR_PUNTO_${item.num}_${item.title.toLowerCase().replace(/[^a-z0-9]/g, '_')}.png`;
+        folder.file(fileName, base64Data, { base64: true });
+        count++;
+      }
+    }
+
+    // Añadir archivo TXT con la lista oficial de URLs
+    let listTxt = "RELACIÓN OFICIAL DE CÓDIGOS QR Y ENLACES DEFINITIVOS\n";
+    listTxt += "Centro de Interpretación Santuario Ibérico de El Pajarillo (Huelma)\n";
+    listTxt += "=================================================================\n\n";
+    PANELS.forEach(p => {
+      listTxt += `PUNTO ${p.num}: ${p.title}\n`;
+      listTxt += `URL: ${p.url}\n\n`;
+    });
+    folder.file("LISTADO_URLS_OFICIALES.txt", listTxt);
+
+    const blob = await zip.generateAsync({ type: "blob" });
+    saveAs(blob, "QR_PAJARILLO_PACK_IMPRENTA.zip");
+  });
+
+  // Añadir nuevos puntos al vuelo
+  document.getElementById('btn-add-qr').addEventListener('click', () => {
+    const idVal = document.getElementById('new-qr-id').value.trim();
+    const titleVal = document.getElementById('new-qr-title').value.trim();
+
+    if (!idVal || !titleVal) {
+      alert('Por favor introduce el número de punto y un título.');
+      return;
+    }
+
+    const newPanel = {
+      id: idVal,
+      num: String(idVal).padStart(2, '0'),
+      title: titleVal,
+      subtitle: "Punto Interpretativo",
+      url: BASE_URL + `punto.html?id=${idVal}`
+    };
+
+    PANELS.push(newPanel);
+    renderCard(newPanel);
+
+    document.getElementById('new-qr-id').value = '';
+    document.getElementById('new-qr-title').value = '';
+
+    document.getElementById(`card-qr-${newPanel.id}`).scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>

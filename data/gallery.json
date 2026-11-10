@@ -16,8 +16,8 @@
     {
       "id": "foto_2",
       "type": "photo",
-      "src": "./assets/images/gallery/Leon.png",
-      "thumb": "./assets/images/gallery/Leon.png",
+      "src": "./assets/images/gallery/leon.png",
+      "thumb": "./assets/images/gallery/leon.png",
       "caption": {
         "es": "León Ibérico de El Pajarillo (Siglo IV a.C.)",
         "en": "Iberian Lion of El Pajarillo (4th Century BC)",
@@ -109,53 +109,53 @@
     {
       "id": "res_1",
       "title": {
-        "es": "Ficha Científica: La Cabeza de Lobo de El Pajarillo",
-        "en": "Scientific Factsheet: The Wolf Head of El Pajarillo",
-        "fr": "Fiche Scientifique : La Tête de Loup d'El Pajarillo"
+        "es": "Dossier Oficial: Centro de Interpretación de El Pajarillo",
+        "en": "Official Dossier: El Pajarillo Interpretation Centre",
+        "fr": "Dossier Officiel : Centre d'Interprétation d'El Pajarillo"
       },
-      "format": "PDF / 4.2 MB",
+      "format": "PDF / 129 KB",
       "icon": "📄",
       "badge": "Publicación Oficial",
       "description": {
-        "es": "Estudio iconográfico, metrología y análisis petrológico de la caliza del monumento.",
-        "en": "Iconographic study, metrology, and petrological analysis of the monument's limestone.",
-        "fr": "Étude iconographique, analyse pétrologique et contexte archéologique."
+        "es": "Documento oficial del Centro de Interpretación: discurso museográfico, cronología y contexto arqueológico.",
+        "en": "Official document: museum narrative, chronology, and archaeological context of the Iberian sanctuary.",
+        "fr": "Document officiel : parcours muséographique, chronologie et contexte archéologique du sanctuaire ibérique."
       },
-      "url": "#"
+      "url": "./assets/docs/dossier_pajarillo.pdf"
     },
     {
       "id": "res_2",
       "title": {
-        "es": "Plano Topográfico y Guía del Yacimiento Arqueológico",
-        "en": "Topographic Map & Archaeological Site Guide",
-        "fr": "Plan Topographique et Guide du Site Archéologique"
+        "es": "Ficha Científica e Iconografía: Cabeza de Lobo y Monumento",
+        "en": "Scientific Factsheet: Wolf Head & Stepped Monument",
+        "fr": "Fiche Scientifique : Tête de Loup et Monument Héroïque"
       },
-      "format": "PDF / 3.1 MB",
+      "format": "PDF / 129 KB",
       "icon": "🗺️",
-      "badge": "Cartografía",
+      "badge": "Investigación",
       "description": {
-        "es": "Planimetría detallada de las terrazas, accesos rituales y áreas de prospección arqueológica.",
-        "en": "Detailed survey plans of the terraces, ceremonial paths, and archaeological exploration areas.",
-        "fr": "Cartographie des terrasses cérémonielles et des zones de prospection archéologique."
+        "es": "Estudio iconográfico, metrología y análisis de las esculturas calizas del santuario.",
+        "en": "Iconographic study, metrology, and sculptural analysis of the heroic limestone figures.",
+        "fr": "Étude iconographique, analyse pétrologique et restitution des sculptures du sanctuaire."
       },
-      "url": "#"
+      "url": "./assets/docs/dossier_pajarillo.pdf"
     },
     {
       "id": "res_3",
       "title": {
-        "es": "Cuaderno Didáctico para Escolares y Familias",
-        "en": "Educational Booklet for Schools & Families",
-        "fr": "Cahier Pédagogique pour Écoles et Familles"
+        "es": "Guía de Sala y Recorrido del Yacimiento",
+        "en": "Visitor Guide & Archaeological Tour",
+        "fr": "Guide de Visite et Parcours Archéologique"
       },
-      "format": "PDF / 6.8 MB",
+      "format": "PDF / 129 KB",
       "icon": "🎒",
-      "badge": "Didáctica",
+      "badge": "Guía de Sala",
       "description": {
-        "es": "Actividades lúdicas, recortables del lobo íbero y juegos de pistas para la visita.",
-        "en": "Engaging activities, Iberian wolf papercrafts, and treasure-hunt clues for children.",
-        "fr": "Jeux d'observation, coloriages et énigmes pour explorer le musée en famille."
+        "es": "Planimetría de las terrazas ceremoniales y claves interpretativas de los puntos de visita.",
+        "en": "Layout of the ceremonial terraces and key interpretive highlights for visitors.",
+        "fr": "Plan des terrasses cérémonielles et repères d'interprétation des points de visite."
       },
-      "url": "#"
+      "url": "./assets/docs/dossier_pajarillo.pdf"
     }
   ],
   "videos": []

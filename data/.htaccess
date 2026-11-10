@@ -1,0 +1,11 @@
+# Protección de Datos Sensibles y RGPD · Santuario de El Pajarillo
+# Denegar todo acceso web directo a las bases de datos JSON locales.
+# Los scripts PHP internos del servidor pueden seguir leyendo y escribiendo en ellas.
+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>

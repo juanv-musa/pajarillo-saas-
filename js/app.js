@@ -959,37 +959,61 @@ function setupHeroCarousel(i18n, customConfig) {
 function setupBookingForm(i18n) {
   const form = document.getElementById('tour-booking-form');
   const successBox = document.getElementById('booking-success-msg');
+  const errorBox = document.getElementById('booking-error-msg');
+  const errorText = document.getElementById('booking-error-text');
   if (!form) return;
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
-    btn.innerHTML = '⏳ Enviando solicitud...';
+    btn.innerHTML = '⏳ Verificando y registrando solicitud...';
     btn.disabled = true;
+    if (errorBox) errorBox.style.display = 'none';
 
     const bookingData = {
-      name: document.getElementById('b-name').value,
-      email: document.getElementById('b-email').value,
-      phone: document.getElementById('b-phone').value,
+      name: document.getElementById('b-name').value.trim(),
+      email: document.getElementById('b-email').value.trim(),
+      phone: document.getElementById('b-phone').value.trim(),
       date: document.getElementById('b-date').value,
       time: document.getElementById('b-time').value,
       people: parseInt(document.getElementById('b-people').value) || 2,
       lang: document.getElementById('b-lang').value,
-      notes: document.getElementById('b-notes').value
+      notes: (document.getElementById('b-notes').value || '').trim()
     };
 
+    let serverSuccess = false;
+    let errorMessage = '';
+
     try {
-      await fetch('./api/data.php', {
+      const res = await fetch('./api/data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'new_booking', booking: bookingData })
       });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        serverSuccess = true;
+      } else {
+        errorMessage = data.error || 'El servidor no pudo procesar la reserva.';
+      }
     } catch (err) {
-      console.warn('Almacenamiento offline de reserva');
+      errorMessage = 'Error de conexión con el servidor. Comprueba tu conexión a Internet.';
     }
 
-    // Persistir localmente para sincronización en tiempo real con el panel de administración
+    if (!serverSuccess) {
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+      if (errorBox) {
+        if (errorText) errorText.textContent = errorMessage;
+        errorBox.style.display = 'block';
+      } else {
+        alert(errorMessage);
+      }
+      return;
+    }
+
+    // Persistir copia en navegador para el panel de administración offline
     try {
       const storageKey = 'pajarillo_bookings_data';
       const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
@@ -1002,28 +1026,9 @@ function setupBookingForm(i18n) {
       };
       existing.unshift(newEntry);
       localStorage.setItem(storageKey, JSON.stringify(existing));
-
-      // Si el gestor municipal ha configurado un email opcional para avisos:
-      const notifyCfg = JSON.parse(localStorage.getItem('pajarillo_notify_config') || '{}');
-      if (notifyCfg && notifyCfg.email) {
-        // Enviar copia por webhook o mailto/formulario si hay endpoint configurado
-        fetch('https://formsubmit.co/ajax/' + encodeURIComponent(notifyCfg.email), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            _subject: `🎟️ Nueva Reserva: ${bookingData.name} (${bookingData.date})`,
-            nombre: bookingData.name,
-            fecha: bookingData.date,
-            hora: bookingData.time,
-            personas: bookingData.people,
-            telefono: bookingData.phone,
-            email: bookingData.email,
-            observaciones: bookingData.notes || 'Ninguna'
-          })
-        }).catch(() => null);
-      }
     } catch (e) {}
 
+    // Registrar evento analítico
     if (window.PajarilloAnalytics) {
       window.PajarilloAnalytics.track('booking', {
         people: bookingData.people,
@@ -1095,15 +1100,10 @@ window.openPanelQR = function(panelId, panelTitle) {
   titleEl.textContent = panelTitle;
   container.innerHTML = '';
 
-  // URL específica del punto interpretativo
-  const origin = window.location.origin;
-  let path = window.location.pathname;
-  if (path.endsWith('index.html')) {
-    path = path.replace(/index\.html$/, 'punto.html');
-  } else {
-    path = path.replace(/\/?$/, '/punto.html');
-  }
-  const targetUrl = `${origin}${path}?id=${panelId}`;
+  // URL Oficial Única y Definitiva de Producción (Ayto Huelma)
+  // Para que el QR coincida exactamente con los archivos de imprenta sin duplicidades
+  const OFFICIAL_BASE_URL = 'https://www.aytohuelma.es/cipajarillo/';
+  const targetUrl = `${OFFICIAL_BASE_URL}punto.html?id=${panelId}`;
   linkText.textContent = targetUrl;
 
   if (typeof QRCode !== 'undefined') {
@@ -1139,31 +1139,33 @@ window.prefillActivity = function(title) {
   }
 };
 
-window.downloadResource = function(title) {
-  alert(`Descargando recurso oficial: "${title}".\nEl archivo digital está disponible en el repositorio del Centro de Interpretación.`);
+window.downloadResource = function(title, fileUrl) {
+  const target = fileUrl || './assets/docs/dossier_pajarillo.pdf';
+  const a = document.createElement('a');
+  a.href = target;
+  a.download = target.split('/').pop();
+  a.target = '_blank';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
   if (window.PajarilloAnalytics) {
     window.PajarilloAnalytics.track('download', {
-      detail: title
+      detail: title || 'Dossier Oficial'
     });
   }
 };
 
-window.playSimulatedVideo = function(title) {
-  alert(`Reproduciendo recurso audiovisual: "${title}".\nVisualización habilitada en pantalla completa.`);
-  if (window.PajarilloAnalytics) {
-    window.PajarilloAnalytics.track('video_view', {
-      detail: title
-    });
+window.playSimulatedVideo = function(videoUrl) {
+  if (videoUrl && videoUrl !== '#') {
+    window.open(videoUrl, '_blank');
   }
 };
 
 window.playAudio = function(audioFile) {
-  alert(`Reproduciendo audioguía oficial: "${audioFile}".\nEscucha disponible en sala y dispositivos móviles.`);
-  if (window.PajarilloAnalytics) {
-    window.PajarilloAnalytics.track('audio_play', {
-      audio: audioFile,
-      detail: `Audioguía: ${audioFile}`
-    });
+  if (audioFile) {
+    const audio = new Audio(`./assets/audio/${audioFile}`);
+    audio.play().catch(() => {});
   }
 };
 

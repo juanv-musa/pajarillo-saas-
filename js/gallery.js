@@ -76,7 +76,7 @@ export class GalleryManager {
             .replace(/gallery\/arqueologia\.jpg/g, 'arqueologia.png')
             .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
             .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
-            .replace(/gallery\/retablo\.jpg/g, 'gallery/Leon.png')
+            .replace(/gallery\/retablo\.jpg/g, 'gallery/leon.png')
             .replace(/lobo\.jpg/g, 'lobo.png');
         };
 
@@ -401,9 +401,9 @@ export class GalleryManager {
               <p>${desc}</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${res.format || 'PDF / Digital'}</span>
-                <button class="btn-point-action btn-point-qr" onclick="downloadResource('${title.replace(/'/g, "\\'")}')">
+                <a href="${res.url || res.file || './assets/docs/dossier_pajarillo.pdf'}" download class="btn-point-action btn-point-qr" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
                   ${downloadLabel}
-                </button>
+                </a>
               </div>
             </div>
           </div>

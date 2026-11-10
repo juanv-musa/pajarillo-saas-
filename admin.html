@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plataforma de Gestión (SaaS MVP) | Santuario Ibérico del Pajarillo</title>
 
+  <!-- Favicon Oficial Multidispositivo -->
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
+
   <!-- Google Fonts: Inter y Barlow Condensed -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -64,74 +71,28 @@
         <img src="./assets/images/logo-ayuntamiento-huelma-admin.png" alt="Ayuntamiento de Huelma" style="height: 52px; width: auto; object-fit: contain;">
       </div>
       <h2>Acceso a Gestión Municipal</h2>
-      <p>Introduce las credenciales del Ayuntamiento para gestionar contenidos, secciones y analíticas</p>
+      <p>Introduce las credenciales municipales para gestionar contenidos, secciones y analíticas</p>
 
-      <!-- Botón de Acceso Directo Inmediato (1 Clic) -->
-      <button type="button" id="btn-quick-login" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; background: #2E7D32; border-color: #2E7D32; font-size: 0.95rem; padding: 12px; margin-bottom: 1.25rem; font-weight: 700; box-shadow: 0 3px 8px rgba(46,125,50,0.25);">
-        <img src="./assets/icons/icon-lightning.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Acceso Directo de Administrador (1 Clic)
-      </button>
-
-      <!-- Pestañas de Login o Registro -->
-      <div style="display: flex; justify-content: center; gap: 8px; margin-bottom: 1.25rem;">
-        <button id="tab-btn-login" class="btn-admin btn-admin-primary" style="padding: 6px 16px; font-size: 0.82rem;">Iniciar Sesión</button>
-        <button id="tab-btn-register" class="btn-admin btn-admin-outline" style="padding: 6px 16px; font-size: 0.82rem;">Registro Rápido (MVP)</button>
-      </div>
-
-      <!-- Formulario de Login -->
-      <form id="admin-login-form">
+      <!-- Formulario de Login Oficial -->
+      <form id="admin-login-form" style="margin-top: 1.25rem;">
         <div class="admin-form-group" style="text-align: left;">
           <label>Usuario</label>
-          <input type="text" id="login-user" class="admin-input" placeholder="admin" value="admin">
+          <input type="text" id="login-user" class="admin-input" required placeholder="Introduce tu usuario" autocomplete="username">
         </div>
         <div class="admin-form-group" style="text-align: left;">
           <label>Contraseña</label>
-          <input type="password" id="login-pass" class="admin-input" required placeholder="pajarillo" value="pajarillo">
+          <input type="password" id="login-pass" class="admin-input" required placeholder="Introduce tu contraseña" autocomplete="current-password">
         </div>
-        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
+        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 1rem; padding: 10px 16px; font-weight: 700;">
           Acceder al Panel de Control
         </button>
       </form>
 
-      <!-- Credenciales Disponibles Clickables -->
-      <div style="background: rgba(56, 79, 62, 0.08); border: 1px solid var(--admin-border); border-radius: 8px; padding: 10px 14px; margin-top: 1.25rem; font-size: 0.8rem; text-align: left;">
-        <strong style="color: var(--admin-primary); display: block; margin-bottom: 6px;"><img src="./assets/icons/icon-key.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Clic para rellenar credenciales oficiales:</strong>
-        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-          <button type="button" class="btn-cred-fill" data-u="admin" data-p="pajarillo" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> pajarillo
-          </button>
-          <button type="button" class="btn-cred-fill" data-u="admin" data-p="admin" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> admin
-          </button>
-          <button type="button" class="btn-cred-fill" data-u="ayuntamiento" data-p="huelma2026" style="background: white; border: 1px solid var(--admin-border); border-radius: 4px; padding: 4px 8px; cursor: pointer; font-size: 0.75rem;">
-            <img src="./assets/icons/icon-temple.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> ayuntamiento / <img src="./assets/icons/icon-lock.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> huelma2026
-          </button>
-        </div>
-      </div>
+      <p id="login-error-msg" class="hidden" style="color: var(--admin-danger); font-size: 0.85rem; font-weight: 700; margin-top: 1rem; background: rgba(192, 57, 43, 0.08); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(192, 57, 43, 0.2);"></p>
 
-      <!-- Formulario de Registro Rápido MVP -->
-      <form id="admin-register-form" class="hidden">
-        <div class="admin-form-group" style="text-align: left;">
-          <label>Nombre del Gestor / Técnico</label>
-          <input type="text" id="reg-name" class="admin-input" required placeholder="Ej. Juan Pérez">
-        </div>
-        <div class="admin-form-group" style="text-align: left;">
-          <label>Nuevo Usuario</label>
-          <input type="text" id="reg-user" class="admin-input" required placeholder="tecnico_turismo">
-        </div>
-        <div class="admin-form-group" style="text-align: left;">
-          <label>Contraseña</label>
-          <input type="password" id="reg-pass" class="admin-input" required placeholder="••••••••">
-        </div>
-        <button type="submit" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">
-          Crear Usuario y Entrar
-        </button>
-      </form>
-
-      <p id="login-error-msg" class="hidden" style="color: var(--admin-danger); font-size: 0.85rem; font-weight: 700; margin-top: 1rem;"></p>
-
-      <!-- Logotipos Institucionales en Pantalla de Acceso -->
-      <div style="margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--admin-border);">
-        <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 0.85rem;">
+      <!-- Banda de Logotipos Institucionales de Cofinanciación -->
+      <div style="margin-top: 1.75rem; padding: 0.9rem 1.25rem; background: #ffffff; border-radius: 16px; border: 1px solid var(--admin-border); box-shadow: 0 2px 10px rgba(0,0,0,0.03);">
+        <div style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 0.75rem 1.25rem;">
           <img src="./assets/images/logos/01-union-europea.png?v=2.3" alt="Cofinanciado por la Unión Europea" style="height: 28px; width: auto; object-fit: contain;">
           <img src="./assets/images/logos/02-ministerio-hacienda.png?v=2.3" alt="Ministerio de Hacienda - Gobierno de España" style="height: 28px; width: auto; object-fit: contain;">
           <img src="./assets/images/logos/03-fondos-europeos.png?v=2.3" alt="Fondos Europeos" style="height: 28px; width: auto; object-fit: contain;">
@@ -1274,6 +1235,58 @@
                 </div>
               </div>
 
+              <!-- Enlace a Web Externa / Redirección QR (Opcional) -->
+              <div style="background: #F0F4F8; padding: 1rem; border-radius: 8px; margin-bottom: 1.25rem; border: 1.5px solid #CBD5E1;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem;">
+                  <strong style="font-size: 0.9rem; color: #1E293B;">🌐 Enlace a Web Externa (Opcional)</strong>
+                  <span style="font-size: 0.72rem; background: #E2E8F0; padding: 2px 8px; border-radius: 12px; font-weight: 600; color: #475569;">Para QRs especiales</span>
+                </div>
+                <p style="font-size: 0.78rem; color: #64748B; margin-bottom: 0.6rem;">
+                  Si este QR debe enlazar con otra web (ej. Turismo de Jaén, Red de Yacimientos, Museo Íbero o portal municipal):
+                </p>
+                <div class="admin-form-group" style="margin-bottom: 0.6rem;">
+                  <label style="font-size: 0.8rem;">URL de destino externa</label>
+                  <input type="url" id="panel-external-url" class="admin-input" placeholder="https://www.aytohuelma.es/... o https://museoibero.es">
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: #fff; padding: 0.6rem 0.8rem; border-radius: 6px; border: 1px solid #E2E8F0;">
+                  <input type="checkbox" id="panel-redirect-external" style="margin-top: 3px; cursor: pointer;">
+                  <label for="panel-redirect-external" style="font-size: 0.8rem; cursor: pointer; color: #334155; margin: 0; line-height: 1.35;">
+                    <strong>Redirigir automáticamente al escanear el QR</strong>
+                    <span style="display: block; font-size: 0.72rem; color: #64748B; margin-top: 2px;">
+                      El visitante que escanee el QR irá directo a la web externa. Si no lo marcas, la ficha mostrará un botón destacado hacia dicha web.
+                    </span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Control de Secciones Visibles en la Ficha -->
+              <div style="background: #FAF7F2; padding: 1rem; border-radius: 8px; margin-bottom: 1.25rem; border: 1.5px solid #E5D5C5;">
+                <strong style="font-size: 0.88rem; color: var(--admin-primary); display: block; margin-bottom: 0.4rem;">
+                  ⚙️ Visibilidad de Secciones en la Ficha
+                </strong>
+                <p style="font-size: 0.78rem; color: var(--admin-muted); margin-bottom: 0.75rem;">
+                  Habilita o deshabilita los bloques que se mostrarán en la ficha de este punto:
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem;">
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; cursor: pointer;">
+                    <input type="checkbox" id="panel-toggle-image" checked>
+                    <span>🖼️ Mostrar imagen</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; cursor: pointer;">
+                    <input type="checkbox" id="panel-toggle-audio" checked>
+                    <span>🎧 Habilitar audioguía</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; cursor: pointer;">
+                    <input type="checkbox" id="panel-toggle-video" checked>
+                    <span>🎬 Habilitar vídeo / 3D</span>
+                  </label>
+                  <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; cursor: pointer;">
+                    <input type="checkbox" id="panel-toggle-pdf" checked>
+                    <span>📄 Habilitar descarga PDF</span>
+                  </label>
+                </div>
+              </div>
+
               <!-- Imagen del Panel -->
               <div class="admin-form-group">
                 <label>Imagen Representativa</label>
@@ -1288,6 +1301,13 @@
                 <div id="panel-img-preview-box" style="margin-top: 0.75rem; display: none;">
                   <img id="panel-img-preview" src="" alt="Vista previa" style="max-height: 120px; border-radius: 6px; border: 1px solid var(--admin-border);">
                 </div>
+              </div>
+
+              <!-- Audioguía / Locución Opcional -->
+              <div class="admin-form-group">
+                <label>Archivo o Enlace de Locución / Audioguía (Opcional)</label>
+                <input type="text" id="panel-audio-file" class="admin-input" placeholder="audioguia_01.mp3 o URL externa">
+                <small style="color: var(--admin-muted); font-size: 0.75rem;">Nombre del archivo en assets/audio/ o enlace de audio para locución in situ.</small>
               </div>
 
               <!-- Vídeo / Recurso 3D Opcional (Nuevo) -->
@@ -1700,22 +1720,144 @@
           </div>
 
           <div class="admin-card">
-            <h3>Gestión de Usuarios Autorizados</h3>
-            <div style="margin-top: 1rem;">
-              <p style="font-size: 0.85rem; color: var(--admin-muted); margin-bottom: 1rem;">
-                Usuarios con privilegios para modificar la agenda, responder reservas y consultar analíticas de uso.
-              </p>
-              <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem;">
-                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
-                  👑 <strong>admin</strong> — Administrador Municipal
-                </li>
-                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
-                  🏛️ <strong>ayuntamiento</strong> — Concejalía de Turismo
-                </li>
-                <li style="padding: 8px; background: var(--admin-bg); border-radius: 6px;">
-                  🎫 <strong>turismo</strong> — Mediador Cultural de Sala
-                </li>
+            <h3>🔐 Cambio de Contraseña de Acceso</h3>
+            <p style="font-size: 0.85rem; color: var(--admin-muted); margin-top: 0.35rem; margin-bottom: 1rem;">
+              Modifica la clave de acceso del gestor municipal actualmente conectado (<strong id="pwd-user-display">ayuntamiento</strong>).
+            </p>
+
+            <form id="form-change-password">
+              <div class="admin-form-group">
+                <label for="pwd-current">Contraseña Actual *</label>
+                <input type="password" id="pwd-current" class="admin-input" required placeholder="Introduce tu contraseña actual" autocomplete="current-password">
+              </div>
+
+              <div class="admin-form-group">
+                <label for="pwd-new">Nueva Contraseña (mínimo 6 caracteres) *</label>
+                <input type="password" id="pwd-new" class="admin-input" required placeholder="Introduce tu nueva contraseña" autocomplete="new-password">
+              </div>
+
+              <div class="admin-form-group">
+                <label for="pwd-confirm">Confirmar Nueva Contraseña *</label>
+                <input type="password" id="pwd-confirm" class="admin-input" required placeholder="Repite la nueva contraseña" autocomplete="new-password">
+              </div>
+
+              <button type="submit" id="btn-submit-change-pwd" class="btn-admin btn-admin-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem; padding: 10px; font-weight: 700;">
+                🔐 Actualizar Contraseña
+              </button>
+
+              <div id="pwd-status-msg" style="display: none; margin-top: 1rem; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;"></div>
+            </form>
+          </div>
+
+          <div class="admin-card" style="grid-column: 1 / -1;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1rem;">
+              <div>
+                <h3 style="margin: 0; color: var(--admin-primary);">👥 Usuarios y Roles de Acceso Municipal</h3>
+                <p style="font-size: 0.85rem; color: var(--admin-muted); margin-top: 0.25rem;">
+                  Crea usuarios adicionales con permisos específicos (ej. Gestor de Actividades para que solo acceda a la Agenda y Reservas).
+                </p>
+              </div>
+              <button type="button" id="btn-toggle-add-user" class="btn-admin btn-admin-primary" style="padding: 8px 14px;">
+                ➕ Añadir Usuario
+              </button>
+            </div>
+
+            <!-- Formulario de Creación de Nuevo Usuario (Oculto por defecto) -->
+            <div id="box-create-user" style="display: none; background: #F8FAF9; border: 1.5px solid #CFDDD3; padding: 1.25rem; border-radius: 8px; margin-bottom: 1.25rem;">
+              <h4 style="margin: 0 0 1rem; color: var(--admin-primary); font-size: 1rem;">
+                ➕ Crear Nuevo Usuario / Rol Restringido
+              </h4>
+              <form id="form-create-user">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1rem;">
+                  <div class="admin-form-group" style="margin: 0;">
+                    <label for="new-user-username">Nombre de Usuario (Login) *</label>
+                    <input type="text" id="new-user-username" class="admin-input" required placeholder="ej. actividades, monitor, eventos">
+                  </div>
+                  <div class="admin-form-group" style="margin: 0;">
+                    <label for="new-user-name">Nombre Completo / Titular *</label>
+                    <input type="text" id="new-user-name" class="admin-input" required placeholder="ej. Gestor de Actividades y Eventos">
+                  </div>
+                  <div class="admin-form-group" style="margin: 0;">
+                    <label for="new-user-password">Contraseña Inicial *</label>
+                    <input type="password" id="new-user-password" class="admin-input" required placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                  </div>
+                  <div class="admin-form-group" style="margin: 0;">
+                    <label for="new-user-preset">Perfil / Tipo de Acceso *</label>
+                    <select id="new-user-preset" class="admin-select">
+                      <option value="actividades">🎭 Gestor de Actividades (Solo Agenda y Reservas)</option>
+                      <option value="editor">🏛️ Editor de Contenido (Paneles, Textos, Galería, TV)</option>
+                      <option value="admin">👑 Administrador Completo (Acceso Total)</option>
+                      <option value="custom">⚙️ Personalizado (seleccionar módulos abajo)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Casillas de Módulos Permitidos -->
+                <div style="background: white; border: 1px solid var(--admin-border); padding: 0.85rem 1rem; border-radius: 6px; margin-bottom: 1rem;">
+                  <strong style="font-size: 0.8rem; color: var(--admin-primary); display: block; margin-bottom: 0.5rem;">
+                    Permisos de Acceso a Módulos:
+                  </strong>
+                  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.5rem; font-size: 0.82rem;">
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-agenda" class="chk-user-perm" value="agenda" checked>
+                      <span>📅 Agenda Cultural</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-bookings" class="chk-user-perm" value="bookings" checked>
+                      <span>🎟️ Reservas de Visitas</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-panels" class="chk-user-perm" value="panels">
+                      <span>📱 Paneles y Puntos QR</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-contents" class="chk-user-perm" value="contents">
+                      <span>✏️ Textos y Contenidos</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-sections" class="chk-user-perm" value="sections">
+                      <span>🗂️ Secciones de la Web</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-gallery" class="chk-user-perm" value="gallery">
+                      <span>🖼️ Galería Multimedia</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-kiosco" class="chk-user-perm" value="kiosco">
+                      <span>📺 Pantallas TV 65"</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-analytics" class="chk-user-perm" value="analytics">
+                      <span>📊 Analítica de Uso</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                      <input type="checkbox" id="perm-settings" class="chk-user-perm" value="settings">
+                      <span>⚙️ Ajustes & Usuarios</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem;">
+                  <button type="submit" class="btn-admin btn-admin-primary" style="padding: 8px 16px;">
+                    💾 Guardar Usuario
+                  </button>
+                  <button type="button" id="btn-cancel-add-user" class="btn-admin btn-admin-outline" style="padding: 8px 14px;">
+                    Cancelar
+                  </button>
+                </div>
+                <div id="new-user-status-msg" style="display: none; margin-top: 0.75rem; padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600;"></div>
+              </form>
+            </div>
+
+            <!-- Listado de Usuarios Activos -->
+            <div id="admin-users-list-wrap">
+              <ul id="admin-users-list" style="list-style: none; display: flex; flex-direction: column; gap: 0.75rem; margin: 0; padding: 0;">
+                <!-- Inyectado dinámicamente por admin.js -->
               </ul>
+            </div>
+
+            <div style="margin-top: 1rem; padding: 10px 14px; background: rgba(56, 79, 62, 0.08); border-radius: 6px; font-size: 0.8rem; color: var(--admin-primary);">
+              💡 <strong>Seguridad por Rol:</strong> Los usuarios restringidos (como el Gestor de Actividades) solo verán en su menú lateral los módulos asignados y el servidor denegará cualquier intento de modificar otros datos. Todas las contraseñas se almacenan cifradas con algoritmo Bcrypt.
             </div>
           </div>
 

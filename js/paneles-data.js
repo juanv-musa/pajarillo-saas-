@@ -1,0 +1,488 @@
+/**
+ * Paneles oficiales en memoria (15 puntos)
+ * Garantiza funcionamiento 100% offline y compatibilidad directa con protocolo file://
+ */
+window.PAJARILLO_DEFAULT_PANELS = {
+  "panels": [
+    {
+      "id": 1,
+      "tag": "escultura",
+      "image": "./assets/images/lobo.png",
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "La Cabeza de Lobo",
+          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
+          "description": "<p>Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.</p><p>Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.</p><p>En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización.</p>"
+        },
+        "en": {
+          "title": "The Wolf's Head",
+          "subtitle": "Pinnacle sculpture of El Pajarillo Sanctuary · 4th c. BC",
+          "description": "<p>Carved from local white limestone over 2,400 years ago, the Wolf's Head represents a high watermark of ancient Iberian stone sculpture.</p><p>Depicting a snarling wolf larger than life, with open jaws revealing intricately chiselled fangs, alert eyes, and folded ears in an aggressive stance.</p><p>Originally positioned on the monument's summit terrace, it formed part of a mythic struggle where a noble youth faced the savage beast to achieve heroic apotheosis.</p>"
+        },
+        "fr": {
+          "title": "La Tête de Loup",
+          "subtitle": "Chef-d'œuvre du sanctuaire d'El Pajarillo · IVe s. av. J.-C.",
+          "description": "<p>Sculptée dans le calcaire il y a plus de 2 400 ans, la Tête de Loup constitue l'un des sommets de l'art ibérique antique.</p><p>Elle figure un loup grandeur nature aux babines retroussées, dévoilant des crocs acérés et des oreilles dressées vers l'arrière dans una posture de combat.</p><p>Elle incarnait l'adversaire mythique terrassé par le prince héroïsé pour légitimer son prestige divinisé.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": true,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 2,
+      "tag": "arquelogia",
+      "image": "./assets/images/arqueologia.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "El Monumento Heroico Escalonado",
+          "subtitle": "Estructura arquitectónica y ceremonial · Yacimiento",
+          "description": "<p>Las excavaciones arqueológicas sacaron a la luz una imponente estructura en gradas construida en una loma dominante sobre el curso del río Jandulilla.</p><p>El monumento medía más de 30 metros de longitud, organizado en tres terrazas sucesivas reforzadas con muros de mampostería y sillares. En la plataforma superior se emplazaba la escenografía escultórica completa.</p><p>Era un hito visual en el paisaje oretano que marcaba la frontera y consolidaba la memoria dinástica del clan gobernante.</p>"
+        },
+        "en": {
+          "title": "The Stepped Heroic Monument",
+          "subtitle": "Architectural and ceremonial sanctuary layout",
+          "description": "<p>Archaeological digs uncovered a monumental stepped terrace raised on a promontory overlooking the Jandulilla valley.</p><p>Measuring over 30 metres across three staggered platforms supported by stone ashlar revetments, the highest level hosted the heroic sculptural group.</p><p>It served as a sacred landmark signifying territorial authority and immortal aristocratic memory.</p>"
+        },
+        "fr": {
+          "title": "Le Monument Héroïque Étagé",
+          "subtitle": "Structure architecturale et cérémonielle du sanctuaire",
+          "description": "<p>Les fouilles ont mis au jour une vaste architecture étagée en terrasses dominant la plaine fluviale de la Jandulilla.</p><p>Bâti sur trois niveaux renforcés de murs en pierre de taille, le sommet accueillait le groupe sculpté de l'affrontement rituel.</p><p>Le sanctuaire marquait le paysage sacré et pérennisait la mémoire héroïque des élites régionales.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 3,
+      "tag": "arquelogia",
+      "image": "./assets/images/iltiraka.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "El Territorio de Iltiraka: Un valle que domesticar",
+          "subtitle": "Colonización ibérica del valle del río Jandulilla · S. IV a.n.e.",
+          "description": "<p>Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka (Úbeda la Vieja) puso los ojos en este valle salvaje (silva): bosque profundo poblado por lobos y seres indómitos.</p><p>Para incorporarlo a su dominio, la aristocracia ibera necesitaba legitimar su presencia mediante un héroe fundador. Fundó la Loma del Perro, controló los pasos hacia el sur y erigió en la cabecera del río el Santuario de El Pajarillo.</p><p>Así nació un territorio organizado como dominio sagrado de linaje (pagus).</p>"
+        },
+        "en": {
+          "title": "The Territory of Iltiraka: A Valley to Control",
+          "subtitle": "Iberian colonization of the Jandulilla River Valley · 4th c. BCE",
+          "description": "<p>2,400 years ago, at the start of the 4th century BCE, the oppidum of Iltiraka (Úbeda la Vieja) claimed this wild valley (silva): deep forest, realm of wolves and untamed forces.</p><p>To incorporate it, the Iberian aristocracy legitimized their control through a founding hero, founding Loma del Perro and raising the heroic sanctuary of El Pajarillo at the river headwaters.</p><p>Thus was born a cohesive territory governed by an aristocratic lineage (pagus).</p>"
+        },
+        "fr": {
+          "title": "Le Territoire d'Iltiraka : Une vallée à conquérir",
+          "subtitle": "Colonisation ibère de la vallée du Jandulilla · IVe s. av. J.-C.",
+          "description": "<p>Il y a 2 400 ans, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée sauvage (silva), domaine indompté des bêtes et de la forêt.</p><p>Pour s'approprier ces terres, le lignage noble érigea le sanctuaire d'El Pajarillo en hommage à son héros fondateur et contrôla les voies d'accès méridionales.</p><p>C'est ainsi que la vallée devint le territorio consacré d'une aristocratie dominante (pagus).</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 4,
+      "tag": "arquelogia",
+      "image": "./assets/images/santuario_ilustracion.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Un Paisaje Sagrado: El camino ritual y El Fontanar",
+          "subtitle": "Espacio ceremonial y sacralización territorial · Cultura Íbera",
+          "description": "<p>Iltiraka no solo ocupó el valle: lo consagró. A lo largo del cauce del río Jandulilla articuló dos grandes hitos sagrados: el Santuario Heroico de El Pajarillo y el monumento de El Fontanar, célebre por su escena escultórica de unión divina.</p><p>Ambos enclaves estaban conectados por un camino ritual procesional. Recorrerlo permitía rememorar el viaje mítico del héroe hacia el inframundo, protegiendo y sacralizando todo el valle.</p>"
+        },
+        "en": {
+          "title": "A Sacred Landscape: The Ritual Path & El Fontanar",
+          "subtitle": "Ceremonial space and territorial sanctification · Iberian Culture",
+          "description": "<p>Iltiraka did not merely conquer the valley: it sanctified it. Along the Jandulilla River it established two sacred landmarks: the Heroic Sanctuary of El Pajarillo and the El Fontanar monument, celebrated for its divine union scene.</p><p>Linked by a ceremonial procession path, traveling it commemorated the founding hero's otherworldly journey, binding the valley as consecrated lineage ground.</p>"
+        },
+        "fr": {
+          "title": "Un Paysage Sacré : Le chemin rituel et El Fontanar",
+          "subtitle": "Espace cérémoniel et sanctification territoriale · Culture Ibère",
+          "description": "<p>Iltiraka consacra la vallée en reliant deux sanctuaires majeurs : le monument héroïque d'El Pajarillo et le site d'El Fontanar, connu pour sa scène d'union divine.</p><p>Reliés par une voie rituelle, ce chemin permettait de revivre le voyage mythique du héros fondateur, sacralisant tout le bassin fluvial sous la tutelle du lignage.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 5,
+      "tag": "escultura",
+      "image": "./assets/images/leon.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "El Guerrero de la Falcata y los Leones Protectores",
+          "subtitle": "El ajuar escultórico y las excavaciones arqueológicas (1933–1994)",
+          "description": "<p>El conjunto escultórico descubierto en El Cortijo del Pajarillo incluía, junto a la Cabeza de Lobo, dos soberbios leones guardianes y la estatua de un guerrero aristócrata portando una falcata ibérica.</p><p>Hallados entre las obras de la carretera de Solera en 1933 y las labores agrícolas de 1993, dieron origen a la excavación de urgencia de 1994 por la Universidad de Jaén y al reconocimiento como Bien de Interés Cultural en 2006.</p>"
+        },
+        "en": {
+          "title": "The Falcata Warrior & The Protective Lions",
+          "subtitle": "Sculptural ensemble and archaeological recoveries (1933–1994)",
+          "description": "<p>The sculptural ensemble discovered at Cortijo del Pajarillo featured, alongside the Wolf's Head, two majestic guardian lions and an aristocratic warrior wielding an Iberian falcata.</p><p>Discovered between roadworks in 1933 and agricultural labors in 1993, they prompted the 1994 rescue excavation by the University of Jaén and BIC heritage status in 2006.</p>"
+        },
+        "fr": {
+          "title": "Le Guerrier à la Falcata et les Lions Protecteurs",
+          "subtitle": "Groupe sculptural et découvertes archéologiques (1933–1994)",
+          "description": "<p>L'ensemble sculptural de Cortijo del Pajarillo comprenait, avec la Tête de Loup, deux lions gardiens et la statue d'un guerrier noble armé d'une falcata ibérique.</p><p>Découverts en 1933 puis en 1993, ces vestiges ont conduit aux fouilles scientifiques d'urgence de 1994 par l'Université de Jaén et au classement Monument Historique (BIC) en 2006.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 6,
+      "tag": "escultura",
+      "image": "./assets/images/lobo.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Los Grifos y Seres Alados del Santuario",
+          "subtitle": "Mitología orientalizante y guardianes míticos · S. IV a.C.",
+          "description": "<p>Junto a los leones y el lobo, el santuario incorporaba representaciones de criaturas aladas híbridas inspiradas en el repertorio mediterráneo e ibérico.</p><p>Los grifos actuaban como guardianes apotropaicos del umbral sagrado, impidiendo la entrada de espíritus malignos y acompañando al héroe difunto en su tránsito hacia la inmortalidad.</p>"
+        },
+        "en": {
+          "title": "The Griffins and Winged Guardians",
+          "subtitle": "Orientalizing mythology and mythic guardians · 4th c. BC",
+          "description": "<p>Alongside lions and the wolf, the sanctuary featured representations of winged hybrid creatures inspired by Mediterranean Iberian traditions.</p><p>Griffins acted as apotropaic guardians of the sacred boundary, protecting the monument and guiding the hero towards immortality.</p>"
+        },
+        "fr": {
+          "title": "Les Griffons et Créatures Ailées",
+          "subtitle": "Mythologie orientalisante et gardiens sacrés · IVe s. av. J.-C.",
+          "description": "<p>Aux côtés des lions et du loup, le sanctuaire intégrait des créatures ailées hybrides issues du répertoire méditerranéen ibérique.</p><p>Les griffons protégeaient l'espace sacré et veillaient sur l'apothéose du prince héroïsé.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 7,
+      "tag": "arquelogia",
+      "image": "./assets/images/arqueologia.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "La Falcata Ibérica y el Armamento Sagrado",
+          "subtitle": "Símbolo de poder militar y estatus aristocrático",
+          "description": "<p>La falcata es el arma más emblemática del guerrero íbero. Su hoja curvada de doble filo y empuñadura decorada con cabezas de caballo o ave conferían a su portador un rango nobiliario indiscutible.</p><p>En El Pajarillo, la falcata esculpida junto al héroe simboliza la victoria del orden civilizado frente al caos salvaje de la fiera indómita.</p>"
+        },
+        "en": {
+          "title": "The Iberian Falcata & Sacred Weaponry",
+          "subtitle": "Symbol of military prowess and aristocratic status",
+          "description": "<p>The falcata is the defining weapon of the ancient Iberian warrior. Its curved blade and decorated hilt signified high aristocratic nobility.</p><p>At El Pajarillo, the falcata borne by the sculptured warrior proclaims civilized order over untamed wilderness.</p>"
+        },
+        "fr": {
+          "title": "La Falcata Ibérique et les Armes Sacrées",
+          "subtitle": "Insigne de prestige aristocratique et de bravoure militaire",
+          "description": "<p>La falcata est l'arme la plus emblématique du guerrier ibère. Sa lame courbe et sa garde ouvragée marquaient le rang princier de son possesseur.</p><p>À El Pajarillo, la falcata sculptée symbolise le triomphe de la bravoure héroïque sur les forces sauvages.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 8,
+      "tag": "arquelogia",
+      "image": "./assets/images/iltiraka.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "La Loma del Perro: Control y Estrategia Territorial",
+          "subtitle": "Asentamiento fortificado y vigilancia del valle",
+          "description": "<p>Para articular el dominio del valle del Jandulilla, el oppidum de Iltiraka fundó el asentamiento satélite de la Loma del Perro.</p><p>Situado estratégicamente entre Úbeda y Jódar, este enclave permitía controlar visualmente las rutas de paso entre la Alta Andalucía y la costa, canalizando el comercio de metales y productos agrícolas.</p>"
+        },
+        "en": {
+          "title": "Loma del Perro: Strategic Territorial Control",
+          "subtitle": "Fortified outpost and valley surveillance",
+          "description": "<p>To consolidate rule over the Jandulilla valley, the oppidum of Iltiraka founded the satellite settlement of Loma del Perro.</p><p>Strategically positioned between Úbeda and Jódar, it guarded commercial transit routes between Upper Andalusia and the Mediterranean coast.</p>"
+        },
+        "fr": {
+          "title": "La Loma del Perro : Stratégie Territoriale",
+          "subtitle": "Établissement fortifié et surveillance des passages",
+          "description": "<p>Pour assurer le contrôle du bassin du Jandulilla, Iltiraka implanta le site fortifié de la Loma del Perro.</p><p>Ce promontoire stratégique sécurisait les corridors commerciaux reliant les gisements miniers et les zones agricoles.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 9,
+      "tag": "arquelogia",
+      "image": "./assets/images/dibujando.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Las Campañas Arqueológicas de 1994 y Protección BIC",
+          "subtitle": "Investigación científica y rescate patrimonial · Universidad de Jaén",
+          "description": "<p>Tras los hallazgos fortuitos de 1933 y 1993, la Universidad de Jaén y el Instituto Universitario de Arqueología Ibérica llevaron a cabo en 1994 la excavación de urgencia que desveló la monumentalidad del santuario.</p><p>Dirigida por los arqueólogos Manuel Molinos, Arturo Ruiz, Teresa Chapa y Juan Pereira, la intervención culminó en la declaración de Bien de Interés Cultural (BIC) en 2006.</p>"
+        },
+        "en": {
+          "title": "The 1994 Archaeological Excavation & BIC Heritage Status",
+          "subtitle": "Scientific research and monument preservation · University of Jaén",
+          "description": "<p>Following discoveries in 1933 and 1993, the University of Jaén and the Iberian Archaeology Institute conducted the 1994 rescue excavation that uncovered the sanctuary.</p><p>Directed by renowned archaeologists Molinos, Ruiz, Chapa, and Pereira, the site was declared a Heritage Site of Cultural Interest (BIC) in 2006.</p>"
+        },
+        "fr": {
+          "title": "Les Fouilles de 1994 et le Classement Monument Historique",
+          "subtitle": "Recherche archéologique de l'Université de Jaén",
+          "description": "<p>À la suite des découvertes de 1933 et 1993, l'Université de Jaén engagea en 1994 des fouilles d'urgence qui révélèrent l'ampleur exceptionnelle du sanctuaire.</p><p>Ces travaux remarquables ont abouti au classement du site en Bien d'Intérêt Culturel (BIC) en 2006.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 10,
+      "tag": "arquitectura",
+      "image": "./assets/images/santuario_ilustracion.png",
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "El Centro de Interpretación y Reconstrucción Virtual",
+          "subtitle": "Museografía interactiva, divulgación y nuevas tecnologías",
+          "description": "<p>El Centro de Interpretación en Huelma acerca el Santuario Heroico de El Pajarillo a través de recursos audiovisuales inmersivos, réplicas escultóricas fidedignas y sistemas de mediación adaptados a todos los públicos.</p><p>Mediante esta plataforma webapp y los códigos QR de sala, el visitante puede explorar reconstrucciones virtuales en 3D, consultar fichas científicas y acceder a lecturas inclusivas en múltiples idiomas.</p>"
+        },
+        "en": {
+          "title": "The Interpretation Centre & 3D Virtual Reconstruction",
+          "subtitle": "Interactive museography and digital heritage mediation",
+          "description": "<p>The Huelma Interpretation Centre brings the Heroic Sanctuary to life through immersive media, sculptural replicas, and accessible museum mediation.</p><p>Through this webapp and exhibition QR codes, visitors can explore 3D digital reconstructions, scientific factsheets, and multilingual audioguides.</p>"
+        },
+        "fr": {
+          "title": "Le Centre d'Interprétation et Restitution 3D",
+          "subtitle": "Muséographie interactive et médiation numérique",
+          "description": "<p>Le Centre d'Interprétation d'Huelma valorise le sanctuaire grâce à des supports audiovisuels immersifs et des maquettes virtuelles 3D.</p><p>Scannez les codes QR en salle pour accéder aux fiches scientifiques, aux restitutions 3D et aux audioguides accessibles.</p>"
+        }
+      },
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 11,
+      "tag": "recorrido",
+      "image": null,
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Punto 11",
+          "subtitle": "Punto de recorrido disponible",
+          "description": "<p>Contenido configurable desde el panel de gestión para este punto de la visita.</p>"
+        },
+        "en": {
+          "title": "Point 11",
+          "subtitle": "Tour point available",
+          "description": "<p>Content configurable from the management dashboard for this sanctuary point.</p>"
+        },
+        "fr": {
+          "title": "Point 11",
+          "subtitle": "Point de visite disponible",
+          "description": "<p>Contenu configurable depuis le panneau de gestion pour ce point du sanctuaire.</p>"
+        }
+      },
+      "has_image": false,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 12,
+      "tag": "recorrido",
+      "image": null,
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Punto 12",
+          "subtitle": "Punto de recorrido disponible",
+          "description": "<p>Contenido configurable desde el panel de gestión para este punto de la visita.</p>"
+        },
+        "en": {
+          "title": "Point 12",
+          "subtitle": "Tour point available",
+          "description": "<p>Content configurable from the management dashboard for this sanctuary point.</p>"
+        },
+        "fr": {
+          "title": "Point 12",
+          "subtitle": "Point de visite disponible",
+          "description": "<p>Contenu configurable depuis le panneau de gestion pour ce point du sanctuaire.</p>"
+        }
+      },
+      "has_image": false,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 13,
+      "tag": "recorrido",
+      "image": null,
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Punto 13",
+          "subtitle": "Punto de recorrido disponible",
+          "description": "<p>Contenido configurable desde el panel de gestión para este punto de la visita.</p>"
+        },
+        "en": {
+          "title": "Point 13",
+          "subtitle": "Tour point available",
+          "description": "<p>Content configurable from the management dashboard for this sanctuary point.</p>"
+        },
+        "fr": {
+          "title": "Point 13",
+          "subtitle": "Point de visite disponible",
+          "description": "<p>Contenu configurable depuis le panneau de gestion pour ce point du sanctuaire.</p>"
+        }
+      },
+      "has_image": false,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 14,
+      "tag": "recorrido",
+      "image": null,
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Punto 14",
+          "subtitle": "Punto de recorrido disponible",
+          "description": "<p>Contenido configurable desde el panel de gestión para este punto de la visita.</p>"
+        },
+        "en": {
+          "title": "Point 14",
+          "subtitle": "Tour point available",
+          "description": "<p>Content configurable from the management dashboard for this sanctuary point.</p>"
+        },
+        "fr": {
+          "title": "Point 14",
+          "subtitle": "Point de visite disponible",
+          "description": "<p>Contenu configurable depuis le panneau de gestion pour ce point du sanctuaire.</p>"
+        }
+      },
+      "has_image": false,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    },
+    {
+      "id": 15,
+      "tag": "recorrido",
+      "image": null,
+      "video": null,
+      "audio": null,
+      "pdf": null,
+      "pdf_title": null,
+      "content": {
+        "es": {
+          "title": "Punto 15",
+          "subtitle": "Punto de recorrido disponible",
+          "description": "<p>Contenido configurable desde el panel de gestión para este punto de la visita.</p>"
+        },
+        "en": {
+          "title": "Point 15",
+          "subtitle": "Tour point available",
+          "description": "<p>Content configurable from the management dashboard for this sanctuary point.</p>"
+        },
+        "fr": {
+          "title": "Point 15",
+          "subtitle": "Point de visite disponible",
+          "description": "<p>Contenu configurable depuis le panneau de gestion pour ce point du sanctuaire.</p>"
+        }
+      },
+      "has_image": false,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "external_url": null,
+      "redirect_external": false
+    }
+  ]
+};

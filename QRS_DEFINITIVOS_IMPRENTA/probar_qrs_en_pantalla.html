@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Verificador Oficial de 15 Códigos QR · El Pajarillo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #F4F6F4; color: #222; padding: 2rem 1rem 4rem; }
+    .container { max-width: 1300px; margin: 0 auto; }
+    header { background: white; padding: 1.5rem 2rem; border-radius: 12px; border: 1px solid #D8DFD9; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.03); }
+    h1 { font-family: 'Barlow Condensed', sans-serif; font-size: 2.2rem; color: #384F3E; text-transform: uppercase; }
+    .test-banner { background: #E8F5E9; border-left: 5px solid #2E7D32; padding: 1.2rem 1.5rem; border-radius: 8px; margin-bottom: 2rem; font-size: 0.98rem; line-height: 1.6; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; }
+    .card { background: white; border: 1px solid #D8DFD9; border-radius: 12px; padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+    .badge { position: absolute; top: 1rem; left: 1rem; background: rgba(56, 79, 62, 0.1); color: #384F3E; font-weight: 800; font-size: 0.8rem; padding: 4px 12px; border-radius: 20px; }
+    h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.45rem; color: #384F3E; margin-top: 1.8rem; margin-bottom: 0.35rem; }
+    .desc { font-size: 0.85rem; color: #666; margin-bottom: 1.1rem; min-height: 38px; }
+    .qr-wrap { width: 250px; height: 250px; background: white; padding: 10px; border: 1px solid #E0E0E0; border-radius: 8px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: center; }
+    .qr-wrap img { width: 100%; height: 100%; object-fit: contain; }
+    .url-badge { font-family: monospace; font-size: 0.76rem; background: #EEF2EE; padding: 7px 10px; border-radius: 6px; word-break: break-all; margin-bottom: 1.25rem; width: 100%; color: #333; }
+    .btn-group { display: flex; gap: 8px; width: 100%; }
+    .btn { flex: 1; padding: 9px 12px; font-size: 0.84rem; font-weight: 700; border-radius: 6px; text-decoration: none; text-align: center; }
+    .btn-primary { background: #384F3E; color: white; border: 1.5px solid #384F3E; }
+    .btn-outline { background: white; color: #384F3E; border: 1.5px solid #384F3E; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Colección Oficial: 15 Puntos QR · El Pajarillo</h1>
+        <p style="color: #666; font-size: 0.92rem; margin-top: 0.2rem;">Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Ayuntamiento de Huelma</p>
+      </div>
+      <a href="../QRS_DEFINITIVOS_IMPRENTA.zip" download style="background: #2E7D32; color: white; padding: 12px 22px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px;">
+        📦 Descargar Pack Completo de 15 QRs (ZIP)
+      </a>
+    </header>
+
+    <div class="test-banner">
+      <strong>📱 Comprobación con Cámara Móvil:</strong><br>
+      Apunta la cámara de tu móvil a <strong>cualquiera de los 15 códigos QR</strong>. Verás que tu teléfono lo reconoce al instante mostrando su enlace permanente respectivo. Si en el futuro solo se colocan 10 o 12 paneles físicos, los sobrantes simplemente no se imprimen o se desactivan desde el panel de control sin ningún inconveniente.
+    </div>
+
+    <div class="grid">
+      
+      <div class="card">
+        <span class="badge">PUNTO PORTAL</span>
+        <h3>Portal General del Santuario</h3>
+        <p class="desc">Acceso global, audioguías e información general de visita</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_PORTAL_portal_general_del_santuario.png" alt="QR Portal General del Santuario">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/index.html</div>
+        <a href="../index.html" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_PORTAL_portal_general_del_santuario.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_PORTAL_portal_general_del_santuario.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 01</span>
+        <h3>La Cabeza de Lobo</h3>
+        <p class="desc">Escultura cumbre ibérica en caliza · Siglo IV a.C.</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_01_la_cabeza_de_lobo.png" alt="QR La Cabeza de Lobo">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=1</div>
+        <a href="../punto.html?id=1" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_01_la_cabeza_de_lobo.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_01_la_cabeza_de_lobo.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 02</span>
+        <h3>El Monumento Heroico Escalonado</h3>
+        <p class="desc">Arquitectura escalonada en terrazas sobre el Jandulilla</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_02_el_monumento_heroico_escalonado.png" alt="QR El Monumento Heroico Escalonado">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=2</div>
+        <a href="../punto.html?id=2" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_02_el_monumento_heroico_escalonado.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_02_el_monumento_heroico_escalonado.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 03</span>
+        <h3>El Territorio de Iltiraka</h3>
+        <p class="desc">Colonización de la silva salvaje y dominio del pagus</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_03_el_territorio_de_iltiraka.png" alt="QR El Territorio de Iltiraka">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=3</div>
+        <a href="../punto.html?id=3" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_03_el_territorio_de_iltiraka.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_03_el_territorio_de_iltiraka.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 04</span>
+        <h3>Un Paisaje Sagrado</h3>
+        <p class="desc">El camino ritual procesional y El Fontanar</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_04_un_paisaje_sagrado.png" alt="QR Un Paisaje Sagrado">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=4</div>
+        <a href="../punto.html?id=4" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_04_un_paisaje_sagrado.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_04_un_paisaje_sagrado.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 05</span>
+        <h3>El Guerrero de la Falcata y los Leones</h3>
+        <p class="desc">Combate heroico y fieras protectoras del santuario</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones.png" alt="QR El Guerrero de la Falcata y los Leones">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=5</div>
+        <a href="../punto.html?id=5" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 06</span>
+        <h3>Los Grifos y Seres Alados</h3>
+        <p class="desc">Mitología orientalizante y guardianes míticos del umbral</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_06_los_grifos_y_seres_alados.png" alt="QR Los Grifos y Seres Alados">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=6</div>
+        <a href="../punto.html?id=6" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_06_los_grifos_y_seres_alados.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_06_los_grifos_y_seres_alados.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 07</span>
+        <h3>La Falcata Ibérica y el Armamento Sagrado</h3>
+        <p class="desc">Insignia de prestigio y combate civilizador del príncipe</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado.png" alt="QR La Falcata Ibérica y el Armamento Sagrado">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=7</div>
+        <a href="../punto.html?id=7" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 08</span>
+        <h3>La Loma del Perro</h3>
+        <p class="desc">Asentamiento satélite y control estratégico del valle</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_08_la_loma_del_perro.png" alt="QR La Loma del Perro">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=8</div>
+        <a href="../punto.html?id=8" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_08_la_loma_del_perro.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_08_la_loma_del_perro.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 09</span>
+        <h3>Las Campañas Arqueológicas de 1994 y BIC</h3>
+        <p class="desc">Excavación científica de urgencia y rescate patrimonial</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic.png" alt="QR Las Campañas Arqueológicas de 1994 y BIC">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=9</div>
+        <a href="../punto.html?id=9" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 10</span>
+        <h3>Centro de Interpretación y Reconstrucción 3D</h3>
+        <p class="desc">Museografía interactiva, tecnología y mediación cultural</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d.png" alt="QR Centro de Interpretación y Reconstrucción 3D">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=10</div>
+        <a href="../punto.html?id=10" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 11</span>
+        <h3>Punto 11</h3>
+        <p class="desc">Punto de recorrido disponible</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_11_punto_11.png" alt="QR Punto 11">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=11</div>
+        <a href="../punto.html?id=11" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_11_punto_11.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_11_punto_11.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 12</span>
+        <h3>Punto 12</h3>
+        <p class="desc">Punto de recorrido disponible</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_12_punto_12.png" alt="QR Punto 12">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=12</div>
+        <a href="../punto.html?id=12" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_12_punto_12.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_12_punto_12.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 13</span>
+        <h3>Punto 13</h3>
+        <p class="desc">Punto de recorrido disponible</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_13_punto_13.png" alt="QR Punto 13">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=13</div>
+        <a href="../punto.html?id=13" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_13_punto_13.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_13_punto_13.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 14</span>
+        <h3>Punto 14</h3>
+        <p class="desc">Punto de recorrido disponible</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_14_punto_14.png" alt="QR Punto 14">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=14</div>
+        <a href="../punto.html?id=14" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_14_punto_14.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_14_punto_14.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+      <div class="card">
+        <span class="badge">PUNTO 15</span>
+        <h3>Punto 15</h3>
+        <p class="desc">Punto de recorrido disponible</p>
+        <div class="qr-wrap">
+          <img src="./QR_PUNTO_15_punto_15.png" alt="QR Punto 15">
+        </div>
+        <div class="url-badge">https://www.aytohuelma.es/cipajarillo/punto.html?id=15</div>
+        <a href="../punto.html?id=15" target="_blank" class="btn" style="background: #2E7D32; color: white; margin-bottom: 8px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 6px; box-shadow: 0 2px 8px rgba(46,125,50,0.25);">
+          👁️ Ver Ficha Local Actualizada
+        </a>
+        <div class="btn-group">
+          <a href="./QR_PUNTO_15_punto_15.png" download class="btn btn-primary">⬇ PNG HD</a>
+          <a href="./QR_PUNTO_15_punto_15.svg" download class="btn btn-outline">⬇ SVG</a>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</body>
+</html>

@@ -1,51 +1,102 @@
 ========================================================================
 CENTRO DE INTERPRETACIÓN SANTUARIO IBÉRICO DE "EL PAJARILLO"
-INSTRUCCIONES DE DESPLIEGUE EN SERVIDOR WEB (PARA EL TÉCNICO / INFORMÁTICO)
+INSTRUCCIONES DE DESPLIEGUE EN SERVIDOR WEB (VERSIÓN 2.0 AUDITADA)
 ========================================================================
 
 1. REQUISITOS DEL SERVIDOR:
 ---------------------------
-- Servidor web: Apache o Nginx (Linux / cPanel / Plesk).
+- Servidor web: Apache (Linux) o Nginx.
 - Soporte PHP: Versión 7.4 o superior (PHP 8.x recomendado).
-- Módulos PHP habituales: JSON y soporte de sesiones habilitado (por defecto en cualquier hosting).
-- Soporte HTTPS recomendado para la web pública y la geolocalización.
+- Módulos PHP habituales: JSON, fileinfo y soporte de sesiones nativo.
+- HTTPS activo (necesario para cookies seguras SameSite y geolocalización).
 
-2. ESTRUCTURA DE ARCHIVOS:
+2. INCIDENCIAS DE SEGURIDAD Y CONFIGURACIÓN CORREGIDAS:
+-------------------------------------------------------
+✓ Autenticación administrativa (api/auth.php):
+  - Eliminado cualquier bypass de desarrollo o login con contraseñas vacías/erróneas.
+  - Validación con hash_equals() y algoritmo Bcrypt (password_verify).
+  - Regeneración de ID de sesión y cookies seguras: HttpOnly, SameSite=Lax y Secure.
+  - NUEVO: Implementada la funcionalidad de cambio de contraseña en tiempo real desde el panel.
+
+✓ Panel de administración (admin.html y js/admin.js):
+  - Suprimido el botón de "Acceso Directo (1 Clic)" y los botones de autorelleno.
+  - Campos de usuario y contraseña limpios sin valores predeterminados.
+  - Nueva tarjeta en "Ajustes & Usuarios" para cambiar la contraseña de acceso con validación y confirmación.
+
+✓ Protección de datos personales y RGPD (data/.htaccess y .htaccess):
+  - Creado data/.htaccess que bloquea de forma terminante cualquier petición HTTP directa a archivos JSON (reservas.json, users.json, analytics.json).
+  - Los scripts internos del servidor (api/*.php) acceden a los datos de forma local y segura.
+  - En api/data.php y api/analytics.php se exige sesión PHP administrativa activa para lectura de reservas, borrado o modificaciones.
+  - Retirada cualquier dependencia o envío de datos personales a servicios externos de terceros.
+
+✓ Subida de archivos segura (api/upload.php y uploads/.htaccess):
+  - Lista blanca estricta de extensiones permitidas: jpg, jpeg, png, webp, gif, svg, mp3, wav, ogg, pdf.
+  - Comprobación de tipo MIME real del archivo y bloqueo de extensiones compuestas.
+  - Directorio uploads/ blindado con .htaccess: desactivada la ejecución de scripts (php_flag engine off, denegación de extensiones ejecutables).
+
+✓ Compatibilidad de nombres de archivo en Linux (Case Sensitivity):
+  - Nombres normalizados a minúsculas estándar (lobo.png, leon.png) en todas las carpetas y referencias de código HTML/JS/JSON.
+  - En el archivo ZIP se incluyen además alias de compatibilidad para evitar cualquier 404 por caché.
+
+✓ Recursos descargables y audiovisuales:
+  - Eliminados los cuadros de diálogo (alert) de demostración.
+  - Recursos vinculados directamente al documento PDF oficial del centro (assets/docs/dossier_pajarillo.pdf).
+  - Gestión limpia de reproductores audiovisuales.
+
+✓ Optimización y rendimiento:
+  - Eliminado el archivo huérfano/duplicado de 8.8 MB (excavacion_medios) y fotos ajenas al proyecto (foto_360_nevero.jpg).
+  - Imágenes optimizadas sin pérdida de nitidez, reduciendo el peso global del paquete a más de la mitad (11.6 MB).
+
+3. ESTRUCTURA DE ARCHIVOS:
 --------------------------
-Subir todo el contenido directamente al directorio raíz público de la web 
-(habitualmente public_html, www o httpdocs):
-
 ├── index.html              -> Portal público oficial multilingüe (ES / EN / FR)
-├── admin.html              -> Panel de administración y CMS municipal
-├── punto.html              -> Ficha interactiva de visita física y códigos QR de sala
+├── admin.html              -> Panel de administración y CMS municipal seguro
+├── punto.html              -> Ficha interactiva de visita y aterrizaje de códigos QR
 ├── legal.html              -> Aviso Legal, Privacidad, Cookies y Accesibilidad
 ├── audiovisual_p0.html     -> Kiosco audiovisual Planta Baja (pantallas 65")
 ├── audiovisual_p1.html     -> Kiosco audiovisual Planta Primera
-├── api/                    -> Backend PHP ligero (data.php, auth.php, analytics.php, upload.php)
-├── assets/                 -> Logotipos institucionales, imágenes e iconos
+├── generar_qrs_imprenta.html -> Generador/descargador de códigos QR para producción
+├── .htaccess               -> Reglas de seguridad globales de Apache
+├── api/                    -> Endpoints seguros (data.php, auth.php, analytics.php, upload.php)
+├── assets/                 -> Documentos (docs/), iconos (icons/) e imágenes optimizadas (images/)
 ├── css/                    -> Hojas de estilo y accesibilidad universal
-├── data/                   -> Bases de datos JSON locales del CMS y analíticas
-├── js/                     -> Lógica de cliente, i18n, agenda, accesibilidad y multimedia
-├── locales/                -> Archivos de idiomas (es.json, en.json, fr.json)
-└── uploads/                -> Directorio de almacenamiento para archivos subidos desde el panel
+├── data/                   -> Bases de datos JSON protegidas por data/.htaccess (paneles, users, reservas...)
+├── js/                     -> Lógica cliente (app.js, admin.js, i18n.js, etc.)
+├── locales/                -> Diccionarios de idioma (es.json, en.json, fr.json)
+└── uploads/                -> Directorio de subidas con ejecución deshabilitada
 
-3. PERMISOS DE ESCRITURA OBLIGATORIOS (CRÍTICO):
-------------------------------------------------
-Para que el gestor municipal pueda guardar cambios desde admin.html 
-(crear puntos QR, editar textos, añadir eventos o registrar visitas y analíticas),
-el servidor web (usuario www-data / apache) debe tener permisos de escritura en:
+4. PERMISOS DE ESCRITURA EN LINUX (CRÍTICO):
+--------------------------------------------
+Para que el servidor web pueda guardar las reservas de visitantes, cambios de contraseña y contenidos:
 
-  - Directorio 'data/' y todos sus archivos .json interiores:
-      chmod 775 data/
-      chmod 664 data/*.json
-      (o permisos de lectura y escritura para el servidor web).
+  sudo chown -R www-data:www-data data/ uploads/
+  sudo chmod 775 data/ uploads/
+  sudo chmod 664 data/*.json
 
-  - Directorio 'uploads/':
-      chmod 775 uploads/
+5. CREDENCIALES OFICIALES, ROLES MODULARES Y CAMBIO DE CONTRASEÑA:
+-----------------------------------------------------------------
+Cuentas configuradas por defecto:
 
-4. NOTA PARA FUTURAS ACTUALIZACIONES:
---------------------------------------
-Si en el futuro se suben nuevas versiones de los archivos HTML, CSS o JS:
-NO sobrescribir la carpeta 'data/' ni 'uploads/' para no perder los datos 
-creados in situ desde el panel de administración (reservas, códigos QR y analíticas).
+  1. Cuenta Principal (Acceso Total):
+     - Usuario: ayuntamiento
+     - Rol: Gestor de Patrimonio y Turismo · Ayto. Huelma
+     - Contraseña inicial: HuelmaPajarillo2026!
+
+  2. Cuenta de Administración del Sistema (Acceso Total):
+     - Usuario: admin
+     - Rol: Administrador del Sistema
+     - Contraseña inicial: Pajarillo2026!
+
+  3. Cuenta de Acceso Restringido (Gestor de Actividades):
+     - Usuario: actividades
+     - Rol: Dinamizador Cultural y Agenda
+     - Contraseña inicial: Actividades2026!
+     - Permisos: Acceso exclusivo a "Agenda Cultural" y "Reservas de Visitas".
+       (El servidor y el panel ocultan y bloquean el acceso al resto de módulos).
+
+¿Cómo cambiar contraseñas o crear nuevos usuarios?
+Desde el menú "Ajustes & Usuarios" en admin.html, el administrador puede:
+- Modificar su propia contraseña con la tarjeta "Cambio de Contraseña de Acceso".
+- Crear usuarios adicionales con perfiles modulares (ej. personal de sala, monitores de actividades o redactores de contenidos) mediante el botón "➕ Añadir Usuario".
+Todas las contraseñas se almacenan cifradas con algoritmo Bcrypt en data/users.json.
 ========================================================================

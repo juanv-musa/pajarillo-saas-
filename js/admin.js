@@ -9,9 +9,6 @@ const DOM = {
   loginView: document.getElementById('login-view'),
   dashboardView: document.getElementById('dashboard-view'),
   loginForm: document.getElementById('admin-login-form'),
-  registerForm: document.getElementById('admin-register-form'),
-  tabBtnLogin: document.getElementById('tab-btn-login'),
-  tabBtnRegister: document.getElementById('tab-btn-register'),
   loginErrorMsg: document.getElementById('login-error-msg'),
   userInfoBadge: document.getElementById('user-info-badge'),
   loggedUserName: document.getElementById('logged-user-name'),
@@ -108,6 +105,8 @@ let siteConfigData = {
 document.addEventListener('DOMContentLoaded', () => {
   checkSession();
   setupAuthTabs();
+  setupChangePassword();
+  setupUserManagement();
   setupSidebarNavigation();
   setupPeriodFilters();
   setupSectionsManager();
@@ -120,152 +119,226 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ═══════════════════════════════════════════
-// AUTENTICACIÓN Y SESIÓN
+// AUTENTICACIÓN Y SESIÓN SEGURA (HÍBRIDA: SERVIDOR PHP & GITHUB PAGES)
 // ═══════════════════════════════════════════
-async function checkSession() {
-  const localAuth = sessionStorage.getItem('pajarillo_admin_auth') || localStorage.getItem('pajarillo_admin_auth');
-  const localUser = sessionStorage.getItem('pajarillo_admin_user') || localStorage.getItem('pajarillo_admin_user') || 'Administrador Municipal';
+let currentUserPermissions = ['all'];
 
-  if (localAuth === 'true') {
-    fetch('./api/auth.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: localUser, password: 'pajarillo' })
-    }).catch(() => {});
-    showDashboard(localUser);
-    return;
-  }
+async function checkSession() {
+  const savedUser = sessionStorage.getItem('pajarillo_admin_user');
+  const savedPerms = sessionStorage.getItem('pajarillo_admin_perms');
+  const savedRole = sessionStorage.getItem('pajarillo_admin_role');
 
   try {
-    const res = await fetch('./api/auth.php');
-    if (res.ok) {
-      const data = await res.json();
-      if (data.authenticated) {
-        showDashboard(data.user || 'Administrador');
+    const res = await fetch('./api/auth.php', { credentials: 'same-origin' }).catch(() => null);
+    if (res && res.ok) {
+      const data = await res.json().catch(() => null);
+      if (data && data.authenticated) {
+        currentUserPermissions = data.permissions || ['all'];
+        showDashboard(data.user || 'Administrador', currentUserPermissions, data.role);
         return;
       }
     }
   } catch (err) {}
 
+  // Fallback para GitHub Pages o entorno local sin PHP activo
+  if (savedUser) {
+    let perms = ['all'];
+    try { if (savedPerms) perms = JSON.parse(savedPerms); } catch (e) {}
+    currentUserPermissions = perms;
+    showDashboard(savedUser, currentUserPermissions, savedRole);
+    return;
+  }
+
   showLogin();
 }
 
 function setupAuthTabs() {
-  // Botón Acceso Rápido Directo (1 Clic)
-  const btnQuick = document.getElementById('btn-quick-login');
-  if (btnQuick) {
-    btnQuick.addEventListener('click', () => {
-      sessionStorage.setItem('pajarillo_admin_auth', 'true');
-      localStorage.setItem('pajarillo_admin_auth', 'true');
-      sessionStorage.setItem('pajarillo_admin_user', 'Administrador Municipal');
-      showToast('⚡ Acceso concedido como Administrador Municipal');
-      showDashboard('Administrador Municipal');
-    });
-  }
-
-  // Chips de credenciales para rellenar con un clic
-  document.querySelectorAll('.btn-cred-fill').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const u = btn.dataset.u;
-      const p = btn.dataset.p;
-      const userEl = document.getElementById('login-user');
-      const passEl = document.getElementById('login-pass');
-      if (userEl) userEl.value = u;
-      if (passEl) passEl.value = p;
-      DOM.loginForm.dispatchEvent(new Event('submit'));
-    });
-  });
-
-  DOM.tabBtnLogin.addEventListener('click', () => {
-    DOM.tabBtnLogin.classList.replace('btn-admin-outline', 'btn-admin-primary');
-    DOM.tabBtnRegister.classList.replace('btn-admin-primary', 'btn-admin-outline');
-    DOM.loginForm.classList.remove('hidden');
-    DOM.registerForm.classList.add('hidden');
-    DOM.loginErrorMsg.classList.add('hidden');
-  });
-
-  DOM.tabBtnRegister.addEventListener('click', () => {
-    DOM.tabBtnRegister.classList.replace('btn-admin-outline', 'btn-admin-primary');
-    DOM.tabBtnLogin.classList.replace('btn-admin-primary', 'btn-admin-outline');
-    DOM.registerForm.classList.remove('hidden');
-    DOM.loginForm.classList.add('hidden');
-    DOM.loginErrorMsg.classList.add('hidden');
-  });
+  if (!DOM.loginForm) return;
 
   DOM.loginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const user = (document.getElementById('login-user').value || 'admin').trim();
+    const user = (document.getElementById('login-user').value || '').trim();
     const pass = (document.getElementById('login-pass').value || '').trim();
 
-    const validPasswords = ['pajarillo', 'admin', '1234', 'huelma', 'huelma2026', 'pajarillo2026', 'demo'];
-    const isLocalValid = validPasswords.includes(pass.toLowerCase()) || pass === '' || user === 'admin' || user === 'ayuntamiento' || user === 'turismo';
+    if (!user || !pass) {
+      if (DOM.loginErrorMsg) {
+        DOM.loginErrorMsg.textContent = 'Por favor, introduce usuario y contraseña.';
+        DOM.loginErrorMsg.classList.remove('hidden');
+      }
+      return;
+    }
 
+    let serverOk = false;
     try {
       const res = await fetch('./api/auth.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ username: user, password: pass })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success) {
-          sessionStorage.setItem('pajarillo_admin_auth', 'true');
-          localStorage.setItem('pajarillo_admin_auth', 'true');
-          sessionStorage.setItem('pajarillo_admin_user', user);
-          showToast(`✅ Acceso concedido: ${user}`);
-          showDashboard(user);
+      }).catch(() => null);
+
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data && data.success) {
+          serverOk = true;
+          currentUserPermissions = data.permissions || ['all'];
+          sessionStorage.setItem('pajarillo_admin_user', data.user || user);
+          sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(currentUserPermissions));
+          sessionStorage.setItem('pajarillo_admin_role', data.role || '');
+          if (DOM.loginErrorMsg) DOM.loginErrorMsg.classList.add('hidden');
+          showToast(`✅ Bienvenido, ${data.user || user}`);
+          showDashboard(data.user || user, currentUserPermissions, data.role);
+          return;
+        } else if (data && data.error) {
+          // El servidor PHP respondió con credenciales denegadas
+          if (DOM.loginErrorMsg) {
+            DOM.loginErrorMsg.textContent = data.error;
+            DOM.loginErrorMsg.classList.remove('hidden');
+          }
           return;
         }
       }
     } catch (err) {}
 
-    if (isLocalValid) {
-      sessionStorage.setItem('pajarillo_admin_auth', 'true');
-      localStorage.setItem('pajarillo_admin_auth', 'true');
-      sessionStorage.setItem('pajarillo_admin_user', user);
-      showToast(`✅ Bienvenido, ${user}`);
-      showDashboard(user);
-    } else {
-      DOM.loginErrorMsg.textContent = 'Credenciales no reconocidas. Usa "pajarillo" o pulsa "Acceso Directo (1 Clic)"';
-      DOM.loginErrorMsg.classList.remove('hidden');
+    // Fallback para GitHub Pages / Modo Pruebas sin PHP
+    if (!serverOk) {
+      const lowerUser = user.toLowerCase();
+      const lowerPass = pass.toLowerCase();
+
+      let authenticated = false;
+      let matchedRole = 'Gestor Municipal';
+      let matchedPerms = ['all'];
+
+      if (lowerUser === 'admin' && (pass === 'Pajarillo2026!' || ['pajarillo', 'pajarillo2026', 'admin', '1234', 'demo'].includes(lowerPass))) {
+        authenticated = true;
+        matchedRole = 'Administrador del Sistema';
+        matchedPerms = ['all'];
+      } else if (lowerUser === 'ayuntamiento' && (pass === 'HuelmaPajarillo2026!' || ['huelma', 'huelma2026', 'pajarillo', 'pajarillo2026'].includes(lowerPass))) {
+        authenticated = true;
+        matchedRole = 'Gestor de Patrimonio y Turismo';
+        matchedPerms = ['all'];
+      } else if (lowerUser === 'actividades' && (pass === 'Actividades2026!' || ['actividades', 'actividades2026', 'pajarillo'].includes(lowerPass))) {
+        authenticated = true;
+        matchedRole = 'Dinamizador Cultural y Agenda';
+        matchedPerms = ['agenda', 'bookings'];
+      } else if (['pajarillo', 'pajarillo2026', 'admin', '1234'].includes(lowerPass)) {
+        authenticated = true;
+        matchedRole = 'Administrador Municipal';
+        matchedPerms = ['all'];
+      }
+
+      if (authenticated) {
+        currentUserPermissions = matchedPerms;
+        sessionStorage.setItem('pajarillo_admin_user', user);
+        sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(matchedPerms));
+        sessionStorage.setItem('pajarillo_admin_role', matchedRole);
+        if (DOM.loginErrorMsg) DOM.loginErrorMsg.classList.add('hidden');
+        showToast(`✅ Acceso concedido (Modo Pruebas): ${user}`);
+        showDashboard(user, currentUserPermissions, matchedRole);
+      } else {
+        if (DOM.loginErrorMsg) {
+          DOM.loginErrorMsg.textContent = 'Credenciales incorrectas. En GitHub usa usuario "admin" y clave "pajarillo" o "Pajarillo2026!".';
+          DOM.loginErrorMsg.classList.remove('hidden');
+        }
+      }
     }
   });
 
-  DOM.registerForm.addEventListener('submit', async (e) => {
+  if (DOM.btnLogout) {
+    DOM.btnLogout.addEventListener('click', async () => {
+      try {
+        await fetch('./api/auth.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'same-origin',
+          body: JSON.stringify({ action: 'logout' })
+        }).catch(() => {});
+      } catch (e) {}
+      sessionStorage.removeItem('pajarillo_admin_user');
+      sessionStorage.removeItem('pajarillo_admin_perms');
+      sessionStorage.removeItem('pajarillo_admin_role');
+      showLogin();
+      showToast('🔒 Sesión cerrada con éxito');
+    });
+  }
+}
+
+// ═══════════════════════════════════════════
+// CAMBIO DE CONTRASEÑA MUNICIPAL
+// ═══════════════════════════════════════════
+function setupChangePassword() {
+  const form = document.getElementById('form-change-password');
+  const statusMsg = document.getElementById('pwd-status-msg');
+  if (!form) return;
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const name = document.getElementById('reg-name').value;
-    const user = document.getElementById('reg-user').value;
-    const pass = document.getElementById('reg-pass').value;
+    const currentPass = (document.getElementById('pwd-current').value || '').trim();
+    const newPass = (document.getElementById('pwd-new').value || '').trim();
+    const confirmPass = (document.getElementById('pwd-confirm').value || '').trim();
+    const btnSubmit = document.getElementById('btn-submit-change-pwd');
+
+    if (!currentPass || !newPass) {
+      showPwdStatus('Por favor, completa todos los campos.', false);
+      return;
+    }
+
+    if (newPass.length < 6) {
+      showPwdStatus('La nueva contraseña debe tener como mínimo 6 caracteres.', false);
+      return;
+    }
+
+    if (newPass !== confirmPass) {
+      showPwdStatus('La nueva contraseña y su confirmación no coinciden.', false);
+      return;
+    }
+
+    const originalText = btnSubmit.innerHTML;
+    btnSubmit.innerHTML = '⏳ Guardando nueva contraseña...';
+    btnSubmit.disabled = true;
 
     try {
-      await fetch('./api/auth.php', {
+      const res = await fetch('./api/auth.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'register', name, username: user, password: pass })
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          action: 'change_password',
+          current_password: currentPass,
+          new_password: newPass,
+          confirm_password: confirmPass
+        })
       });
-    } catch (err) {}
-
-    sessionStorage.setItem('pajarillo_admin_auth', 'true');
-    localStorage.setItem('pajarillo_admin_auth', 'true');
-    sessionStorage.setItem('pajarillo_admin_user', name || user);
-    showToast('✅ Usuario creado e iniciado con éxito');
-    showDashboard(name || user);
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) {
+        showPwdStatus('✅ ' + (data.message || 'Contraseña actualizada con éxito.'), true);
+        form.reset();
+        showToast('🔐 Contraseña municipal actualizada con éxito');
+      } else {
+        showPwdStatus('❌ ' + (data.error || 'No se pudo actualizar la contraseña.'), false);
+      }
+    } catch (err) {
+      showPwdStatus('❌ Error de conexión al actualizar la contraseña.', false);
+    } finally {
+      btnSubmit.innerHTML = originalText;
+      btnSubmit.disabled = false;
+    }
   });
 
-  DOM.btnLogout.addEventListener('click', async () => {
-    try {
-      await fetch('./api/auth.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'logout' })
-      });
-    } catch (e) {}
-    sessionStorage.removeItem('pajarillo_admin_auth');
-    localStorage.removeItem('pajarillo_admin_auth');
-    sessionStorage.removeItem('pajarillo_admin_user');
-    localStorage.removeItem('pajarillo_admin_user');
-    showLogin();
-  });
+  function showPwdStatus(msg, isSuccess) {
+    if (!statusMsg) return;
+    statusMsg.textContent = msg;
+    statusMsg.style.display = 'block';
+    if (isSuccess) {
+      statusMsg.style.background = '#E8F5E9';
+      statusMsg.style.color = '#2E7D32';
+      statusMsg.style.border = '1px solid #A5D6A7';
+    } else {
+      statusMsg.style.background = '#FFEBEE';
+      statusMsg.style.color = '#C62828';
+      statusMsg.style.border = '1px solid #EF9A9A';
+    }
+  }
 }
 
 function showLogin() {
@@ -275,17 +348,231 @@ function showLogin() {
   DOM.btnLogout.classList.add('hidden');
 }
 
-function showDashboard(username) {
+function showDashboard(username, permissions, role) {
+  if (permissions) currentUserPermissions = permissions;
   DOM.loginView.classList.add('hidden');
   DOM.dashboardView.classList.remove('hidden');
   DOM.userInfoBadge.classList.remove('hidden');
   DOM.btnLogout.classList.remove('hidden');
-  DOM.loggedUserName.textContent = username || 'Gestor Municipal';
+  DOM.loggedUserName.textContent = role ? `${username} (${role})` : (username || 'Gestor Municipal');
+
+  const userDisplay = document.getElementById('pwd-user-display');
+  if (userDisplay) userDisplay.textContent = username || 'ayuntamiento';
 
   localStorage.removeItem('pajarillo_sidebar_collapsed');
   DOM.dashboardView?.classList.remove('sidebar-collapsed');
 
+  // Filtrar módulos del sidebar según los permisos asignados al usuario
+  let firstVisibleView = null;
+  DOM.sidebarBtns.forEach(btn => {
+    const view = btn.dataset.view;
+    const isAllowed = currentUserPermissions.includes('all') || currentUserPermissions.includes(view);
+    if (isAllowed) {
+      btn.style.display = 'flex';
+      if (!firstVisibleView) firstVisibleView = view;
+    } else {
+      btn.style.display = 'none';
+    }
+  });
+
+  // Si el módulo activo no está permitido, activar automáticamente el primer módulo permitido
+  const activeBtn = Array.from(DOM.sidebarBtns).find(b => b.classList.contains('active'));
+  const activeView = activeBtn ? activeBtn.dataset.view : null;
+  if (!activeView || (!currentUserPermissions.includes('all') && !currentUserPermissions.includes(activeView))) {
+    const target = firstVisibleView || 'agenda';
+    DOM.sidebarBtns.forEach(b => b.classList.toggle('active', b.dataset.view === target));
+    DOM.subviews.forEach(v => v.classList.toggle('hidden', v.id !== `subview-${target}`));
+  }
+
   loadAllData();
+  loadUsersList();
+}
+
+// ═══════════════════════════════════════════
+// GESTIÓN DE USUARIOS Y ROLES (SAAS MVP)
+// ═══════════════════════════════════════════
+async function loadUsersList() {
+  const listEl = document.getElementById('admin-users-list');
+  if (!listEl) return;
+
+  try {
+    const res = await fetch('./api/auth.php?action=get_users&t=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.success || !Array.isArray(data.users)) return;
+
+    listEl.innerHTML = '';
+    const moduleNames = {
+      agenda: '📅 Agenda',
+      bookings: '🎟️ Reservas',
+      panels: '📱 Paneles QR',
+      contents: '✏️ Textos',
+      sections: '🗂️ Secciones',
+      gallery: '🖼️ Galería',
+      kiosco: '📺 Pantallas TV',
+      analytics: '📊 Analítica',
+      settings: '⚙️ Ajustes'
+    };
+
+    data.users.forEach(u => {
+      const li = document.createElement('li');
+      li.style.cssText = 'padding: 12px 14px; background: var(--admin-bg); border-radius: 8px; border: 1px solid var(--admin-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem;';
+
+      const isAll = u.permissions.includes('all');
+      let permsHtml = '';
+      if (isAll) {
+        permsHtml = '<span style="background: rgba(46, 125, 50, 0.12); color: #2E7D32; font-weight: 700; font-size: 0.75rem; padding: 2px 8px; border-radius: 12px;">🌟 Acceso Total</span>';
+      } else {
+        permsHtml = u.permissions.map(p => 
+          `<span style="background: rgba(56, 79, 62, 0.08); color: var(--admin-primary); font-weight: 600; font-size: 0.72rem; padding: 2px 7px; border-radius: 6px;">${moduleNames[p] || p}</span>`
+        ).join(' ');
+      }
+
+      li.innerHTML = `
+        <div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <strong style="color: var(--admin-primary); font-size: 0.95rem;">${u.username}</strong>
+            <span style="font-size: 0.78rem; color: var(--admin-muted);">(${u.name})</span>
+            ${u.protected ? '<span style="background: #E2E8F0; color: #475569; font-size: 0.7rem; font-weight: 600; padding: 1px 6px; border-radius: 4px;">Cuenta Principal</span>' : ''}
+          </div>
+          <div style="font-size: 0.8rem; color: #555; margin-top: 3px;">
+            ${u.role}
+          </div>
+          <div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px;">
+            ${permsHtml}
+          </div>
+        </div>
+        <div>
+          ${!u.protected ? `
+            <button type="button" class="btn-admin btn-admin-danger" style="padding: 4px 10px; font-size: 0.78rem;" onclick="deleteSystemUser('${u.username}')">
+              🗑️ Eliminar
+            </button>
+          ` : ''}
+        </div>
+      `;
+      listEl.appendChild(li);
+    });
+  } catch (err) {
+    console.error('Error cargando usuarios:', err);
+  }
+}
+
+window.deleteSystemUser = async function(username) {
+  if (!confirm(`¿Confirmas que deseas eliminar al usuario "${username}"?`)) return;
+
+  try {
+    const res = await fetch('./api/auth.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'delete_user', username: username })
+    });
+    const data = await res.json();
+    if (res.ok && data.success) {
+      showToast('🗑️ ' + data.message);
+      loadUsersList();
+    } else {
+      alert('Error: ' + (data.error || 'No se pudo eliminar el usuario'));
+    }
+  } catch (e) {
+    alert('Error de conexión al eliminar usuario.');
+  }
+};
+
+function setupUserManagement() {
+  const btnToggle = document.getElementById('btn-toggle-add-user');
+  const btnCancel = document.getElementById('btn-cancel-add-user');
+  const boxCreate = document.getElementById('box-create-user');
+  const formCreate = document.getElementById('form-create-user');
+  const presetSelect = document.getElementById('new-user-preset');
+  const chkPerms = document.querySelectorAll('.chk-user-perm');
+
+  if (btnToggle && boxCreate) {
+    btnToggle.addEventListener('click', () => {
+      const isHidden = boxCreate.style.display === 'none';
+      boxCreate.style.display = isHidden ? 'block' : 'none';
+      if (isHidden) {
+        document.getElementById('new-user-username')?.focus();
+      }
+    });
+  }
+
+  if (btnCancel && boxCreate) {
+    btnCancel.addEventListener('click', () => {
+      boxCreate.style.display = 'none';
+      formCreate?.reset();
+    });
+  }
+
+  // Preajustes de permisos según selección
+  if (presetSelect) {
+    presetSelect.addEventListener('change', () => {
+      const val = presetSelect.value;
+      if (val === 'actividades') {
+        chkPerms.forEach(chk => {
+          chk.checked = (chk.value === 'agenda' || chk.value === 'bookings');
+        });
+      } else if (val === 'editor') {
+        chkPerms.forEach(chk => {
+          chk.checked = ['panels', 'contents', 'gallery', 'kiosco'].includes(chk.value);
+        });
+      } else if (val === 'admin') {
+        chkPerms.forEach(chk => chk.checked = true);
+      }
+    });
+  }
+
+  if (formCreate) {
+    formCreate.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = (document.getElementById('new-user-username')?.value || '').trim();
+      const name = (document.getElementById('new-user-name')?.value || '').trim();
+      const password = (document.getElementById('new-user-password')?.value || '').trim();
+      const preset = presetSelect?.value || 'custom';
+
+      const selectedPerms = [];
+      chkPerms.forEach(chk => {
+        if (chk.checked) selectedPerms.push(chk.value);
+      });
+
+      if (selectedPerms.length === 0) {
+        alert('Debes seleccionar al menos un módulo permitido para este usuario.');
+        return;
+      }
+
+      let roleTitle = 'Gestor Personalizado';
+      if (preset === 'actividades') roleTitle = 'Gestor de Actividades y Eventos';
+      else if (preset === 'editor') roleTitle = 'Editor de Contenido y Paneles';
+      else if (preset === 'admin') roleTitle = 'Administrador de Sistema';
+
+      const permsPayload = (preset === 'admin' || selectedPerms.length === chkPerms.length) ? ['all'] : selectedPerms;
+
+      try {
+        const res = await fetch('./api/auth.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'create_user',
+            username: username,
+            name: name,
+            password: password,
+            role: roleTitle,
+            permissions: permsPayload
+          })
+        });
+        const data = await res.json();
+        if (res.ok && data.success) {
+          showToast('✅ ' + data.message);
+          formCreate.reset();
+          if (boxCreate) boxCreate.style.display = 'none';
+          loadUsersList();
+        } else {
+          alert('Error: ' + (data.error || 'No se pudo crear el usuario'));
+        }
+      } catch (err) {
+        alert('Error de conexión al guardar usuario.');
+      }
+    });
+  }
 }
 
 // ═══════════════════════════════════════════
@@ -1272,7 +1559,7 @@ function renderPanelsList() {
       <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/lobo.png'">
       <div class="panel-admin-details">
         <h4>Nº 0${panel.id} — ${title}</h4>
-        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong>${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}</p>
+        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong>${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}${panel.external_url ? ' · <span style="background: rgba(30, 144, 255, 0.12); color: #0984e3; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🌐 ' + (panel.redirect_external ? 'Redirección QR' : 'Web Externa') + '</span>' : ''}</p>
       </div>
       <div class="panel-actions-group">
         <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="openAdminQR(${panel.id}, '${safeTitle}')" title="Generar y Descargar QR">📱 QR</button>
@@ -1328,14 +1615,23 @@ DOM.panelForm.addEventListener('submit', async (e) => {
 
   const pdfUrlInput = (document.getElementById('panel-pdf-url').value || '').trim();
   const pdfTitleInput = (document.getElementById('panel-pdf-title').value || '').trim();
+  const extUrlInput = (document.getElementById('panel-external-url')?.value || '').trim();
+  const audioInput = (document.getElementById('panel-audio-file')?.value || '').trim();
 
   const newPanel = {
     id: id,
     tag: document.getElementById('panel-edit-tag').value,
     image: document.getElementById('panel-current-img-url').value || './assets/images/lobo.png',
+    audio: audioInput || null,
     video: document.getElementById('panel-video-url').value || null,
     pdf: pdfUrlInput || null,
     pdf_title: pdfTitleInput || null,
+    external_url: extUrlInput || null,
+    redirect_external: Boolean(document.getElementById('panel-redirect-external')?.checked),
+    has_image: document.getElementById('panel-toggle-image') ? document.getElementById('panel-toggle-image').checked : true,
+    has_audio: document.getElementById('panel-toggle-audio') ? document.getElementById('panel-toggle-audio').checked : true,
+    has_video: document.getElementById('panel-toggle-video') ? document.getElementById('panel-toggle-video').checked : true,
+    has_pdf: document.getElementById('panel-toggle-pdf') ? document.getElementById('panel-toggle-pdf').checked : true,
     content: {
       es: {
         title: document.getElementById('panel-title-es').value,
@@ -1372,7 +1668,7 @@ DOM.panelForm.addEventListener('submit', async (e) => {
 
   renderPanelsList();
   resetPanelForm();
-  showToast('✅ Panel y recursos (incluido PDF) guardados con éxito');
+  showToast('✅ Panel y recursos (incluido PDF y enlace externo) guardados con éxito');
 });
 
 window.editPanel = function(id) {
@@ -1399,6 +1695,26 @@ window.editPanel = function(id) {
   const preview = document.getElementById('panel-img-preview');
   preview.src = panel.image;
   document.getElementById('panel-img-preview-box').style.display = 'block';
+
+  // Cargar enlaces externos
+  const extUrlEl = document.getElementById('panel-external-url');
+  if (extUrlEl) extUrlEl.value = panel.external_url || '';
+  const redirExtEl = document.getElementById('panel-redirect-external');
+  if (redirExtEl) redirExtEl.checked = Boolean(panel.redirect_external);
+
+  // Cargar visibilidad de secciones
+  const toggleImgEl = document.getElementById('panel-toggle-image');
+  if (toggleImgEl) toggleImgEl.checked = panel.has_image !== false;
+  const toggleAudEl = document.getElementById('panel-toggle-audio');
+  if (toggleAudEl) toggleAudEl.checked = panel.has_audio !== false;
+  const toggleVidEl = document.getElementById('panel-toggle-video');
+  if (toggleVidEl) toggleVidEl.checked = panel.has_video !== false;
+  const togglePdfEl = document.getElementById('panel-toggle-pdf');
+  if (togglePdfEl) togglePdfEl.checked = panel.has_pdf !== false;
+
+  // Cargar audio
+  const audioEl = document.getElementById('panel-audio-file');
+  if (audioEl) audioEl.value = panel.audio || '';
 
   // Cargar campos de PDF
   document.getElementById('panel-pdf-url').value = panel.pdf || panel.pdf_url || '';
@@ -1437,6 +1753,20 @@ function resetPanelForm() {
   document.getElementById('panel-img-preview-box').style.display = 'none';
   document.getElementById('panel-pdf-url').value = '';
   document.getElementById('panel-pdf-title').value = '';
+  const extUrlEl = document.getElementById('panel-external-url');
+  if (extUrlEl) extUrlEl.value = '';
+  const redirExtEl = document.getElementById('panel-redirect-external');
+  if (redirExtEl) redirExtEl.checked = false;
+  const toggleImgEl = document.getElementById('panel-toggle-image');
+  if (toggleImgEl) toggleImgEl.checked = true;
+  const toggleAudEl = document.getElementById('panel-toggle-audio');
+  if (toggleAudEl) toggleAudEl.checked = true;
+  const toggleVidEl = document.getElementById('panel-toggle-video');
+  if (toggleVidEl) toggleVidEl.checked = true;
+  const togglePdfEl = document.getElementById('panel-toggle-pdf');
+  if (togglePdfEl) togglePdfEl.checked = true;
+  const audioEl = document.getElementById('panel-audio-file');
+  if (audioEl) audioEl.value = '';
   const pdfInfoBox = document.getElementById('panel-pdf-info-box');
   if (pdfInfoBox) pdfInfoBox.style.display = 'none';
   const filePdfInput = document.getElementById('panel-file-pdf');
@@ -2177,22 +2507,15 @@ window.openAdminQR = function(id, title) {
   DOM.adminQrTitle.textContent = `QR Oficial — Nº 0${id} ${title}`;
   DOM.adminQrcodeBox.innerHTML = '';
 
-  // La URL del QR apunta DIRECTAMENTE a la página específica del punto (punto.html?id=X)
-  const origin = window.location.origin;
-  let path = window.location.pathname;
-  if (path.endsWith('admin.html')) {
-    path = path.replace(/admin\.html$/, 'punto.html');
-  } else if (path.endsWith('index.html')) {
-    path = path.replace(/index\.html$/, 'punto.html');
-  } else {
-    path = path.replace(/\/?$/, '/punto.html');
-  }
-  currentAdminQrUrl = `${origin}${path}?id=${id}`;
+  // URL Oficial Única y Definitiva de Producción (Ayto Huelma)
+  // Para que el QR coincida exactamente con los archivos de imprenta sin duplicidades
+  const OFFICIAL_BASE_URL = 'https://www.aytohuelma.es/cipajarillo/';
+  currentAdminQrUrl = `${OFFICIAL_BASE_URL}punto.html?id=${id}`;
   DOM.adminQrUrlText.textContent = currentAdminQrUrl;
 
   const btnOpenPunto = document.getElementById('btn-admin-open-punto-url');
   if (btnOpenPunto) {
-    btnOpenPunto.href = currentAdminQrUrl;
+    btnOpenPunto.href = `punto.html?id=${id}`;
   }
 
   if (typeof QRCode !== 'undefined') {
@@ -3450,7 +3773,7 @@ let localesData = JSON.parse(JSON.stringify(DEFAULT_LOCALES));
 
 const HERO_IMG_PRESETS = [
   { value: './assets/images/lobo.png', label: 'Cabeza de Lobo (PNG)' },
-  { value: './assets/images/Leon.png', label: 'León Ibérico de El Pajarillo' },
+  { value: './assets/images/leon.png', label: 'León Ibérico de El Pajarillo' },
   { value: './assets/images/santuario_ilustracion.png', label: 'Santuario Heroico Ilustración' },
   { value: './assets/images/arqueologia.png', label: 'Yacimiento Arqueológico y Terrazas' },
   { value: './assets/images/iltiraka.png', label: 'Territorio de Iltiraka y Valle' },
@@ -3465,7 +3788,7 @@ function renderAdminHeroCarouselSlides(slides = []) {
   if (!Array.isArray(slides) || slides.length === 0) {
     slides = [
       { img: './assets/images/lobo.png', title: 'Cabeza de Lobo', sub: 'Escultura ibérica en caliza · Siglo IV a.C.' },
-      { img: './assets/images/Leon.png', title: 'León de El Pajarillo', sub: 'Fiera guardiana del santuario heroico' },
+      { img: './assets/images/leon.png', title: 'León de El Pajarillo', sub: 'Fiera guardiana del santuario heroico' },
       { img: './assets/images/santuario_ilustracion.png', title: 'Santuario Heroico', sub: 'Reconstrucción volumétrica del monumento' },
       { img: './assets/images/arqueologia.png', title: 'Yacimiento Arqueológico', sub: 'Terrazas excavadas en el valle del Jandulilla' },
       { img: './assets/images/iltiraka.png', title: 'Territorio de Iltiraka', sub: 'Paisaje sagrado y oppidum protohistórico' }
@@ -4052,9 +4375,9 @@ const INITIAL_GALLERY_ITEMS = [
       en: 'Sculpture',
       fr: 'Sculpture'
     },
-    full: './assets/images/gallery/Leon.png',
-    thumb: './assets/images/gallery/Leon.png',
-    file: './assets/images/gallery/Leon.png',
+    full: './assets/images/gallery/leon.png',
+    thumb: './assets/images/gallery/leon.png',
+    file: './assets/images/gallery/leon.png',
     desc: {
       es: 'Escultura zoomorfa monumental en caliza, fiera protectora del santuario heroico.',
       en: 'Monumental zoomorphic limestone sculpture, protective beast of the heroic sanctuary.',
@@ -4478,7 +4801,7 @@ function loadGalleryData() {
           .replace(/gallery\/arqueologia\.jpg/g, 'arqueologia.png')
           .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
           .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
-          .replace(/gallery\/retablo\.jpg/g, 'gallery/Leon.png')
+          .replace(/gallery\/retablo\.jpg/g, 'gallery/leon.png')
           .replace(/lobo\.jpg/g, 'lobo.png');
       };
       // Normalizar elementos previos para asegurar que sean multilingües y con rutas actualizadas

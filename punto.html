@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Punto Interpretativo · Santuario Ibérico de El Pajarillo</title>
-  <meta name="description" content="Ficha interpretativa del Santuario Heroico de El Pajarillo en Huelma, Jaén. Audioguía, reconstrucción 3D y lectura fácil.">
+  <meta name="description" content="Ficha interpretativa del Santuario Heroico de El Pajarillo en Huelma, Jaén. Audioguía, reconstrucción 3D y documentación oficial.">
 
-  <!-- Favicons y Metas -->
-  <link rel="icon" type="image/png" href="./assets/images/logo-pajarillo.png">
+  <!-- Favicons y Metas Oficiales -->
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
   <meta name="theme-color" content="#384F3E">
 
   <!-- Google Fonts Oficiales -->
@@ -21,6 +25,9 @@
 
   <!-- QRCode Library para compartir -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <!-- Datos oficiales en memoria para soporte offline y protocolo file:// -->
+  <script src="./js/paneles-data.js"></script>
 
   <!-- Analítica Oficial y Telemetría in situ -->
   <script type="module" src="./js/analytics.js?v=4.0"></script>
@@ -265,32 +272,51 @@
       margin-bottom: 1.2rem;
     }
 
-    /* Caja de Lectura Fácil */
-    .punto-facil-box {
+    /* Caja de Enlace Web Externo */
+    .punto-external-box {
       background: #F4F8F5;
-      border-left: 5px solid #2E7D32;
-      border-radius: 0 12px 12px 0;
-      padding: 1.25rem 1.5rem;
-      margin: 2rem 0;
+      border: 1.5px solid #2E7D32;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
     }
 
-    .punto-facil-header {
-      display: flex;
+    .punto-external-box h3 {
+      font-family: var(--font-heading);
+      color: var(--c-primary);
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .punto-external-box p {
+      font-size: 0.92rem;
+      color: var(--c-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .btn-external-action {
+      display: inline-flex;
       align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.6rem;
-      font-weight: 800;
-      color: #1B5E20;
+      gap: 8px;
+      background: #2E7D32;
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 8px;
       font-size: 0.95rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      transition: background 0.2s;
     }
 
-    .punto-facil-text {
-      font-size: 1.02rem;
-      line-height: 1.6;
-      color: #1E3821;
-      margin: 0;
+    .btn-external-action:hover {
+      background: #1B5E20;
+    }
+
+    .punto-inline-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 0.75rem;
     }
 
     /* Video o 3D */
@@ -489,8 +515,8 @@
   <!-- Contenedor Principal del Punto -->
   <main class="punto-main-container">
     <article class="punto-card-main">
-      <!-- Imagen de Cabecera con Badges -->
-      <div class="punto-hero-media">
+      <!-- Imagen de Cabecera con Badges (Opcional) -->
+      <div class="punto-hero-media" id="punto-hero-media">
         <img id="punto-image" src="./assets/images/lobo.png" alt="Cargando pieza..." class="punto-hero-img">
         <div class="punto-media-badges">
           <span class="badge-punto-id" id="punto-badge-num">Nº 01</span>
@@ -500,11 +526,27 @@
 
       <!-- Cuerpo del Contenido -->
       <div class="punto-content-body">
+        <!-- Badges alternativos si no hay imagen -->
+        <div id="punto-header-badges" class="punto-inline-badges hidden">
+          <span class="badge-punto-id" id="punto-badge-num-alt">Nº 01</span>
+          <span class="badge-punto-tag" id="punto-badge-tag-alt">Punto de Visita</span>
+        </div>
+
         <h1 class="punto-title" id="punto-title">Cargando punto...</h1>
         <div class="punto-subtitle" id="punto-subtitle">Santuario Heroico de El Pajarillo</div>
 
-        <!-- Reproductor de Audioguía Oficial -->
-        <div class="audioguide-widget">
+        <!-- Enlace a Web Externa (Opcional) -->
+        <div id="punto-external-card" class="punto-external-box hidden">
+          <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🌐</div>
+          <h3 id="punto-external-title">Web Externa Vinculada</h3>
+          <p id="punto-external-desc">Este punto dispone de contenido ampliado o servicio en el portal oficial externo:</p>
+          <a id="btn-punto-external" href="#" target="_blank" rel="noopener noreferrer" class="btn-external-action">
+            Visitar Sitio Web Oficial ↗
+          </a>
+        </div>
+
+        <!-- Reproductor de Audioguía Oficial (Opcional) -->
+        <div class="audioguide-widget" id="punto-audioguide-widget">
           <div class="audioguide-header">
             <div class="audioguide-title-group">
               <div class="audioguide-icon">🎧</div>
@@ -532,7 +574,7 @@
           <audio id="native-audio" preload="metadata"></audio>
         </div>
 
-        <!-- Vídeo o Reconstrucción 3D si existe -->
+        <!-- Vídeo o Reconstrucción 3D (Opcional) -->
         <div id="punto-video-container" class="punto-video-box hidden">
           <video id="punto-video-player" controls preload="metadata"></video>
         </div>
@@ -542,18 +584,7 @@
           <p>Cargando información del punto interpretativo...</p>
         </div>
 
-        <!-- Bloque de Accesibilidad: Lectura Fácil -->
-        <div class="punto-facil-box">
-          <div class="punto-facil-header">
-            <span>📖</span>
-            <span id="lbl-facil-badge">Lectura Fácil · Accesibilidad Cognitiva</span>
-          </div>
-          <p class="punto-facil-text" id="punto-facil-text">
-            Este texto explica de forma sencilla lo que ves en este punto del santuario.
-          </p>
-        </div>
-
-        <!-- Documentación PDF / Dossier Descargable -->
+        <!-- Documentación PDF / Dossier Descargable (Opcional) -->
         <div id="punto-pdf-container" class="punto-pdf-box hidden">
           <div class="punto-pdf-icon">📄</div>
           <div class="punto-pdf-info">
@@ -593,10 +624,21 @@
     </div>
   </div>
 
+  <!-- Banda de Logotipos Institucionales de Cofinanciación -->
+  <div class="footer-funding" style="max-width: 960px; margin: 2rem auto 1.5rem; background: #ffffff; border-radius: 20px; padding: 1.15rem 2rem; box-shadow: 0 4px 16px rgba(0,0,0,0.06); border: 1px solid rgba(0,0,0,0.05);">
+    <div class="footer-funding-grid" style="display: flex; align-items: center; justify-content: space-around; flex-wrap: wrap; gap: 1.25rem 2rem;">
+      <img src="./assets/images/logos/01-union-europea.png?v=2.3" alt="Cofinanciado por la Unión Europea" class="funding-logo" style="height: 34px; width: auto; object-fit: contain;">
+      <img src="./assets/images/logos/02-ministerio-hacienda.png?v=2.3" alt="Ministerio de Hacienda - Gobierno de España" class="funding-logo" style="height: 34px; width: auto; object-fit: contain;">
+      <img src="./assets/images/logos/03-fondos-europeos.png?v=2.3" alt="Fondos Europeos" class="funding-logo" style="height: 34px; width: auto; object-fit: contain;">
+      <img src="./assets/images/logos/04-junta-andalucia.png?v=2.3" alt="Junta de Andalucía" class="funding-logo" style="height: 34px; width: auto; object-fit: contain;">
+      <img src="./assets/images/logos/05-ayuntamiento-huelma.png?v=2.3" alt="Ayuntamiento de Huelma" class="funding-logo" style="height: 34px; width: auto; object-fit: contain;">
+    </div>
+  </div>
+
   <!-- Pie de página oficial -->
   <footer style="background: var(--c-primary); color: #fff; padding: 2rem 1.25rem; text-align: center; font-size: 0.85rem; margin-top: auto;">
     <p style="margin: 0 0 0.5rem; font-weight: 700; letter-spacing: 0.5px;">Centro de Interpretación Santuario Ibérico de “El Pajarillo”</p>
-    <p style="margin: 0; color: rgba(255,255,255,0.7);">Ayuntamiento de Huelma · Bien de Interés Cultural (BIC) · Junta de Andalucía</p>
+    <p style="margin: 0; color: rgba(255,255,255,0.7);">Ayuntamiento de Huelma</p>
   </footer>
 
   <!-- Script Lógico de la Ficha del Punto -->
@@ -619,7 +661,6 @@
         title: document.getElementById('punto-title'),
         subtitle: document.getElementById('punto-subtitle'),
         description: document.getElementById('punto-description'),
-        facilText: document.getElementById('punto-facil-text'),
         image: document.getElementById('punto-image'),
         badgeNum: document.getElementById('punto-badge-num'),
         badgeTag: document.getElementById('punto-badge-tag'),
@@ -689,9 +730,18 @@
 
           // 3. Fallback a JSON estático
           if (!panelsList || panelsList.length === 0) {
-            const resStatic = await fetch('./data/paneles.json?t=' + Date.now());
-            const data = await resStatic.json();
-            panelsList = data.panels || [];
+            try {
+              const resStatic = await fetch('./data/paneles.json?t=' + Date.now());
+              if (resStatic && resStatic.ok) {
+                const data = await resStatic.json();
+                panelsList = data.panels || [];
+              }
+            } catch (e) {}
+          }
+
+          // 4. Fallback a datos en memoria (soporte total offline y protocolo file://)
+          if ((!panelsList || panelsList.length === 0) && window.PAJARILLO_DEFAULT_PANELS && window.PAJARILLO_DEFAULT_PANELS.panels) {
+            panelsList = window.PAJARILLO_DEFAULT_PANELS.panels;
           }
 
           // Localizar el panel seleccionado
@@ -721,6 +771,12 @@
       function renderPanelContent() {
         if (!currentPanel) return;
 
+        // 1. Redirección automática si es un QR hacia web externa
+        if (currentPanel.external_url && currentPanel.redirect_external) {
+          window.location.replace(currentPanel.external_url);
+          return;
+        }
+
         const content = (currentPanel.content && (currentPanel.content[currentLang] || currentPanel.content.es)) || {};
         const title = content.title || 'Punto Interpretativo';
         const subtitle = content.subtitle || 'Santuario Heroico de El Pajarillo';
@@ -732,21 +788,60 @@
         dom.subtitle.textContent = subtitle;
         dom.description.innerHTML = descHtml;
 
-        // Lectura Fácil
-        const plainText = descHtml.replace(/<\/?[^>]+(>|$)/g, "");
-        const firstSentence = plainText.split('.')[0] + '.';
-        dom.facilText.textContent = firstSentence || 'Este hito forma parte del conjunto monumental y sagrado de El Pajarillo.';
+        const badgeNumText = `Nº ${String(currentPanel.id).padStart(2, '0')}`;
+        const badgeTagText = currentPanel.tag || 'Exposición';
 
-        // Badges
-        dom.badgeNum.textContent = `Nº 0${currentPanel.id}`;
-        dom.badgeTag.textContent = currentPanel.tag || 'Escultura';
+        // 2. Enlace a web externa si está configurada
+        const extCard = document.getElementById('punto-external-card');
+        const btnExt = document.getElementById('btn-punto-external');
+        if (currentPanel.external_url && currentPanel.external_url.trim() !== '') {
+          if (btnExt) btnExt.href = currentPanel.external_url;
+          if (extCard) extCard.classList.remove('hidden');
+        } else {
+          if (extCard) extCard.classList.add('hidden');
+        }
 
-        // Imagen
-        dom.image.src = currentPanel.image || './assets/images/lobo.png';
-        dom.image.alt = title;
+        // 3. Imagen (Opcional)
+        const heroMedia = document.getElementById('punto-hero-media');
+        const headerBadges = document.getElementById('punto-header-badges');
+        const badgeNumAlt = document.getElementById('punto-badge-num-alt');
+        const badgeTagAlt = document.getElementById('punto-badge-tag-alt');
 
-        // Video / 3D
-        if (currentPanel.video) {
+        const hasImg = (currentPanel.has_image !== false) && currentPanel.image && currentPanel.image.trim() !== '';
+        if (hasImg) {
+          dom.image.src = currentPanel.image;
+          dom.image.alt = title;
+          dom.badgeNum.textContent = badgeNumText;
+          dom.badgeTag.textContent = badgeTagText;
+          if (heroMedia) heroMedia.style.display = 'block';
+          if (headerBadges) headerBadges.classList.add('hidden');
+        } else {
+          if (heroMedia) heroMedia.style.display = 'none';
+          if (headerBadges) {
+            headerBadges.classList.remove('hidden');
+            if (badgeNumAlt) badgeNumAlt.textContent = badgeNumText;
+            if (badgeTagAlt) badgeTagAlt.textContent = badgeTagText;
+          }
+        }
+
+        // 4. Locución / Audioguía (Opcional)
+        const audioWidget = document.getElementById('punto-audioguide-widget');
+        const hasAudio = (currentPanel.has_audio !== false) && Boolean(currentPanel.audio) && currentPanel.audio.trim() !== '';
+        if (hasAudio) {
+          if (audioWidget) audioWidget.style.display = 'block';
+          const audioSrc = currentPanel.audio.trim();
+          dom.nativeAudio.src = (audioSrc.startsWith('http://') || audioSrc.startsWith('https://') || audioSrc.startsWith('./') || audioSrc.startsWith('/'))
+            ? audioSrc
+            : `./assets/audio/${audioSrc}`;
+        } else {
+          if (audioWidget) audioWidget.style.display = 'none';
+          dom.nativeAudio.src = '';
+          stopAudioPlayback();
+        }
+
+        // 5. Vídeo o Reconstrucción 3D (Opcional)
+        const hasVideo = (currentPanel.has_video !== false) && Boolean(currentPanel.video) && currentPanel.video.trim() !== '';
+        if (hasVideo) {
           dom.videoPlayer.src = currentPanel.video;
           dom.videoContainer.classList.remove('hidden');
         } else {
@@ -754,15 +849,9 @@
           dom.videoPlayer.pause();
         }
 
-        // Configurar audio nativo si existe
-        if (currentPanel.audio) {
-          dom.nativeAudio.src = `./assets/audio/${currentPanel.audio}`;
-        } else {
-          dom.nativeAudio.src = '';
-        }
-
-        // Documentación PDF asociada
-        if (currentPanel.pdf || currentPanel.pdf_url) {
+        // 6. Documentación PDF asociada (Opcional - solo si existe documento específico)
+        const hasPdf = (currentPanel.has_pdf !== false) && Boolean(currentPanel.pdf || currentPanel.pdf_url);
+        if (hasPdf) {
           const pdfUrl = currentPanel.pdf || currentPanel.pdf_url;
           const defaultTitle = currentLang === 'en' ? 'Official Documentation (PDF)' : (currentLang === 'fr' ? 'Documentation Officielle (PDF)' : 'Documentación y Estudio en PDF');
           dom.pdfTitle.textContent = currentPanel.pdf_title || defaultTitle;
@@ -829,17 +918,14 @@
               dom.txtBackTour.textContent = 'Back to Tour';
               document.getElementById('lbl-audioguide-title').textContent = 'Official Audio Guide';
               document.getElementById('lbl-audioguide-sub').textContent = 'Available in exhibition rooms & site';
-              document.getElementById('lbl-facil-badge').textContent = 'Easy Reading · Cognitive Accessibility';
             } else if (currentLang === 'fr') {
               dom.txtBackTour.textContent = 'Retour au Parcours';
               document.getElementById('lbl-audioguide-title').textContent = 'Audioguide Officiel';
               document.getElementById('lbl-audioguide-sub').textContent = 'Disponible en salle et sur le site';
-              document.getElementById('lbl-facil-badge').textContent = 'Lecture Facile · Accessibilité';
             } else {
               dom.txtBackTour.textContent = 'Volver al Recorrido';
               document.getElementById('lbl-audioguide-title').textContent = 'Audioguía Oficial';
               document.getElementById('lbl-audioguide-sub').textContent = 'Disponible en sala y exterior';
-              document.getElementById('lbl-facil-badge').textContent = 'Lectura Fácil · Accesibilidad Cognitiva';
             }
 
             renderPanelContent();
@@ -953,12 +1039,13 @@
       function setupQrModal() {
         dom.btnShowQr.addEventListener('click', () => {
           dom.qrBox.innerHTML = '';
-          const currentUrl = window.location.href;
-          dom.qrLinkText.textContent = currentUrl;
+          const pId = new URLSearchParams(window.location.search).get('id') || '1';
+          const officialQrUrl = `https://www.aytohuelma.es/cipajarillo/punto.html?id=${pId}`;
+          dom.qrLinkText.textContent = officialQrUrl;
 
           if (typeof QRCode !== 'undefined') {
             new QRCode(dom.qrBox, {
-              text: currentUrl,
+              text: officialQrUrl,
               width: 200,
               height: 200,
               colorDark: '#384F3E',

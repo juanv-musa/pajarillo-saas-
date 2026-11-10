@@ -8,6 +8,13 @@
   <meta name="description" content="Centro de Interpretación Santuario Ibérico de El Pajarillo. Descubre el célebre monumento del Héroe y el Lobo.">
   <meta name="keywords" content="El Pajarillo, Santuario Ibérico, Huelma, Jaén, Cabeza de Lobo, Arqueología Ibérica, Turismo Sierra Mágina">
 
+  <!-- Favicon Oficial Multidispositivo -->
+  <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/images/apple-touch-icon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
+
   <!-- Google Fonts: Barlow Condensed (estilo DIN Condensed corporativo) & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -90,11 +97,11 @@
             <div class="hero-wolf-img-wrap hero-carousel-viewport">
               <!-- Slide 1: Cabeza de Lobo -->
               <div class="hero-carousel-slide active" data-index="0" data-title="Cabeza de Lobo" data-sub="Escultura ibérica en caliza · Siglo IV a.C." data-i18n-title="hero.slide_lobo_title" data-i18n-sub="hero.slide_lobo_sub">
-                <img src="./assets/images/lobo.png" alt="Escultura Cabeza de Lobo de El Pajarillo" class="hero-wolf-img hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/Lobo.png';">
+                <img src="./assets/images/lobo.png" alt="Escultura Cabeza de Lobo de El Pajarillo" class="hero-wolf-img hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
               </div>
               <!-- Slide 2: León Ibérico -->
               <div class="hero-carousel-slide" data-index="1" data-title="León de El Pajarillo" data-sub="Fiera guardiana del santuario heroico" data-i18n-title="hero.slide_leon_title" data-i18n-sub="hero.slide_leon_sub">
-                <img src="./assets/images/Leon.png" alt="León Ibérico de El Pajarillo" class="hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
+                <img src="./assets/images/leon.png" alt="León Ibérico de El Pajarillo" class="hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
               </div>
               <!-- Slide 3: Santuario Heroico -->
               <div class="hero-carousel-slide" data-index="2" data-title="Santuario Heroico" data-sub="Reconstrucción volumétrica del monumento escalonado" data-i18n-title="hero.slide_santuario_title" data-i18n-sub="hero.slide_santuario_sub">
@@ -619,6 +626,14 @@
               <h4 style="color: var(--c-success); font-size: 1.4rem; margin: 0.5rem 0;" data-i18n="reservas.success_title">¡Solicitud registrada correctamente!</h4>
               <p style="color: var(--c-text-dark); font-size: 0.92rem;" data-i18n="reservas.success_desc">
                 El equipo del Centro de Interpretación confirmará tu reserva por correo electrónico en menos de 24 horas laborables.
+              </p>
+            </div>
+
+            <div id="booking-error-msg" style="display: none; text-align: center; padding: 1.5rem; background: #FFEBEE; border-radius: var(--radius-md); border: 1.5px solid #E53935; margin-top: 1rem;">
+              <span style="font-size: 2rem;">⚠️</span>
+              <h4 style="color: #C62828; font-size: 1.2rem; margin: 0.5rem 0;">No se pudo registrar la reserva</h4>
+              <p id="booking-error-text" style="color: #555; font-size: 0.9rem;">
+                Ha ocurrido una incidencia de conexión con el servidor. Por favor, inténtalo de nuevo o contacta directamente con Turismo de Huelma.
               </p>
             </div>
           </div>

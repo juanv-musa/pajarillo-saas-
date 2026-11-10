@@ -1,0 +1,100 @@
+RELACIÓN OFICIAL DE CÓDIGOS QR Y ENLACES DEFINITIVOS PARA PRODUCCIÓN
+Centro de Interpretación Santuario Ibérico de “El Pajarillo” · Ayuntamiento de Huelma
+===================================================================================
+
+PUNTO PORTAL: Portal General del Santuario
+  Descripción: Acceso global, audioguías e información general de visita
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/index.html
+  Archivo Vectorial (SVG): QR_PUNTO_PORTAL_portal_general_del_santuario.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_PORTAL_portal_general_del_santuario.png
+
+PUNTO 01: La Cabeza de Lobo
+  Descripción: Escultura cumbre ibérica en caliza · Siglo IV a.C.
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=1
+  Archivo Vectorial (SVG): QR_PUNTO_01_la_cabeza_de_lobo.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_01_la_cabeza_de_lobo.png
+
+PUNTO 02: El Monumento Heroico Escalonado
+  Descripción: Arquitectura escalonada en terrazas sobre el Jandulilla
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=2
+  Archivo Vectorial (SVG): QR_PUNTO_02_el_monumento_heroico_escalonado.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_02_el_monumento_heroico_escalonado.png
+
+PUNTO 03: El Territorio de Iltiraka
+  Descripción: Colonización de la silva salvaje y dominio del pagus
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=3
+  Archivo Vectorial (SVG): QR_PUNTO_03_el_territorio_de_iltiraka.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_03_el_territorio_de_iltiraka.png
+
+PUNTO 04: Un Paisaje Sagrado
+  Descripción: El camino ritual procesional y El Fontanar
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=4
+  Archivo Vectorial (SVG): QR_PUNTO_04_un_paisaje_sagrado.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_04_un_paisaje_sagrado.png
+
+PUNTO 05: El Guerrero de la Falcata y los Leones
+  Descripción: Combate heroico y fieras protectoras del santuario
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=5
+  Archivo Vectorial (SVG): QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones.png
+
+PUNTO 06: Los Grifos y Seres Alados
+  Descripción: Mitología orientalizante y guardianes míticos del umbral
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=6
+  Archivo Vectorial (SVG): QR_PUNTO_06_los_grifos_y_seres_alados.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_06_los_grifos_y_seres_alados.png
+
+PUNTO 07: La Falcata Ibérica y el Armamento Sagrado
+  Descripción: Insignia de prestigio y combate civilizador del príncipe
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=7
+  Archivo Vectorial (SVG): QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado.png
+
+PUNTO 08: La Loma del Perro
+  Descripción: Asentamiento satélite y control estratégico del valle
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=8
+  Archivo Vectorial (SVG): QR_PUNTO_08_la_loma_del_perro.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_08_la_loma_del_perro.png
+
+PUNTO 09: Las Campañas Arqueológicas de 1994 y BIC
+  Descripción: Excavación científica de urgencia y rescate patrimonial
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=9
+  Archivo Vectorial (SVG): QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic.png
+
+PUNTO 10: Centro de Interpretación y Reconstrucción 3D
+  Descripción: Museografía interactiva, tecnología y mediación cultural
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=10
+  Archivo Vectorial (SVG): QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d.png
+
+PUNTO 11: Punto 11
+  Descripción: Punto de recorrido disponible
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=11
+  Archivo Vectorial (SVG): QR_PUNTO_11_punto_11.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_11_punto_11.png
+
+PUNTO 12: Punto 12
+  Descripción: Punto de recorrido disponible
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=12
+  Archivo Vectorial (SVG): QR_PUNTO_12_punto_12.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_12_punto_12.png
+
+PUNTO 13: Punto 13
+  Descripción: Punto de recorrido disponible
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=13
+  Archivo Vectorial (SVG): QR_PUNTO_13_punto_13.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_13_punto_13.png
+
+PUNTO 14: Punto 14
+  Descripción: Punto de recorrido disponible
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=14
+  Archivo Vectorial (SVG): QR_PUNTO_14_punto_14.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_14_punto_14.png
+
+PUNTO 15: Punto 15
+  Descripción: Punto de recorrido disponible
+  URL Permanente: https://www.aytohuelma.es/cipajarillo/punto.html?id=15
+  Archivo Vectorial (SVG): QR_PUNTO_15_punto_15.svg
+  Archivo Imagen HD (PNG): QR_PUNTO_15_punto_15.png
+

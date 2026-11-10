@@ -1,6 +1,22 @@
 <?php
+// Configuración de cookies de sesión segura
+ini_set('session.cookie_httponly', 1);
+ini_set('session.use_only_cookies', 1);
+if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+    ini_set('session.cookie_secure', 1);
+}
+if (PHP_VERSION_ID >= 70300) {
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+}
+
 session_start();
 header('Content-Type: application/json; charset=utf-8');
+header('X-Content-Type-Options: nosniff');
 
 $panelesFile = '../data/paneles.json';
 $agendaFile = '../data/agenda.json';
@@ -19,9 +35,27 @@ function readJson($filepath, $default = []) {
     return is_array($decoded) ? $decoded : $default;
 }
 
-// Helper para guardar archivo
+// Helper para guardar archivo de forma segura con verificación de permisos
 function writeJson($filepath, $data) {
-    file_put_contents($filepath, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE), LOCK_EX);
+    $encoded = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    $res = @file_put_contents($filepath, $encoded, LOCK_EX);
+    if ($res === false) {
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'error' => 'Error de permisos: el servidor web no puede escribir en ' . basename($filepath) . '. Comprueba los permisos de la carpeta data/ y sus archivos (chmod 775 data/ y chmod 664 data/*.json).'
+        ]);
+        exit;
+    }
+    return true;
+}
+
+// Verificación de permisos modulares por usuario/rol
+function hasModulePermission($module) {
+    if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) return false;
+    $perms = $_SESSION['admin_permissions'] ?? ['all'];
+    if (in_array('all', $perms)) return true;
+    return in_array($module, $perms);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -40,10 +74,10 @@ if ($method === 'GET') {
     } elseif ($entity === 'agenda') {
         echo json_encode(readJson($agendaFile, ['activities' => []]));
     } elseif ($entity === 'bookings') {
-        // Solo el gestor autenticado puede ver el listado de reservas
-        if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-            http_response_code(401);
-            echo json_encode(['error' => 'No autorizado']);
+        // Solo el gestor autenticado con permiso de reservas puede verlas
+        if (!hasModulePermission('bookings')) {
+            http_response_code(403);
+            echo json_encode(['error' => 'No autorizado para consultar reservas']);
             exit;
         }
         echo json_encode(readJson($reservasFile, ['bookings' => []]));
@@ -78,19 +112,22 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Para el resto de acciones POST se exige sesión de administración o autorización
-    $isAdminAuth = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true)
-        || (isset($_SERVER['HTTP_X_ADMIN_AUTH']) && $_SERVER['HTTP_X_ADMIN_AUTH'] === 'true')
-        || (isset($input['admin_token']) && $input['admin_token'] === 'pajarillo_admin');
+    // Para el resto de acciones POST se exige sesión de administración activa
+    $isAdminAuth = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
     if (!$isAdminAuth) {
         http_response_code(401);
-        echo json_encode(['error' => 'No autorizado']);
+        echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
         exit;
     }
 
     // Guardar configuración global del sitio (secciones y textos)
     if (isset($input['action']) && $input['action'] === 'save_config') {
+        if (!hasModulePermission('sections') && !hasModulePermission('contents')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para editar la configuración del sitio.']);
+            exit;
+        }
         $config = $input['config'] ?? [];
         writeJson($configFile, $config);
         echo json_encode(['success' => true, 'config' => $config]);
@@ -99,6 +136,11 @@ if ($method === 'POST') {
 
     // Guardar traducciones / textos multilingüe en el servidor
     if (isset($input['action']) && $input['action'] === 'save_locales') {
+        if (!hasModulePermission('contents')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar textos.']);
+            exit;
+        }
         $locales = $input['locales'] ?? [];
         writeJson($localesFile, $locales);
 
@@ -122,6 +164,11 @@ if ($method === 'POST') {
 
     // Guardar o sincronizar vídeos del kiosco y web pública
     if (isset($input['action']) && ($input['action'] === 'save_kiosk_videos' || $input['action'] === 'delete_kiosk_video')) {
+        if (!hasModulePermission('kiosco') && !hasModulePermission('gallery')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar vídeos y pantallas.']);
+            exit;
+        }
         $galleryData = readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]);
         if ($input['action'] === 'save_kiosk_videos') {
             $galleryData['videos'] = $input['videos'] ?? [];
@@ -136,6 +183,11 @@ if ($method === 'POST') {
 
     // Guardar o sincronizar elementos de galería (fotos, pdf, etc.)
     if (isset($input['action']) && $input['action'] === 'save_gallery_items') {
+        if (!hasModulePermission('gallery')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar la galería.']);
+            exit;
+        }
         $galleryData = readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]);
         $items = $input['items'] ?? [];
         $media = [];
@@ -174,6 +226,11 @@ if ($method === 'POST') {
 
     // Activar / Desactivar actividad de agenda directamente
     if (isset($input['action']) && $input['action'] === 'toggle_activity') {
+        if (!hasModulePermission('agenda')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar la agenda.']);
+            exit;
+        }
         $actId = $input['id'] ?? 0;
         $activeState = isset($input['active']) ? (bool)$input['active'] : null;
         $data = readJson($agendaFile, ['activities' => []]);
@@ -197,6 +254,11 @@ if ($method === 'POST') {
 
     // Reordenar paneles
     if (isset($input['action']) && $input['action'] === 'reorder') {
+        if (!hasModulePermission('panels')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar paneles.']);
+            exit;
+        }
         $newOrderIds = $input['order'] ?? [];
         $data = readJson($panelesFile, ['panels' => []]);
         $reordered = [];
@@ -221,6 +283,11 @@ if ($method === 'POST') {
 
     // Guardar / actualizar Panel
     if (isset($input['panel'])) {
+        if (!hasModulePermission('panels')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar paneles.']);
+            exit;
+        }
         $newPanel = $input['panel'];
         $data = readJson($panelesFile, ['panels' => []]);
         $found = false;
@@ -241,6 +308,11 @@ if ($method === 'POST') {
 
     // Guardar / actualizar Actividad de Agenda
     if (isset($input['activity'])) {
+        if (!hasModulePermission('agenda')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar la agenda.']);
+            exit;
+        }
         $act = $input['activity'];
         $data = readJson($agendaFile, ['activities' => []]);
         if (!isset($act['active'])) {
@@ -267,6 +339,11 @@ if ($method === 'POST') {
 
     // Actualizar estado de reserva (confirmar / visto / trazabilidad)
     if (isset($input['action']) && $input['action'] === 'update_booking_status') {
+        if (!hasModulePermission('bookings')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para gestionar reservas.']);
+            exit;
+        }
         $bId = $input['id'] ?? 0;
         $status = $input['status'] ?? null;
         $data = readJson($reservasFile, ['bookings' => []]);
@@ -290,13 +367,11 @@ if ($method === 'POST') {
 // ═══════════════════════════════════════════
 if ($method === 'DELETE') {
     $input = json_decode(file_get_contents('php://input'), true);
-    $isAdminAuth = (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true)
-        || (isset($_SERVER['HTTP_X_ADMIN_AUTH']) && $_SERVER['HTTP_X_ADMIN_AUTH'] === 'true')
-        || (isset($input['admin_token']) && $input['admin_token'] === 'pajarillo_admin');
+    $isAdminAuth = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
     if (!$isAdminAuth) {
         http_response_code(401);
-        echo json_encode(['error' => 'No autorizado']);
+        echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
         exit;
     }
     $id = $input['id'] ?? null;
@@ -309,14 +384,29 @@ if ($method === 'DELETE') {
     }
 
     if ($type === 'activity') {
+        if (!hasModulePermission('agenda')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para eliminar actividades.']);
+            exit;
+        }
         $data = readJson($agendaFile, ['activities' => []]);
         $data['activities'] = array_values(array_filter($data['activities'], fn($a) => $a['id'] != $id));
         writeJson($agendaFile, $data);
     } elseif ($type === 'booking') {
+        if (!hasModulePermission('bookings')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para eliminar reservas.']);
+            exit;
+        }
         $data = readJson($reservasFile, ['bookings' => []]);
         $data['bookings'] = array_values(array_filter($data['bookings'], fn($b) => $b['id'] != $id));
         writeJson($reservasFile, $data);
     } else {
+        if (!hasModulePermission('panels')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para eliminar paneles.']);
+            exit;
+        }
         $data = readJson($panelesFile, ['panels' => []]);
         $data['panels'] = array_values(array_filter($data['panels'], fn($p) => $p['id'] != $id));
         writeJson($panelesFile, $data);
