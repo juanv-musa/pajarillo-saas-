@@ -271,11 +271,13 @@
         </p>
 
         <div class="legal-alert">
-          <ul style="margin: 0; list-style: none;">
+          <ul style="margin: 0; list-style: none; display: flex; flex-direction: column; gap: 6px;">
             <li><strong>Titular del portal:</strong> <span id="view-titular">Excmo. Ayuntamiento de Huelma</span></li>
             <li><strong>Área de gestión:</strong> <span id="view-area">Concejalía de Patrimonio Histórico, Cultura y Turismo</span></li>
             <li><strong>C.I.F.:</strong> <span id="view-cif">P2304400B</span></li>
-            <li><strong>Sede Institucional:</strong> <span id="view-direccion">Calle Cárcel, 2 · 23560 Huelma (Jaén), España</span></li>
+            <li><strong>🏛️ Sede Institucional (Ayuntamiento):</strong> <span id="view-direccion-ayto">Plaza de España, 1 · 23560 Huelma (Jaén)</span></li>
+            <li><strong>📍 Centro de Interpretación (Visitas y Atención):</strong> <span id="view-direccion-centro">Calle Cárcel, 2 · 23560 Huelma (Jaén)</span></li>
+            <li><strong>🌐 Dirección Web Oficial de Referencia:</strong> <a id="view-web-ref-link" href="https://www.aytohuelma.es/cipajarillo" target="_blank" rel="noopener">https://www.aytohuelma.es/cipajarillo</a></li>
             <li><strong>Teléfono de atención:</strong> <span id="view-telefono">(+34) 953 39 00 10</span></li>
             <li><strong>Correo electrónico de contacto:</strong> <a id="view-email-link" href="mailto:turismo@elpajarillo.es">turismo@elpajarillo.es</a> / <a id="view-email-sec-link" href="mailto:ayuntamiento@huelma.es">ayuntamiento@huelma.es</a></li>
             <li><strong>Contacto DPD:</strong> <a id="view-dpd-link" href="mailto:dpd@huelma.es">dpd@huelma.es</a></li>
@@ -338,10 +340,11 @@
         </p>
 
         <h3 id="view-priv-responsable-titulo">2.1. Responsable del Tratamiento y DPD</h3>
-        <ul>
-          <li><strong>Responsable:</strong> <span id="view-priv-resp-name">Ayuntamiento de Huelma (Área de Turismo y Patrimonio)</span>.</li>
+        <ul style="line-height: 1.8;">
+          <li><strong>Responsable del tratamiento:</strong> <span id="view-priv-resp-name">Excmo. Ayuntamiento de Huelma (Área de Turismo y Patrimonio Histórico)</span>.</li>
           <li><strong>NIF:</strong> <span id="view-priv-nif">P2304400B</span>.</li>
-          <li><strong>Dirección Postal:</strong> <span id="view-priv-direccion">Calle Cárcel, 2 · 23560 Huelma (Jaén)</span>.</li>
+          <li><strong>🏛️ Sede Institucional (Ayuntamiento):</strong> <span id="view-priv-dir-ayto">Plaza de España, 1 · 23560 Huelma (Jaén)</span>.</li>
+          <li><strong>📍 Ubicación del Centro de Interpretación:</strong> <span id="view-priv-dir-centro">Calle Cárcel, 2 · 23560 Huelma (Jaén)</span>.</li>
           <li><strong>Contacto del Delegado de Protección de Datos (DPD):</strong> <a id="view-priv-dpd-link" href="mailto:dpd@huelma.es">dpd@huelma.es</a>.</li>
         </ul>
 
@@ -507,7 +510,7 @@
           El <strong>Ayuntamiento de Huelma</strong> se ha comprometido a hacer accesible este sitio web institucional de conformidad con el <strong>Real Decreto 1112/2018, de 7 de septiembre</strong>, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público, por el que se traspone la <strong>Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo</strong>.
         </p>
         <p>
-          La presente declaración de accesibilidad se aplica al sitio web oficial del <strong>Centro de Interpretación Santuario Ibérico de “El Pajarillo”</strong>: <code>https://elpajarillo.huelma.es</code> (y dominios equivalentes del proyecto).
+          La presente declaración de accesibilidad se aplica al sitio web oficial del <strong>Centro de Interpretación Santuario Ibérico de “El Pajarillo”</strong>: <a href="https://www.aytohuelma.es/cipajarillo" target="_blank" rel="noopener"><code>https://www.aytohuelma.es/cipajarillo</code></a> (y dominios equivalentes del proyecto).
         </p>
 
         <h3>4.1. Situación de Cumplimiento</h3>
@@ -561,7 +564,7 @@
           <ul style="margin: 0; list-style: none;">
             <li><strong>Correo electrónico específico:</strong> <a href="mailto:accesibilidad@huelma.es">accesibilidad@huelma.es</a> / <a href="mailto:turismo@elpajarillo.es">turismo@elpajarillo.es</a></li>
             <li><strong>Teléfono de atención:</strong> (+34) 953 39 00 10</li>
-            <li><strong>Presencial / Registro:</strong> Oficina de Atención a la Ciudadanía, Ayuntamiento de Huelma, Calle Cárcel, 2 · 23560 Huelma (Jaén).</li>
+            <li><strong>Presencial / Registro:</strong> Centro de Interpretación (Calle Cárcel, 2 · 23560 Huelma) o Casa Consistorial del Ayuntamiento (Plaza de España, 1 · 23560 Huelma, Jaén).</li>
             <li><strong>Sede electrónica:</strong> <a href="https://huelma.sedelectronica.es" target="_blank" rel="noopener">https://huelma.sedelectronica.es</a></li>
           </ul>
         </div>
@@ -679,13 +682,55 @@
       setT('view-titular', g.titular);
       setT('view-area', g.area);
       setT('view-cif', g.cif);
-      setT('view-direccion', g.direccion);
+      setT('view-direccion', g.direccion_centro || g.direccion);
+      setT('view-direccion-ayto', g.direccion_ayto || 'Plaza de España, 1 · 23560 Huelma (Jaén)');
+      setT('view-direccion-centro', g.direccion_centro || g.direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
+      setT('view-priv-dir-ayto', g.direccion_ayto || 'Plaza de España, 1 · 23560 Huelma (Jaén)');
+      setT('view-priv-dir-centro', g.direccion_centro || g.direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
       setT('view-telefono', g.telefono);
       setT('view-ultima-actualizacion', g.ultima_actualizacion);
       setT('view-marco-legal', g.marco_legal);
-      setT('view-priv-direccion', g.direccion);
+      setT('view-priv-direccion', g.direccion_centro || g.direccion);
       setT('view-priv-nif', g.cif);
       if (g.titular) setT('view-priv-resp-name', g.titular + (g.area ? ' (' + g.area + ')' : ''));
+
+      const webRefLink = document.getElementById('view-web-ref-link');
+      if (webRefLink && (g.web_referencia || 'https://www.aytohuelma.es/cipajarillo')) {
+        const refUrl = g.web_referencia || 'https://www.aytohuelma.es/cipajarillo';
+        webRefLink.href = refUrl;
+        webRefLink.textContent = refUrl;
+      }
+
+      // Visibilidad dinámica de secciones (Habilitar / Deshabilitar)
+      const secEnabled = data.sections_enabled || {
+        aviso: true,
+        privacidad: true,
+        cookies: true,
+        accesibilidad: true,
+        calidad: false
+      };
+
+      let firstVisibleId = null;
+      ['aviso', 'privacidad', 'cookies', 'accesibilidad', 'calidad'].forEach(secId => {
+        const isVisible = secEnabled[secId] !== false;
+        if (isVisible && !firstVisibleId) firstVisibleId = secId;
+
+        const art = document.getElementById(secId);
+        if (art) {
+          art.style.display = isVisible ? '' : 'none';
+        }
+
+        const navLink = document.querySelector(`.legal-nav-link[href="#${secId}"]`);
+        if (navLink && navLink.closest('li')) {
+          navLink.closest('li').style.display = isVisible ? '' : 'none';
+        }
+      });
+
+      // Si se intenta navegar a una sección oculta, redirigir a la primera visible
+      const currentHash = (window.location.hash || '').replace('#', '');
+      if (currentHash && secEnabled[currentHash] === false && firstVisibleId) {
+        window.location.replace('#' + firstVisibleId);
+      }
 
       const emailLink = document.getElementById('view-email-link');
       if (emailLink && g.email) {

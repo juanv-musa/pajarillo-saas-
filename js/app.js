@@ -77,6 +77,7 @@ const initApp = async () => {
         initSiteConfig();
       });
     }
+    syncLegalFooter();
   } catch (err) {
     console.warn('Error configurando CMS:', err);
   }
@@ -90,6 +91,10 @@ const initApp = async () => {
           i18n.applyTranslations();
         }
         await initSiteConfig();
+      } catch(err) {}
+    } else if (e.key === 'pajarillo_legal_data') {
+      try {
+        await syncLegalFooter();
       } catch(err) {}
     } else if (e.key === 'pajarillo_agenda_data') {
       try {
@@ -110,6 +115,36 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initApp);
 } else {
   initApp();
+}
+
+/* ═══════════════════════════════════════════
+   Sincronización de Enlaces Legales en Pie de Página
+   ═══════════════════════════════════════════ */
+async function syncLegalFooter() {
+  let legal = null;
+  try {
+    const local = localStorage.getItem('pajarillo_legal_data');
+    if (local) legal = JSON.parse(local);
+  } catch(e) {}
+  if (!legal) {
+    try {
+      const res = await fetch('./data/legal.json?t=' + Date.now()).catch(() => null);
+      if (res && res.ok) legal = await res.json().catch(() => null);
+    } catch(e) {}
+  }
+  const enabled = (legal && legal.sections_enabled) ? legal.sections_enabled : {
+    aviso: true,
+    privacidad: true,
+    cookies: true,
+    accesibilidad: true,
+    calidad: false
+  };
+  ['aviso', 'privacidad', 'cookies', 'accesibilidad', 'calidad'].forEach(key => {
+    const el = document.querySelector(`[data-legal-sec="${key}"]`);
+    if (el) {
+      el.style.display = (enabled[key] !== false) ? '' : 'none';
+    }
+  });
 }
 
 /* ═══════════════════════════════════════════

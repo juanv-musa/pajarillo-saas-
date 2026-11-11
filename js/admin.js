@@ -5838,6 +5838,14 @@ function setupLegalAdmin() {
     });
   });
 
+  // Listeners para los switches de visibilidad de secciones (Aviso, Privacidad, Cookies, Accesibilidad, Calidad)
+  document.querySelectorAll('.legal-sec-toggle').forEach(toggle => {
+    toggle.addEventListener('change', () => {
+      const sec = toggle.dataset.legalSection;
+      if (sec) updateLegalStatusPill(sec);
+    });
+  });
+
   // Formulario y botones de guardado
   const form = document.getElementById('form-legal-data');
   if (form) {
@@ -5862,6 +5870,45 @@ function setupLegalAdmin() {
       }
     });
   }
+}
+
+function updateLegalStatusPill(secKey) {
+  const toggle = document.getElementById(`legal-toggle-${secKey}`);
+  const pill = document.getElementById(`status-pill-legal-${secKey}`);
+  const tabPill = document.getElementById(`tab-pill-legal-${secKey}`);
+  const isChecked = toggle ? toggle.checked : false;
+
+  if (pill) {
+    if (isChecked) {
+      pill.className = 'status-pill active';
+      pill.textContent = '● Publicada';
+      pill.style.background = '';
+      pill.style.color = '';
+    } else {
+      pill.className = 'status-pill';
+      pill.textContent = '○ Oculta (Borrador / No aprobada)';
+      pill.style.background = '#e5e7eb';
+      pill.style.color = '#4b5563';
+    }
+  }
+
+  if (tabPill) {
+    if (isChecked) {
+      tabPill.textContent = 'Publicada';
+      tabPill.style.background = 'rgba(30,126,52,0.15)';
+      tabPill.style.color = '#1e7e34';
+    } else {
+      tabPill.textContent = 'Borrador';
+      tabPill.style.background = 'rgba(108,117,125,0.18)';
+      tabPill.style.color = '#495057';
+    }
+  }
+}
+
+function updateAllLegalStatusPills() {
+  ['aviso', 'privacidad', 'cookies', 'accesibilidad', 'calidad'].forEach(sec => {
+    updateLegalStatusPill(sec);
+  });
 }
 
 async function loadLegalData() {
@@ -5894,12 +5941,34 @@ function populateLegalForm(data) {
     if (el && val !== undefined && val !== null) el.value = val;
   };
 
+  // Secciones Habilitadas / Visibles
+  const secEnabled = data.sections_enabled || {};
+  const setToggle = (secKey, defaultVal) => {
+    const toggle = document.getElementById(`legal-toggle-${secKey}`);
+    if (toggle) {
+      if (secEnabled[secKey] !== undefined) {
+        toggle.checked = Boolean(secEnabled[secKey]);
+      } else {
+        toggle.checked = defaultVal;
+      }
+    }
+  };
+  setToggle('aviso', true);
+  setToggle('privacidad', true);
+  setToggle('cookies', true);
+  setToggle('accesibilidad', true);
+  setToggle('calidad', false); // Por defecto borrador (no aprobada)
+  updateAllLegalStatusPills();
+
   // General
   const g = data.general || {};
   setVal('legal-titular', g.titular);
   setVal('legal-cif', g.cif);
   setVal('legal-area', g.area);
-  setVal('legal-direccion', g.direccion);
+  setVal('legal-direccion-ayto', g.direccion_ayto || 'Plaza de España, 1 · 23560 Huelma (Jaén)');
+  setVal('legal-direccion-centro', g.direccion_centro || g.direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
+  setVal('legal-direccion', g.direccion_centro || g.direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
+  setVal('legal-web-referencia', g.web_referencia || 'https://www.aytohuelma.es/cipajarillo');
   setVal('legal-telefono', g.telefono);
   setVal('legal-email', g.email);
   setVal('legal-email-secundario', g.email_secundario);
@@ -5988,13 +6057,31 @@ function collectLegalForm() {
     const el = document.getElementById(id);
     return el ? el.value.trim() : fallback;
   };
+  const isChecked = (id, fallback = true) => {
+    const el = document.getElementById(id);
+    return el ? el.checked : fallback;
+  };
+
+  const dirAyto = getVal('legal-direccion-ayto', 'Plaza de España, 1 · 23560 Huelma (Jaén)');
+  const dirCentro = getVal('legal-direccion-centro', 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
+  const webRef = getVal('legal-web-referencia', 'https://www.aytohuelma.es/cipajarillo');
 
   return {
+    sections_enabled: {
+      aviso: isChecked('legal-toggle-aviso', true),
+      privacidad: isChecked('legal-toggle-privacidad', true),
+      cookies: isChecked('legal-toggle-cookies', true),
+      accesibilidad: isChecked('legal-toggle-accesibilidad', true),
+      calidad: isChecked('legal-toggle-calidad', false)
+    },
     general: {
       titular: getVal('legal-titular', 'Excmo. Ayuntamiento de Huelma'),
       cif: getVal('legal-cif', 'P2304400B'),
       area: getVal('legal-area', 'Concejalía de Patrimonio Histórico, Cultura y Turismo'),
-      direccion: getVal('legal-direccion', 'Calle Cárcel, 2 · 23560 Huelma (Jaén), España'),
+      direccion_ayto: dirAyto,
+      direccion_centro: dirCentro,
+      direccion: dirCentro,
+      web_referencia: webRef,
       telefono: getVal('legal-telefono', '(+34) 953 39 00 10'),
       email: getVal('legal-email', 'turismo@elpajarillo.es'),
       email_secundario: getVal('legal-email-secundario', 'ayuntamiento@huelma.es'),

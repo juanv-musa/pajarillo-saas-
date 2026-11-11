@@ -1,9 +1,19 @@
 {
+  "sections_enabled": {
+    "aviso": true,
+    "privacidad": true,
+    "cookies": true,
+    "accesibilidad": true,
+    "calidad": false
+  },
   "general": {
     "titular": "Excmo. Ayuntamiento de Huelma",
     "area": "Concejalía de Patrimonio Histórico, Cultura y Turismo",
     "cif": "P2304400B",
-    "direccion": "Calle Cárcel, 2 · 23560 Huelma (Jaén), España",
+    "direccion_ayto": "Plaza de España, 1 · 23560 Huelma (Jaén)",
+    "direccion_centro": "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
+    "direccion": "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
+    "web_referencia": "https://www.aytohuelma.es/cipajarillo",
     "telefono": "(+34) 953 39 00 10",
     "email": "turismo@elpajarillo.es",
     "email_secundario": "ayuntamiento@huelma.es",
@@ -17,7 +27,7 @@
     "titulo": "1. Aviso Legal",
     "intro": "En cumplimiento del artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y de Comercio Electrónico (LSSI-CE), se informa a los usuarios de los datos identificativos y de contacto de la entidad titular de este portal web:",
     "objeto_titulo": "1.1. Objeto del Sitio Web",
-    "objeto_texto": "El presente portal digital oficial tiene por objeto difundir el conocimiento arqueológico, histórico y artístico del Centro de Interpretación Santuario Ibérico de “El Pajarillo” y del conjunto monumental anexo, facilitar a la ciudadanía y a los turistas la consulta de horarios, tarifas, localización y agenda cultural, así como posibilitar la solicitud telemática de reservas guiadas y el acceso a recursos didácticos y códigos QR interpretativos.",
+    "objeto_texto": "El presente portal digital oficial tiene por objeto difundir el conocimiento arqueológico, histórico y artístico del Centro de Interpretación Santuario Ibérico de “El Pajarillo” y del conjunto monumental anexo (referencia oficial: https://www.aytohuelma.es/cipajarillo), facilitar a la ciudadanía y a los turistas la consulta de horarios, tarifas, localización y agenda cultural, así como posibilitar la solicitud telemática de reservas guiadas y el acceso a recursos didácticos y códigos QR interpretativos.",
     "condiciones_titulo": "1.2. Condiciones Generales de Uso",
     "condiciones_texto": "El acceso y navegación por este portal atribuye la condición de usuario, implicando la aceptación plena y sin reservas de las presentes disposiciones. El usuario se compromete a:\n• Hacer un uso adecuado de los contenidos, herramientas interactivas y formularios de reserva, absteniéndose de emplearlos para actividades ilícitas, fraudulentas o lesivas de los derechos de terceros.\n• No introducir ni difundir virus informáticos ni utilizar sistemas susceptibles de provocar daños en los servidores o redes que dan soporte al portal y a la plataforma SaaS MVP.\n• Proporcionar información veraz en los formularios de reserva de visitas guiadas y consultas institucionales.",
     "propiedad_titulo": "1.3. Propiedad Intelectual e Industrial",
@@ -32,13 +42,13 @@
     "titulo": "2. Política de Privacidad",
     "intro": "El Ayuntamiento de Huelma garantiza la protección de los datos de carácter personal de conformidad con el Reglamento General de Protección de Datos (RGPD UE 2016/679) y la Ley Orgánica 3/2018, de 5 de diciembre, de Protección de Datos Personales y garantía de los derechos digitales (LOPDGDD).",
     "responsable_titulo": "2.1. Responsable del Tratamiento y DPD",
-    "responsable_texto": "• Responsable: Ayuntamiento de Huelma (Área de Turismo y Patrimonio).\n• NIF: P2304400B.\n• Dirección Postal: Calle Cárcel, 2 · 23560 Huelma (Jaén).\n• Contacto del Delegado de Protección de Datos (DPD): dpd@huelma.es.",
+    "responsable_texto": "• Responsable del tratamiento: Excmo. Ayuntamiento de Huelma (Área de Turismo y Patrimonio Histórico).\n• NIF: P2304400B.\n• Sede Institucional del Ayuntamiento: Plaza de España, 1 · 23560 Huelma (Jaén).\n• Ubicación del Centro de Interpretación: Calle Cárcel, 2 · 23560 Huelma (Jaén).\n• Contacto del Delegado de Protección de Datos (DPD): dpd@huelma.es.",
     "finalidad_titulo": "2.2. Finalidades del Tratamiento y Bases Jurídicas",
     "finalidad_texto": "Los datos personales recabados a través del portal se tratan para las siguientes finalidades específicas:\n1. Gestión y confirmación de reservas de visitas guiadas individuales y grupales (Base jurídica: ejecución de solicitud/servicio público solicitado por el interesado).\n2. Atención de consultas ciudadanas e incidencias a través de formularios o correos electrónicos oficiales (Base jurídica: consentimiento del interesado).\n3. Analítica disociada y agregada de afluencia para la planificación turística municipal (Base jurídica: misión de interés público, sin registro de datos identificativos personales).",
     "conservacion_titulo": "2.3. Plazos de Conservación de los Datos",
     "conservacion_texto": "Los datos de reservas se conservarán durante el tiempo indispensable para coordinar la visita y un máximo legal de 1 año con fines estadísticos y de control de calidad municipal. Posteriormente serán destruidos de forma segura o anonimizados.",
     "derechos_titulo": "2.4. Derechos de los Interesados y Vías de Ejercicio",
-    "derechos_texto": "Cualquier persona puede ejercer sus derechos de Acceso, Rectificación, Supresión (olvido), Limitación del tratamiento, Portabilidad y Oposición (derechos ARSOPL) dirigiendo solicitud escrita y firmada ante el Registro General del Ayuntamiento de Huelma (Calle Cárcel, 2 · 23560 Huelma) o telemáticamente en la Sede Electrónica (https://huelma.sedelectronica.es) o vía email a dpd@huelma.es, acompañando documento identificativo oficial.",
+    "derechos_texto": "Cualquier persona puede ejercer sus derechos de Acceso, Rectificación, Supresión (olvido), Limitación del tratamiento, Portabilidad y Oposición (derechos ARSOPL) dirigiendo solicitud escrita y firmada ante el Registro General del Ayuntamiento de Huelma (Plaza de España, 1 · 23560 Huelma), presencialmente en el Centro de Interpretación (Calle Cárcel, 2 · 23560 Huelma), telemáticamente en la Sede Electrónica (https://huelma.sedelectronica.es) o vía email a dpd@huelma.es, acompañando documento identificativo oficial.",
     "seguridad_titulo": "2.5. Medidas de Seguridad y Cesiones",
     "seguridad_texto": "No se cederán datos a terceros salvo obligación legal expresa. La entidad aplica medidas de seguridad técnicas y organizativas conformes al Esquema Nacional de Seguridad (ENS) para garantizar la integridad, confidencialidad y disponibilidad de la información."
   },
@@ -56,7 +66,7 @@
   "accesibilidad": {
     "tag": "Conforme al Real Decreto 1112/2018",
     "titulo": "4. Declaración de Accesibilidad",
-    "intro": "El Ayuntamiento de Huelma se ha comprometido a hacer accesible este sitio web institucional de conformidad con el Real Decreto 1112/2018, de 7 de septiembre, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público, por el que se traspone la Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo.\n\nLa presente declaración de accesibilidad se aplica al sitio web oficial del Centro de Interpretación Santuario Ibérico de “El Pajarillo”: https://elpajarillo.huelma.es (y dominios equivalentes del proyecto).",
+    "intro": "El Ayuntamiento de Huelma se ha comprometido a hacer accesible este sitio web institucional de conformidad con el Real Decreto 1112/2018, de 7 de septiembre, sobre accesibilidad de los sitios web y aplicaciones para dispositivos móviles del sector público, por el que se traspone la Directiva (UE) 2016/2102 del Parlamento Europeo y del Consejo.\n\nLa presente declaración de accesibilidad se aplica al sitio web oficial y portal digital del Centro de Interpretación Santuario Ibérico de “El Pajarillo”: https://www.aytohuelma.es/cipajarillo (y dominios equivalentes vinculados al proyecto).",
     "cumplimiento_titulo": "4.1. Situación de Cumplimiento",
     "cumplimiento_texto": "Este sitio web es parcialmente conforme con los requisitos de la Norma UNE-EN 301 549:2021 («Requisitos de accesibilidad para productos y servicios TIC») y con las Pautas de Accesibilidad para el Contenido Web (WCAG 2.1) en su nivel Doble-A (AA), debido a las excepciones y a la falta de conformidad de los aspectos que se detallan a continuación.",
     "no_accesible_titulo": "4.2. Contenido No Accesible y Excepciones",
@@ -64,7 +74,7 @@
     "preparacion_titulo": "4.3. Preparación de la Presente Declaración",
     "preparacion_texto": "La presente declaración fue preparada el 14 de septiembre de 2026 y actualizada periódicamente mediante autoevaluación interna combinada con herramientas automáticas de validación (W3C Validator, Wave y herramientas del Observatorio de Accesibilidad Web del Ministerio de Transformación Digital).",
     "contacto_titulo": "4.4. Mecanismos de Comunicación y Observaciones",
-    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@elpajarillo.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Oficina de Atención a la Ciudadanía, Calle Cárcel, 2 · 23560 Huelma (Jaén)\n• Sede electrónica: https://huelma.sedelectronica.es\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
+    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@elpajarillo.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Centro de Interpretación Santuario Ibérico de “El Pajarillo”, Calle Cárcel, 2 · 23560 Huelma (Jaén) o en el Ayuntamiento de Huelma, Plaza de España, 1 · 23560 Huelma (Jaén)\n• Sede electrónica: https://huelma.sedelectronica.es\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
     "reclamaciones_titulo": "4.5. Procedimiento de Aplicación y Reclamaciones",
     "reclamaciones_texto": "Si una solicitud de información accesible o queja es desestimada o no se obtiene respuesta adecuada en los plazos previstos en el artículo 12.5 del RD 1112/2018, la persona interesada podrá iniciar una reclamación ante la Unidad Responsable de Accesibilidad o a través de las vías de la Ley 39/2015 del Procedimiento Administrativo Común."
   },
@@ -79,6 +89,6 @@
     "indicadores_titulo": "5.3. Indicadores de Calidad y Evaluación Continua",
     "indicadores_texto": "Evaluamos periódicamente la calidad del servicio mediante:\n• Encuestas de satisfacción a la salida del centro y mediante código QR en la plataforma digital.\n• Análisis de quejas y sugerencias recibidas, con compromiso de análisis en menos de 15 días hábiles.\n• Monitorización de afluencia y uso de recursos didácticos para la mejora continua de las salas.",
     "quejas_titulo": "5.4. Buzón de Sugerencias, Quejas y Felicitaciones",
-    "quejas_texto": "Ponemos a disposición de la ciudadanía un buzón presencial en la recepción del centro y canales telemáticos directos mediante el correo turismo@elpajarillo.es y la Sede Electrónica municipal. Todas las aportaciones serán registradas formalmente para impulsar la mejora constante de nuestro servicio."
+    "quejas_texto": "Ponemos a disposición de la ciudadanía un buzón presencial en la recepción del centro (Calle Cárcel, 2 · Huelma) y canales telemáticos directos mediante el correo turismo@elpajarillo.es y la Sede Electrónica municipal. Todas las aportaciones serán registradas formalmente para impulsar la mejora constante de nuestro servicio."
   }
 }

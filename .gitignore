@@ -15,4 +15,5 @@ node_modules/
 
 # Paquetes y temporales locales
 *.zip
+backups/
 generate_canvas_ui.js

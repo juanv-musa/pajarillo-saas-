@@ -2187,24 +2187,24 @@
         </div>
 
         <!-- Selector de Pestañas / Bloques de Legal y Calidad -->
-        <div class="cms-lang-selector" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; background: #fff; padding: 6px; border: 1px solid var(--admin-border); border-radius: 12px; width: 100%;">
+        <div class="cms-lang-selector" style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; background: #fff; padding: 6px; border: 1px solid var(--admin-border); border-radius: 12px; width: 100%;">
           <button type="button" class="cms-lang-pill active legal-tab-btn" data-legal-tab="general">
             🏛️ Datos Institucionales y DPD
           </button>
           <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="aviso">
-            📜 Aviso Legal (LSSI-CE)
+            📜 Aviso Legal <span id="tab-pill-legal-aviso" style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; background: rgba(30,126,52,0.15); color: #1e7e34;">Publicada</span>
           </button>
           <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="privacidad">
-            🔒 Política de Privacidad (RGPD)
+            🔒 Privacidad <span id="tab-pill-legal-privacidad" style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; background: rgba(30,126,52,0.15); color: #1e7e34;">Publicada</span>
           </button>
           <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="cookies">
-            🍪 Política de Cookies (AEPD)
+            🍪 Cookies <span id="tab-pill-legal-cookies" style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; background: rgba(30,126,52,0.15); color: #1e7e34;">Publicada</span>
           </button>
           <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="accesibilidad">
-            ♿ Declaración de Accesibilidad
+            ♿ Accesibilidad <span id="tab-pill-legal-accesibilidad" style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; background: rgba(30,126,52,0.15); color: #1e7e34;">Publicada</span>
           </button>
           <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="calidad" style="color: #8c6d1f; font-weight: 800;">
-            ⭐ Carta de Calidad y Servicios
+            ⭐ Carta de Calidad y Servicios <span id="tab-pill-legal-calidad" style="font-size: 0.72rem; padding: 1px 6px; border-radius: 8px; margin-left: 4px; background: rgba(108,117,125,0.18); color: #495057;">Borrador</span>
           </button>
         </div>
 
@@ -2236,8 +2236,24 @@
                 </div>
 
                 <div class="admin-form-group">
-                  <label for="legal-direccion">Sede Institucional / Dirección Oficial *</label>
-                  <input type="text" id="legal-direccion" class="admin-input" required placeholder="Calle Cárcel, 2 · 23560 Huelma (Jaén), España">
+                  <label for="legal-direccion-ayto">🏛️ Sede Institucional del Ayuntamiento (Titular / Persona Jurídica) *</label>
+                  <input type="text" id="legal-direccion-ayto" class="admin-input" required placeholder="Plaza de España, 1 · 23560 Huelma (Jaén)">
+                  <span style="font-size: 0.75rem; color: var(--admin-muted);">Sede oficial del Excmo. Ayuntamiento de Huelma (titular legal).</span>
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-direccion-centro">📍 Ubicación del Centro de Interpretación (Visitas y Atención) *</label>
+                  <input type="text" id="legal-direccion-centro" class="admin-input" required placeholder="Calle Cárcel, 2 · 23560 Huelma (Jaén)">
+                  <span style="font-size: 0.75rem; color: var(--admin-muted);">Dirección física de las instalaciones y punto de atención presencial.</span>
+                </div>
+
+                <!-- Campo oculto retrocompatible -->
+                <input type="hidden" id="legal-direccion" value="Calle Cárcel, 2 · 23560 Huelma (Jaén)">
+
+                <div class="admin-form-group">
+                  <label for="legal-web-referencia">🌐 Dirección Web Oficial de Referencia *</label>
+                  <input type="url" id="legal-web-referencia" class="admin-input" required placeholder="https://www.aytohuelma.es/cipajarillo">
+                  <span style="font-size: 0.75rem; color: var(--admin-muted);">URL institucional de referencia del Santuario en la web municipal.</span>
                 </div>
 
                 <div class="admin-form-group">
@@ -2281,6 +2297,25 @@
           <!-- ─── PESTAÑA 2: AVISO LEGAL (LSSI-CE) ─── -->
           <div id="legal-panel-aviso" class="legal-tab-panel hidden">
             <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <!-- Selector Habilitar / Deshabilitar Sección -->
+              <div class="legal-section-toggle-box" style="display: flex; align-items: center; justify-content: space-between; background: #faf8f5; border: 1.5px solid #d4af37; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="font-weight: 700; font-size: 1rem; color: var(--admin-primary); display: flex; align-items: center; gap: 10px;">
+                    <span>Estado en la Web Pública</span>
+                    <span class="status-pill active" id="status-pill-legal-aviso">● Publicada</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 3px 0 0 0;">
+                    Si se desactiva, queda en borrador y se oculta automáticamente de la web pública y del menú normativo.
+                  </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label class="switch">
+                    <input type="checkbox" id="legal-toggle-aviso" class="legal-sec-toggle" data-legal-section="aviso" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
                 📜 1. Aviso Legal y Condiciones Generales (Ley 34/2002 LSSI-CE)
               </h3>
@@ -2344,6 +2379,25 @@
           <!-- ─── PESTAÑA 3: POLÍTICA DE PRIVACIDAD (RGPD) ─── -->
           <div id="legal-panel-privacidad" class="legal-tab-panel hidden">
             <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <!-- Selector Habilitar / Deshabilitar Sección -->
+              <div class="legal-section-toggle-box" style="display: flex; align-items: center; justify-content: space-between; background: #faf8f5; border: 1.5px solid #d4af37; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="font-weight: 700; font-size: 1rem; color: var(--admin-primary); display: flex; align-items: center; gap: 10px;">
+                    <span>Estado en la Web Pública</span>
+                    <span class="status-pill active" id="status-pill-legal-privacidad">● Publicada</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 3px 0 0 0;">
+                    Si se desactiva, queda en borrador y se oculta automáticamente de la web pública y del menú normativo.
+                  </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label class="switch">
+                    <input type="checkbox" id="legal-toggle-privacidad" class="legal-sec-toggle" data-legal-section="privacidad" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
                 🔒 2. Política de Privacidad (RGPD UE 2016/679 y LOPDGDD 3/2018)
               </h3>
@@ -2407,6 +2461,25 @@
           <!-- ─── PESTAÑA 4: POLÍTICA DE COOKIES (AEPD) ─── -->
           <div id="legal-panel-cookies" class="legal-tab-panel hidden">
             <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <!-- Selector Habilitar / Deshabilitar Sección -->
+              <div class="legal-section-toggle-box" style="display: flex; align-items: center; justify-content: space-between; background: #faf8f5; border: 1.5px solid #d4af37; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="font-weight: 700; font-size: 1rem; color: var(--admin-primary); display: flex; align-items: center; gap: 10px;">
+                    <span>Estado en la Web Pública</span>
+                    <span class="status-pill active" id="status-pill-legal-cookies">● Publicada</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 3px 0 0 0;">
+                    Si se desactiva, queda en borrador y se oculta automáticamente de la web pública y del menú normativo.
+                  </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label class="switch">
+                    <input type="checkbox" id="legal-toggle-cookies" class="legal-sec-toggle" data-legal-section="cookies" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
                 🍪 3. Política de Cookies y Tecnologías de Almacenamiento Local (AEPD)
               </h3>
@@ -2456,6 +2529,25 @@
           <!-- ─── PESTAÑA 5: DECLARACIÓN DE ACCESIBILIDAD (RD 1112/2018) ─── -->
           <div id="legal-panel-accesibilidad" class="legal-tab-panel hidden">
             <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <!-- Selector Habilitar / Deshabilitar Sección -->
+              <div class="legal-section-toggle-box" style="display: flex; align-items: center; justify-content: space-between; background: #faf8f5; border: 1.5px solid #d4af37; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="font-weight: 700; font-size: 1rem; color: var(--admin-primary); display: flex; align-items: center; gap: 10px;">
+                    <span>Estado en la Web Pública</span>
+                    <span class="status-pill active" id="status-pill-legal-accesibilidad">● Publicada</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 3px 0 0 0;">
+                    Si se desactiva, queda en borrador y se oculta automáticamente de la web pública y del menú normativo.
+                  </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label class="switch">
+                    <input type="checkbox" id="legal-toggle-accesibilidad" class="legal-sec-toggle" data-legal-section="accesibilidad" checked>
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
               <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
                 ♿ 4. Declaración de Accesibilidad (Real Decreto 1112/2018)
               </h3>
@@ -2519,11 +2611,31 @@
           <!-- ─── PESTAÑA 6: CARTA DE CALIDAD Y SERVICIOS (CALIDAD) ─── -->
           <div id="legal-panel-calidad" class="legal-tab-panel hidden">
             <div class="admin-card" style="margin-bottom: 1.5rem; border: 1.5px solid #d4af37;">
+              <!-- Selector Habilitar / Deshabilitar Sección -->
+              <div class="legal-section-toggle-box" style="display: flex; align-items: center; justify-content: space-between; background: #fffcf0; border: 1.5px solid #d4af37; border-radius: 12px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+                <div>
+                  <div style="font-weight: 700; font-size: 1rem; color: #8c6d1f; display: flex; align-items: center; gap: 10px;">
+                    <span>Estado en la Web Pública</span>
+                    <span class="status-pill" id="status-pill-legal-calidad" style="background: #e5e7eb; color: #4b5563;">○ Oculta (Borrador / No aprobada)</span>
+                  </div>
+                  <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 3px 0 0 0;">
+                    Solo se publicará en la web pública y en el pie de página tras su aprobación oficial por el Ayuntamiento.
+                  </p>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <label class="switch">
+                    <input type="checkbox" id="legal-toggle-calidad" class="legal-sec-toggle" data-legal-section="calidad">
+                    <span class="slider"></span>
+                  </label>
+                </div>
+              </div>
+
               <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.35rem;">
                 <span style="font-size: 1.4rem;">⭐</span>
                 <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin: 0;">
                   5. Carta de Servicios y Compromisos de Calidad del Centro
                 </h3>
+              </div>
               </div>
               <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
                 Define los compromisos públicos de calidad en la atención a visitantes, tiempos máximos de respuesta, estándares de conservación e indicadores de satisfacción ciudadana.
