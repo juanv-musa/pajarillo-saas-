@@ -69,7 +69,66 @@
     "ayto": "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
     "horario_atencion": "Lunes a Viernes de 9:00 a 14:00 h",
     "direccion": "Plaza de España, 1 · 23140 Huelma (Jaén)",
-    "footer_copy": "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados."
+    "footer_copy": "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados.",
+    "hero_carousel": [
+      {
+        "img": "./assets/images/lobo.png",
+        "title": "Cabeza de Lobo",
+        "sub": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_es": "Cabeza de Lobo",
+        "sub_es": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_en": "The Wolf's Head",
+        "sub_en": "Iberian limestone sculpture · 4th century BC",
+        "title_fr": "La Tête de Loup",
+        "sub_fr": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+      },
+      {
+        "img": "./assets/images/leon.png",
+        "title": "León de El Pajarillo",
+        "sub": "Fiera guardiana del santuario heroico",
+        "title_es": "León de El Pajarillo",
+        "sub_es": "Fiera guardiana del santuario heroico",
+        "title_en": "Lion of El Pajarillo",
+        "sub_en": "Guardian beast of the heroic sanctuary",
+        "title_fr": "Lion d'El Pajarillo",
+        "sub_fr": "Fauve gardien du sanctuaire héroïque"
+      },
+      {
+        "img": "./assets/images/santuario_ilustracion.png",
+        "title": "Santuario Heroico",
+        "sub": "Reconstrucción volumétrica del monumento",
+        "title_es": "Santuario Heroico",
+        "sub_es": "Reconstrucción volumétrica del monumento",
+        "title_en": "Heroic Sanctuary",
+        "sub_en": "Volumetric monument reconstruction",
+        "title_fr": "Sanctuaire Héroïque",
+        "sub_fr": "Reconstitution volumétrique du monument"
+      },
+      {
+        "img": "./assets/images/arqueologia.png",
+        "title": "Yacimiento Arqueológico",
+        "sub": "Terrazas excavadas en el valle del Jandulilla",
+        "title_es": "Yacimiento Arqueológico",
+        "sub_es": "Terrazas excavadas en el valle del Jandulilla",
+        "title_en": "Archaeological Site",
+        "sub_en": "Excavated terraces in Jandulilla valley",
+        "title_fr": "Site Archéologique",
+        "sub_fr": "Terrasses excavées dans la vallée du Jandulilla"
+      },
+      {
+        "img": "./assets/images/iltiraka.png",
+        "title": "Territorio de Iltiraka",
+        "sub": "Paisaje sagrado y oppidum protohistórico",
+        "title_es": "Territorio de Iltiraka",
+        "sub_es": "Paisaje sagrado y oppidum protohistórico",
+        "title_en": "Territory of Iltiraka",
+        "sub_en": "Sacred landscape and protohistoric oppidum",
+        "title_fr": "Territoire d'Iltiraka",
+        "sub_fr": "Paysage sacré et oppidum protohistorique"
+      }
+    ],
+    "hero_carousel_autoplay": true,
+    "hero_carousel_interval": "3500"
   },
   "en": {
     "hero_eyebrow": "",
@@ -138,7 +197,66 @@
     "ayto": "Huelma Town Council · Heritage and Tourism Department",
     "horario_atencion": "Monday to Friday from 9:00 AM to 2:00 PM",
     "direccion": "Plaza de España, 1 · 23140 Huelma (Jaén, Spain)",
-    "footer_copy": "© 2026 El Pajarillo Iberian Sanctuary Interpretation Centre. Huelma Town Council. All rights reserved."
+    "footer_copy": "© 2026 El Pajarillo Iberian Sanctuary Interpretation Centre. Huelma Town Council. All rights reserved.",
+    "hero_carousel": [
+      {
+        "img": "./assets/images/lobo.png",
+        "title": "The Wolf's Head",
+        "sub": "Iberian limestone sculpture · 4th century BC",
+        "title_es": "Cabeza de Lobo",
+        "sub_es": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_en": "The Wolf's Head",
+        "sub_en": "Iberian limestone sculpture · 4th century BC",
+        "title_fr": "La Tête de Loup",
+        "sub_fr": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+      },
+      {
+        "img": "./assets/images/leon.png",
+        "title": "Lion of El Pajarillo",
+        "sub": "Guardian beast of the heroic sanctuary",
+        "title_es": "León de El Pajarillo",
+        "sub_es": "Fiera guardiana del santuario heroico",
+        "title_en": "Lion of El Pajarillo",
+        "sub_en": "Guardian beast of the heroic sanctuary",
+        "title_fr": "Lion d'El Pajarillo",
+        "sub_fr": "Fauve gardien du sanctuaire héroïque"
+      },
+      {
+        "img": "./assets/images/santuario_ilustracion.png",
+        "title": "Heroic Sanctuary",
+        "sub": "Volumetric monument reconstruction",
+        "title_es": "Santuario Heroico",
+        "sub_es": "Reconstrucción volumétrica del monumento",
+        "title_en": "Heroic Sanctuary",
+        "sub_en": "Volumetric monument reconstruction",
+        "title_fr": "Sanctuaire Héroïque",
+        "sub_fr": "Reconstitution volumétrique du monument"
+      },
+      {
+        "img": "./assets/images/arqueologia.png",
+        "title": "Archaeological Site",
+        "sub": "Excavated terraces in Jandulilla valley",
+        "title_es": "Yacimiento Arqueológico",
+        "sub_es": "Terrazas excavadas en el valle del Jandulilla",
+        "title_en": "Archaeological Site",
+        "sub_en": "Excavated terraces in Jandulilla valley",
+        "title_fr": "Site Archéologique",
+        "sub_fr": "Terrasses excavées dans la vallée du Jandulilla"
+      },
+      {
+        "img": "./assets/images/iltiraka.png",
+        "title": "Territory of Iltiraka",
+        "sub": "Sacred landscape and protohistoric oppidum",
+        "title_es": "Territorio de Iltiraka",
+        "sub_es": "Paisaje sagrado y oppidum protohistórico",
+        "title_en": "Territory of Iltiraka",
+        "sub_en": "Sacred landscape and protohistoric oppidum",
+        "title_fr": "Territoire d'Iltiraka",
+        "sub_fr": "Paysage sacré et oppidum protohistorique"
+      }
+    ],
+    "hero_carousel_autoplay": true,
+    "hero_carousel_interval": "3500"
   },
   "fr": {
     "hero_eyebrow": "",
@@ -207,6 +325,65 @@
     "ayto": "Mairie d'Huelma · Direction du Patrimoine et du Tourisme",
     "horario_atencion": "Du lundi au vendredi de 9h00 à 14h00",
     "direccion": "Plaza de España, 1 · 23140 Huelma (Jaén, Espagne)",
-    "footer_copy": "© 2026 Centre d'Interprétation Sanctuaire Ibérique d'El Pajarillo. Mairie d'Huelma. Tous droits réservés."
+    "footer_copy": "© 2026 Centre d'Interprétation Sanctuaire Ibérique d'El Pajarillo. Mairie d'Huelma. Tous droits réservés.",
+    "hero_carousel": [
+      {
+        "img": "./assets/images/lobo.png",
+        "title": "La Tête de Loup",
+        "sub": "Sculpture ibérique en calcaire · IVe s. av. J.-C.",
+        "title_es": "Cabeza de Lobo",
+        "sub_es": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_en": "The Wolf's Head",
+        "sub_en": "Iberian limestone sculpture · 4th century BC",
+        "title_fr": "La Tête de Loup",
+        "sub_fr": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+      },
+      {
+        "img": "./assets/images/leon.png",
+        "title": "Lion d'El Pajarillo",
+        "sub": "Fauve gardien du sanctuaire héroïque",
+        "title_es": "León de El Pajarillo",
+        "sub_es": "Fiera guardiana del santuario heroico",
+        "title_en": "Lion of El Pajarillo",
+        "sub_en": "Guardian beast of the heroic sanctuary",
+        "title_fr": "Lion d'El Pajarillo",
+        "sub_fr": "Fauve gardien du sanctuaire héroïque"
+      },
+      {
+        "img": "./assets/images/santuario_ilustracion.png",
+        "title": "Sanctuaire Héroïque",
+        "sub": "Reconstitution volumétrique du monument",
+        "title_es": "Santuario Heroico",
+        "sub_es": "Reconstrucción volumétrica del monumento",
+        "title_en": "Heroic Sanctuary",
+        "sub_en": "Volumetric monument reconstruction",
+        "title_fr": "Sanctuaire Héroïque",
+        "sub_fr": "Reconstitution volumétrique du monument"
+      },
+      {
+        "img": "./assets/images/arqueologia.png",
+        "title": "Site Archéologique",
+        "sub": "Terrasses excavées dans la vallée du Jandulilla",
+        "title_es": "Yacimiento Arqueológico",
+        "sub_es": "Terrazas excavadas en el valle del Jandulilla",
+        "title_en": "Archaeological Site",
+        "sub_en": "Excavated terraces in Jandulilla valley",
+        "title_fr": "Site Archéologique",
+        "sub_fr": "Terrasses excavées dans la vallée du Jandulilla"
+      },
+      {
+        "img": "./assets/images/iltiraka.png",
+        "title": "Territoire d'Iltiraka",
+        "sub": "Paysage sacré et oppidum protohistorique",
+        "title_es": "Territorio de Iltiraka",
+        "sub_es": "Paisaje sagrado y oppidum protohistórico",
+        "title_en": "Territory of Iltiraka",
+        "sub_en": "Sacred landscape and protohistoric oppidum",
+        "title_fr": "Territoire d'Iltiraka",
+        "sub_fr": "Paysage sacré et oppidum protohistorique"
+      }
+    ],
+    "hero_carousel_autoplay": true,
+    "hero_carousel_interval": "3500"
   }
 }

@@ -966,6 +966,33 @@ input:checked + .slider:before {
   color: var(--admin-primary);
 }
 
+.hero-slide-lang-btn {
+  border: 1px solid var(--admin-border, #d1d5db);
+  background: var(--admin-surface, #f8f9fa);
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--admin-muted, #6b7280);
+  padding: 3px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hero-slide-lang-btn.active {
+  background: var(--admin-primary, #384F3E);
+  color: #fff;
+  border-color: var(--admin-primary, #384F3E);
+  box-shadow: 0 1px 4px rgba(56, 79, 62, 0.25);
+}
+
+.hero-slide-lang-btn:hover:not(.active) {
+  background: rgba(56, 79, 62, 0.08);
+  color: var(--admin-primary, #384F3E);
+}
+
 .cms-section-accordion {
   margin-bottom: 1.25rem;
   border: 1px solid var(--admin-border);

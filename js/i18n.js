@@ -227,20 +227,40 @@ export class I18nManager {
     });
 
     // 3. Diapositivas del Carrusel Hero
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-      const key = el.getAttribute('data-i18n-title');
-      const val = this.t(key);
-      if (val && typeof val === 'string' && val !== key) {
-        el.dataset.title = val;
-      }
-    });
+    const currentLang = this.currentLang || document.documentElement.lang || 'es';
+    document.querySelectorAll('.hero-carousel-slide').forEach(el => {
+      let title = '';
+      let sub = '';
 
-    document.querySelectorAll('[data-i18n-sub]').forEach(el => {
-      const key = el.getAttribute('data-i18n-sub');
-      const val = this.t(key);
-      if (val && typeof val === 'string' && val !== key) {
-        el.dataset.sub = val;
+      if (currentLang === 'en') {
+        title = el.dataset.titleEn || '';
+        sub = el.dataset.subEn || '';
+      } else if (currentLang === 'fr') {
+        title = el.dataset.titleFr || '';
+        sub = el.dataset.subFr || '';
+      } else {
+        title = el.dataset.titleEs || '';
+        sub = el.dataset.subEs || '';
       }
+
+      const keyTitle = el.getAttribute('data-i18n-title');
+      if (keyTitle) {
+        const val = this.t(keyTitle);
+        if (val && typeof val === 'string' && val !== keyTitle && (!title || title === '')) {
+          title = val;
+        }
+      }
+
+      const keySub = el.getAttribute('data-i18n-sub');
+      if (keySub) {
+        const val = this.t(keySub);
+        if (val && typeof val === 'string' && val !== keySub && (!sub || sub === '')) {
+          sub = val;
+        }
+      }
+
+      if (title) el.dataset.title = title;
+      if (sub) el.dataset.sub = sub;
     });
 
     // Sincronizar título y subtítulo visibles de la diapositiva activa del hero

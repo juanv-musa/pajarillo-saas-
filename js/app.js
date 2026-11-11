@@ -633,8 +633,15 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   }
 
   // Aplicar Carrusel Hero si existen diapositivas o ajustes en la configuración
-  if (c.hero_carousel || c.hero_carousel_interval || c.hero_carousel_autoplay !== undefined) {
-    setupHeroCarousel(window.currentI18n, c);
+  const currentHeroSlides = (langOverrides && Array.isArray(langOverrides.hero_carousel) && langOverrides.hero_carousel.length > 0)
+    ? langOverrides.hero_carousel
+    : ((c && Array.isArray(c.hero_carousel) && c.hero_carousel.length > 0) ? c.hero_carousel : null);
+
+  if (currentHeroSlides || c.hero_carousel_interval || c.hero_carousel_autoplay !== undefined) {
+    setupHeroCarousel(window.currentI18n, {
+      ...c,
+      hero_carousel: currentHeroSlides || c.hero_carousel
+    });
   }
 }
 
@@ -773,25 +780,51 @@ function setupHeroCarousel(i18n, customConfig) {
     const dotsWrap = container.querySelector('#hero-carousel-dots');
     
     if (viewport) {
+      const defaultKeys = [
+        { title: 'hero.slide_lobo_title', sub: 'hero.slide_lobo_sub' },
+        { title: 'hero.slide_leon_title', sub: 'hero.slide_leon_sub' },
+        { title: 'hero.slide_santuario_title', sub: 'hero.slide_santuario_sub' },
+        { title: 'hero.slide_yacimiento_title', sub: 'hero.slide_yacimiento_sub' },
+        { title: 'hero.slide_iltiraka_title', sub: 'hero.slide_iltiraka_sub' }
+      ];
+
       viewport.innerHTML = customConfig.hero_carousel.map((slide, i) => {
         let safeImg = slide.img || './assets/images/lobo.png';
         if (safeImg.includes('lobo-hero') || safeImg.includes('lobo.jpg')) {
           safeImg = './assets/images/lobo.png';
         }
-        const titleSafe = (slide.title || '').replace(/"/g, '&quot;');
-        const subSafe = (slide.sub || '').replace(/"/g, '&quot;');
+        const titleEs = (slide.title_es || slide.title || '').replace(/"/g, '&quot;');
+        const subEs = (slide.sub_es || slide.sub || '').replace(/"/g, '&quot;');
+        const titleEn = (slide.title_en || '').replace(/"/g, '&quot;');
+        const subEn = (slide.sub_en || '').replace(/"/g, '&quot;');
+        const titleFr = (slide.title_fr || '').replace(/"/g, '&quot;');
+        const subFr = (slide.sub_fr || '').replace(/"/g, '&quot;');
+
+        const curLang = (i18n && i18n.currentLang) || document.documentElement.lang || 'es';
+        let curTitle = (curLang === 'en' ? (titleEn || titleEs) : (curLang === 'fr' ? (titleFr || titleEs) : titleEs));
+        let curSub = (curLang === 'en' ? (subEn || subEs) : (curLang === 'fr' ? (subFr || subEs) : subEs));
+
+        const i18nTitleAttr = defaultKeys[i] ? `data-i18n-title="${defaultKeys[i].title}"` : '';
+        const i18nSubAttr = defaultKeys[i] ? `data-i18n-sub="${defaultKeys[i].sub}"` : '';
+
         return `
-          <div class="hero-carousel-slide ${i === 0 ? 'active' : ''}" data-index="${i}" data-title="${titleSafe}" data-sub="${subSafe}">
-            <img src="${safeImg}" alt="${titleSafe || 'Diapositiva ' + (i+1)}" class="hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
+          <div class="hero-carousel-slide ${i === 0 ? 'active' : ''}" data-index="${i}" 
+               data-title-es="${titleEs}" data-sub-es="${subEs}"
+               data-title-en="${titleEn}" data-sub-en="${subEn}"
+               data-title-fr="${titleFr}" data-sub-fr="${subFr}"
+               data-title="${curTitle}" data-sub="${curSub}"
+               ${i18nTitleAttr} ${i18nSubAttr}>
+            <img src="${safeImg}" alt="${curTitle || 'Diapositiva ' + (i+1)}" class="hero-carousel-img" onerror="this.onerror=null; this.src='./assets/images/lobo.png';">
           </div>
         `;
       }).join('');
     }
 
     if (dotsWrap) {
-      dotsWrap.innerHTML = customConfig.hero_carousel.map((slide, i) => `
-        <button class="hero-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="${i + 1}. ${(slide.title || '').replace(/"/g, '&quot;')}"></button>
-      `).join('');
+      dotsWrap.innerHTML = customConfig.hero_carousel.map((slide, i) => {
+        const title = (slide.title || 'Diapositiva ' + (i+1)).replace(/"/g, '&quot;');
+        return `<button class="hero-dot ${i === 0 ? 'active' : ''}" data-index="${i}" aria-label="${i + 1}. ${title}"></button>`;
+      }).join('');
     }
   }
 
@@ -814,19 +847,38 @@ function setupHeroCarousel(i18n, customConfig) {
 
   function updateTexts(slide) {
     if (!slide) return;
-    const i18nTitleKey = slide.dataset.i18nTitle;
-    const i18nSubKey = slide.dataset.i18nSub;
+    const lang = (i18n && i18n.currentLang) || document.documentElement.lang || 'es';
 
     let title = '';
     let sub = '';
 
-    if (i18n && typeof i18n.t === 'function') {
-      if (i18nTitleKey) title = i18n.t(i18nTitleKey);
-      if (i18nSubKey) sub = i18n.t(i18nSubKey);
+    if (lang === 'en') {
+      title = slide.dataset.titleEn;
+      sub = slide.dataset.subEn;
+    } else if (lang === 'fr') {
+      title = slide.dataset.titleFr;
+      sub = slide.dataset.subFr;
+    } else {
+      title = slide.dataset.titleEs;
+      sub = slide.dataset.subEs;
     }
 
-    if (!title || title === i18nTitleKey) title = slide.dataset.title;
-    if (!sub || sub === i18nSubKey) sub = slide.dataset.sub;
+    const i18nTitleKey = slide.dataset.i18nTitle;
+    const i18nSubKey = slide.dataset.i18nSub;
+
+    if (i18n && typeof i18n.t === 'function') {
+      if ((!title || title === '') && i18nTitleKey) {
+        const val = i18n.t(i18nTitleKey);
+        if (val && val !== i18nTitleKey) title = val;
+      }
+      if ((!sub || sub === '') && i18nSubKey) {
+        const val = i18n.t(i18nSubKey);
+        if (val && val !== i18nSubKey) sub = val;
+      }
+    }
+
+    if (!title) title = slide.dataset.titleEs || slide.dataset.title || '';
+    if (!sub) sub = slide.dataset.subEs || slide.dataset.sub || '';
 
     if (titleEl && title) titleEl.textContent = title;
     if (subEl && sub) subEl.textContent = sub;

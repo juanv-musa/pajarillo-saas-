@@ -4043,6 +4043,100 @@ const DEFAULT_LOCALES = {
   }
 };
 
+const DEFAULT_HERO_CAROUSEL_SLIDES = [
+  {
+    img: './assets/images/lobo.png',
+    title: 'Cabeza de Lobo',
+    sub: 'Escultura ibérica en caliza · Siglo IV a.C.',
+    title_es: 'Cabeza de Lobo',
+    sub_es: 'Escultura ibérica en caliza · Siglo IV a.C.',
+    title_en: "The Wolf's Head",
+    sub_en: 'Iberian limestone sculpture · 4th century BC',
+    title_fr: 'La Tête de Loup',
+    sub_fr: 'Sculpture ibérique en calcaire · IVe s. av. J.-C.'
+  },
+  {
+    img: './assets/images/leon.png',
+    title: 'León de El Pajarillo',
+    sub: 'Fiera guardiana del santuario heroico',
+    title_es: 'León de El Pajarillo',
+    sub_es: 'Fiera guardiana del santuario heroico',
+    title_en: 'Lion of El Pajarillo',
+    sub_en: 'Guardian beast of the heroic sanctuary',
+    title_fr: "Lion d'El Pajarillo",
+    sub_fr: 'Fauve gardien du sanctuaire héroïque'
+  },
+  {
+    img: './assets/images/santuario_ilustracion.png',
+    title: 'Santuario Heroico',
+    sub: 'Reconstrucción volumétrica del monumento',
+    title_es: 'Santuario Heroico',
+    sub_es: 'Reconstrucción volumétrica del monumento',
+    title_en: 'Heroic Sanctuary',
+    sub_en: 'Volumetric monument reconstruction',
+    title_fr: 'Sanctuaire Héroïque',
+    sub_fr: 'Reconstitution volumétrique du monument'
+  },
+  {
+    img: './assets/images/arqueologia.png',
+    title: 'Yacimiento Arqueológico',
+    sub: 'Terrazas excavadas en el valle del Jandulilla',
+    title_es: 'Yacimiento Arqueológico',
+    sub_es: 'Terrazas excavadas en el valle del Jandulilla',
+    title_en: 'Archaeological Site',
+    sub_en: 'Excavated terraces in Jandulilla valley',
+    title_fr: 'Site Archéologique',
+    sub_fr: 'Terrasses excavées dans la vallée du Jandulilla'
+  },
+  {
+    img: './assets/images/iltiraka.png',
+    title: 'Territorio de Iltiraka',
+    sub: 'Paisaje sagrado y oppidum protohistórico',
+    title_es: 'Territorio de Iltiraka',
+    sub_es: 'Paisaje sagrado y oppidum protohistórico',
+    title_en: 'Territory of Iltiraka',
+    sub_en: 'Sacred landscape and protohistoric oppidum',
+    title_fr: "Territoire d'Iltiraka",
+    sub_fr: 'Paysage sacré et oppidum protohistorique'
+  }
+];
+
+DEFAULT_LOCALES.es.hero_carousel = DEFAULT_HERO_CAROUSEL_SLIDES.map(s => ({
+  img: s.img,
+  title: s.title_es,
+  sub: s.sub_es,
+  title_es: s.title_es,
+  sub_es: s.sub_es,
+  title_en: s.title_en,
+  sub_en: s.sub_en,
+  title_fr: s.title_fr,
+  sub_fr: s.sub_fr
+}));
+
+DEFAULT_LOCALES.en.hero_carousel = DEFAULT_HERO_CAROUSEL_SLIDES.map(s => ({
+  img: s.img,
+  title: s.title_en,
+  sub: s.sub_en,
+  title_es: s.title_es,
+  sub_es: s.sub_es,
+  title_en: s.title_en,
+  sub_en: s.sub_en,
+  title_fr: s.title_fr,
+  sub_fr: s.sub_fr
+}));
+
+DEFAULT_LOCALES.fr.hero_carousel = DEFAULT_HERO_CAROUSEL_SLIDES.map(s => ({
+  img: s.img,
+  title: s.title_fr,
+  sub: s.sub_fr,
+  title_es: s.title_es,
+  sub_es: s.sub_es,
+  title_en: s.title_en,
+  sub_en: s.sub_en,
+  title_fr: s.title_fr,
+  sub_fr: s.sub_fr
+}));
+
 let localesData = JSON.parse(JSON.stringify(DEFAULT_LOCALES));
 
 const HERO_IMG_PRESETS = [
@@ -4055,18 +4149,28 @@ const HERO_IMG_PRESETS = [
   { value: './assets/images/excavacion_medios.png', label: 'Excavaciones Arqueológicas' }
 ];
 
-function renderAdminHeroCarouselSlides(slides = []) {
+function setSlideCardLang(card, targetLang) {
+  if (!card) return;
+  card.querySelectorAll('.hero-slide-lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.slideLang === targetLang);
+  });
+  card.querySelectorAll('.hero-slide-lang-pane').forEach(p => {
+    p.style.display = p.classList.contains(`hero-slide-pane-${targetLang}`) ? 'block' : 'none';
+  });
+}
+
+function setAllHeroSlidesLang(targetLang) {
+  document.querySelectorAll('.hero-carousel-admin-slide').forEach(card => {
+    setSlideCardLang(card, targetLang);
+  });
+}
+
+function renderAdminHeroCarouselSlides(slides = [], activeLang = currentCmsLang || 'es') {
   const container = document.getElementById('hero-carousel-admin-list');
   if (!container) return;
 
   if (!Array.isArray(slides) || slides.length === 0) {
-    slides = [
-      { img: './assets/images/lobo.png', title: 'Cabeza de Lobo', sub: 'Escultura ibérica en caliza · Siglo IV a.C.' },
-      { img: './assets/images/leon.png', title: 'León de El Pajarillo', sub: 'Fiera guardiana del santuario heroico' },
-      { img: './assets/images/santuario_ilustracion.png', title: 'Santuario Heroico', sub: 'Reconstrucción volumétrica del monumento' },
-      { img: './assets/images/arqueologia.png', title: 'Yacimiento Arqueológico', sub: 'Terrazas excavadas en el valle del Jandulilla' },
-      { img: './assets/images/iltiraka.png', title: 'Territorio de Iltiraka', sub: 'Paisaje sagrado y oppidum protohistórico' }
-    ];
+    slides = JSON.parse(JSON.stringify(DEFAULT_HERO_CAROUSEL_SLIDES));
   }
 
   container.innerHTML = '';
@@ -4080,6 +4184,16 @@ function renderAdminHeroCarouselSlides(slides = []) {
       `<option value="${p.value}" ${slide.img === p.value ? 'selected' : ''}>${p.label}</option>`
     ).join('');
 
+    const def = DEFAULT_HERO_CAROUSEL_SLIDES[idx] || {};
+    const titleEs = slide.title_es !== undefined ? slide.title_es : (slide.title || def.title_es || '');
+    const subEs = slide.sub_es !== undefined ? slide.sub_es : (slide.sub || def.sub_es || '');
+    const titleEn = slide.title_en !== undefined ? slide.title_en : (def.title_en || '');
+    const subEn = slide.sub_en !== undefined ? slide.sub_en : (def.sub_en || '');
+    const titleFr = slide.title_fr !== undefined ? slide.title_fr : (def.title_fr || '');
+    const subFr = slide.sub_fr !== undefined ? slide.sub_fr : (def.sub_fr || '');
+
+    const escapeAttr = (str) => (str || '').toString().replace(/"/g, '&quot;');
+
     card.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--admin-border); padding-bottom: 6px;">
         <strong style="font-size: 0.88rem; color: var(--admin-primary);">Diapositiva #${idx + 1}</strong>
@@ -4091,15 +4205,42 @@ function renderAdminHeroCarouselSlides(slides = []) {
         <img class="hero-slide-preview" src="${slide.img || './assets/images/lobo.png'}" alt="Preview" style="width: 58px; height: 58px; object-fit: cover; border-radius: 6px; border: 1px solid var(--admin-border); flex-shrink: 0;" onerror="this.src='./assets/images/lobo.png';">
         <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
           <div style="display: flex; gap: 6px; align-items: center;">
-            <input type="text" class="admin-input hero-slide-img-input" value="${slide.img || ''}" placeholder="./assets/images/lobo.png" style="flex: 1; font-size: 0.82rem; padding: 5px 8px;">
+            <input type="text" class="admin-input hero-slide-img-input" value="${escapeAttr(slide.img || '')}" placeholder="./assets/images/lobo.png" style="flex: 1; font-size: 0.82rem; padding: 5px 8px;">
             <select class="admin-select hero-slide-preset-select" style="width: auto; font-size: 0.82rem; padding: 5px 8px;">
               <option value="">-- Predefinida --</option>
               ${presetOptions}
             </select>
           </div>
-          <div class="grid-2col" style="gap: 8px;">
-            <input type="text" class="admin-input hero-slide-title-input" value="${slide.title || ''}" placeholder="Título (ej: Cabeza de Lobo)" style="font-size: 0.82rem; padding: 5px 8px;">
-            <input type="text" class="admin-input hero-slide-sub-input" value="${slide.sub || ''}" placeholder="Subtítulo descriptivo" style="font-size: 0.82rem; padding: 5px 8px;">
+
+          <div class="hero-slide-lang-bar" style="display: flex; gap: 6px; align-items: center; margin-top: 2px;">
+            <span style="font-size: 0.74rem; font-weight: 700; color: var(--admin-muted); text-transform: uppercase;">Idioma textos:</span>
+            <button type="button" class="hero-slide-lang-btn ${activeLang === 'es' ? 'active' : ''}" data-slide-lang="es">🇪🇸 Español</button>
+            <button type="button" class="hero-slide-lang-btn ${activeLang === 'en' ? 'active' : ''}" data-slide-lang="en">🇬🇧 English</button>
+            <button type="button" class="hero-slide-lang-btn ${activeLang === 'fr' ? 'active' : ''}" data-slide-lang="fr">🇫🇷 Français</button>
+          </div>
+
+          <!-- Campos en Español -->
+          <div class="hero-slide-lang-pane hero-slide-pane-es" style="display: ${activeLang === 'es' ? 'block' : 'none'};">
+            <div class="grid-2col" style="gap: 8px;">
+              <input type="text" class="admin-input hero-slide-title-es" value="${escapeAttr(titleEs)}" placeholder="Título en Español (ej: Cabeza de Lobo)" style="font-size: 0.82rem; padding: 5px 8px;">
+              <input type="text" class="admin-input hero-slide-sub-es" value="${escapeAttr(subEs)}" placeholder="Subtítulo descriptivo en Español" style="font-size: 0.82rem; padding: 5px 8px;">
+            </div>
+          </div>
+
+          <!-- Campos en Inglés -->
+          <div class="hero-slide-lang-pane hero-slide-pane-en" style="display: ${activeLang === 'en' ? 'block' : 'none'};">
+            <div class="grid-2col" style="gap: 8px;">
+              <input type="text" class="admin-input hero-slide-title-en" value="${escapeAttr(titleEn)}" placeholder="Title in English (e.g. The Wolf's Head)" style="font-size: 0.82rem; padding: 5px 8px;">
+              <input type="text" class="admin-input hero-slide-sub-en" value="${escapeAttr(subEn)}" placeholder="Descriptive subtitle in English" style="font-size: 0.82rem; padding: 5px 8px;">
+            </div>
+          </div>
+
+          <!-- Campos en Francés -->
+          <div class="hero-slide-lang-pane hero-slide-pane-fr" style="display: ${activeLang === 'fr' ? 'block' : 'none'};">
+            <div class="grid-2col" style="gap: 8px;">
+              <input type="text" class="admin-input hero-slide-title-fr" value="${escapeAttr(titleFr)}" placeholder="Titre en Français (ex: La Tête de Loup)" style="font-size: 0.82rem; padding: 5px 8px;">
+              <input type="text" class="admin-input hero-slide-sub-fr" value="${escapeAttr(subFr)}" placeholder="Sous-titre descriptif en Français" style="font-size: 0.82rem; padding: 5px 8px;">
+            </div>
           </div>
         </div>
       </div>
@@ -4125,6 +4266,14 @@ function renderAdminHeroCarouselSlides(slides = []) {
       });
     }
 
+    card.querySelectorAll('.hero-slide-lang-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetLang = btn.dataset.slideLang;
+        setSlideCardLang(card, targetLang);
+      });
+    });
+
     if (btnRemove) {
       btnRemove.addEventListener('click', () => {
         card.remove();
@@ -4145,14 +4294,25 @@ function getAdminHeroCarouselSlides() {
 
   const slides = [];
   container.querySelectorAll('.hero-carousel-admin-slide').forEach(card => {
-    const img = card.querySelector('.hero-slide-img-input')?.value.trim();
-    const title = card.querySelector('.hero-slide-title-input')?.value.trim();
-    const sub = card.querySelector('.hero-slide-sub-input')?.value.trim();
-    if (img || title) {
+    const img = card.querySelector('.hero-slide-img-input')?.value.trim() || './assets/images/lobo.png';
+    const titleEs = card.querySelector('.hero-slide-title-es')?.value.trim() || '';
+    const subEs = card.querySelector('.hero-slide-sub-es')?.value.trim() || '';
+    const titleEn = card.querySelector('.hero-slide-title-en')?.value.trim() || '';
+    const subEn = card.querySelector('.hero-slide-sub-en')?.value.trim() || '';
+    const titleFr = card.querySelector('.hero-slide-title-fr')?.value.trim() || '';
+    const subFr = card.querySelector('.hero-slide-sub-fr')?.value.trim() || '';
+
+    if (img || titleEs || titleEn || titleFr) {
       slides.push({
         img: img || './assets/images/lobo.png',
-        title: title || 'Patrimonio de El Pajarillo',
-        sub: sub || ''
+        title: titleEs || titleEn || titleFr || 'Patrimonio de El Pajarillo',
+        sub: subEs || subEn || subFr || '',
+        title_es: titleEs,
+        sub_es: subEs,
+        title_en: titleEn,
+        sub_en: subEn,
+        title_fr: titleFr,
+        sub_fr: subFr
       });
     }
   });
@@ -4164,10 +4324,16 @@ function addAdminHeroSlide() {
   const currentSlides = getAdminHeroCarouselSlides();
   currentSlides.push({
     img: './assets/images/lobo.png',
-    title: 'Nueva Pieza',
-    sub: 'Descripción patrimonial'
+    title: '',
+    sub: '',
+    title_es: '',
+    sub_es: '',
+    title_en: '',
+    sub_en: '',
+    title_fr: '',
+    sub_fr: ''
   });
-  renderAdminHeroCarouselSlides(currentSlides);
+  renderAdminHeroCarouselSlides(currentSlides, currentCmsLang || 'es');
 }
 
 function setupContentEditor() {
@@ -4195,6 +4361,7 @@ function setupContentEditor() {
 
       updateCmsLangUI(currentCmsLang);
       populateFormWithLang(currentCmsLang);
+      setAllHeroSlidesLang(currentCmsLang);
     });
   });
 
@@ -4288,6 +4455,18 @@ function loadSavedLocales() {
             localesData[lang].tarifa_reducida = lang === 'en' ? '€1.50' : '1,50 €';
           }
         }
+        // Migración/enriquecimiento de diapositivas del carrusel con traducciones ES/EN/FR
+        if (localesData[lang] && Array.isArray(localesData[lang].hero_carousel)) {
+          localesData[lang].hero_carousel.forEach((slide, idx) => {
+            const def = DEFAULT_HERO_CAROUSEL_SLIDES[idx] || {};
+            if (!slide.title_es) slide.title_es = slide.title || def.title_es || '';
+            if (!slide.sub_es) slide.sub_es = slide.sub || def.sub_es || '';
+            if (!slide.title_en) slide.title_en = def.title_en || '';
+            if (!slide.sub_en) slide.sub_en = def.sub_en || '';
+            if (!slide.title_fr) slide.title_fr = def.title_fr || '';
+            if (!slide.sub_fr) slide.sub_fr = def.sub_fr || '';
+          });
+        }
       });
     }
   } catch (e) {}
@@ -4335,7 +4514,16 @@ function populateFormWithLang(lang) {
   const autoplayEl = document.getElementById('cnt-hero-carousel-autoplay');
   if (autoplayEl) autoplayEl.checked = c.hero_carousel_autoplay !== false;
   setVal('cnt-hero-carousel-interval', c.hero_carousel_interval || '3500');
-  renderAdminHeroCarouselSlides(c.hero_carousel);
+
+  const existingSlideCards = document.querySelectorAll('.hero-carousel-admin-slide');
+  if (existingSlideCards.length > 0) {
+    setAllHeroSlidesLang(lang);
+  } else {
+    const slidesToRender = (c.hero_carousel && Array.isArray(c.hero_carousel) && c.hero_carousel.length > 0)
+      ? c.hero_carousel
+      : (localesData.es?.hero_carousel || DEFAULT_HERO_CAROUSEL_SLIDES);
+    renderAdminHeroCarouselSlides(slidesToRender, lang);
+  }
 
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);
@@ -4449,6 +4637,8 @@ function saveCurrentFormToLang(lang) {
   if (!localesData[lang]) localesData[lang] = {};
   const getVal = (id) => document.getElementById(id)?.value || '';
 
+  const allHeroSlides = getAdminHeroCarouselSlides();
+
   localesData[lang] = {
     ...localesData[lang],
     site_title: getVal('cnt-site-title'),
@@ -4459,7 +4649,17 @@ function saveCurrentFormToLang(lang) {
     hero_card_img: getVal('cnt-hero-card-img'),
 
     // Carrusel Hero
-    hero_carousel: getAdminHeroCarouselSlides(),
+    hero_carousel: allHeroSlides.map(s => ({
+      img: s.img,
+      title: (lang === 'en' ? (s.title_en || s.title_es || s.title) : (lang === 'fr' ? (s.title_fr || s.title_es || s.title) : (s.title_es || s.title))),
+      sub: (lang === 'en' ? (s.sub_en || s.sub_es || s.sub) : (lang === 'fr' ? (s.sub_fr || s.sub_es || s.sub) : (s.sub_es || s.sub))),
+      title_es: s.title_es || '',
+      sub_es: s.sub_es || '',
+      title_en: s.title_en || '',
+      sub_en: s.sub_en || '',
+      title_fr: s.title_fr || '',
+      sub_fr: s.sub_fr || ''
+    })),
     hero_carousel_autoplay: document.getElementById('cnt-hero-carousel-autoplay')?.checked !== false,
     hero_carousel_interval: getVal('cnt-hero-carousel-interval') || '3500',
 
@@ -4549,6 +4749,22 @@ function saveCurrentFormToLang(lang) {
 
     footer_copy: getVal('cnt-footer-copy')
   };
+
+  // Sincronizar array de diapositivas en los tres idiomas con sus textos localizados
+  ['es', 'en', 'fr'].forEach(l => {
+    if (!localesData[l]) localesData[l] = {};
+    localesData[l].hero_carousel = allHeroSlides.map(s => ({
+      img: s.img,
+      title: (l === 'en' ? (s.title_en || s.title_es || s.title) : (l === 'fr' ? (s.title_fr || s.title_es || s.title) : (s.title_es || s.title))),
+      sub: (l === 'en' ? (s.sub_en || s.sub_es || s.sub) : (l === 'fr' ? (s.sub_fr || s.sub_es || s.sub) : (s.sub_es || s.sub))),
+      title_es: s.title_es || '',
+      sub_es: s.sub_es || '',
+      title_en: s.title_en || '',
+      sub_en: s.sub_en || '',
+      title_fr: s.title_fr || '',
+      sub_fr: s.sub_fr || ''
+    }));
+  });
 }
 
 async function saveAllLocales() {

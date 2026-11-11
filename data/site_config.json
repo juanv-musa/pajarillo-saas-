@@ -50,6 +50,65 @@
     "como_llegar_parking": "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     "como_llegar_accesibilidad": "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
     "como_llegar_mapa_url": "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
-    "como_llegar_mapa_embed": "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178"
+    "como_llegar_mapa_embed": "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
+    "hero_carousel": [
+      {
+        "img": "./assets/images/lobo.png",
+        "title": "Cabeza de Lobo",
+        "sub": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_es": "Cabeza de Lobo",
+        "sub_es": "Escultura ibérica en caliza · Siglo IV a.C.",
+        "title_en": "The Wolf's Head",
+        "sub_en": "Iberian limestone sculpture · 4th century BC",
+        "title_fr": "La Tête de Loup",
+        "sub_fr": "Sculpture ibérique en calcaire · IVe s. av. J.-C."
+      },
+      {
+        "img": "./assets/images/leon.png",
+        "title": "León de El Pajarillo",
+        "sub": "Fiera guardiana del santuario heroico",
+        "title_es": "León de El Pajarillo",
+        "sub_es": "Fiera guardiana del santuario heroico",
+        "title_en": "Lion of El Pajarillo",
+        "sub_en": "Guardian beast of the heroic sanctuary",
+        "title_fr": "Lion d'El Pajarillo",
+        "sub_fr": "Fauve gardien du sanctuaire héroïque"
+      },
+      {
+        "img": "./assets/images/santuario_ilustracion.png",
+        "title": "Santuario Heroico",
+        "sub": "Reconstrucción volumétrica del monumento",
+        "title_es": "Santuario Heroico",
+        "sub_es": "Reconstrucción volumétrica del monumento",
+        "title_en": "Heroic Sanctuary",
+        "sub_en": "Volumetric monument reconstruction",
+        "title_fr": "Sanctuaire Héroïque",
+        "sub_fr": "Reconstitution volumétrique du monument"
+      },
+      {
+        "img": "./assets/images/arqueologia.png",
+        "title": "Yacimiento Arqueológico",
+        "sub": "Terrazas excavadas en el valle del Jandulilla",
+        "title_es": "Yacimiento Arqueológico",
+        "sub_es": "Terrazas excavadas en el valle del Jandulilla",
+        "title_en": "Archaeological Site",
+        "sub_en": "Excavated terraces in Jandulilla valley",
+        "title_fr": "Site Archéologique",
+        "sub_fr": "Terrasses excavées dans la vallée du Jandulilla"
+      },
+      {
+        "img": "./assets/images/iltiraka.png",
+        "title": "Territorio de Iltiraka",
+        "sub": "Paisaje sagrado y oppidum protohistórico",
+        "title_es": "Territorio de Iltiraka",
+        "sub_es": "Paisaje sagrado y oppidum protohistórico",
+        "title_en": "Territory of Iltiraka",
+        "sub_en": "Sacred landscape and protohistoric oppidum",
+        "title_fr": "Territoire d'Iltiraka",
+        "sub_fr": "Paysage sacré et oppidum protohistorique"
+      }
+    ],
+    "hero_carousel_autoplay": true,
+    "hero_carousel_interval": "3500"
   }
 }
