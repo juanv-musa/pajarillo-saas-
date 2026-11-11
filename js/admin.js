@@ -2739,6 +2739,12 @@ async function setupKioskSection() {
   const btnBrowseP1Video = document.getElementById('btn-browse-p1-video');
   const inputFileP1Video = document.getElementById('input-file-p1-video');
 
+  const selectP1AudioDesc = document.getElementById('select-p1-audiodesc-video');
+  const customP1AudioDescWrap = document.getElementById('p1-audiodesc-custom-url-wrap');
+  const inputP1AudioDescCustom = document.getElementById('input-p1-audiodesc-custom-url');
+  const btnBrowseP1AudioDesc = document.getElementById('btn-browse-p1-audiodesc');
+  const inputFileP1AudioDesc = document.getElementById('input-file-p1-audiodesc');
+
   const selectP1Screensaver = document.getElementById('select-p1-screensaver-video');
   const customP1ScreensaverWrap = document.getElementById('p1-screensaver-custom-url-wrap');
   const inputP1ScreensaverCustom = document.getElementById('input-p1-screensaver-custom-url');
@@ -2822,9 +2828,43 @@ async function setupKioskSection() {
     }
   }
 
-  // Poblar ambos selectores con los vídeos ya cargados
+  function updateP1AudioDescSelect() {
+    if (!selectP1AudioDesc) return;
+    const currentVal = selectP1AudioDesc.value || localStorage.getItem('pajarillo_kiosk_p1_audiodesc_video') || (kioskVideos[1] && kioskVideos[1].id) || 'vid_2';
+    selectP1AudioDesc.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+
+    const exists = Array.from(selectP1AudioDesc.options).some(opt => opt.value === currentVal);
+    if (exists) {
+      selectP1AudioDesc.value = currentVal;
+    } else if (currentVal && (currentVal.startsWith('http') || currentVal.includes('/'))) {
+      selectP1AudioDesc.value = 'custom';
+    }
+  }
+
+  function updateP1ScreensaverSelect() {
+    if (!selectP1Screensaver) return;
+    const currentVal = selectP1Screensaver.value || localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || (kioskVideos[2] && kioskVideos[2].id) || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    selectP1Screensaver.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+
+    const exists = Array.from(selectP1Screensaver.options).some(opt => opt.value === currentVal);
+    if (exists) {
+      selectP1Screensaver.value = currentVal;
+    } else if (currentVal && (currentVal.startsWith('http') || currentVal.includes('/'))) {
+      selectP1Screensaver.value = 'custom';
+    }
+  }
+
+  // Poblar todos los selectores con los vídeos ya cargados
   updateP0ScreensaverSelect();
   updateP1Select();
+  updateP1AudioDescSelect();
+  updateP1ScreensaverSelect();
 
   // Configuración del Selector de Salvapantallas P0
   const savedP0ScreensaverInit = localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || 'vid_1';
@@ -2967,8 +3007,76 @@ async function setupKioskSection() {
     });
   }
 
+  // Configuración del Selector de Vídeo con Audiodescripción (Tarjeta 2 P1)
+  const savedP1AudioDesc = localStorage.getItem('pajarillo_kiosk_p1_audiodesc_video') || (kioskVideos[1] && kioskVideos[1].id) || 'vid_2';
+  if (selectP1AudioDesc) {
+    const optionExists = Array.from(selectP1AudioDesc.options).some(opt => opt.value === savedP1AudioDesc);
+    if (optionExists) {
+      selectP1AudioDesc.value = savedP1AudioDesc;
+      if (customP1AudioDescWrap) customP1AudioDescWrap.classList.add('hidden');
+    } else if (savedP1AudioDesc.startsWith('http') || savedP1AudioDesc.includes('/')) {
+      selectP1AudioDesc.value = 'custom';
+      if (customP1AudioDescWrap) customP1AudioDescWrap.classList.remove('hidden');
+      if (inputP1AudioDescCustom) inputP1AudioDescCustom.value = savedP1AudioDesc;
+    }
+
+    selectP1AudioDesc.addEventListener('change', () => {
+      const val = selectP1AudioDesc.value;
+      if (val === 'custom') {
+        if (customP1AudioDescWrap) customP1AudioDescWrap.classList.remove('hidden');
+        if (inputP1AudioDescCustom) inputP1AudioDescCustom.focus();
+      } else {
+        if (customP1AudioDescWrap) customP1AudioDescWrap.classList.add('hidden');
+        localStorage.setItem('pajarillo_kiosk_p1_audiodesc_video', val);
+        window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_audiodesc_video' }));
+        renderKioskVideos();
+        showToast('👁️ Vídeo con Audiodescripción P1 actualizado');
+      }
+    });
+
+    if (inputP1AudioDescCustom) {
+      inputP1AudioDescCustom.addEventListener('input', () => {
+        const customVal = inputP1AudioDescCustom.value.trim();
+        if (customVal) {
+          localStorage.setItem('pajarillo_kiosk_p1_audiodesc_video', customVal);
+          window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_audiodesc_video' }));
+          renderKioskVideos();
+        }
+      });
+    }
+  }
+
+  // Subida directa de vídeo con audiodescripción para P1
+  if (btnBrowseP1AudioDesc && inputFileP1AudioDesc) {
+    btnBrowseP1AudioDesc.addEventListener('click', () => inputFileP1AudioDesc.click());
+    inputFileP1AudioDesc.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
+      const newId = `vid_upload_ad_${Date.now()}`;
+      const newVideo = {
+        id: newId,
+        title: { es: cleanName, en: cleanName, fr: cleanName },
+        category: 'Audiodescripción 🇪🇸',
+        duration: '05:00',
+        thumb: './assets/images/lobo.png',
+        videoUrl: `./assets/videos/${file.name}`,
+        description: { es: `Vídeo adaptado con audiodescripción subido localmente: ${file.name}` },
+        showInP0: false
+      };
+      kioskVideos.push(newVideo);
+      localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+      localStorage.setItem('pajarillo_kiosk_p1_audiodesc_video', newId);
+      window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+      window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_audiodesc_video' }));
+      refreshKioskSelects();
+      renderKioskVideos();
+      showToast(`📁 Vídeo "${file.name}" asignado como Audiodescripción P1`);
+    });
+  }
+
   // Configuración del Selector de Vídeo de Salvapantallas (Modo Reposo P1)
-  const savedP1Screensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || (kioskVideos[1] && kioskVideos[1].id) || 'vid_2';
+  const savedP1Screensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || (kioskVideos[2] && kioskVideos[2].id) || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
   if (selectP1Screensaver) {
     const optionExists = Array.from(selectP1Screensaver.options).some(opt => opt.value === savedP1Screensaver);
     if (optionExists) {
@@ -3045,6 +3153,7 @@ async function setupKioskSection() {
 function refreshKioskSelects() {
   const selectP0 = document.getElementById('select-p0-screensaver');
   const selectP1 = document.getElementById('select-p1-video');
+  const selectP1AudioDesc = document.getElementById('select-p1-audiodesc-video');
   const selectP1Screensaver = document.getElementById('select-p1-screensaver-video');
 
   if (selectP0 && kioskVideos.length > 0) {
@@ -3065,8 +3174,17 @@ function refreshKioskSelects() {
     if (Array.from(selectP1.options).some(o => o.value === curP1)) selectP1.value = curP1;
     else if (curP1 && (curP1.startsWith('http') || curP1.includes('/'))) selectP1.value = 'custom';
   }
+  if (selectP1AudioDesc && kioskVideos.length > 0) {
+    const curP1Ad = selectP1AudioDesc.value || localStorage.getItem('pajarillo_kiosk_p1_audiodesc_video') || (kioskVideos[1] && kioskVideos[1].id) || 'vid_2';
+    selectP1AudioDesc.innerHTML = kioskVideos.map(v => {
+      const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
+      return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;
+    }).join('') + '<option value="custom">-- Otra URL de vídeo personalizada --</option>';
+    if (Array.from(selectP1AudioDesc.options).some(o => o.value === curP1Ad)) selectP1AudioDesc.value = curP1Ad;
+    else if (curP1Ad && (curP1Ad.startsWith('http') || curP1Ad.includes('/'))) selectP1AudioDesc.value = 'custom';
+  }
   if (selectP1Screensaver && kioskVideos.length > 0) {
-    const curP1Ss = selectP1Screensaver.value || localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || (kioskVideos[1] && kioskVideos[1].id) || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
+    const curP1Ss = selectP1Screensaver.value || localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || (kioskVideos[2] && kioskVideos[2].id) || (kioskVideos[0] && kioskVideos[0].id) || 'vid_1';
     selectP1Screensaver.innerHTML = kioskVideos.map(v => {
       const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
       return `<option value="${v.id}">${v.category || 'Vídeo'}: ${title}</option>`;

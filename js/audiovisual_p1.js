@@ -45,6 +45,7 @@ class AudiovisualP1 {
       if (
         e.key === 'pajarillo_kiosk_videos' ||
         e.key === 'pajarillo_kiosk_p1_video' ||
+        e.key === 'pajarillo_kiosk_p1_audiodesc_video' ||
         e.key === 'pajarillo_kiosk_p1_screensaver_video'
       ) {
         await this.loadVideos();
@@ -115,8 +116,8 @@ class AudiovisualP1 {
       };
     }
 
-    // 2. Vídeo Versión con Audiodescripción (P1)
-    const savedAdId = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video');
+    // 2. Vídeo Versión con Audiodescripción 🇪🇸 (P1)
+    const savedAdId = localStorage.getItem('pajarillo_kiosk_p1_audiodesc_video');
     if (savedAdId) {
       this.audioDescVideo = videos.find(v => v.id === savedAdId || v.videoUrl === savedAdId);
     }
@@ -136,6 +137,17 @@ class AudiovisualP1 {
     }
     if (!this.audioDescVideo) {
       this.audioDescVideo = this.mainVideo;
+    }
+
+    // 3. Vídeo de Salvapantallas / Reposo Independiente (P1)
+    const savedSsId = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video');
+    if (savedSsId) {
+      this.screensaverVideoData = videos.find(v => v.id === savedSsId || v.videoUrl === savedSsId);
+    }
+    if (!this.screensaverVideoData && videos.length > 2) {
+      this.screensaverVideoData = videos[2];
+    } else if (!this.screensaverVideoData) {
+      this.screensaverVideoData = this.mainVideo;
     }
   }
 
@@ -355,7 +367,7 @@ class AudiovisualP1 {
 
   updateScreensaverSource() {
     if (!this.dom.screensaverVideo) return;
-    const videoSrc = (this.mainVideo && this.mainVideo.videoUrl) || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
+    const videoSrc = (this.screensaverVideoData && this.screensaverVideoData.videoUrl) || (this.mainVideo && this.mainVideo.videoUrl) || 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4';
     if (this.dom.screensaverVideo.src !== videoSrc) {
       this.dom.screensaverVideo.src = videoSrc;
       this.dom.screensaverVideo.load();

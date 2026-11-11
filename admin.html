@@ -1969,22 +1969,22 @@
                 <span style="background: rgba(118, 160, 220, 0.25); color: #94BDF2; font-size: 0.75rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
                   📺 FONDO AUDIOVISUAL 2 · PLANTA ALTA (P1)
                 </span>
-                <span style="font-size: 0.8rem; color: #94BDF2; font-weight: 600;">Vídeo Único en Bucle</span>
+                <span style="font-size: 0.8rem; color: #94BDF2; font-weight: 600;">2 Documentales + Salvapantallas</span>
               </div>
               <h3 style="font-family: var(--font-condensed); font-size: 1.7rem; color: white; margin: 0 0 0.5rem; font-weight: 800;">
-                Proyección Continua de Sala
+                Sala Audiovisual Accesible
               </h3>
               <p style="color: #A8B8C8; font-size: 0.9rem; margin: 0 0 1rem; line-height: 1.55;">
-                Pantalla dedicada para la planta de arriba. Proyecta un solo documental continuo sin menús distractores, con reinicio en bucle automático.
+                Pantalla táctil interactiva con 2 opciones de visionado (documental y versión adaptada con audiodescripción), con salvapantallas independiente en modo reposo.
               </p>
 
-              <!-- Selector de Vídeo Documental (Versión General P1) -->
+              <!-- 1. Selector de Vídeo Documental (Tarjeta 1 P1) -->
               <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(118, 160, 220, 0.35); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.8rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 8px;">
                   <label for="select-p1-video" style="font-size: 0.78rem; font-weight: 700; color: #94BDF2; margin: 0; text-transform: uppercase;">
-                    🎬 Documental (Versión General · Planta Alta P1):
+                    🎬 Documental (Tarjeta 1 · Planta Alta P1):
                   </label>
-                  <button type="button" id="btn-browse-p1-video" class="btn-admin btn-admin-outline" style="border-color: rgba(118, 160, 220, 0.5); color: #94BDF2; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo desde ordenador para P1">
+                  <button type="button" id="btn-browse-p1-video" class="btn-admin btn-admin-outline" style="border-color: rgba(118, 160, 220, 0.5); color: #94BDF2; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo documental para Tarjeta 1 P1">
                     📁 Subir Vídeo
                   </button>
                   <input type="file" id="input-file-p1-video" accept="video/mp4,video/webm,video/*" style="display: none;">
@@ -1998,17 +1998,41 @@
                 </div>
 
                 <p style="font-size: 0.74rem; color: #A8B8C8; margin: 0; line-height: 1.4;">
-                  Documental principal en versión general locutada y con subtítulos integrados.
+                  Documental locutado con subtítulos integrado en la primera tarjeta de la pantalla.
                 </p>
               </div>
 
-              <!-- Selector de Vídeo Documental (Versión con Audiodescripción P1) -->
+              <!-- 2. Selector de Vídeo con Audiodescripción (Tarjeta 2 P1) -->
+              <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(76, 175, 80, 0.35); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 8px;">
+                  <label for="select-p1-audiodesc-video" style="font-size: 0.78rem; font-weight: 700; color: #81C784; margin: 0; text-transform: uppercase;">
+                    👁️ Audiodescripción 🇪🇸 (Tarjeta 2 · Planta Alta P1):
+                  </label>
+                  <button type="button" id="btn-browse-p1-audiodesc" class="btn-admin btn-admin-outline" style="border-color: rgba(76, 175, 80, 0.5); color: #81C784; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo con audiodescripción para Tarjeta 2 P1">
+                    📁 Subir Vídeo
+                  </button>
+                  <input type="file" id="input-file-p1-audiodesc" accept="video/mp4,video/webm,video/*" style="display: none;">
+                </div>
+                <select id="select-p1-audiodesc-video" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(76, 175, 80, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.86rem; margin-bottom: 0.4rem;">
+                  <!-- Inyectado dinámicamente -->
+                </select>
+
+                <div id="p1-audiodesc-custom-url-wrap" class="hidden" style="margin-bottom: 0.4rem;">
+                  <input type="url" id="input-p1-audiodesc-custom-url" placeholder="https://ejemplo.com/audiodescripcion.mp4" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(76, 175, 80, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.84rem;">
+                </div>
+
+                <p style="font-size: 0.74rem; color: #A8B8C8; margin: 0; line-height: 1.4;">
+                  Versión adaptada con narración descriptiva de escenas para personas con discapacidad visual.
+                </p>
+              </div>
+
+              <!-- 3. Selector de Vídeo de Salvapantallas (Modo Reposo P1) -->
               <div style="background: rgba(0,0,0,0.35); border: 1px solid rgba(181, 154, 87, 0.35); border-radius: 8px; padding: 0.85rem; margin-bottom: 0.8rem;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; gap: 8px;">
                   <label for="select-p1-screensaver-video" style="font-size: 0.78rem; font-weight: 700; color: #D4AF37; margin: 0; text-transform: uppercase;">
-                    👁️ Documental (Audiodescripción en Español · Planta Alta P1):
+                    ✨ Vídeo de Salvapantallas (Modo Reposo P1):
                   </label>
-                  <button type="button" id="btn-browse-p1-screensaver" class="btn-admin btn-admin-outline" style="border-color: rgba(181, 154, 87, 0.5); color: #D4AF37; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo con audiodescripción para P1">
+                  <button type="button" id="btn-browse-p1-screensaver" class="btn-admin btn-admin-outline" style="border-color: rgba(181, 154, 87, 0.5); color: #D4AF37; padding: 3px 8px; font-size: 0.75rem;" title="Subir vídeo ambiental de salvapantallas para P1">
                     📁 Subir Vídeo
                   </button>
                   <input type="file" id="input-file-p1-screensaver" accept="video/mp4,video/webm,video/*" style="display: none;">
@@ -2018,11 +2042,11 @@
                 </select>
 
                 <div id="p1-screensaver-custom-url-wrap" class="hidden" style="margin-bottom: 0.4rem;">
-                  <input type="url" id="input-p1-screensaver-custom-url" placeholder="https://ejemplo.com/audiodescripcion.mp4" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(181, 154, 87, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.84rem;">
+                  <input type="url" id="input-p1-screensaver-custom-url" placeholder="https://ejemplo.com/salvapantallas_p1.mp4" style="width: 100%; background: #151C22; color: #fff; border: 1px solid rgba(181, 154, 87, 0.4); border-radius: 6px; padding: 0.55rem 0.75rem; font-size: 0.84rem;">
                 </div>
 
                 <p style="font-size: 0.74rem; color: #A8B8C8; margin: 0; line-height: 1.4;">
-                  Versión accesible adaptada con audiodescripción en español para personas con discapacidad visual.
+                  Vídeo ambiental independiente que se proyecta en bucle cuando no hay interacción en la sala.
                 </p>
               </div>
               
