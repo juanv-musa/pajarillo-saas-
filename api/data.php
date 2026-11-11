@@ -206,16 +206,17 @@ if ($method === 'POST') {
                 ];
             } elseif ($type === 'pdf' || $type === 'web' || $type === 'enlace') {
                 $isWeb = ($type === 'web' || $type === 'enlace');
+                $targetUrl = $isWeb ? ($item['full'] ?? ($item['file'] ?? '')) : ($item['file'] ?? ($item['full'] ?? ''));
                 $resources[] = [
                     'id' => 'res_' . ($item['id'] ?? uniqid()),
                     'type' => $isWeb ? 'web' : 'pdf',
                     'title' => $item['title'] ?? '',
-                    'file' => $item['file'] ?? ($item['full'] ?? ''),
+                    'file' => $targetUrl,
                     'format' => $isWeb ? 'Sitio Web / Enlace' : 'PDF / Digital',
                     'icon' => $isWeb ? '🌐' : '📄',
                     'badge' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? ($isWeb ? 'Enlace Web' : 'Documentación')) : ($item['category'] ?? ($isWeb ? 'Enlace Web' : 'Documentación')),
                     'description' => $item['desc'] ?? '',
-                    'url' => $item['file'] ?? ($item['full'] ?? '')
+                    'url' => $targetUrl
                 ];
             }
         }

@@ -5008,7 +5008,7 @@ const INITIAL_GALLERY_ITEMS = [
     }
   },
   {
-    id: 10,
+    id: 5,
     type: 'pdf',
     title: {
       es: 'Paisaje, camino y liturgia en el mito del héroe de Iltiraka',
@@ -5030,47 +5030,25 @@ const INITIAL_GALLERY_ITEMS = [
     }
   },
   {
-    id: 5,
-    type: 'pdf',
-    title: {
-      es: 'Ficha Científica: El Lobo Ibérico de El Pajarillo',
-      en: 'Scientific Factsheet: Iberian Wolf of El Pajarillo',
-      fr: 'Fiche Scientifique : Le Loup Ibérique d\'El Pajarillo'
-    },
-    category: {
-      es: 'Documentación',
-      en: 'Documentation',
-      fr: 'Documentation'
-    },
-    full: './assets/docs/ficha_cientifica_pajarillo.pdf',
-    thumb: './assets/images/lobo.png',
-    file: './assets/docs/ficha_cientifica_pajarillo.pdf',
-    desc: {
-      es: 'Estudio iconográfico, arqueométrico y cronológico elaborado por el equipo de investigación.',
-      en: 'Iconographic, archaeometric, and chronological research study by the scientific team.',
-      fr: 'Étude iconographique, archéométrique et chronologique par l\'équipe de recherche.'
-    }
-  },
-  {
     id: 6,
-    type: 'pdf',
+    type: 'web',
     title: {
-      es: 'Guía de Visita Autónoma y Mapa del Recorrido',
-      en: 'Self-Guided Tour & Itinerary Map',
-      fr: 'Guide de Visite Autonome et Plan du Parcours'
+      es: 'Portal Oficial de Turismo y Patrimonio de Huelma',
+      en: 'Official Tourism & Heritage Portal of Huelma',
+      fr: 'Portail Officiel du Tourisme et Patrimoine de Huelma'
     },
     category: {
-      es: 'Didáctica',
-      en: 'Didactics',
-      fr: 'Didactique'
+      es: 'Enlace Web',
+      en: 'Web Link',
+      fr: 'Lien Web'
     },
-    full: './assets/docs/guia_visita_pajarillo.pdf',
-    thumb: './assets/images/iltiraka.png',
-    file: './assets/docs/guia_visita_pajarillo.pdf',
+    full: 'https://jaenparaisointerior.es',
+    thumb: './assets/icons/icon-document.png',
+    file: 'https://jaenparaisointerior.es',
     desc: {
-      es: 'Itinerario de salas, puntos de interés, códigos QR y claves pedagógicas de la visita.',
-      en: 'Room layout, points of interest, QR codes, and educational insights for visitors.',
-      fr: 'Parcours des salles, points d\'intérêt, codes QR et repères pédagogiques de la visite.'
+      es: 'Acceso directo a la información turística, cultural y natural del entorno de Sierra Mágina y Huelma.',
+      en: 'Direct access to tourism, cultural, and natural heritage of Sierra Mágina and Huelma.',
+      fr: 'Accès direct aux informations touristiques et culturelles de la Sierra Mágina et Huelma.'
     }
   },
   {
@@ -5093,50 +5071,6 @@ const INITIAL_GALLERY_ITEMS = [
       es: 'Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.',
       en: 'Official Sketchfab model with orbital orbit controls and VR exploration.',
       fr: 'Modèle officiel Sketchfab avec commandes orbitales et réalité virtuelle du sanctuaire orétan.'
-    }
-  },
-  {
-    id: 9,
-    type: 'foto',
-    title: {
-      es: 'Documentación y Dibujo Arqueológico',
-      en: 'Archaeological Documentation & Field Sketching',
-      fr: 'Documentation et Relevés Archéologiques'
-    },
-    category: {
-      es: 'Investigación',
-      en: 'Research',
-      fr: 'Recherche'
-    },
-    full: './assets/images/dibujando.png',
-    thumb: './assets/images/dibujando.png',
-    file: './assets/images/dibujando.png',
-    desc: {
-      es: 'Trabajos de planimetría y dibujo de campo durante las excavaciones en El Pajarillo.',
-      en: 'Survey mapping and field drawing work during the excavations at El Pajarillo.',
-      fr: 'Travaux de relevés et dessin de terrain durant les fouilles à El Pajarillo.'
-    }
-  },
-  {
-    id: 10,
-    type: 'foto',
-    title: {
-      es: 'Repercusión en Medios y Prensa (1994)',
-      en: 'Media & Press Coverage (1994)',
-      fr: 'Couverture Presse et Médias (1994)'
-    },
-    category: {
-      es: 'Historia',
-      en: 'History',
-      fr: 'Histoire'
-    },
-    full: './assets/images/excavacion_medios.png',
-    thumb: './assets/images/excavacion_medios.png',
-    file: './assets/images/excavacion_medios.png',
-    desc: {
-      es: 'Crónicas periodísticas y difusión internacional tras el hallazgo del conjunto escultórico.',
-      en: 'Journalistic reports and international broadcast following the sculptural discovery.',
-      fr: 'Articles de presse et écho international suite à la découverte du complexe sculptural.'
     }
   }
 ];
@@ -5473,29 +5407,31 @@ function loadGalleryData() {
           .replace(/lobo\.jpg/g, 'lobo.png');
       };
       // Normalizar elementos previos para asegurar que sean multilingües y con rutas actualizadas
-      galleryItems = parsed.map(item => {
-        if (item.full) item.full = migratePath(item.full);
-        if (item.thumb) item.thumb = migratePath(item.thumb);
-        if (item.file) item.file = migratePath(item.file);
-        if (typeof item.title === 'string') {
-          item.title = { es: item.title, en: item.title, fr: item.title };
-        }
-        if (typeof item.category === 'string') {
-          item.category = { es: item.category, en: item.category, fr: item.category };
-        }
-        if (typeof item.desc === 'string') {
-          item.desc = { es: item.desc, en: item.desc, fr: item.desc };
-        }
-        return item;
-      });
+      // Purgar elementos que se inyectaron automáticamente por error y que el usuario no desea
+      galleryItems = parsed
+        .filter(item => {
+          const tEs = typeof item.title === 'object' ? (item.title.es || '') : String(item.title || '');
+          if (tEs.includes('Documentación y Dibujo Arqueológico')) return false;
+          if (tEs.includes('Repercusión en Medios y Prensa')) return false;
+          return true;
+        })
+        .map(item => {
+          if (item.full) item.full = migratePath(item.full);
+          if (item.thumb) item.thumb = migratePath(item.thumb);
+          if (item.file) item.file = migratePath(item.file);
+          if (typeof item.title === 'string') {
+            item.title = { es: item.title, en: item.title, fr: item.title };
+          }
+          if (typeof item.category === 'string') {
+            item.category = { es: item.category, en: item.category, fr: item.category };
+          }
+          if (typeof item.desc === 'string') {
+            item.desc = { es: item.desc, en: item.desc, fr: item.desc };
+          }
+          return item;
+        });
 
-      // Asegurar que recursos clave de INITIAL_GALLERY_ITEMS estén incluidos
-      INITIAL_GALLERY_ITEMS.forEach(initItem => {
-        const exists = galleryItems.some(i => i.id === initItem.id || (i.file && initItem.file && i.file.includes('heroe_de_Iltiraka')));
-        if (!exists) {
-          galleryItems.push(initItem);
-        }
-      });
+      // No reinyectar elementos por la fuerza; respetar siempre la edición o eliminación del usuario
     } else {
       galleryItems = [...INITIAL_GALLERY_ITEMS];
       localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
@@ -5622,13 +5558,13 @@ function renderGalleryGrid(filter = 'all') {
             </div>
           </div>
           <div class="gallery-admin-actions">
-            <a href="${item.full || item.file}" target="_blank" class="btn-admin btn-admin-outline" style="padding: 5px 10px; font-size: 0.78rem; text-decoration: none;">
-              👁️ Abrir
+            <a href="${item.full || item.file}" target="_blank" rel="noopener noreferrer" class="btn-admin btn-admin-outline" style="padding: 5px 10px; font-size: 0.78rem; text-decoration: none;">
+              ${item.type === 'web' ? '🌐 Abrir Enlace' : '👁️ Abrir'}
             </a>
-            <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 10px; font-size: 0.78rem;" onclick="window.editGalleryItem(${item.id})">
+            <button type="button" class="btn-admin btn-admin-outline" style="padding: 5px 10px; font-size: 0.78rem;" onclick="window.editGalleryItem('${item.id}')">
               ✏️ Editar
             </button>
-            <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 10px; font-size: 0.78rem;" onclick="window.deleteGalleryItem(${item.id})">
+            <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 10px; font-size: 0.78rem;" onclick="window.deleteGalleryItem('${item.id}')">
               🗑️
             </button>
           </div>
@@ -5639,17 +5575,17 @@ function renderGalleryGrid(filter = 'all') {
 }
 
 window.editGalleryItem = function(id) {
-  const item = galleryItems.find(i => i.id === id);
+  const item = galleryItems.find(i => String(i.id) === String(id));
   if (!item) return;
   openGalleryModal(item);
 };
 
 window.deleteGalleryItem = function(id) {
-  const item = galleryItems.find(i => i.id === id);
+  const item = galleryItems.find(i => String(i.id) === String(id));
   const title = item ? (typeof item.title === 'object' ? item.title.es : item.title) : 'este contenido';
   if (!confirm(`¿Estás seguro de que deseas eliminar permanentemente "${title}"?`)) return;
 
-  galleryItems = galleryItems.filter(i => i.id !== id);
+  galleryItems = galleryItems.filter(i => String(i.id) !== String(id));
   localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_data' }));
 
@@ -5672,6 +5608,7 @@ function updateModalTypeUI(type) {
   const lblFile = document.getElementById('lbl-gallery-file');
   const descFile = document.getElementById('desc-gallery-file');
   const groupDl = document.getElementById('group-download-url');
+  const dlInput = document.getElementById('gallery-item-download-url');
 
   if (type === 'web') {
     if (lblUrl) lblUrl.textContent = 'Enlace o URL de la Página Web *';
@@ -5679,6 +5616,7 @@ function updateModalTypeUI(type) {
     if (lblFile) lblFile.textContent = 'Logotipo o Imagen de Portada (Opcional)';
     if (descFile) descFile.textContent = 'Opcional: Arrastra o selecciona una imagen o logo para la tarjeta';
     if (groupDl) groupDl.style.display = 'none';
+    if (dlInput) dlInput.value = '';
   } else if (type === 'pdf') {
     if (lblUrl) lblUrl.textContent = 'URL o Ruta del Documento PDF *';
     if (inputUrl) inputUrl.placeholder = './assets/docs/heroe_de_iltiraka.pdf o https://...';
@@ -5751,8 +5689,8 @@ function openGalleryModal(item = null) {
   if (item) {
     if (titleEl) titleEl.textContent = '✏️ Modificar Recurso Multilingüe';
     if (idInput) idInput.value = item.id;
-    if (urlInput) urlInput.value = item.full || item.src || '';
-    if (dlInput) dlInput.value = item.file || item.downloadUrl || '';
+    if (urlInput) urlInput.value = item.full || item.src || item.url || '';
+    if (dlInput) dlInput.value = itemType === 'web' ? '' : (item.file || item.downloadUrl || '');
 
     if (titleEs) titleEs.value = getLoc(item.title, 'es');
     if (titleEn) titleEn.value = getLoc(item.title, 'en');
@@ -5819,10 +5757,11 @@ function handleSaveGalleryItem(e) {
   const descEn = document.getElementById('gallery-item-desc-en')?.value.trim() || descEs;
   const descFr = document.getElementById('gallery-item-desc-fr')?.value.trim() || descEs;
 
-  const id = idInput && idInput.value ? Number(idInput.value) : Date.now();
+  const id = idInput && idInput.value ? (isNaN(idInput.value) ? idInput.value : Number(idInput.value)) : Date.now();
   const currentType = typeSelect ? typeSelect.value : 'foto';
   const isWeb = currentType === 'web';
   const urlVal = urlInput ? urlInput.value.trim() : '';
+  const fileVal = isWeb ? urlVal : (dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal);
 
   const newItem = {
     id: id,
@@ -5831,11 +5770,11 @@ function handleSaveGalleryItem(e) {
     category: { es: catEs, en: catEn, fr: catFr },
     full: urlVal || (isWeb ? 'https://' : './assets/images/lobo.png'),
     thumb: (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : (isWeb ? './assets/icons/icon-document.png' : (urlVal || './assets/images/lobo.png')),
-    file: dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal,
+    file: fileVal,
     desc: { es: descEs, en: descEn, fr: descFr }
   };
 
-  const existingIdx = galleryItems.findIndex(i => i.id === id);
+  const existingIdx = galleryItems.findIndex(i => String(i.id) === String(id));
   if (existingIdx >= 0) {
     galleryItems[existingIdx] = newItem;
     showToast('✅ Recurso multilingüe actualizado correctamente');

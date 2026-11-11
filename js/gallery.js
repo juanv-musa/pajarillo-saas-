@@ -93,14 +93,15 @@ export class GalleryManager {
 
         const resources = items.filter(i => i.type === 'pdf' || i.type === 'web' || i.type === 'enlace').map(i => {
           const isWeb = i.type === 'web' || i.type === 'enlace' || (i.full && (i.full.startsWith('http://') || i.full.startsWith('https://')) && !i.full.endsWith('.pdf'));
+          const targetUrl = isWeb ? (i.full || i.url || i.file) : (i.file || i.full || i.url);
           return {
             id: 'res_' + i.id,
             type: isWeb ? 'web' : 'pdf',
             title: toLocObj(i.title),
             description: toLocObj(i.desc),
             badge: typeof i.category === 'object' ? (i.category.es || (isWeb ? 'Enlace Web' : 'PDF Oficial')) : (i.category || (isWeb ? 'Enlace Web' : 'PDF Oficial')),
-            file: migratePath(i.file || i.full),
-            url: migratePath(i.file || i.full),
+            file: migratePath(targetUrl),
+            url: migratePath(targetUrl),
             format: isWeb ? 'Sitio Web / Enlace' : 'PDF / Digital',
             icon: isWeb ? '🌐' : '📄'
           };

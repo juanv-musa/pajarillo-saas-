@@ -42,19 +42,6 @@
     {
       "id": "foto_4",
       "type": "photo",
-      "src": "./assets/images/iltiraka.png",
-      "thumb": "./assets/images/iltiraka.png",
-      "caption": {
-        "es": "El Territorio de Iltiraka y paisaje del valle del río Jandulilla",
-        "en": "Territory of Iltiraka and Jandulilla River Valley landscape",
-        "fr": "Territoire d'Iltiraka et paysage de la vallée du Jandulilla"
-      },
-      "author": "Archivo Territorial",
-      "category": "Entorno"
-    },
-    {
-      "id": "foto_5",
-      "type": "photo",
       "src": "./assets/images/santuario_ilustracion.png",
       "thumb": "./assets/images/santuario_ilustracion.png",
       "caption": {
@@ -64,50 +51,12 @@
       },
       "author": "Patrimonio",
       "category": "Arquitectura"
-    },
-    {
-      "id": "foto_6",
-      "type": "photo",
-      "src": "./assets/images/hero/hero.jpg",
-      "thumb": "./assets/images/hero/hero.jpg",
-      "caption": {
-        "es": "Vista aérea del yacimiento arqueológico del Santuario Ibérico de El Pajarillo y valle del río Jandulilla",
-        "en": "Aerial view of the archaeological site of the Iberian Sanctuary of El Pajarillo and Jandulilla River Valley",
-        "fr": "Vue aérienne du site archéologique du Sanctuaire Ibérique d'El Pajarillo et de la vallée du Jandulilla"
-      },
-      "author": "Archivo Municipal",
-      "category": "Entorno"
-    },
-    {
-      "id": "foto_7",
-      "type": "photo",
-      "src": "./assets/images/dibujando.png",
-      "thumb": "./assets/images/dibujando.png",
-      "caption": {
-        "es": "Trabajo de documentación y dibujo arqueológico en el santuario",
-        "en": "Archaeological documentation and field sketching at the sanctuary",
-        "fr": "Documentation et relevés archéologiques au sanctuaire"
-      },
-      "author": "Instituto de Arqueología Ibérica",
-      "category": "Investigación"
-    },
-    {
-      "id": "foto_8",
-      "type": "photo",
-      "src": "./assets/images/excavacion_medios.png",
-      "thumb": "./assets/images/excavacion_medios.png",
-      "caption": {
-        "es": "Repercusión en prensa y excavación de urgencia de El Pajarillo (1994)",
-        "en": "Media press coverage and emergency excavation of El Pajarillo (1994)",
-        "fr": "Couverture médiatique et fouilles d'urgence d'El Pajarillo (1994)"
-      },
-      "author": "Hemeroteca Municipal",
-      "category": "Historia"
     }
   ],
   "resources": [
     {
-      "id": "res_iltiraka",
+      "id": "res_5",
+      "type": "pdf",
       "title": {
         "es": "Paisaje, camino y liturgia en el mito del héroe de Iltiraka",
         "en": "Landscape, Path and Liturgy in the Myth of the Hero of Iltiraka",
@@ -121,58 +70,27 @@
         "en": "This study reinterprets the heroon of El Pajarillo within the framework of the myth of katabasis or the hero's journey to the underworld.",
         "fr": "Cette étude réinterprète le hérôon d'El Pajarillo dans le cadre du mythe de la katabase ou voyage du héros aux enfers."
       },
+      "file": "./assets/docs/heroe_de_iltiraka.pdf",
       "url": "./assets/docs/heroe_de_iltiraka.pdf"
     },
     {
-      "id": "res_1",
+      "id": "res_6",
+      "type": "web",
       "title": {
-        "es": "Dossier Oficial: Centro de Interpretación de El Pajarillo",
-        "en": "Official Dossier: El Pajarillo Interpretation Centre",
-        "fr": "Dossier Officiel : Centre d'Interprétation d'El Pajarillo"
+        "es": "Portal Oficial de Turismo y Patrimonio de Huelma",
+        "en": "Official Tourism & Heritage Portal of Huelma",
+        "fr": "Portail Officiel du Tourisme et Patrimoine de Huelma"
       },
-      "format": "PDF / 129 KB",
-      "icon": "📄",
-      "badge": "Publicación Oficial",
+      "format": "Sitio Web / Enlace",
+      "icon": "🌐",
+      "badge": "Enlace Web",
       "description": {
-        "es": "Documento oficial del Centro de Interpretación: discurso museográfico, cronología y contexto arqueológico.",
-        "en": "Official document: museum narrative, chronology, and archaeological context of the Iberian sanctuary.",
-        "fr": "Document officiel : parcours muséographique, chronologie et contexte archéologique du sanctuaire ibérique."
+        "es": "Acceso directo a la información turística, cultural y natural del entorno de Sierra Mágina y Huelma.",
+        "en": "Direct access to tourism, cultural, and natural heritage of Sierra Mágina and Huelma.",
+        "fr": "Accès direct aux informations touristiques et culturelles de la Sierra Mágina et Huelma."
       },
-      "url": "./assets/docs/dossier_pajarillo.pdf"
-    },
-    {
-      "id": "res_2",
-      "title": {
-        "es": "Ficha Científica e Iconografía: Cabeza de Lobo y Monumento",
-        "en": "Scientific Factsheet: Wolf Head & Stepped Monument",
-        "fr": "Fiche Scientifique : Tête de Loup et Monument Héroïque"
-      },
-      "format": "PDF / 129 KB",
-      "icon": "🗺️",
-      "badge": "Investigación",
-      "description": {
-        "es": "Estudio iconográfico, metrología y análisis de las esculturas calizas del santuario.",
-        "en": "Iconographic study, metrology, and sculptural analysis of the heroic limestone figures.",
-        "fr": "Étude iconographique, analyse pétrologique et restitution des sculptures du sanctuaire."
-      },
-      "url": "./assets/docs/dossier_pajarillo.pdf"
-    },
-    {
-      "id": "res_3",
-      "title": {
-        "es": "Guía de Sala y Recorrido del Yacimiento",
-        "en": "Visitor Guide & Archaeological Tour",
-        "fr": "Guide de Visite et Parcours Archéologique"
-      },
-      "format": "PDF / 129 KB",
-      "icon": "🎒",
-      "badge": "Guía de Sala",
-      "description": {
-        "es": "Planimetría de las terrazas ceremoniales y claves interpretativas de los puntos de visita.",
-        "en": "Layout of the ceremonial terraces and key interpretive highlights for visitors.",
-        "fr": "Plan des terrasses cérémonielles et repères d'interprétation des points de visite."
-      },
-      "url": "./assets/docs/dossier_pajarillo.pdf"
+      "file": "https://jaenparaisointerior.es",
+      "url": "https://jaenparaisointerior.es"
     }
   ],
   "videos": []
