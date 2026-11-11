@@ -429,9 +429,9 @@ export class GalleryManager {
           const cat = vid.category || 'Audiovisual';
 
           return `
-            <div class="event-card" style="border: 1.5px solid var(--c-border); display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-sm);">
+            <div class="event-card" style="border: 1.5px solid var(--c-border); display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-sm); cursor: pointer;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
               <div>
-                <div style="position: relative; height: 210px; overflow: hidden; background: #000; cursor: pointer;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
+                <div style="position: relative; height: 210px; overflow: hidden; background: #000;">
                   <img src="${vid.thumb || './assets/images/lobo.png'}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: transform 0.4s ease;" onerror="this.src='./assets/images/lobo.png'">
                   <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
                     <div class="btn-cta-gold" style="padding: 12px 18px; border-radius: 50%; font-size: 1.4rem; width: 54px; height: 54px; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
@@ -446,32 +446,15 @@ export class GalleryManager {
                   </span>
                 </div>
                 
-                <div class="event-body" style="padding: 1.25rem 1.25rem 0.5rem;">
+                <div class="event-body" style="padding: 1.25rem;">
                   <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
                     <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
                       🔊 Locutado / Subtítulos
                     </span>
-                    ${hasAudioDesc ? `
-                      <span style="background: rgba(46, 125, 50, 0.15); color: #2e7d32; font-size: 0.72rem; font-weight: 800; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(46, 125, 50, 0.3);">
-                        👁️ Audiodescripción disponible
-                      </span>
-                    ` : ''}
                   </div>
                   <h3 class="event-title" style="font-size: 1.2rem; line-height: 1.35; margin-bottom: 0.5rem; color: var(--c-primary);">${title}</h3>
-                  <p class="event-desc" style="font-size: 0.88rem; line-height: 1.5; color: var(--c-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${desc}</p>
+                  <p class="event-desc" style="font-size: 0.88rem; line-height: 1.5; color: var(--c-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${desc}</p>
                 </div>
-              </div>
-
-              <!-- Botonera interactiva para elegir versión directamente -->
-              <div style="padding: 0.85rem 1.25rem; border-top: 1px solid var(--c-border); display: flex; gap: 0.5rem; flex-wrap: wrap; background: var(--c-stone-light);">
-                <button type="button" class="btn-point-action" style="flex: 1; min-width: 140px; padding: 6px 12px; font-size: 0.8rem; justify-content: center; background: var(--c-primary); color: white;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
-                  🎬 Ver Vídeo Estándar
-                </button>
-                ${hasAudioDesc ? `
-                  <button type="button" class="btn-point-action btn-point-qr" style="flex: 1; min-width: 140px; padding: 6px 12px; font-size: 0.8rem; justify-content: center; background: var(--c-accent-gold); color: #111; font-weight: 800;" onclick="window.galleryInstance.openVideoModal(${idx}, 'audiodesc')">
-                    👁️ Con Audiodescripción
-                  </button>
-                ` : ''}
               </div>
             </div>
           `;
