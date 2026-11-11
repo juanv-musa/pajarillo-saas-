@@ -3959,7 +3959,7 @@ const DEFAULT_LOCALES = {
     como_llegar_titulo: "Cómo llegar",
     como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
     como_llegar_parking: "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
-    como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
+    como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida.",
     como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Cultural y Actividades",
@@ -4028,7 +4028,7 @@ const DEFAULT_LOCALES = {
     como_llegar_titulo: "How to get here",
     como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén), Spain",
     como_llegar_parking: "Free parking area for cars and tourist coaches.",
-    como_llegar_accesibilidad: "Accessible facilities for people with reduced mobility and braille signage.",
+    como_llegar_accesibilidad: "Accessible facilities for people with reduced mobility.",
     como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Cultural Agenda & Activities",
@@ -4097,7 +4097,7 @@ const DEFAULT_LOCALES = {
     como_llegar_titulo: "Comment venir",
     como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén), Espagne",
     como_llegar_parking: "Parking gratuit pour véhicules particuliers et autocars touristiques.",
-    como_llegar_accesibilidad: "Installations accessibles aux personnes à mobilité réduite et cartels braille.",
+    como_llegar_accesibilidad: "Installations accessibles aux personnes à mobilité réduite.",
     como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Culturel & Activités",
@@ -4709,7 +4709,7 @@ function populateFormWithLang(lang) {
   setVal('cnt-como-llegar-titulo', c.como_llegar_titulo || 'Cómo llegar');
   setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
   setVal('cnt-como-llegar-parking', c.como_llegar_parking || 'Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.');
-  setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.');
+  setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida.');
   setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n');
   setVal('cnt-como-llegar-mapa-embed', c.como_llegar_mapa_embed || 'https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178');
 

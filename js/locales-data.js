@@ -136,7 +136,7 @@ export const DEFAULT_LOCALES = {
     "parking_label": "Aparcamiento:",
     "parking_val": "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     "accesibilidad_label": "Accesibilidad:",
-    "accesibilidad_val": "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
+    "accesibilidad_val": "Instalaciones accesibles para personas con movilidad reducida.",
     "abrir_mapa": "Abrir en Google Maps"
   },
   "agenda": {
@@ -423,7 +423,7 @@ export const DEFAULT_LOCALES = {
     "parking_label": "Parking:",
     "parking_val": "Free visitor parking available for passenger cars and tourist coaches.",
     "accesibilidad_label": "Accessibility:",
-    "accesibilidad_val": "Fully accessible paths for visitors with reduced mobility; braille interpretive panels.",
+    "accesibilidad_val": "Fully accessible facilities and paths for visitors with reduced mobility.",
     "abrir_mapa": "Open in Google Maps"
   },
   "agenda": {
@@ -710,7 +710,7 @@ export const DEFAULT_LOCALES = {
     "parking_label": "Stationnement :",
     "parking_val": "Parking gratuit aménagé pour véhicules légers et autocars de tourisme.",
     "accesibilidad_label": "Accessibilité :",
-    "accesibilidad_val": "Parcours accessible aux personnes à mobilité réduite et panneaux en braille.",
+    "accesibilidad_val": "Installations et parcours accessibles aux personnes à mobilité réduite.",
     "abrir_mapa": "Ouvrir dans Google Maps"
   },
   "agenda": {

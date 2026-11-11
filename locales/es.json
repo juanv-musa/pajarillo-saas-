@@ -113,7 +113,7 @@
     "parking_label": "Aparcamiento:",
     "parking_val": "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     "accesibilidad_label": "Accesibilidad:",
-    "accesibilidad_val": "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
+    "accesibilidad_val": "Instalaciones accesibles para personas con movilidad reducida.",
     "abrir_mapa": "Abrir en Google Maps"
   },
   "agenda": {
