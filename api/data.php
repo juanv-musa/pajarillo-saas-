@@ -24,6 +24,7 @@ $reservasFile = '../data/reservas.json';
 $configFile = '../data/site_config.json';
 $localesFile = '../data/locales.json';
 $galleryFile = '../data/gallery.json';
+$legalFile = '../data/legal.json';
 
 // Helper para leer archivo
 function readJson($filepath, $default = []) {
@@ -71,6 +72,8 @@ if ($method === 'GET') {
         echo json_encode(readJson($localesFile, []));
     } elseif ($entity === 'gallery') {
         echo json_encode(readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]));
+    } elseif ($entity === 'legal') {
+        echo json_encode(readJson($legalFile, []));
     } elseif ($entity === 'agenda') {
         echo json_encode(readJson($agendaFile, ['activities' => []]));
     } elseif ($entity === 'bookings') {
@@ -223,6 +226,19 @@ if ($method === 'POST') {
         $galleryData['media'] = $media;
         $galleryData['resources'] = $resources;
         writeJson($galleryFile, $galleryData);
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
+    // Guardar / Sincronizar información de Legal y Calidad
+    if (isset($input['action']) && $input['action'] === 'save_legal') {
+        if (!hasModulePermission('legal') && !hasModulePermission('settings') && !hasModulePermission('contents')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar Legal y Calidad.']);
+            exit;
+        }
+        $legalData = $input['data'] ?? [];
+        writeJson($legalFile, $legalData);
         echo json_encode(['success' => true]);
         exit;
     }

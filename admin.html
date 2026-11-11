@@ -163,6 +163,11 @@
 
       <div class="sidebar-heading" style="margin-top: 1rem;">Administración</div>
 
+      <button class="sidebar-btn" data-view="legal">
+        <span style="font-size: 1.25em; line-height: 1;">⚖️</span>
+        <span>Legal y Calidad</span>
+      </button>
+
       <button class="sidebar-btn" data-view="settings">
         <img src="./assets/icons/icon-settings.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.25em; height: 1.25em; vertical-align: -0.15em; object-fit: contain;">
         <span>Ajustes & Usuarios</span>
@@ -2153,6 +2158,438 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <!-- ──────────────────────────────────────────
+           SUBVISTA: GESTIÓN DE LEGAL Y CALIDAD
+           ────────────────────────────────────────── -->
+      <section id="subview-legal" class="admin-subview hidden">
+        <div class="card-title-row" style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem;">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 800; color: var(--admin-primary); margin-bottom: 0.25rem;">
+              ⚖️ Marco Normativo, Legal y Carta de Calidad
+            </h2>
+            <p style="color: var(--admin-muted); font-size: 0.88rem; max-width: 820px; line-height: 1.5;">
+              Edición integral de todos los textos legales obligatorios (LSSI-CE, RGPD UE 2016/679, LOPDGDD 3/2018, Directiva UE 2016/2102, RD 1112/2018) y la Carta de Servicios y Compromisos de Calidad del Centro de Interpretación.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
+            <button type="button" id="btn-save-legal-top" class="btn-admin btn-admin-primary" style="padding: 10px 18px; font-weight: 700;">
+              💾 Guardar Todo en Legal y Calidad
+            </button>
+            <a href="./legal.html" target="_blank" rel="noopener" class="btn-admin btn-admin-outline" style="text-decoration: none; padding: 10px 14px;">
+              👁️ Ver Página Pública ↗
+            </a>
+            <button type="button" id="btn-reset-legal-defaults" class="btn-admin btn-admin-danger" style="padding: 10px 14px;">
+              ↺ Restaurar Oficiales
+            </button>
+          </div>
+        </div>
+
+        <!-- Selector de Pestañas / Bloques de Legal y Calidad -->
+        <div class="cms-lang-selector" style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1.5rem; background: #fff; padding: 6px; border: 1px solid var(--admin-border); border-radius: 12px; width: 100%;">
+          <button type="button" class="cms-lang-pill active legal-tab-btn" data-legal-tab="general">
+            🏛️ Datos Institucionales y DPD
+          </button>
+          <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="aviso">
+            📜 Aviso Legal (LSSI-CE)
+          </button>
+          <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="privacidad">
+            🔒 Política de Privacidad (RGPD)
+          </button>
+          <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="cookies">
+            🍪 Política de Cookies (AEPD)
+          </button>
+          <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="accesibilidad">
+            ♿ Declaración de Accesibilidad
+          </button>
+          <button type="button" class="cms-lang-pill legal-tab-btn" data-legal-tab="calidad" style="color: #8c6d1f; font-weight: 800;">
+            ⭐ Carta de Calidad y Servicios
+          </button>
+        </div>
+
+        <form id="form-legal-data">
+          <!-- ─── PESTAÑA 1: DATOS INSTITUCIONALES Y DPD ─── -->
+          <div id="legal-panel-general" class="legal-tab-panel">
+            <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
+                🏛️ Identificación de la Entidad Titular y Contactos Oficiales
+              </h3>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Estos datos se sincronizan automáticamente con las cartelas de contacto, el pie de página normativo y las cláusulas del Aviso Legal y Privacidad.
+              </p>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-titular">Titular del Portal / Entidad Pública *</label>
+                  <input type="text" id="legal-titular" class="admin-input" required placeholder="Excmo. Ayuntamiento de Huelma">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-cif">C.I.F. / N.I.F. *</label>
+                  <input type="text" id="legal-cif" class="admin-input" required placeholder="P2304400B">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-area">Área / Concejalía Gestora *</label>
+                  <input type="text" id="legal-area" class="admin-input" placeholder="Concejalía de Patrimonio Histórico, Cultura y Turismo">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-direccion">Sede Institucional / Dirección Oficial *</label>
+                  <input type="text" id="legal-direccion" class="admin-input" required placeholder="Calle Cárcel, 2 · 23560 Huelma (Jaén), España">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-telefono">Teléfono de Atención Ciudadana *</label>
+                  <input type="text" id="legal-telefono" class="admin-input" placeholder="(+34) 953 39 00 10">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-email">Correo Electrónico de Turismo *</label>
+                  <input type="email" id="legal-email" class="admin-input" placeholder="turismo@elpajarillo.es">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-email-secundario">Correo Electrónico Municipal / General</label>
+                  <input type="email" id="legal-email-secundario" class="admin-input" placeholder="ayuntamiento@huelma.es">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-dpd-email">Correo del Delegado de Protección de Datos (DPD) *</label>
+                  <input type="email" id="legal-dpd-email" class="admin-input" placeholder="dpd@huelma.es">
+                </div>
+
+                <div class="admin-form-group" style="grid-column: 1 / -1;">
+                  <label for="legal-sede-electronica">URL de la Sede Electrónica Oficial</label>
+                  <input type="url" id="legal-sede-electronica" class="admin-input" placeholder="https://huelma.sedelectronica.es">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-ultima-actualizacion">Fecha / Periodo de Última Actualización Legal</label>
+                  <input type="text" id="legal-ultima-actualizacion" class="admin-input" placeholder="Noviembre de 2026">
+                </div>
+
+                <div class="admin-form-group">
+                  <label for="legal-marco-legal">Marco Normativo Resumido</label>
+                  <input type="text" id="legal-marco-legal" class="admin-input" placeholder="LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── PESTAÑA 2: AVISO LEGAL (LSSI-CE) ─── -->
+          <div id="legal-panel-aviso" class="legal-tab-panel hidden">
+            <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
+                📜 1. Aviso Legal y Condiciones Generales (Ley 34/2002 LSSI-CE)
+              </h3>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Define el objeto de la web, derechos de propiedad intelectual, exclusiones de responsabilidad y fuero judicial aplicable.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-aviso-tag">Etiqueta Normativa</label>
+                  <input type="text" id="legal-aviso-tag" class="admin-input" placeholder="Conforme a la Ley 34/2002 (LSSI-CE)">
+                </div>
+                <div class="admin-form-group">
+                  <label for="legal-aviso-titulo">Título del Apartado</label>
+                  <input type="text" id="legal-aviso-titulo" class="admin-input" placeholder="1. Aviso Legal">
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-aviso-intro">Párrafo Introductorio de Cumplimiento (Artículo 10 LSSI-CE)</label>
+                <textarea id="legal-aviso-intro" class="admin-textarea" rows="2" placeholder="En cumplimiento del artículo 10..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-aviso-objeto-titulo">Título: 1.1. Objeto del Sitio Web</label>
+                <input type="text" id="legal-aviso-objeto-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="1.1. Objeto del Sitio Web">
+                <label for="legal-aviso-objeto-texto">Texto: Objeto del Sitio Web</label>
+                <textarea id="legal-aviso-objeto-texto" class="admin-textarea" rows="3" placeholder="El presente portal digital oficial tiene por objeto..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-aviso-condiciones-titulo">Título: 1.2. Condiciones Generales de Uso</label>
+                <input type="text" id="legal-aviso-condiciones-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="1.2. Condiciones Generales de Uso">
+                <label for="legal-aviso-condiciones-texto">Texto: Condiciones Generales y Obligaciones del Usuario</label>
+                <textarea id="legal-aviso-condiciones-texto" class="admin-textarea" rows="4" placeholder="El acceso y navegación por este portal atribuye la condición de usuario..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-aviso-propiedad-titulo">Título: 1.3. Propiedad Intelectual e Industrial</label>
+                <input type="text" id="legal-aviso-propiedad-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="1.3. Propiedad Intelectual e Industrial">
+                <label for="legal-aviso-propiedad-texto">Texto: Propiedad Intelectual, Modelos 3D y Derechos de Difusión</label>
+                <textarea id="legal-aviso-propiedad-texto" class="admin-textarea" rows="4" placeholder="Todos los elementos que integran este sitio web..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-aviso-responsabilidad-titulo">Título: 1.4. Exclusión de Responsabilidades</label>
+                <input type="text" id="legal-aviso-responsabilidad-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="1.4. Exclusión de Responsabilidades">
+                <label for="legal-aviso-responsabilidad-texto">Texto: Exclusión de Responsabilidades y Enlaces a Terceros</label>
+                <textarea id="legal-aviso-responsabilidad-texto" class="admin-textarea" rows="3" placeholder="El Ayuntamiento de Huelma procura la máxima veracidad..."></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="legal-aviso-legislacion-titulo">Título: 1.5. Legislación y Fuero Aplicable</label>
+                <input type="text" id="legal-aviso-legislacion-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="1.5. Legislación y Fuero Aplicable">
+                <label for="legal-aviso-legislacion-texto">Texto: Legislación y Juzgados Competentes</label>
+                <textarea id="legal-aviso-legislacion-texto" class="admin-textarea" rows="2" placeholder="Las relaciones entre el usuario y la entidad titular se regirán..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── PESTAÑA 3: POLÍTICA DE PRIVACIDAD (RGPD) ─── -->
+          <div id="legal-panel-privacidad" class="legal-tab-panel hidden">
+            <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
+                🔒 2. Política de Privacidad (RGPD UE 2016/679 y LOPDGDD 3/2018)
+              </h3>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Regula el tratamiento de datos recogidos en reservas de visitas, formularios de consulta y ejercicio de derechos ARSOPL.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-priv-tag">Etiqueta Normativa</label>
+                  <input type="text" id="legal-priv-tag" class="admin-input" placeholder="Conforme a RGPD (UE 2016/679) y LOPDGDD (LO 3/2018)">
+                </div>
+                <div class="admin-form-group">
+                  <label for="legal-priv-titulo">Título del Apartado</label>
+                  <input type="text" id="legal-priv-titulo" class="admin-input" placeholder="2. Política de Privacidad">
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-priv-intro">Párrafo Introductorio de Compromiso de Protección de Datos</label>
+                <textarea id="legal-priv-intro" class="admin-textarea" rows="2" placeholder="El Ayuntamiento de Huelma garantiza la protección de los datos..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-priv-responsable-titulo">Título: 2.1. Responsable del Tratamiento y DPD</label>
+                <input type="text" id="legal-priv-responsable-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="2.1. Responsable del Tratamiento y DPD">
+                <label for="legal-priv-responsable-texto">Texto: Responsable del Tratamiento y Contacto DPD</label>
+                <textarea id="legal-priv-responsable-texto" class="admin-textarea" rows="3" placeholder="Responsable: Ayuntamiento de Huelma..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-priv-finalidad-titulo">Título: 2.2. Finalidades del Tratamiento y Bases Jurídicas</label>
+                <input type="text" id="legal-priv-finalidad-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="2.2. Finalidades del Tratamiento y Bases Jurídicas">
+                <label for="legal-priv-finalidad-texto">Texto: Finalidades y Bases Jurídicas (Reservas, Consultas, Analítica)</label>
+                <textarea id="legal-priv-finalidad-texto" class="admin-textarea" rows="4" placeholder="Los datos personales recabados a través del portal se tratan para..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-priv-conservacion-titulo">Título: 2.3. Plazos de Conservación de los Datos</label>
+                <input type="text" id="legal-priv-conservacion-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="2.3. Plazos de Conservación de los Datos">
+                <label for="legal-priv-conservacion-texto">Texto: Plazos de Conservación y Destrucción Segura</label>
+                <textarea id="legal-priv-conservacion-texto" class="admin-textarea" rows="3" placeholder="Los datos de reservas se conservarán durante..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-priv-derechos-titulo">Título: 2.4. Derechos de los Interesados y Vías de Ejercicio</label>
+                <input type="text" id="legal-priv-derechos-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="2.4. Derechos de los Interesados y Vías de Ejercicio">
+                <label for="legal-priv-derechos-texto">Texto: Derechos ARSOPL y Procedimiento de Solicitud</label>
+                <textarea id="legal-priv-derechos-texto" class="admin-textarea" rows="4" placeholder="Cualquier persona puede ejercer sus derechos de Acceso, Rectificación..."></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="legal-priv-seguridad-titulo">Título: 2.5. Medidas de Seguridad y Cesiones</label>
+                <input type="text" id="legal-priv-seguridad-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="2.5. Medidas de Seguridad y Cesiones">
+                <label for="legal-priv-seguridad-texto">Texto: Medidas de Seguridad del ENS y Política de No Cesión a Terceros</label>
+                <textarea id="legal-priv-seguridad-texto" class="admin-textarea" rows="3" placeholder="No se cederán datos a terceros salvo obligación legal..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── PESTAÑA 4: POLÍTICA DE COOKIES (AEPD) ─── -->
+          <div id="legal-panel-cookies" class="legal-tab-panel hidden">
+            <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
+                🍪 3. Política de Cookies y Tecnologías de Almacenamiento Local (AEPD)
+              </h3>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Explica el uso exclusivo de almacenamiento local para idioma, accesibilidad y métricas disociadas sin rastreo publicitario.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-cookies-tag">Etiqueta Normativa</label>
+                  <input type="text" id="legal-cookies-tag" class="admin-input" placeholder="Conforme a la Guía sobre el uso de cookies de la AEPD">
+                </div>
+                <div class="admin-form-group">
+                  <label for="legal-cookies-titulo">Título del Apartado</label>
+                  <input type="text" id="legal-cookies-titulo" class="admin-input" placeholder="3. Política de Cookies">
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-cookies-intro">Párrafo Introductorio de Cookies y LSSI-CE 22.2</label>
+                <textarea id="legal-cookies-intro" class="admin-textarea" rows="3" placeholder="Este portal web utiliza cookies y tecnologías..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-cookies-definicion-titulo">Título: 3.1. ¿Qué son las cookies?</label>
+                <input type="text" id="legal-cookies-definicion-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="3.1. ¿Qué son las cookies?">
+                <label for="legal-cookies-definicion-texto">Texto: Definición y Funcionamiento</label>
+                <textarea id="legal-cookies-definicion-texto" class="admin-textarea" rows="3" placeholder="Una cookie es un pequeño archivo de texto..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-cookies-clasificacion-titulo">Título: 3.2. Clasificación de Cookies Utilizadas en este Portal</label>
+                <input type="text" id="legal-cookies-clasificacion-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="3.2. Clasificación de Cookies Utilizadas en este Portal">
+                <label for="legal-cookies-clasificacion-texto">Texto: Ausencia de Publicidad y Tecnologías Técnicas Utilizadas</label>
+                <textarea id="legal-cookies-clasificacion-texto" class="admin-textarea" rows="4" placeholder="Este sitio web NO utiliza cookies publicitarias..."></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="legal-cookies-bloqueo-titulo">Título: 3.3. Cómo Modificar, Bloquear o Eliminar las Cookies</label>
+                <input type="text" id="legal-cookies-bloqueo-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="3.3. Cómo Modificar, Bloquear o Eliminar las Cookies">
+                <label for="legal-cookies-bloqueo-texto">Texto: Instrucciones para Navegadores Web (Chrome, Firefox, Safari, Edge)</label>
+                <textarea id="legal-cookies-bloqueo-texto" class="admin-textarea" rows="4" placeholder="El usuario puede revocar su consentimiento en cualquier momento..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── PESTAÑA 5: DECLARACIÓN DE ACCESIBILIDAD (RD 1112/2018) ─── -->
+          <div id="legal-panel-accesibilidad" class="legal-tab-panel hidden">
+            <div class="admin-card" style="margin-bottom: 1.5rem;">
+              <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.35rem;">
+                ♿ 4. Declaración de Accesibilidad (Real Decreto 1112/2018)
+              </h3>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Información sobre el grado de cumplimiento de las pautas WCAG 2.1 AA, normas UNE-EN 301 549 y canales de comunicación y reclamación.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-acc-tag">Etiqueta Normativa</label>
+                  <input type="text" id="legal-acc-tag" class="admin-input" placeholder="Conforme al Real Decreto 1112/2018">
+                </div>
+                <div class="admin-form-group">
+                  <label for="legal-acc-titulo">Título del Apartado</label>
+                  <input type="text" id="legal-acc-titulo" class="admin-input" placeholder="4. Declaración de Accesibilidad">
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-acc-intro">Párrafo Introductorio y Ámbito de Aplicación</label>
+                <textarea id="legal-acc-intro" class="admin-textarea" rows="3" placeholder="El Ayuntamiento de Huelma se ha comprometido a hacer accesible este sitio web..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-acc-cumplimiento-titulo">Título: 4.1. Situación de Cumplimiento</label>
+                <input type="text" id="legal-acc-cumplimiento-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="4.1. Situación de Cumplimiento">
+                <label for="legal-acc-cumplimiento-texto">Texto: Grado de Conformidad (UNE-EN 301 549:2021 y WCAG 2.1 AA)</label>
+                <textarea id="legal-acc-cumplimiento-texto" class="admin-textarea" rows="3" placeholder="Este sitio web es parcialmente conforme con los requisitos..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-acc-noaccesible-titulo">Título: 4.2. Contenido No Accesible y Excepciones</label>
+                <input type="text" id="legal-acc-noaccesible-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="4.2. Contenido No Accesible y Excepciones">
+                <label for="legal-acc-noaccesible-texto">Texto: Justificación de Excepciones y Carga Desproporcionada</label>
+                <textarea id="legal-acc-noaccesible-texto" class="admin-textarea" rows="4" placeholder="El contenido que se recoge a continuación no es accesible por..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-acc-preparacion-titulo">Título: 4.3. Preparación de la Presente Declaración</label>
+                <input type="text" id="legal-acc-preparacion-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="4.3. Preparación de la Presente Declaración">
+                <label for="legal-acc-preparacion-texto">Texto: Fecha y Método de Autoevaluación Interna</label>
+                <textarea id="legal-acc-preparacion-texto" class="admin-textarea" rows="3" placeholder="La presente declaración fue preparada el 14 de septiembre de 2026..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-acc-contacto-titulo">Título: 4.4. Mecanismos de Comunicación y Observaciones</label>
+                <input type="text" id="legal-acc-contacto-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="4.4. Mecanismos de Comunicación y Observaciones">
+                <label for="legal-acc-contacto-texto">Texto: Canales de Contacto con la Unidad Responsable de Accesibilidad</label>
+                <textarea id="legal-acc-contacto-texto" class="admin-textarea" rows="4" placeholder="Cualquier persona física o jurídica puede realizar comunicaciones..."></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="legal-acc-reclamaciones-titulo">Título: 4.5. Procedimiento de Aplicación y Reclamaciones</label>
+                <input type="text" id="legal-acc-reclamaciones-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="4.5. Procedimiento de Aplicación y Reclamaciones">
+                <label for="legal-acc-reclamaciones-texto">Texto: Procedimiento Administrativo de Reclamación</label>
+                <textarea id="legal-acc-reclamaciones-texto" class="admin-textarea" rows="3" placeholder="Si una vez realizada una solicitud de información accesible..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- ─── PESTAÑA 6: CARTA DE CALIDAD Y SERVICIOS (CALIDAD) ─── -->
+          <div id="legal-panel-calidad" class="legal-tab-panel hidden">
+            <div class="admin-card" style="margin-bottom: 1.5rem; border: 1.5px solid #d4af37;">
+              <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 0.35rem;">
+                <span style="font-size: 1.4rem;">⭐</span>
+                <h3 style="font-size: 1.15rem; font-weight: 700; color: var(--admin-primary); margin: 0;">
+                  5. Carta de Servicios y Compromisos de Calidad del Centro
+                </h3>
+              </div>
+              <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
+                Define los compromisos públicos de calidad en la atención a visitantes, tiempos máximos de respuesta, estándares de conservación e indicadores de satisfacción ciudadana.
+              </p>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 1.25rem;">
+                <div class="admin-form-group">
+                  <label for="legal-calidad-tag">Etiqueta de Calidad</label>
+                  <input type="text" id="legal-calidad-tag" class="admin-input" placeholder="Normas de Calidad en el Servicio Público">
+                </div>
+                <div class="admin-form-group">
+                  <label for="legal-calidad-titulo">Título del Apartado</label>
+                  <input type="text" id="legal-calidad-titulo" class="admin-input" placeholder="5. Carta de Servicios y Compromisos de Calidad">
+                </div>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-calidad-intro">Declaración Institucional de Compromiso con la Calidad</label>
+                <textarea id="legal-calidad-intro" class="admin-textarea" rows="3" placeholder="El Centro de Interpretación Santuario Ibérico de “El Pajarillo” asume un compromiso ético..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-calidad-mision-titulo">Título: 5.1. Misión, Visión y Valores de Servicio</label>
+                <input type="text" id="legal-calidad-mision-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="5.1. Misión, Visión y Valores de Servicio">
+                <label for="legal-calidad-mision-texto">Texto: Misión y Valores del Centro</label>
+                <textarea id="legal-calidad-mision-texto" class="admin-textarea" rows="4" placeholder="Nuestra misión es conservar, interpretar y divulgar con rigor científico..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-calidad-compromisos-titulo">Título: 5.2. Compromisos Concretos con los Visitantes</label>
+                <input type="text" id="legal-calidad-compromisos-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="5.2. Compromisos Concretos con los Visitantes">
+                <label for="legal-calidad-compromisos-texto">Texto: Compromisos Concretos (Respuesta a reservas < 24/48h, confort, atención cualificada)</label>
+                <textarea id="legal-calidad-compromisos-texto" class="admin-textarea" rows="5" placeholder="1. Atención personalizada y puntual: Responderemos a todas las reservas en menos de 24-48 horas..."></textarea>
+              </div>
+
+              <div class="admin-form-group" style="margin-bottom: 1.25rem;">
+                <label for="legal-calidad-indicadores-titulo">Título: 5.3. Indicadores de Calidad y Evaluación Continua</label>
+                <input type="text" id="legal-calidad-indicadores-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="5.3. Indicadores de Calidad y Evaluación Continua">
+                <label for="legal-calidad-indicadores-texto">Texto: Evaluación de Calidad y Encuestas de Satisfacción</label>
+                <textarea id="legal-calidad-indicadores-texto" class="admin-textarea" rows="4" placeholder="Evaluamos periódicamente la calidad del servicio mediante encuestas y monitorización..."></textarea>
+              </div>
+
+              <div class="admin-form-group">
+                <label for="legal-calidad-quejas-titulo">Título: 5.4. Buzón de Sugerencias, Quejas y Felicitaciones</label>
+                <input type="text" id="legal-calidad-quejas-titulo" class="admin-input" style="margin-bottom: 6px;" placeholder="5.4. Buzón de Sugerencias, Quejas y Felicitaciones">
+                <label for="legal-calidad-quejas-texto">Texto: Buzón Presencial y Telemático para Aportaciones Ciudadanas</label>
+                <textarea id="legal-calidad-quejas-texto" class="admin-textarea" rows="4" placeholder="Ponemos a disposición de la ciudadanía un buzón presencial en la recepción..."></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- Barra Inferior de Guardado -->
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 1.2rem; border-radius: 12px; border: 1px solid var(--admin-border); box-shadow: var(--admin-shadow); margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <span style="font-weight: 700; color: var(--admin-primary); font-size: 0.95rem;">
+                💾 Guardar Todos los Cambios Normativos
+              </span>
+              <p style="font-size: 0.8rem; color: var(--admin-muted); margin: 2px 0 0 0;">
+                Los cambios se reflejarán inmediatamente en la página web pública de Legal y Calidad.
+              </p>
+            </div>
+            <button type="submit" class="btn-admin btn-admin-primary" style="padding: 10px 24px; font-weight: 700; font-size: 0.95rem;">
+              💾 Guardar Todo en Legal y Calidad
+            </button>
+          </div>
+        </form>
       </section>
 
       <!-- ═══════════════════════════════════════════

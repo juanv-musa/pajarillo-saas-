@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupDropzone();
   setupQrModalEvents();
   setupKioskSection();
+  setupLegalAdmin();
   setupCsvExport();
 });
 
@@ -603,6 +604,10 @@ function setupSidebarNavigation() {
         refreshKioskSelects();
         renderKioskVideos();
       }
+
+      if (targetView === 'legal') {
+        loadLegalData();
+      }
     });
   });
 }
@@ -619,7 +624,8 @@ async function loadAllData() {
     loadAgenda(),
     loadGalleryAdmin(),
     loadBookings(),
-    loadKioskVideos()
+    loadKioskVideos(),
+    loadLegalData()
   ]);
   refreshKioskSelects();
 }
@@ -5811,5 +5817,297 @@ function showToast(msg) {
   DOM.toast.textContent = msg;
   DOM.toast.classList.add('show');
   setTimeout(() => DOM.toast.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════════
+// MÓDULO: GESTIÓN DE TEXTOS LEGALES Y CARTA DE CALIDAD
+// ═══════════════════════════════════════════
+let legalDataState = null;
+
+function setupLegalAdmin() {
+  // Pestañas internas de Legal y Calidad
+  const legalTabs = document.querySelectorAll('.legal-tab-btn');
+  legalTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      legalTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.legalTab;
+      document.querySelectorAll('.legal-tab-panel').forEach(p => {
+        p.classList.toggle('hidden', p.id !== `legal-panel-${target}`);
+      });
+    });
+  });
+
+  // Formulario y botones de guardado
+  const form = document.getElementById('form-legal-data');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      saveLegalData();
+    });
+  }
+
+  const btnSaveTop = document.getElementById('btn-save-legal-top');
+  if (btnSaveTop) {
+    btnSaveTop.addEventListener('click', () => {
+      saveLegalData();
+    });
+  }
+
+  const btnReset = document.getElementById('btn-reset-legal-defaults');
+  if (btnReset) {
+    btnReset.addEventListener('click', () => {
+      if (confirm('¿Restablecer todos los textos legales y carta de calidad a los valores oficiales por defecto?')) {
+        resetLegalDefaults();
+      }
+    });
+  }
+}
+
+async function loadLegalData() {
+  try {
+    let data = null;
+    const local = localStorage.getItem('pajarillo_legal_data');
+    if (local) {
+      data = JSON.parse(local);
+    } else {
+      const res = await fetch('./data/legal.json?t=' + Date.now()).catch(() => null);
+      if (res && res.ok) {
+        data = await res.json().catch(() => null);
+      }
+    }
+
+    if (data) {
+      legalDataState = data;
+      populateLegalForm(data);
+    }
+  } catch (err) {
+    console.warn('Error al cargar datos de legal y calidad:', err);
+  }
+}
+
+function populateLegalForm(data) {
+  if (!data) return;
+
+  const setVal = (id, val) => {
+    const el = document.getElementById(id);
+    if (el && val !== undefined && val !== null) el.value = val;
+  };
+
+  // General
+  const g = data.general || {};
+  setVal('legal-titular', g.titular);
+  setVal('legal-cif', g.cif);
+  setVal('legal-area', g.area);
+  setVal('legal-direccion', g.direccion);
+  setVal('legal-telefono', g.telefono);
+  setVal('legal-email', g.email);
+  setVal('legal-email-secundario', g.email_secundario);
+  setVal('legal-dpd-email', g.dpd_email);
+  setVal('legal-sede-electronica', g.sede_electronica);
+  setVal('legal-ultima-actualizacion', g.ultima_actualizacion);
+  setVal('legal-marco-legal', g.marco_legal);
+
+  // Aviso
+  const a = data.aviso || {};
+  setVal('legal-aviso-tag', a.tag);
+  setVal('legal-aviso-titulo', a.titulo);
+  setVal('legal-aviso-intro', a.intro);
+  setVal('legal-aviso-objeto-titulo', a.objeto_titulo);
+  setVal('legal-aviso-objeto-texto', a.objeto_texto);
+  setVal('legal-aviso-condiciones-titulo', a.condiciones_titulo);
+  setVal('legal-aviso-condiciones-texto', a.condiciones_texto);
+  setVal('legal-aviso-propiedad-titulo', a.propiedad_titulo);
+  setVal('legal-aviso-propiedad-texto', a.propiedad_texto);
+  setVal('legal-aviso-responsabilidad-titulo', a.responsabilidad_titulo);
+  setVal('legal-aviso-responsabilidad-texto', a.responsabilidad_texto);
+  setVal('legal-aviso-legislacion-titulo', a.legislacion_titulo);
+  setVal('legal-aviso-legislacion-texto', a.legislacion_texto);
+
+  // Privacidad
+  const p = data.privacidad || {};
+  setVal('legal-priv-tag', p.tag);
+  setVal('legal-priv-titulo', p.titulo);
+  setVal('legal-priv-intro', p.intro);
+  setVal('legal-priv-responsable-titulo', p.responsable_titulo);
+  setVal('legal-priv-responsable-texto', p.responsable_texto);
+  setVal('legal-priv-finalidad-titulo', p.finalidad_titulo);
+  setVal('legal-priv-finalidad-texto', p.finalidad_texto);
+  setVal('legal-priv-conservacion-titulo', p.conservacion_titulo);
+  setVal('legal-priv-conservacion-texto', p.conservacion_texto);
+  setVal('legal-priv-derechos-titulo', p.derechos_titulo);
+  setVal('legal-priv-derechos-texto', p.derechos_texto);
+  setVal('legal-priv-seguridad-titulo', p.seguridad_titulo);
+  setVal('legal-priv-seguridad-texto', p.seguridad_texto);
+
+  // Cookies
+  const c = data.cookies || {};
+  setVal('legal-cookies-tag', c.tag);
+  setVal('legal-cookies-titulo', c.titulo);
+  setVal('legal-cookies-intro', c.intro);
+  setVal('legal-cookies-definicion-titulo', c.definicion_titulo);
+  setVal('legal-cookies-definicion-texto', c.definicion_texto);
+  setVal('legal-cookies-clasificacion-titulo', c.clasificacion_titulo);
+  setVal('legal-cookies-clasificacion-texto', c.clasificacion_texto);
+  setVal('legal-cookies-bloqueo-titulo', c.bloqueo_titulo);
+  setVal('legal-cookies-bloqueo-texto', c.bloqueo_texto);
+
+  // Accesibilidad
+  const acc = data.accesibilidad || {};
+  setVal('legal-acc-tag', acc.tag);
+  setVal('legal-acc-titulo', acc.titulo);
+  setVal('legal-acc-intro', acc.intro);
+  setVal('legal-acc-cumplimiento-titulo', acc.cumplimiento_titulo);
+  setVal('legal-acc-cumplimiento-texto', acc.cumplimiento_texto);
+  setVal('legal-acc-noaccesible-titulo', acc.noaccesible_titulo);
+  setVal('legal-acc-noaccesible-texto', acc.noaccesible_texto);
+  setVal('legal-acc-preparacion-titulo', acc.preparacion_titulo);
+  setVal('legal-acc-preparacion-texto', acc.preparacion_texto);
+  setVal('legal-acc-contacto-titulo', acc.contacto_titulo);
+  setVal('legal-acc-contacto-texto', acc.contacto_texto);
+  setVal('legal-acc-reclamaciones-titulo', acc.reclamaciones_titulo);
+  setVal('legal-acc-reclamaciones-texto', acc.reclamaciones_texto);
+
+  // Calidad
+  const cal = data.calidad || {};
+  setVal('legal-calidad-tag', cal.tag);
+  setVal('legal-calidad-titulo', cal.titulo);
+  setVal('legal-calidad-intro', cal.intro);
+  setVal('legal-calidad-mision-titulo', cal.mision_titulo);
+  setVal('legal-calidad-mision-texto', cal.mision_texto);
+  setVal('legal-calidad-compromisos-titulo', cal.compromisos_titulo);
+  setVal('legal-calidad-compromisos-texto', cal.compromisos_texto);
+  setVal('legal-calidad-indicadores-titulo', cal.indicadores_titulo);
+  setVal('legal-calidad-indicadores-texto', cal.indicadores_texto);
+  setVal('legal-calidad-quejas-titulo', cal.quejas_titulo);
+  setVal('legal-calidad-quejas-texto', cal.quejas_texto);
+}
+
+function collectLegalForm() {
+  const getVal = (id, fallback = '') => {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : fallback;
+  };
+
+  return {
+    general: {
+      titular: getVal('legal-titular', 'Excmo. Ayuntamiento de Huelma'),
+      cif: getVal('legal-cif', 'P2304400B'),
+      area: getVal('legal-area', 'Concejalía de Patrimonio Histórico, Cultura y Turismo'),
+      direccion: getVal('legal-direccion', 'Calle Cárcel, 2 · 23560 Huelma (Jaén), España'),
+      telefono: getVal('legal-telefono', '(+34) 953 39 00 10'),
+      email: getVal('legal-email', 'turismo@elpajarillo.es'),
+      email_secundario: getVal('legal-email-secundario', 'ayuntamiento@huelma.es'),
+      dpd_email: getVal('legal-dpd-email', 'dpd@huelma.es'),
+      sede_electronica: getVal('legal-sede-electronica', 'https://huelma.sedelectronica.es'),
+      ultima_actualizacion: getVal('legal-ultima-actualizacion', 'Noviembre de 2026'),
+      marco_legal: getVal('legal-marco-legal', 'LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018')
+    },
+    aviso: {
+      tag: getVal('legal-aviso-tag', 'Conforme a la Ley 34/2002 (LSSI-CE)'),
+      titulo: getVal('legal-aviso-titulo', '1. Aviso Legal'),
+      intro: getVal('legal-aviso-intro'),
+      objeto_titulo: getVal('legal-aviso-objeto-titulo', '1.1. Objeto del Sitio Web'),
+      objeto_texto: getVal('legal-aviso-objeto-texto'),
+      condiciones_titulo: getVal('legal-aviso-condiciones-titulo', '1.2. Condiciones Generales de Uso'),
+      condiciones_texto: getVal('legal-aviso-condiciones-texto'),
+      propiedad_titulo: getVal('legal-aviso-propiedad-titulo', '1.3. Propiedad Intelectual e Industrial'),
+      propiedad_texto: getVal('legal-aviso-propiedad-texto'),
+      responsabilidad_titulo: getVal('legal-aviso-responsabilidad-titulo', '1.4. Exclusión de Responsabilidades'),
+      responsabilidad_texto: getVal('legal-aviso-responsabilidad-texto'),
+      legislacion_titulo: getVal('legal-aviso-legislacion-titulo', '1.5. Legislación y Fuero Aplicable'),
+      legislacion_texto: getVal('legal-aviso-legislacion-texto')
+    },
+    privacidad: {
+      tag: getVal('legal-priv-tag', 'Conforme a RGPD (UE 2016/679) y LOPDGDD (LO 3/2018)'),
+      titulo: getVal('legal-priv-titulo', '2. Política de Privacidad'),
+      intro: getVal('legal-priv-intro'),
+      responsable_titulo: getVal('legal-priv-responsable-titulo', '2.1. Responsable del Tratamiento y DPD'),
+      responsable_texto: getVal('legal-priv-responsable-texto'),
+      finalidad_titulo: getVal('legal-priv-finalidad-titulo', '2.2. Finalidades del Tratamiento y Bases Jurídicas'),
+      finalidad_texto: getVal('legal-priv-finalidad-texto'),
+      conservacion_titulo: getVal('legal-priv-conservacion-titulo', '2.3. Plazos de Conservación de los Datos'),
+      conservacion_texto: getVal('legal-priv-conservacion-texto'),
+      derechos_titulo: getVal('legal-priv-derechos-titulo', '2.4. Derechos de los Interesados y Vías de Ejercicio'),
+      derechos_texto: getVal('legal-priv-derechos-texto'),
+      seguridad_titulo: getVal('legal-priv-seguridad-titulo', '2.5. Medidas de Seguridad y Cesiones'),
+      seguridad_texto: getVal('legal-priv-seguridad-texto')
+    },
+    cookies: {
+      tag: getVal('legal-cookies-tag', 'Conforme a la Guía sobre el uso de cookies de la AEPD'),
+      titulo: getVal('legal-cookies-titulo', '3. Política de Cookies'),
+      intro: getVal('legal-cookies-intro'),
+      definicion_titulo: getVal('legal-cookies-definicion-titulo', '3.1. ¿Qué son las cookies?'),
+      definicion_texto: getVal('legal-cookies-definicion-texto'),
+      clasificacion_titulo: getVal('legal-cookies-clasificacion-titulo', '3.2. Clasificación de Cookies Utilizadas en este Portal'),
+      clasificacion_texto: getVal('legal-cookies-clasificacion-texto'),
+      bloqueo_titulo: getVal('legal-cookies-bloqueo-titulo', '3.3. Cómo Modificar, Bloquear o Eliminar las Cookies'),
+      bloqueo_texto: getVal('legal-cookies-bloqueo-texto')
+    },
+    accesibilidad: {
+      tag: getVal('legal-acc-tag', 'Conforme al Real Decreto 1112/2018'),
+      titulo: getVal('legal-acc-titulo', '4. Declaración de Accesibilidad'),
+      intro: getVal('legal-acc-intro'),
+      cumplimiento_titulo: getVal('legal-acc-cumplimiento-titulo', '4.1. Situación de Cumplimiento'),
+      cumplimiento_texto: getVal('legal-acc-cumplimiento-texto'),
+      noaccesible_titulo: getVal('legal-acc-noaccesible-titulo', '4.2. Contenido No Accesible y Excepciones'),
+      noaccesible_texto: getVal('legal-acc-noaccesible-texto'),
+      preparacion_titulo: getVal('legal-acc-preparacion-titulo', '4.3. Preparación de la Presente Declaración'),
+      preparacion_texto: getVal('legal-acc-preparacion-texto'),
+      contacto_titulo: getVal('legal-acc-contacto-titulo', '4.4. Mecanismos de Comunicación y Observaciones'),
+      contacto_texto: getVal('legal-acc-contacto-texto'),
+      reclamaciones_titulo: getVal('legal-acc-reclamaciones-titulo', '4.5. Procedimiento de Aplicación y Reclamaciones'),
+      reclamaciones_texto: getVal('legal-acc-reclamaciones-texto')
+    },
+    calidad: {
+      tag: getVal('legal-calidad-tag', 'Normas de Calidad en el Servicio Público'),
+      titulo: getVal('legal-calidad-titulo', '5. Carta de Servicios y Compromisos de Calidad'),
+      intro: getVal('legal-calidad-intro'),
+      mision_titulo: getVal('legal-calidad-mision-titulo', '5.1. Misión, Visión y Valores de Servicio'),
+      mision_texto: getVal('legal-calidad-mision-texto'),
+      compromisos_titulo: getVal('legal-calidad-compromisos-titulo', '5.2. Compromisos Concretos con los Visitantes'),
+      compromisos_texto: getVal('legal-calidad-compromisos-texto'),
+      indicadores_titulo: getVal('legal-calidad-indicadores-titulo', '5.3. Indicadores de Calidad y Evaluación Continua'),
+      indicadores_texto: getVal('legal-calidad-indicadores-texto'),
+      quejas_titulo: getVal('legal-calidad-quejas-titulo', '5.4. Buzón de Sugerencias, Quejas y Felicitaciones'),
+      quejas_texto: getVal('legal-calidad-quejas-texto')
+    }
+  };
+}
+
+async function saveLegalData(showToastMsg = true) {
+  const data = collectLegalForm();
+  legalDataState = data;
+  localStorage.setItem('pajarillo_legal_data', JSON.stringify(data));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_legal_data' }));
+
+  try {
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_legal', data: data })
+    });
+  } catch (e) {}
+
+  if (showToastMsg) {
+    showToast('💾 Textos normativos y Carta de Calidad guardados correctamente.');
+  }
+}
+
+async function resetLegalDefaults() {
+  try {
+    const res = await fetch('./data/legal.json?t=' + Date.now()).catch(() => null);
+    let defaults = null;
+    if (res && res.ok) {
+      defaults = await res.json().catch(() => null);
+    }
+    if (defaults) {
+      populateLegalForm(defaults);
+      await saveLegalData(false);
+      showToast('↺ Textos oficiales y Carta de Calidad restaurados con éxito.');
+    }
+  } catch (err) {
+    showToast('⚠️ No se pudieron cargar los valores por defecto.');
+  }
 }
 
