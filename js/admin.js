@@ -1807,6 +1807,25 @@ window.deletePanel = async function(id) {
 // ═══════════════════════════════════════════
 const AGENDA_STORAGE_KEY = 'pajarillo_agenda_data';
 
+function purgeExampleActivities(list) {
+  if (!Array.isArray(list)) return [];
+  const exampleKeywords = [
+    'mito del héroe',
+    'modela tu cabeza',
+    'treinta años de investigaciones',
+    'noche en el santuario',
+    'noche en la iglesia'
+  ];
+  return list.filter(act => {
+    const title = typeof act.title === 'object' ? (act.title.es || '') : (act.title || '');
+    const titleLower = title.toLowerCase();
+    const isExample = exampleKeywords.some(kw => titleLower.includes(kw));
+    const isLegacyId = act.id === 1 || act.id === 2 || act.id === 3 || act.id === 4 ||
+                       act.id === '1' || act.id === '2' || act.id === '3' || act.id === '4';
+    return !(isExample || isLegacyId);
+  });
+}
+
 async function loadAgenda() {
   let loaded = false;
 
@@ -1816,7 +1835,7 @@ async function loadAgenda() {
     if (res && res.ok) {
       const data = await res.json();
       if (data && Array.isArray(data.activities)) {
-        agendaData = data.activities;
+        agendaData = purgeExampleActivities(data.activities);
         localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
         loaded = true;
       }
@@ -1830,7 +1849,10 @@ async function loadAgenda() {
       try {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          agendaData = parsed;
+          agendaData = purgeExampleActivities(parsed);
+          if (agendaData.length !== parsed.length) {
+            localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+          }
           loaded = true;
         }
       } catch (e) {}
@@ -1842,7 +1864,7 @@ async function loadAgenda() {
     try {
       const res = await fetch('./data/agenda.json?t=' + Date.now());
       const data = await res.json();
-      agendaData = Array.isArray(data.activities) ? data.activities : [];
+      agendaData = purgeExampleActivities(Array.isArray(data.activities) ? data.activities : []);
       localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
     } catch (err) {
       console.error('Error cargando agenda JSON:', err);
@@ -1915,11 +1937,11 @@ function renderAgendaList() {
         </p>
       </div>
       <div class="panel-actions-group" style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
-        <button type="button" class="btn-admin ${isActive ? 'btn-admin-success' : 'btn-admin-warning'}" style="padding: 5px 10px; font-size: 0.78rem; font-weight: 700;" onclick="window.toggleActivityStatus(${act.id})" title="${isActive ? 'Desactivar / Ocultar de la web (dejar en borrador)' : 'Activar / Publicar inmediatamente en la web'}">
+        <button type="button" class="btn-admin ${isActive ? 'btn-admin-success' : 'btn-admin-warning'}" style="padding: 5px 10px; font-size: 0.78rem; font-weight: 700;" onclick="window.toggleActivityStatus('${act.id}')" title="${isActive ? 'Desactivar / Ocultar de la web (dejar en borrador)' : 'Activar / Publicar inmediatamente en la web'}">
           ${isActive ? '🟢 Publicada' : '⚪ Activar'}
         </button>
-        <button type="button" class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="window.editActivity(${act.id})" title="Editar">✏️</button>
-        <button type="button" class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="window.deleteActivity(${act.id})" title="Eliminar">🗑️</button>
+        <button type="button" class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="window.editActivity('${act.id}')" title="Editar">✏️</button>
+        <button type="button" class="btn-admin btn-admin-danger" style="padding: 6px 10px;" onclick="window.deleteActivity('${act.id}')" title="Eliminar">🗑️</button>
       </div>
     `;
     DOM.agendaList.appendChild(li);
@@ -1952,7 +1974,7 @@ if (actActiveCheckbox) {
 }
 
 window.editActivity = function(id) {
-  const act = agendaData.find(a => a.id === id);
+  const act = agendaData.find(a => String(a.id) === String(id));
   if (!act) return;
   document.getElementById('act-id').value = act.id;
   document.getElementById('act-title-es').value = (act.title && (act.title.es || act.title)) || '';
@@ -1982,7 +2004,7 @@ window.editActivity = function(id) {
 };
 
 window.toggleActivityStatus = async function(id) {
-  const act = agendaData.find(a => a.id === id);
+  const act = agendaData.find(a => String(a.id) === String(id));
   if (!act) return;
 
   const newState = !(act.active !== false);
@@ -2015,9 +2037,9 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   const actIdVal = document.getElementById('act-id').value;
   const isEditing = Boolean(actIdVal);
-  const targetId = isEditing ? Number(actIdVal) : Date.now();
+  const targetId = isEditing ? (isNaN(Number(actIdVal)) ? actIdVal : Number(actIdVal)) : Date.now();
 
-  const existingAct = isEditing ? agendaData.find(a => a.id === targetId) : null;
+  const existingAct = isEditing ? agendaData.find(a => String(a.id) === String(targetId)) : null;
   const spotsVal = parseInt(document.getElementById('act-spots').value) || 25;
   const activeInput = document.getElementById('act-active');
   const isActive = activeInput ? activeInput.checked : true;
@@ -2059,7 +2081,7 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
   } catch (err) {}
 
   if (isEditing) {
-    const idx = agendaData.findIndex(a => a.id === targetId);
+    const idx = agendaData.findIndex(a => String(a.id) === String(targetId));
     if (idx >= 0) agendaData[idx] = newAct;
     showToast(isActive ? '✅ Actividad actualizada y publicada' : '✅ Actividad guardada como borrador');
   } else {
@@ -2116,10 +2138,22 @@ window.deleteActivity = async function(id) {
       })
     });
   } catch (e) {}
-  agendaData = agendaData.filter(a => a.id !== id);
+  agendaData = agendaData.filter(a => String(a.id) !== String(id));
   await window.saveAllAgenda(false);
   renderAgendaList();
   showToast('🗑️ Actividad eliminada de la agenda');
+};
+
+window.clearAllAgenda = async function() {
+  if (!agendaData || agendaData.length === 0) {
+    showToast('ℹ️ La agenda ya está completamente vacía');
+    return;
+  }
+  if (!confirm('¿Estás seguro de que deseas vaciar por completo la agenda y eliminar TODAS las actividades? Esta acción no se puede deshacer.')) return;
+  agendaData = [];
+  await window.saveAllAgenda(true);
+  renderAgendaList();
+  showToast('🗑️ Todas las actividades han sido eliminadas');
 };
 
 // ═══════════════════════════════════════════

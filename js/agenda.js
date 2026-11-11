@@ -5,6 +5,25 @@
 
 const AGENDA_STORAGE_KEY = 'pajarillo_agenda_data';
 
+function purgeExampleActivities(list) {
+  if (!Array.isArray(list)) return [];
+  const exampleKeywords = [
+    'mito del héroe',
+    'modela tu cabeza',
+    'treinta años de investigaciones',
+    'noche en el santuario',
+    'noche en la iglesia'
+  ];
+  return list.filter(act => {
+    const title = typeof act.title === 'object' ? (act.title.es || '') : (act.title || '');
+    const titleLower = title.toLowerCase();
+    const isExample = exampleKeywords.some(kw => titleLower.includes(kw));
+    const isLegacyId = act.id === 1 || act.id === 2 || act.id === 3 || act.id === 4 ||
+                       act.id === '1' || act.id === '2' || act.id === '3' || act.id === '4';
+    return !(isExample || isLegacyId);
+  });
+}
+
 export class AgendaManager {
   constructor(i18n) {
     this.i18n = i18n;
@@ -42,7 +61,7 @@ export class AgendaManager {
       if (res && res.ok) {
         const data = await res.json();
         if (data && Array.isArray(data.activities)) {
-          this.activities = data.activities;
+          this.activities = purgeExampleActivities(data.activities);
           localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
           loaded = true;
         }
@@ -56,7 +75,10 @@ export class AgendaManager {
         try {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed)) {
-            this.activities = parsed;
+            this.activities = purgeExampleActivities(parsed);
+            if (this.activities.length !== parsed.length) {
+              localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
+            }
             loaded = true;
           }
         } catch (e) {}
@@ -68,7 +90,7 @@ export class AgendaManager {
       try {
         const res = await fetch('./data/agenda.json?t=' + Date.now());
         const data = await res.json();
-        this.activities = Array.isArray(data.activities) ? data.activities : [];
+        this.activities = purgeExampleActivities(Array.isArray(data.activities) ? data.activities : []);
         localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
       } catch (err) {
         this.activities = [];
