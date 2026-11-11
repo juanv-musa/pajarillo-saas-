@@ -10,6 +10,7 @@ class AudiovisualKiosk {
     this.idleTimer = null;
     this.controlsTimer = null;
     this.screensaverIdleTimer = null;
+    this.idleTimeoutMs = 120000; // 2 minutos (120 segundos) desde fin de vídeo o reposo
 
     // Elementos DOM
     this.dom = {
@@ -211,9 +212,11 @@ class AudiovisualKiosk {
       });
     }
 
-    // Si nadie toca la pantalla en 45 segundos en el menú de los 4 vídeos, activar salvapantallas
+    // Si nadie toca la pantalla en 2 minutos (120s) en el menú, activar salvapantallas
     const restartScreensaverInactivity = () => {
+      // Si el reproductor está abierto o el vídeo reproduciéndose, NUNCA iniciar cuenta atrás de salvapantallas
       if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) {
+        clearTimeout(this.screensaverIdleTimer);
         return;
       }
       clearTimeout(this.screensaverIdleTimer);
@@ -221,7 +224,7 @@ class AudiovisualKiosk {
         if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
           this.showScreensaver();
         }
-      }, 45000);
+      }, this.idleTimeoutMs);
     };
 
     window.addEventListener('click', restartScreensaverInactivity, { passive: true });
@@ -233,6 +236,10 @@ class AudiovisualKiosk {
 
   showScreensaver() {
     if (!this.dom.screensaver) return;
+    // CUIDADO: NUNCA activar salvapantallas si un vídeo está en reproducción o el reproductor está abierto
+    if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) return;
+    if (this.dom.videoElement && !this.dom.videoElement.paused && !this.dom.videoElement.ended) return;
+
     this.dom.screensaver.classList.add('active');
     if (this.dom.screensaverVideo) {
       this.dom.screensaverVideo.play().catch(() => {});
@@ -245,13 +252,13 @@ class AudiovisualKiosk {
     if (this.dom.screensaverVideo) {
       this.dom.screensaverVideo.pause();
     }
-    // Reiniciar temporizador de inactividad
+    // Reiniciar temporizador de inactividad de 2 minutos
     clearTimeout(this.screensaverIdleTimer);
     this.screensaverIdleTimer = setTimeout(() => {
       if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
         this.showScreensaver();
       }
-    }, 45000);
+    }, this.idleTimeoutMs);
   }
 
   playVideoById(id) {
@@ -472,13 +479,13 @@ class AudiovisualKiosk {
     }
     this.activeVideoIndex = null;
 
-    // Reiniciar temporizador para volver al salvapantallas tras 45s de inactividad
+    // Reiniciar temporizador para volver al salvapantallas tras 2 minutos (120s) desde que terminó el vídeo
     clearTimeout(this.screensaverIdleTimer);
     this.screensaverIdleTimer = setTimeout(() => {
       if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
         this.showScreensaver();
       }
-    }, 45000);
+    }, this.idleTimeoutMs);
   }
 
   onTimeUpdate() {

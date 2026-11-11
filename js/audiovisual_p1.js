@@ -29,6 +29,7 @@ class AudiovisualP1 {
     this.audioDescVideo = null;
     this.activeType = null;
     this.screensaverIdleTimer = null;
+    this.idleTimeoutMs = 120000; // 2 minutos (120 segundos) desde fin de vídeo o reposo
     this.controlsFadeTimer = null;
   }
 
@@ -376,6 +377,10 @@ class AudiovisualP1 {
 
   showScreensaver() {
     if (!this.dom.screensaver) return;
+    // CUIDADO: NUNCA activar salvapantallas si un vídeo está reproduciéndose o el reproductor está abierto
+    if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) return;
+    if (this.dom.videoElement && !this.dom.videoElement.paused && !this.dom.videoElement.ended) return;
+
     this.dom.screensaver.classList.add('active');
     if (this.dom.screensaverVideo) {
       this.dom.screensaverVideo.play().catch(() => {});
@@ -394,6 +399,7 @@ class AudiovisualP1 {
   setupKioskInactivity() {
     const onUserActive = () => {
       if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) {
+        clearTimeout(this.screensaverIdleTimer);
         return;
       }
       this.restartIdleTimer();
@@ -409,11 +415,15 @@ class AudiovisualP1 {
 
   restartIdleTimer() {
     clearTimeout(this.screensaverIdleTimer);
+    // Si el reproductor está abierto viendo un documental, NUNCA iniciar temporizador
+    if (this.dom.playerModal && this.dom.playerModal.classList.contains('active')) {
+      return;
+    }
     this.screensaverIdleTimer = setTimeout(() => {
       if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
         this.showScreensaver();
       }
-    }, 45000);
+    }, this.idleTimeoutMs);
   }
 
   formatSeconds(sec) {
