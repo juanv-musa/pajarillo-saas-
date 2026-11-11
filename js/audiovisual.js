@@ -185,8 +185,8 @@ class AudiovisualKiosk {
     // Configurar vídeo en bucle para el salvapantallas
     this.updateScreensaverSource();
 
-    // Arrancar el salvapantallas inicialmente en bucle
-    this.showScreensaver();
+    // Iniciar con la parrilla de selección de documentales directamente
+    this.hideScreensaver();
 
     // Salir del salvapantallas al tocarlo
     const onExitScreensaver = (e) => {
