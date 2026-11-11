@@ -156,37 +156,34 @@ class AudiovisualP1 {
     const adDur = this.audioDescVideo.duration || mainDur;
 
     this.dom.grid.innerHTML = `
-      <!-- Tarjeta 1: Versión General (Proyección Oficial) -->
-      <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir Versión General de ${mainTitle}" onclick="window.tvKioskP1.playVideo('general')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKioskP1.playVideo('general');}">
+      <!-- Tarjeta 1: Vídeo Documental -->
+      <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${mainTitle}" onclick="window.tvKioskP1.playVideo('general')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKioskP1.playVideo('general');}">
         <div class="tv-card-media">
           <img src="${mainThumb}" alt="${mainTitle}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
           <div class="tv-card-overlay"></div>
-          <span style="position: absolute; top: 14px; left: 14px; background: rgba(26,36,30,0.9); color: #B59A57; font-size: 0.85rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; z-index: 2; border: 1px solid rgba(181, 154, 87, 0.45); letter-spacing: 0.5px; text-transform: uppercase;">
-            🎬 Versión General
-          </span>
           <span class="tv-card-duration">⏱ ${mainDur}</span>
           <div class="tv-card-play-icon" aria-hidden="true">▶</div>
         </div>
         <div class="tv-card-body" style="padding: 1.5rem 1.6rem 1.7rem;">
           <h3 class="tv-card-title" style="font-size: 1.65rem; margin-bottom: 0.4rem; color: #fff;">${mainTitle}</h3>
-          <p style="margin: 0; font-size: 0.95rem; color: var(--tv-text-muted); line-height: 1.45;">Versión general completa locutada y con subtítulos integrados.</p>
+          <p style="margin: 0; font-size: 0.95rem; color: var(--tv-text-muted); line-height: 1.45;">Documental completo locutado y con subtítulos integrados.</p>
         </div>
       </article>
 
-      <!-- Tarjeta 2: Audiodescripción en Español -->
-      <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir Versión con Audiodescripción en Español de ${adTitle}" onclick="window.tvKioskP1.playVideo('audiodesc')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKioskP1.playVideo('audiodesc');}">
+      <!-- Tarjeta 2: Audiodescripción 🇪🇸 -->
+      <article class="tv-card" tabindex="0" role="button" aria-label="Reproducir ${adTitle} con Audiodescripción" onclick="window.tvKioskP1.playVideo('audiodesc')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();window.tvKioskP1.playVideo('audiodesc');}">
         <div class="tv-card-media">
           <img src="${adThumb}" alt="${adTitle}" class="tv-card-thumb" loading="lazy" onerror="this.src='./assets/images/lobo.png'">
           <div class="tv-card-overlay"></div>
           <span style="position: absolute; top: 14px; left: 14px; background: rgba(46, 125, 50, 0.95); color: #fff; font-size: 0.85rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; z-index: 2; border: 1px solid rgba(255,255,255,0.35); letter-spacing: 0.5px; text-transform: uppercase;">
-            👁️ Audiodescripción en Español
+            Audiodescripción 🇪🇸
           </span>
           <span class="tv-card-duration">⏱ ${adDur}</span>
           <div class="tv-card-play-icon" aria-hidden="true" style="background: var(--tv-accent-gold); color: #111;">▶</div>
         </div>
         <div class="tv-card-body" style="padding: 1.5rem 1.6rem 1.7rem;">
           <h3 class="tv-card-title" style="font-size: 1.65rem; margin-bottom: 0.4rem; color: #fff;">${adTitle}</h3>
-          <p style="margin: 0; font-size: 0.95rem; color: var(--tv-text-muted); line-height: 1.45;">Versión accesible con narración descriptiva de escenas en español y subtítulos.</p>
+          <p style="margin: 0; font-size: 0.95rem; color: var(--tv-text-muted); line-height: 1.45;">Versión accesible con narración descriptiva de escenas y subtítulos.</p>
         </div>
       </article>
     `;
@@ -210,10 +207,12 @@ class AudiovisualP1 {
       ? (targetVideo.title.es || Object.values(targetVideo.title)[0] || '')
       : (targetVideo.title || '');
 
-    const badgeLabel = type === 'audiodesc' ? '👁️ Audiodescripción en Español' : '🎬 Versión General';
-
     if (this.dom.playingTitle) {
-      this.dom.playingTitle.innerHTML = `<span>${title}</span> <span style="font-size: 0.85rem; background: rgba(181,154,87,0.3); border: 1px solid #B59A57; color: #fff; padding: 2px 10px; border-radius: 999px; margin-left: 10px;">${badgeLabel}</span>`;
+      if (type === 'audiodesc') {
+        this.dom.playingTitle.innerHTML = `<span>${title}</span> <span style="font-size: 0.85rem; background: rgba(46, 125, 50, 0.4); border: 1px solid #4CAF50; color: #fff; padding: 2px 10px; border-radius: 999px; margin-left: 10px;">Audiodescripción 🇪🇸</span>`;
+      } else {
+        this.dom.playingTitle.innerHTML = `<span>${title}</span>`;
+      }
     }
 
     const videoUrl = targetVideo.videoUrl || (targetVideo.videoUrlAudioDesc || '');
