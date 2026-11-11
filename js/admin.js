@@ -233,11 +233,11 @@ function setupAuthTabs() {
         sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(matchedPerms));
         sessionStorage.setItem('pajarillo_admin_role', matchedRole);
         if (DOM.loginErrorMsg) DOM.loginErrorMsg.classList.add('hidden');
-        showToast(`✅ Acceso concedido (Modo Pruebas): ${user}`);
+        showToast('✅ Bienvenido al Panel de Control');
         showDashboard(user, currentUserPermissions, matchedRole);
       } else {
         if (DOM.loginErrorMsg) {
-          DOM.loginErrorMsg.textContent = 'Credenciales incorrectas. En GitHub usa usuario "admin" y clave "pajarillo" o "Pajarillo2026!".';
+          DOM.loginErrorMsg.textContent = 'Credenciales incorrectas. Comprueba tu usuario y contraseña.';
           DOM.loginErrorMsg.classList.remove('hidden');
         }
       }
