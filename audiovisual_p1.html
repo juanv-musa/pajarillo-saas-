@@ -177,6 +177,35 @@
       border-radius: 999px;
     }
 
+    .p1-track-btn {
+      background: transparent;
+      border: none;
+      color: rgba(255, 255, 255, 0.75);
+      font-family: var(--font-condensed);
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .p1-track-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .p1-track-btn.active {
+      background: var(--tv-accent-gold);
+      color: #111;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
     .p1-btn {
       background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.15);
@@ -311,9 +340,15 @@
       </div>
 
       <div class="p1-controls-group p1-interactive">
-        <button type="button" id="btn-p1-track" class="p1-btn" title="Alternar entre Vídeo Estándar y Audiodescripción" style="display: none; width: auto; border-radius: 999px; padding: 0 16px; font-size: 0.95rem; font-weight: 700; gap: 6px; font-family: var(--font-condensed);">
-          <span id="btn-p1-track-label">🎬 Vídeo Estándar</span>
-        </button>
+        <!-- Selector Versión Normal vs Audiodescripción -->
+        <div id="p1-track-selector" style="display: flex; gap: 4px; background: rgba(0, 0, 0, 0.55); padding: 4px; border-radius: 999px; border: 1px solid rgba(181, 154, 87, 0.4);">
+          <button type="button" id="btn-p1-track-normal" class="p1-track-btn active" title="Vídeo Estándar Locutado y Subtitulado">
+            🎬 Vídeo Normal
+          </button>
+          <button type="button" id="btn-p1-track-audiodesc" class="p1-track-btn" title="Vídeo con Audiodescripción Accesible">
+            👁️ Audiodescripción
+          </button>
+        </div>
         <button type="button" id="btn-p1-playpause" class="p1-btn" title="Pausar / Reanudar">⏸</button>
         <button type="button" id="btn-p1-mute" class="p1-btn" title="Activar / Desactivar Sonido">🔊</button>
       </div>

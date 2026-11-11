@@ -17,11 +17,14 @@ class AudiovisualP1 {
     this.btnPlayPause = document.getElementById('btn-p1-playpause');
     this.btnMute = document.getElementById('btn-p1-mute');
     this.btnToggleScreensaver = document.getElementById('btn-p1-toggle-screensaver');
-    this.btnTrack = document.getElementById('btn-p1-track');
-    this.btnTrackLabel = document.getElementById('btn-p1-track-label');
+    this.btnTrackNormal = document.getElementById('btn-p1-track-normal');
+    this.btnTrackAudiodesc = document.getElementById('btn-p1-track-audiodesc');
 
+    this.mainVideo = null;
+    this.screensaverVideo = null;
     this.currentVideo = null;
     this.activeTrack = 'normal';
+    this.isScreensaverMode = false;
     this.inactivityTimer = null;
     this.hasUserInteracted = false;
   }
@@ -61,42 +64,28 @@ class AudiovisualP1 {
       }
     }
 
-    let selectedVideo = null;
+    // 1. Resolver Vídeo Principal de Proyección (P1)
+    const savedMainId = localStorage.getItem('pajarillo_kiosk_p1_video');
+    const targetMainKey = idParam || savedMainId;
 
-    const savedScreensaver = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video');
-    const savedConfig = savedScreensaver || localStorage.getItem('pajarillo_kiosk_p1_video');
-    const targetKey = savedConfig || idParam;
-
-    if (targetKey) {
-      selectedVideo = videos.find(v => v.id === targetKey || v.videoUrl === targetKey);
+    if (targetMainKey) {
+      this.mainVideo = videos.find(v => v.id === targetMainKey || v.videoUrl === targetMainKey);
     }
-
-    if (!selectedVideo && videoParam) {
-      // Si se pasa una URL directa por parámetro
-      selectedVideo = {
+    if (!this.mainVideo && videoParam) {
+      this.mainVideo = {
+        id: 'param_video',
         title: { es: params.get('title') || 'Proyección Especial · Planta Alta' },
         category: 'Fondo Audiovisual 2',
         description: { es: 'Proyección continua en pantalla de 65 pulgadas de la Planta Alta.' },
         videoUrl: videoParam
       };
     }
-
-    if (!selectedVideo && savedConfig) {
-      selectedVideo = {
-        title: { es: 'Proyección Oficial · Planta Alta' },
-        category: 'Fondo Audiovisual 2',
-        description: { es: 'Proyección continua en pantalla de 65 pulgadas.' },
-        videoUrl: savedConfig
-      };
+    if (!this.mainVideo && videos.length > 0) {
+      this.mainVideo = videos[0];
     }
-
-    // Si aún no hay vídeo, usar el primero de la galería o fallback
-    if (!selectedVideo && videos.length > 0) {
-      selectedVideo = videos[0];
-    }
-
-    if (!selectedVideo) {
-      selectedVideo = {
+    if (!this.mainVideo) {
+      this.mainVideo = {
+        id: 'vid_default',
         title: { es: 'Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo' },
         category: 'Recreación 3D',
         description: { es: 'Recreación fotorrealista de la terraza monumental y el santuario heroico.' },
@@ -104,24 +93,32 @@ class AudiovisualP1 {
       };
     }
 
-    this.applyVideo(selectedVideo);
+    // 2. Resolver Vídeo de Salvapantallas (Modo Reposo P1)
+    const savedScreensaverId = localStorage.getItem('pajarillo_kiosk_p1_screensaver_video');
+    if (savedScreensaverId) {
+      this.screensaverVideo = videos.find(v => v.id === savedScreensaverId || v.videoUrl === savedScreensaverId);
+    }
+    if (!this.screensaverVideo) {
+      this.screensaverVideo = this.mainVideo;
+    }
+
+    // Iniciar con el Vídeo Principal de Sala
+    this.isScreensaverMode = false;
+    this.applyVideo(this.mainVideo);
   }
 
   applyVideo(video) {
+    if (!video) return;
     this.currentVideo = video;
     this.activeTrack = 'normal';
     const title = typeof video.title === 'object' ? (video.title.es || Object.values(video.title)[0]) : video.title;
 
-    if (this.titleEl) this.titleEl.textContent = title;
+    if (this.titleEl) {
+      this.titleEl.textContent = this.isScreensaverMode ? `✨ MODO REPOSO: ${title}` : title;
+    }
     document.title = `${title} · Fondo Audiovisual 2 (TV 65")`;
 
-    const hasAudioDesc = Boolean(video.videoUrlAudioDesc || video.videoAudiodescripcionUrl);
-    if (this.btnTrack) {
-      this.btnTrack.style.display = hasAudioDesc ? 'inline-flex' : 'none';
-      if (this.btnTrackLabel) this.btnTrackLabel.textContent = '🎬 Vídeo Estándar';
-      this.btnTrack.style.background = 'rgba(255, 255, 255, 0.08)';
-      this.btnTrack.style.color = '#fff';
-    }
+    this.updateTrackButtonsUI('normal');
 
     if (this.videoEl) {
       this.videoEl.src = video.videoUrl;
@@ -134,7 +131,7 @@ class AudiovisualP1 {
           .then(() => {
             // Reproduciendo correctamente
             if (this.videoEl.muted) {
-              if (this.soundAlertEl) this.soundAlertEl.classList.remove('hidden');
+              if (this.soundAlertEl && !this.isScreensaverMode) this.soundAlertEl.classList.remove('hidden');
               if (this.btnMute) this.btnMute.textContent = '🔇';
             } else {
               if (this.soundAlertEl) this.soundAlertEl.classList.add('hidden');
@@ -145,16 +142,67 @@ class AudiovisualP1 {
             console.log('Autoplay con sonido prevenido por el navegador, iniciando con mute:', err);
             this.videoEl.muted = true;
             if (this.btnMute) this.btnMute.textContent = '🔇';
-            if (this.soundAlertEl) this.soundAlertEl.classList.remove('hidden');
+            if (this.soundAlertEl && !this.isScreensaverMode) this.soundAlertEl.classList.remove('hidden');
             this.videoEl.play().catch(e => console.error('Error forzando reproducción:', e));
           });
       }
     }
   }
 
+  toggleScreensaverMode() {
+    if (this.isScreensaverMode) {
+      this.isScreensaverMode = false;
+      this.applyVideo(this.mainVideo);
+      if (this.overlayEl) this.overlayEl.classList.remove('hidden-overlay');
+      this.resetInactivity();
+    } else {
+      this.isScreensaverMode = true;
+      this.applyVideo(this.screensaverVideo || this.mainVideo);
+      if (this.overlayEl) this.overlayEl.classList.add('hidden-overlay');
+    }
+  }
+
+  switchTrack(track) {
+    if (!this.currentVideo || !this.videoEl) return;
+    this.activeTrack = track;
+    const curTime = this.videoEl.currentTime || 0;
+    const wasPaused = this.videoEl.paused;
+
+    const hasAudioDesc = Boolean(this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl);
+
+    if (track === 'audiodesc') {
+      if (hasAudioDesc) {
+        this.videoEl.src = this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl;
+      }
+      this.updateTrackButtonsUI('audiodesc');
+    } else {
+      this.videoEl.src = this.currentVideo.videoUrl;
+      this.updateTrackButtonsUI('normal');
+    }
+
+    this.videoEl.currentTime = curTime;
+    if (!wasPaused) {
+      this.videoEl.play().catch(() => {});
+    }
+    this.resetInactivity();
+  }
+
+  updateTrackButtonsUI(track) {
+    if (this.btnTrackNormal) {
+      this.btnTrackNormal.classList.toggle('active', track === 'normal');
+    }
+    if (this.btnTrackAudiodesc) {
+      this.btnTrackAudiodesc.classList.toggle('active', track === 'audiodesc');
+    }
+  }
+
   setupEvents() {
     // Interacción general para activar sonido y quitar aviso
     const unlockSound = () => {
+      if (this.isScreensaverMode) {
+        this.isScreensaverMode = false;
+        this.applyVideo(this.mainVideo);
+      }
       if (!this.hasUserInteracted) {
         this.hasUserInteracted = true;
         if (this.videoEl && this.videoEl.muted) {
@@ -205,36 +253,17 @@ class AudiovisualP1 {
       });
     }
 
-    // Botones de control
-    if (this.btnTrack) {
-      this.btnTrack.addEventListener('click', (e) => {
+    // Botones de pista de vídeo (Vídeo Normal vs Audiodescripción)
+    if (this.btnTrackNormal) {
+      this.btnTrackNormal.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (!this.currentVideo) return;
-        const hasAudioDesc = Boolean(this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl);
-        if (!hasAudioDesc) return;
-
-        const curTime = this.videoEl.currentTime || 0;
-        const wasPaused = this.videoEl.paused;
-
-        if (this.activeTrack === 'normal') {
-          this.activeTrack = 'audiodesc';
-          this.videoEl.src = this.currentVideo.videoUrlAudioDesc || this.currentVideo.videoAudiodescripcionUrl;
-          if (this.btnTrackLabel) this.btnTrackLabel.textContent = '👁️ Audiodescripción';
-          this.btnTrack.style.background = 'var(--tv-accent-gold)';
-          this.btnTrack.style.color = '#111';
-        } else {
-          this.activeTrack = 'normal';
-          this.videoEl.src = this.currentVideo.videoUrl;
-          if (this.btnTrackLabel) this.btnTrackLabel.textContent = '🎬 Vídeo Estándar';
-          this.btnTrack.style.background = 'rgba(255, 255, 255, 0.08)';
-          this.btnTrack.style.color = '#fff';
-        }
-
-        this.videoEl.currentTime = curTime;
-        if (!wasPaused) {
-          this.videoEl.play().catch(() => {});
-        }
-        this.resetInactivity();
+        this.switchTrack('normal');
+      });
+    }
+    if (this.btnTrackAudiodesc) {
+      this.btnTrackAudiodesc.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.switchTrack('audiodesc');
       });
     }
 
@@ -268,15 +297,7 @@ class AudiovisualP1 {
     if (this.btnToggleScreensaver) {
       this.btnToggleScreensaver.addEventListener('click', (e) => {
         e.stopPropagation();
-        if (this.overlayEl) {
-          this.overlayEl.classList.toggle('hidden-overlay');
-          if (this.overlayEl.classList.contains('hidden-overlay')) {
-            document.body.style.cursor = 'none';
-          } else {
-            document.body.style.cursor = 'default';
-            this.resetInactivity();
-          }
-        }
+        this.toggleScreensaverMode();
       });
     }
 
