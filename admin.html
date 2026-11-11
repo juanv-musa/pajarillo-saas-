@@ -1585,7 +1585,7 @@
                 </h3>
               </div>
               <p style="color: #A3B5AA; font-size: 0.86rem; margin: 0; line-height: 1.5;">
-                Estos son los 4 documentales y reconstrucciones que se muestran en la sección <strong>Galería Multimedia → Audiovisuales</strong> del portal público (y en las pantallas de 65"). Puedes editar sus títulos, descripciones, miniaturas o enlaces directos con el botón ✏️ Editar.
+                Estos son los documentales y reconstrucciones que se muestran en la sección <strong>Galería Multimedia → Audiovisuales</strong> del portal público (y en las pantallas de 65"). Puedes editar sus títulos, descripciones, miniaturas o enlaces directos con el botón ✏️ Editar, o eliminar los que no desees con el botón 🗑️ Quitar.
               </p>
             </div>
             <button type="button" class="btn-admin btn-admin-primary" style="background: #B59A57; color: #111; font-weight: 700;" onclick="window.openAddKioskVideoModal()">
@@ -2366,13 +2366,18 @@
           </label>
         </div>
 
-        <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.5rem;">
-          <button type="button" id="btn-cancel-kiosk-video" class="btn-admin btn-admin-outline">
-            Cancelar
+        <div style="display: flex; gap: 0.75rem; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap;">
+          <button type="button" id="btn-delete-kiosk-video" class="btn-admin btn-admin-danger" style="display: none; background: #C84B31; color: white; padding: 7px 14px; font-weight: 700; border-radius: 6px;">
+            🗑️ Eliminar Vídeo
           </button>
-          <button type="submit" class="btn-admin btn-admin-primary">
-            💾 Guardar Vídeo
-          </button>
+          <div style="display: flex; gap: 0.75rem; justify-content: flex-end; margin-left: auto;">
+            <button type="button" id="btn-cancel-kiosk-video" class="btn-admin btn-admin-outline">
+              Cancelar
+            </button>
+            <button type="submit" class="btn-admin btn-admin-primary">
+              💾 Guardar Vídeo
+            </button>
+          </div>
         </div>
       </form>
     </div>

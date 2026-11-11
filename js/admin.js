@@ -3167,11 +3167,16 @@ function renderKioskVideos() {
                 </p>
               </div>
             </div>
-            <div style="padding: 0.75rem 1rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3);">
+            <div style="padding: 0.75rem 1rem; border-top: 1px solid rgba(255,255,255,0.08); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.3); gap: 0.5rem; flex-wrap: wrap;">
               <span style="font-size: 0.74rem; color: #76A085; font-weight: 700;">● Pestaña Audiovisuales</span>
-              <button type="button" class="btn-admin btn-admin-primary" style="padding: 5px 12px; font-size: 0.8rem; background: #B59A57; color: #111; font-weight: 700; border-radius: 6px;" onclick="window.editKioskVideo('${v.id}')">
-                ✏️ Editar Vídeo
-              </button>
+              <div style="display: flex; gap: 0.4rem; align-items: center;">
+                <button type="button" class="btn-admin btn-admin-primary" style="padding: 5px 12px; font-size: 0.8rem; background: #B59A57; color: #111; font-weight: 700; border-radius: 6px;" onclick="window.editKioskVideo('${v.id}')" title="Editar vídeo">
+                  ✏️ Editar
+                </button>
+                <button type="button" class="btn-admin btn-admin-danger" style="padding: 5px 10px; font-size: 0.8rem; background: #C84B31; color: white; border-radius: 6px; font-weight: 700;" onclick="window.deleteKioskVideo('${v.id}')" title="Eliminar este vídeo">
+                  🗑️ Quitar
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -3186,6 +3191,7 @@ function setupKioskVideoEditor(onVideosChange) {
   const btnAdd = document.getElementById('btn-add-kiosk-video');
   const btnClose = document.getElementById('btn-close-kiosk-video-modal');
   const btnCancel = document.getElementById('btn-cancel-kiosk-video');
+  const btnDeleteModal = document.getElementById('btn-delete-kiosk-video');
   const modalTitle = document.getElementById('modal-kiosk-video-title');
 
   // Subida de archivos desde ordenador
@@ -3235,6 +3241,7 @@ function setupKioskVideoEditor(onVideosChange) {
     modal.classList.add('hidden');
     form.reset();
     document.getElementById('kiosk-video-id').value = '';
+    if (btnDeleteModal) btnDeleteModal.style.display = 'none';
   };
 
   const openModal = (video = null) => {
@@ -3244,6 +3251,7 @@ function setupKioskVideoEditor(onVideosChange) {
 
     if (video) {
       if (modalTitle) modalTitle.textContent = '✏️ Editar Vídeo del Fondo Audiovisual';
+      if (btnDeleteModal) btnDeleteModal.style.display = 'inline-flex';
       document.getElementById('kiosk-video-id').value = video.id;
       document.getElementById('kiosk-video-title').value = (typeof video.title === 'object' ? (video.title.es || Object.values(video.title)[0]) : video.title) || '';
       document.getElementById('kiosk-video-category').value = video.category || 'Recreación 3D';
@@ -3267,6 +3275,7 @@ function setupKioskVideoEditor(onVideosChange) {
       if (checkP1Screensaver) checkP1Screensaver.checked = (savedP1Screensaver === video.id || savedP1Screensaver === video.videoUrl);
     } else {
       if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
+      if (btnDeleteModal) btnDeleteModal.style.display = 'none';
       form.reset();
       document.getElementById('kiosk-video-id').value = '';
       document.getElementById('kiosk-video-category').value = 'Recreación 3D';
@@ -3289,6 +3298,15 @@ function setupKioskVideoEditor(onVideosChange) {
   if (btnAdd) btnAdd.addEventListener('click', () => openModal(null));
   if (btnClose) btnClose.addEventListener('click', closeModal);
   if (btnCancel) btnCancel.addEventListener('click', closeModal);
+  if (btnDeleteModal) {
+    btnDeleteModal.addEventListener('click', () => {
+      const idVal = document.getElementById('kiosk-video-id').value;
+      if (idVal) {
+        closeModal();
+        window.deleteKioskVideo(idVal);
+      }
+    });
+  }
 
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
@@ -3358,12 +3376,34 @@ function setupKioskVideoEditor(onVideosChange) {
 
   window.deleteKioskVideo = (id) => {
     const vid = kioskVideos.find(v => v.id === id);
-    const title = vid ? (typeof vid.title === 'object' ? vid.title.es : vid.title) : id;
+    const title = vid ? (typeof vid.title === 'object' ? (vid.title.es || Object.values(vid.title)[0]) : vid.title) : id;
     if (!confirm(`¿Deseas eliminar el vídeo "${title}" del fondo audiovisual?`)) return;
 
     kioskVideos = kioskVideos.filter(v => v.id !== id);
     localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
     window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
+
+    if (localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') === id) {
+      if (kioskVideos.length > 0) {
+        localStorage.setItem('pajarillo_kiosk_p0_screensaver_video', kioskVideos[0].id);
+      } else {
+        localStorage.removeItem('pajarillo_kiosk_p0_screensaver_video');
+      }
+    }
+    if (localStorage.getItem('pajarillo_kiosk_p1_video') === id) {
+      if (kioskVideos.length > 0) {
+        localStorage.setItem('pajarillo_kiosk_p1_video', kioskVideos[0].id);
+      } else {
+        localStorage.removeItem('pajarillo_kiosk_p1_video');
+      }
+    }
+    if (localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') === id) {
+      if (kioskVideos.length > 0) {
+        localStorage.setItem('pajarillo_kiosk_p1_screensaver_video', kioskVideos[0].id);
+      } else {
+        localStorage.removeItem('pajarillo_kiosk_p1_screensaver_video');
+      }
+    }
 
     try {
       fetch('./api/data.php', {
