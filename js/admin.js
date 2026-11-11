@@ -3862,9 +3862,9 @@ const DEFAULT_LOCALES = {
     patrimonio_img_fontanar: "./assets/images/santuario_ilustracion.png",
     galeria_title: "Galería Multimedia y Recursos Digitales",
     galeria_subtitle: "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
-    galeria_tab_fotos: "Fotografías HD",
+    galeria_tab_fotos: "Fotografías",
     galeria_tab_modelo3d: "Modelo 3D Interactivo",
-    galeria_tab_recursos: "Recursos Digitales e Interactivos",
+    galeria_tab_recursos: "Recursos Digitales",
     galeria_tab_videos: "Audiovisuales",
     desc_3d: "Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo en 360°, con soporte de realidad aumentada y control orbital.",
     horarios_title: "Horarios de Apertura",
@@ -3931,10 +3931,10 @@ const DEFAULT_LOCALES = {
     patrimonio_tab3: "A Sacred Landscape & El Fontanar: two sanctuaries articulated by a ceremonial ritual path...",
     galeria_title: "Photo Archive & Digital Resources",
     galeria_subtitle: "High-definition photography, 3D reconstructions, video guides, and downloadable research sheets.",
-    galeria_tab_fotos: "HD Photos",
+    galeria_tab_fotos: "Photographs",
     galeria_tab_modelo3d: "Interactive 3D Model",
-    galeria_tab_recursos: "Digital & Interactive Assets",
-    galeria_tab_videos: "Documentaries & Videos",
+    galeria_tab_recursos: "Digital Resources",
+    galeria_tab_videos: "Audiovisuals",
     desc_3d: "Explore the 3D digital reconstruction of the Iberian sculpture and El Pajarillo sanctuary in 360°, with VR/orbit controls.",
     horarios_title: "Opening Hours",
     horario_verano_titulo: "Summer Hours (Jun–Sep)",
@@ -4000,10 +4000,10 @@ const DEFAULT_LOCALES = {
     patrimonio_tab3: "Un Paysage Sacré et El Fontanar : deux sanctuaires reliés par un chemin rituel cérémoniel...",
     galeria_title: "Galerie Médias et Ressources Numériques",
     galeria_subtitle: "Photographies haute résolution, restitutions en 3D, vidéos documentaires et fiches scientifiques.",
-    galeria_tab_fotos: "Photos HD",
+    galeria_tab_fotos: "Photographies",
     galeria_tab_modelo3d: "Modèle 3D Interactif",
-    galeria_tab_recursos: "Ressources Numériques et 3D",
-    galeria_tab_videos: "Vidéos et Documentaires",
+    galeria_tab_recursos: "Ressources Numériques",
+    galeria_tab_videos: "Audiovisuels",
     desc_3d: "Explorez la reconstitution 3D interactive de la sculpture ibérique et du sanctuaire d'El Pajarillo à 360°.",
     horarios_title: "Horaires d'Ouverture",
     horario_verano_titulo: "Horaires d'Été (Juin–Sept)",
@@ -4467,6 +4467,18 @@ function loadSavedLocales() {
             if (!slide.sub_fr) slide.sub_fr = def.sub_fr || '';
           });
         }
+
+        // Limpieza/migración de nombres antiguos de pestañas de galería para evitar que vuelvan a cambiar
+        if (localesData[lang]) {
+          if (localesData[lang].galeria_tab_fotos === 'Fotografías HD') localesData[lang].galeria_tab_fotos = 'Fotografías';
+          if (localesData[lang].galeria_tab_recursos === 'Recursos Digitales e Interactivos') localesData[lang].galeria_tab_recursos = 'Recursos Digitales';
+          if (localesData[lang].galeria_tab_fotos === 'HD Photos') localesData[lang].galeria_tab_fotos = 'Photographs';
+          if (localesData[lang].galeria_tab_recursos === 'Digital & Interactive Assets') localesData[lang].galeria_tab_recursos = 'Digital Resources';
+          if (localesData[lang].galeria_tab_videos === 'Documentaries & Videos') localesData[lang].galeria_tab_videos = 'Audiovisuals';
+          if (localesData[lang].galeria_tab_fotos === 'Photos HD') localesData[lang].galeria_tab_fotos = 'Photographies';
+          if (localesData[lang].galeria_tab_recursos === 'Ressources Numériques et 3D') localesData[lang].galeria_tab_recursos = 'Ressources Numériques';
+          if (localesData[lang].galeria_tab_videos === 'Vidéos et Documentaires') localesData[lang].galeria_tab_videos = 'Audiovisuels';
+        }
       });
     }
   } catch (e) {}
@@ -4574,18 +4586,18 @@ function populateFormWithLang(lang) {
 
   setVal('cnt-galeria-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
   setVal('cnt-galeria-subtitle', c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.');
-  setVal('cnt-galeria-tab-fotos', c.galeria_tab_fotos || 'Fotografías HD');
+  setVal('cnt-galeria-tab-fotos', c.galeria_tab_fotos || 'Fotografías');
   setVal('cnt-galeria-tab-modelo3d', c.galeria_tab_modelo3d || 'Modelo 3D Interactivo');
-  setVal('cnt-galeria-tab-recursos', c.galeria_tab_recursos || 'Recursos Digitales e Interactivos');
+  setVal('cnt-galeria-tab-recursos', c.galeria_tab_recursos || 'Recursos Digitales');
   setVal('cnt-galeria-tab-videos', c.galeria_tab_videos || 'Audiovisuales');
   setVal('cnt-3d-desc', c.desc_3d);
 
   if (lang === 'es') {
     setVal('gallery-cfg-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
     setVal('gallery-cfg-subtitle', c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.');
-    setVal('gallery-tab-name-fotos', c.galeria_tab_fotos || 'Fotografías HD');
+    setVal('gallery-tab-name-fotos', c.galeria_tab_fotos || 'Fotografías');
     setVal('gallery-tab-name-modelo3d', c.galeria_tab_modelo3d || 'Modelo 3D Interactivo');
-    setVal('gallery-tab-name-recursos', c.galeria_tab_recursos || 'Recursos Digitales e Interactivos');
+    setVal('gallery-tab-name-recursos', c.galeria_tab_recursos || 'Recursos Digitales');
     setVal('gallery-tab-name-videos', c.galeria_tab_videos || 'Audiovisuales');
   }
 
@@ -5051,9 +5063,9 @@ function setupGalleryHeaderAndTabs() {
 
   if (inputTitle) inputTitle.value = c.galeria_title || 'Galería Multimedia y Recursos Digitales';
   if (inputSubtitle) inputSubtitle.value = c.galeria_subtitle || 'Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.';
-  if (inputTabFotos) inputTabFotos.value = c.galeria_tab_fotos || 'Fotografías HD';
+  if (inputTabFotos) inputTabFotos.value = c.galeria_tab_fotos || 'Fotografías';
   if (inputTabModelo3d) inputTabModelo3d.value = c.galeria_tab_modelo3d || 'Modelo 3D Interactivo';
-  if (inputTabRecursos) inputTabRecursos.value = c.galeria_tab_recursos || 'Recursos Digitales e Interactivos';
+  if (inputTabRecursos) inputTabRecursos.value = c.galeria_tab_recursos || 'Recursos Digitales';
   if (inputTabVideos) inputTabVideos.value = c.galeria_tab_videos || 'Audiovisuales';
 
   // Visibilidad de pestañas
@@ -5098,9 +5110,9 @@ function setupGalleryHeaderAndTabs() {
       if (!localesData.es) localesData.es = {};
       localesData.es.galeria_title = inputTitle ? inputTitle.value.trim() : 'Galería Multimedia y Recursos Digitales';
       localesData.es.galeria_subtitle = inputSubtitle ? inputSubtitle.value.trim() : '';
-      localesData.es.galeria_tab_fotos = inputTabFotos ? inputTabFotos.value.trim() : 'Fotografías HD';
+      localesData.es.galeria_tab_fotos = inputTabFotos ? inputTabFotos.value.trim() : 'Fotografías';
       localesData.es.galeria_tab_modelo3d = inputTabModelo3d ? inputTabModelo3d.value.trim() : 'Modelo 3D Interactivo';
-      localesData.es.galeria_tab_recursos = inputTabRecursos ? inputTabRecursos.value.trim() : 'Recursos Digitales e Interactivos';
+      localesData.es.galeria_tab_recursos = inputTabRecursos ? inputTabRecursos.value.trim() : 'Recursos Digitales';
       localesData.es.galeria_tab_videos = inputTabVideos ? inputTabVideos.value.trim() : 'Audiovisuales';
 
       // Sincronizar en tiempo real con los campos de `#subview-contents` si están en el DOM

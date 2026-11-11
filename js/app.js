@@ -341,13 +341,29 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   const langOverrides = (locales && locales[currentLang]) ? locales[currentLang] : null;
 
   const getCustomText = (field) => {
+    let val = null;
     if (langOverrides && langOverrides[field] !== undefined && langOverrides[field] !== '') {
-      return langOverrides[field];
+      val = langOverrides[field];
+    } else if (isSpanish && c[field] !== undefined && c[field] !== '') {
+      val = c[field];
     }
-    if (isSpanish && c[field] !== undefined && c[field] !== '') {
-      return c[field];
+    if (val !== null) {
+      if (field === 'galeria_tab_fotos') {
+        if (val === 'Fotografías HD') return 'Fotografías';
+        if (val === 'HD Photos') return 'Photographs';
+        if (val === 'Photos HD') return 'Photographies';
+      }
+      if (field === 'galeria_tab_recursos') {
+        if (val === 'Recursos Digitales e Interactivos') return 'Recursos Digitales';
+        if (val === 'Digital & Interactive Assets') return 'Digital Resources';
+        if (val === 'Ressources Numériques et 3D') return 'Ressources Numériques';
+      }
+      if (field === 'galeria_tab_videos') {
+        if (val === 'Documentaries & Videos') return 'Audiovisuals';
+        if (val === 'Vidéos et Documentaires') return 'Audiovisuels';
+      }
     }
-    return null;
+    return val;
   };
 
   const heroEyebrow = getCustomText('hero_eyebrow');

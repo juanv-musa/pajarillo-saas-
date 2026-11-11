@@ -103,10 +103,27 @@ export class I18nManager {
         if (!this.translations[lang].galeria) this.translations[lang].galeria = {};
         if (l.galeria_title) this.translations[lang].galeria.title = l.galeria_title;
         if (l.galeria_subtitle) this.translations[lang].galeria.subtitle = l.galeria_subtitle;
-        if (l.galeria_tab_fotos) this.translations[lang].galeria.tab_fotos = l.galeria_tab_fotos;
+        if (l.galeria_tab_fotos) {
+          let fVal = l.galeria_tab_fotos;
+          if (fVal === 'Fotografías HD') fVal = 'Fotografías';
+          if (fVal === 'HD Photos') fVal = 'Photographs';
+          if (fVal === 'Photos HD') fVal = 'Photographies';
+          this.translations[lang].galeria.tab_fotos = fVal;
+        }
         if (l.galeria_tab_modelo3d) this.translations[lang].galeria.tab_modelo3d = l.galeria_tab_modelo3d;
-        if (l.galeria_tab_recursos) this.translations[lang].galeria.tab_recursos = l.galeria_tab_recursos;
-        if (l.galeria_tab_videos) this.translations[lang].galeria.tab_videos = l.galeria_tab_videos;
+        if (l.galeria_tab_recursos) {
+          let rVal = l.galeria_tab_recursos;
+          if (rVal === 'Recursos Digitales e Interactivos') rVal = 'Recursos Digitales';
+          if (rVal === 'Digital & Interactive Assets') rVal = 'Digital Resources';
+          if (rVal === 'Ressources Numériques et 3D') rVal = 'Ressources Numériques';
+          this.translations[lang].galeria.tab_recursos = rVal;
+        }
+        if (l.galeria_tab_videos) {
+          let vVal = l.galeria_tab_videos;
+          if (vVal === 'Documentaries & Videos') vVal = 'Audiovisuals';
+          if (vVal === 'Vidéos et Documentaires') vVal = 'Audiovisuels';
+          this.translations[lang].galeria.tab_videos = vVal;
+        }
 
         if (!this.translations[lang].agenda) this.translations[lang].agenda = {};
         if (l.agenda_title) this.translations[lang].agenda.title = l.agenda_title;
