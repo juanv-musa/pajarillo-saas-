@@ -294,7 +294,7 @@ export class GalleryManager {
         this.btnTrackAudiodesc.style.color = '#c4d6cb';
         if (this.videoBadgeMode) {
           this.videoBadgeMode.textContent = 'Modo: 🎬 Locutado / Subtitulado estándar';
-          this.videoBadgeMode.style.color = 'var(--c-accent-gold-text)';
+          this.videoBadgeMode.style.color = 'var(--c-accent-gold-light, #F8E29B)';
           this.videoBadgeMode.style.background = 'rgba(181, 154, 87, 0.2)';
           this.videoBadgeMode.style.borderColor = 'rgba(181, 154, 87, 0.4)';
         }
@@ -374,7 +374,7 @@ export class GalleryManager {
           <button type="button" class="gallery-card" aria-label="${caption}" onclick="window.galleryInstance.openLightbox(${idx})">
             <img src="${item.thumb}" alt="${caption}" loading="lazy">
             <div class="gallery-card-overlay">
-              <span style="font-size: 0.72rem; text-transform: uppercase; color: var(--c-accent-gold-text); font-weight: 700;">${catLabel}</span>
+              <span class="gallery-card-category" style="font-size: 0.75rem; text-transform: uppercase; color: var(--c-accent-gold-light, #F8E29B); font-weight: 800; letter-spacing: 0.8px; text-shadow: 0 1px 4px rgba(0,0,0,0.95); margin-bottom: 0.25rem;">${catLabel}</span>
               <p class="gallery-caption">${caption}</p>
             </div>
           </button>

@@ -224,6 +224,20 @@ if ($method === 'POST') {
         exit;
     }
 
+    // Guardar / Sincronizar toda la lista de actividades de la agenda
+    if (isset($input['action']) && $input['action'] === 'save_all_activities') {
+        if (!hasModulePermission('agenda')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar la agenda.']);
+            exit;
+        }
+        $activities = is_array($input['activities'] ?? null) ? $input['activities'] : [];
+        $data = ['activities' => $activities];
+        writeJson($agendaFile, $data);
+        echo json_encode(['success' => true, 'count' => count($activities)]);
+        exit;
+    }
+
     // Activar / Desactivar actividad de agenda directamente
     if (isset($input['action']) && $input['action'] === 'toggle_activity') {
         if (!hasModulePermission('agenda')) {

@@ -1607,6 +1607,20 @@ function renderPanelsList() {
   }
 }
 
+window.saveAllPanels = async function() {
+  localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
+  try {
+    const order = panelsData.map(p => p.id);
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'reorder', order })
+    });
+  } catch (e) {}
+  showToast('💾 Paneles sincronizados con la web pública');
+};
+
 // Guardar panel
 DOM.panelForm.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -1801,7 +1815,7 @@ async function loadAgenda() {
     let res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
     if (res && res.ok) {
       const data = await res.json();
-      if (data && data.activities && Array.isArray(data.activities) && data.activities.length > 0) {
+      if (data && Array.isArray(data.activities)) {
         agendaData = data.activities;
         localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
         loaded = true;
@@ -1815,7 +1829,7 @@ async function loadAgenda() {
     if (saved !== null) {
       try {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
+        if (Array.isArray(parsed)) {
           agendaData = parsed;
           loaded = true;
         }
@@ -1828,10 +1842,8 @@ async function loadAgenda() {
     try {
       const res = await fetch('./data/agenda.json?t=' + Date.now());
       const data = await res.json();
-      agendaData = data.activities || [];
-      if (agendaData.length > 0) {
-        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
-      }
+      agendaData = Array.isArray(data.activities) ? data.activities : [];
+      localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
     } catch (err) {
       console.error('Error cargando agenda JSON:', err);
       agendaData = [];
@@ -2063,6 +2075,31 @@ DOM.agendaForm.addEventListener('submit', async (e) => {
   resetAgendaForm();
 });
 
+window.saveAllAgenda = async function(showToastMsg = true) {
+  localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
+  window.dispatchEvent(new StorageEvent('storage', { key: AGENDA_STORAGE_KEY }));
+
+  try {
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Admin-Auth': 'true'
+      },
+      body: JSON.stringify({
+        action: 'save_all_activities',
+        activities: agendaData,
+        admin_token: 'pajarillo_admin'
+      })
+    });
+  } catch (e) {}
+
+  if (showToastMsg) {
+    const published = agendaData.filter(a => a.active !== false).length;
+    showToast(`💾 Agenda guardada correctamente (${published} actividades visibles en la web)`);
+  }
+};
+
 window.deleteActivity = async function(id) {
   if (!confirm('¿Eliminar actividad programada?')) return;
   try {
@@ -2080,10 +2117,9 @@ window.deleteActivity = async function(id) {
     });
   } catch (e) {}
   agendaData = agendaData.filter(a => a.id !== id);
-  localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(agendaData));
-  window.dispatchEvent(new StorageEvent('storage', { key: AGENDA_STORAGE_KEY }));
+  await window.saveAllAgenda(false);
   renderAgendaList();
-  showToast('🗑️ Actividad eliminada');
+  showToast('🗑️ Actividad eliminada de la agenda');
 };
 
 // ═══════════════════════════════════════════
@@ -4378,6 +4414,13 @@ function setupContentEditor() {
       saveAllLocales();
     });
   }
+  document.querySelectorAll('.btn-save-content-shortcut').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      saveCurrentFormToLang(currentCmsLang);
+      saveAllLocales();
+    });
+  });
 
   const imgSelect = document.getElementById('select-hero-img-preset');
   const imgInput = document.getElementById('cnt-hero-card-img');

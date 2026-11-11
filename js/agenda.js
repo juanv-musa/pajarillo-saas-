@@ -41,7 +41,7 @@ export class AgendaManager {
       const res = await fetch('./api/data.php?entity=agenda&t=' + Date.now()).catch(() => null);
       if (res && res.ok) {
         const data = await res.json();
-        if (data && Array.isArray(data.activities) && data.activities.length > 0) {
+        if (data && Array.isArray(data.activities)) {
           this.activities = data.activities;
           localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
           loaded = true;
@@ -55,7 +55,7 @@ export class AgendaManager {
       if (saved !== null) {
         try {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             this.activities = parsed;
             loaded = true;
           }
@@ -63,15 +63,13 @@ export class AgendaManager {
       }
     }
 
-    // 3. Fallback a data/agenda.json estático
+    // 3. Fallback a data/agenda.json estático (solo si nunca se ha configurado)
     if (!loaded) {
       try {
         const res = await fetch('./data/agenda.json?t=' + Date.now());
         const data = await res.json();
-        this.activities = data.activities || [];
-        if (this.activities.length > 0) {
-          localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
-        }
+        this.activities = Array.isArray(data.activities) ? data.activities : [];
+        localStorage.setItem(AGENDA_STORAGE_KEY, JSON.stringify(this.activities));
       } catch (err) {
         this.activities = [];
       }
