@@ -2219,76 +2219,110 @@
                 Estos datos se sincronizan automáticamente con las cartelas de contacto, el pie de página normativo y las cláusulas del Aviso Legal y Privacidad.
               </p>
 
-              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
-                <div class="admin-form-group">
-                  <label for="legal-titular">Titular del Portal / Entidad Pública *</label>
-                  <input type="text" id="legal-titular" class="admin-input" required placeholder="Excmo. Ayuntamiento de Huelma">
+              <!-- 1. Entidad Pública Titular (3 columnas uniformes) -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-primary); margin-bottom: 0.75rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.35rem;">
+                  1. Entidad Pública Titular
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; align-items: start;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-titular" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Titular del Portal / Entidad Pública *</label>
+                    <input type="text" id="legal-titular" class="admin-input" required placeholder="Excmo. Ayuntamiento de Huelma">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-cif" style="min-height: 2.2rem; display: flex; align-items: flex-end;">C.I.F. / N.I.F. *</label>
+                    <input type="text" id="legal-cif" class="admin-input" required placeholder="P2304400B">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-area" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Área / Concejalía Gestora *</label>
+                    <input type="text" id="legal-area" class="admin-input" placeholder="Concejalía de Patrimonio Histórico, Cultura y Turismo">
+                  </div>
                 </div>
+              </div>
 
-                <div class="admin-form-group">
-                  <label for="legal-cif">C.I.F. / N.I.F. *</label>
-                  <input type="text" id="legal-cif" class="admin-input" required placeholder="P2304400B">
+              <!-- 2. Sedes Físicas y Direcciones (2 columnas balanceadas 50% / 50%) -->
+              <div style="margin-bottom: 1.5rem; background: #faf9f5; border: 1.5px solid #e8dec8; border-radius: 12px; padding: 1.15rem 1.25rem;">
+                <h4 style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-primary); margin-bottom: 0.75rem;">
+                  2. Direcciones Físicas (Diferenciadas)
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; align-items: start;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-direccion-ayto" style="min-height: 2.2rem; display: flex; align-items: flex-end; font-weight: 700;">
+                      🏛️ Sede Institucional (Ayuntamiento de Huelma) *
+                    </label>
+                    <input type="text" id="legal-direccion-ayto" class="admin-input" required placeholder="Plaza de España, 1 · 23560 Huelma (Jaén)">
+                    <span style="font-size: 0.74rem; color: var(--admin-muted); display: block; margin-top: 4px;">Sede oficial del Excmo. Ayuntamiento de Huelma (titular legal y DPD).</span>
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-direccion-centro" style="min-height: 2.2rem; display: flex; align-items: flex-end; font-weight: 700;">
+                      📍 Centro de Interpretación (Espacio Físico y Visitas) *
+                    </label>
+                    <input type="text" id="legal-direccion-centro" class="admin-input" required placeholder="Calle Cárcel, 2 · 23560 Huelma (Jaén)">
+                    <span style="font-size: 0.74rem; color: var(--admin-muted); display: block; margin-top: 4px;">Instalaciones del centro de interpretación y atención presencial.</span>
+                  </div>
                 </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-area">Área / Concejalía Gestora *</label>
-                  <input type="text" id="legal-area" class="admin-input" placeholder="Concejalía de Patrimonio Histórico, Cultura y Turismo">
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-direccion-ayto">🏛️ Sede Institucional del Ayuntamiento (Titular / Persona Jurídica) *</label>
-                  <input type="text" id="legal-direccion-ayto" class="admin-input" required placeholder="Plaza de España, 1 · 23560 Huelma (Jaén)">
-                  <span style="font-size: 0.75rem; color: var(--admin-muted);">Sede oficial del Excmo. Ayuntamiento de Huelma (titular legal).</span>
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-direccion-centro">📍 Ubicación del Centro de Interpretación (Visitas y Atención) *</label>
-                  <input type="text" id="legal-direccion-centro" class="admin-input" required placeholder="Calle Cárcel, 2 · 23560 Huelma (Jaén)">
-                  <span style="font-size: 0.75rem; color: var(--admin-muted);">Dirección física de las instalaciones y punto de atención presencial.</span>
-                </div>
-
                 <!-- Campo oculto retrocompatible -->
                 <input type="hidden" id="legal-direccion" value="Calle Cárcel, 2 · 23560 Huelma (Jaén)">
+              </div>
 
-                <div class="admin-form-group">
-                  <label for="legal-web-referencia">🌐 Dirección Web Oficial de Referencia *</label>
-                  <input type="url" id="legal-web-referencia" class="admin-input" required placeholder="https://www.aytohuelma.es/cipajarillo">
-                  <span style="font-size: 0.75rem; color: var(--admin-muted);">URL institucional de referencia del Santuario en la web municipal.</span>
+              <!-- 3. Portales y Enlaces Digitales Oficiales (2 columnas balanceadas 50% / 50%) -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-primary); margin-bottom: 0.75rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.35rem;">
+                  3. Portales y Enlaces Digitales Oficiales
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem; align-items: start;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-web-referencia" style="min-height: 2.2rem; display: flex; align-items: flex-end;">🌐 Dirección Web Oficial de Referencia *</label>
+                    <input type="url" id="legal-web-referencia" class="admin-input" required placeholder="https://www.aytohuelma.es/cipajarillo">
+                    <span style="font-size: 0.74rem; color: var(--admin-muted); display: block; margin-top: 4px;">URL municipal oficial de referencia del Centro de Interpretación.</span>
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-sede-electronica" style="min-height: 2.2rem; display: flex; align-items: flex-end;">🏛️ URL de la Sede Electrónica Oficial *</label>
+                    <input type="url" id="legal-sede-electronica" class="admin-input" required placeholder="https://aytohuelma.sedelectronica.es/">
+                    <span style="font-size: 0.74rem; color: var(--admin-muted); display: block; margin-top: 4px;">Registro telemático oficial para trámites y derechos ARSOPL.</span>
+                  </div>
                 </div>
+              </div>
 
-                <div class="admin-form-group">
-                  <label for="legal-telefono">Teléfono de Atención Ciudadana *</label>
-                  <input type="text" id="legal-telefono" class="admin-input" placeholder="(+34) 953 39 00 10">
+              <!-- 4. Canales de Contacto y Notificaciones (4 columnas equilibradas) -->
+              <div style="margin-bottom: 1.5rem;">
+                <h4 style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-primary); margin-bottom: 0.75rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.35rem;">
+                  4. Canales de Contacto y Notificaciones
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; align-items: start;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-telefono" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Teléfono de Atención *</label>
+                    <input type="text" id="legal-telefono" class="admin-input" placeholder="(+34) 953 39 00 10">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-email" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Email de Turismo *</label>
+                    <input type="email" id="legal-email" class="admin-input" placeholder="turismo@elpajarillo.es">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-email-secundario" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Email Municipal / General</label>
+                    <input type="email" id="legal-email-secundario" class="admin-input" placeholder="ayuntamiento@huelma.es">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-dpd-email" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Email del DPD (Privacidad) *</label>
+                    <input type="email" id="legal-dpd-email" class="admin-input" placeholder="dpd@huelma.es">
+                  </div>
                 </div>
+              </div>
 
-                <div class="admin-form-group">
-                  <label for="legal-email">Correo Electrónico de Turismo *</label>
-                  <input type="email" id="legal-email" class="admin-input" placeholder="turismo@elpajarillo.es">
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-email-secundario">Correo Electrónico Municipal / General</label>
-                  <input type="email" id="legal-email-secundario" class="admin-input" placeholder="ayuntamiento@huelma.es">
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-dpd-email">Correo del Delegado de Protección de Datos (DPD) *</label>
-                  <input type="email" id="legal-dpd-email" class="admin-input" placeholder="dpd@huelma.es">
-                </div>
-
-                <div class="admin-form-group" style="grid-column: 1 / -1;">
-                  <label for="legal-sede-electronica">URL de la Sede Electrónica Oficial</label>
-                  <input type="url" id="legal-sede-electronica" class="admin-input" placeholder="https://huelma.sedelectronica.es">
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-ultima-actualizacion">Fecha / Periodo de Última Actualización Legal</label>
-                  <input type="text" id="legal-ultima-actualizacion" class="admin-input" placeholder="Noviembre de 2026">
-                </div>
-
-                <div class="admin-form-group">
-                  <label for="legal-marco-legal">Marco Normativo Resumido</label>
-                  <input type="text" id="legal-marco-legal" class="admin-input" placeholder="LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018">
+              <!-- 5. Marco Normativo y Auditoría (2 columnas equilibradas) -->
+              <div>
+                <h4 style="font-size: 0.82rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--admin-primary); margin-bottom: 0.75rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.35rem;">
+                  5. Marco Normativo y Auditoría
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.25rem; align-items: start;">
+                  <div class="admin-form-group" style="margin-bottom: 0;">
+                    <label for="legal-ultima-actualizacion" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Fecha / Periodo de Actualización</label>
+                    <input type="text" id="legal-ultima-actualizacion" class="admin-input" placeholder="Noviembre de 2026">
+                  </div>
+                  <div class="admin-form-group" style="margin-bottom: 0; flex: 2;">
+                    <label for="legal-marco-legal" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Marco Normativo Resumido</label>
+                    <input type="text" id="legal-marco-legal" class="admin-input" placeholder="LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018">
+                  </div>
                 </div>
               </div>
             </div>

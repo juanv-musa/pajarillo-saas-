@@ -5973,7 +5973,7 @@ function populateLegalForm(data) {
   setVal('legal-email', g.email);
   setVal('legal-email-secundario', g.email_secundario);
   setVal('legal-dpd-email', g.dpd_email);
-  setVal('legal-sede-electronica', g.sede_electronica);
+  setVal('legal-sede-electronica', g.sede_electronica || 'https://aytohuelma.sedelectronica.es/');
   setVal('legal-ultima-actualizacion', g.ultima_actualizacion);
   setVal('legal-marco-legal', g.marco_legal);
 
@@ -6086,7 +6086,7 @@ function collectLegalForm() {
       email: getVal('legal-email', 'turismo@elpajarillo.es'),
       email_secundario: getVal('legal-email-secundario', 'ayuntamiento@huelma.es'),
       dpd_email: getVal('legal-dpd-email', 'dpd@huelma.es'),
-      sede_electronica: getVal('legal-sede-electronica', 'https://huelma.sedelectronica.es'),
+      sede_electronica: getVal('legal-sede-electronica', 'https://aytohuelma.sedelectronica.es/'),
       ultima_actualizacion: getVal('legal-ultima-actualizacion', 'Noviembre de 2026'),
       marco_legal: getVal('legal-marco-legal', 'LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018')
     },

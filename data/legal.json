@@ -18,7 +18,7 @@
     "email": "turismo@elpajarillo.es",
     "email_secundario": "ayuntamiento@huelma.es",
     "dpd_email": "dpd@huelma.es",
-    "sede_electronica": "https://huelma.sedelectronica.es",
+    "sede_electronica": "https://aytohuelma.sedelectronica.es/",
     "ultima_actualizacion": "Noviembre de 2026",
     "marco_legal": "LSSI-CE 34/2002 · RGPD UE 2016/679 · LOPDGDD 3/2018 · RD 1112/2018"
   },
@@ -48,7 +48,7 @@
     "conservacion_titulo": "2.3. Plazos de Conservación de los Datos",
     "conservacion_texto": "Los datos de reservas se conservarán durante el tiempo indispensable para coordinar la visita y un máximo legal de 1 año con fines estadísticos y de control de calidad municipal. Posteriormente serán destruidos de forma segura o anonimizados.",
     "derechos_titulo": "2.4. Derechos de los Interesados y Vías de Ejercicio",
-    "derechos_texto": "Cualquier persona puede ejercer sus derechos de Acceso, Rectificación, Supresión (olvido), Limitación del tratamiento, Portabilidad y Oposición (derechos ARSOPL) dirigiendo solicitud escrita y firmada ante el Registro General del Ayuntamiento de Huelma (Plaza de España, 1 · 23560 Huelma), presencialmente en el Centro de Interpretación (Calle Cárcel, 2 · 23560 Huelma), telemáticamente en la Sede Electrónica (https://huelma.sedelectronica.es) o vía email a dpd@huelma.es, acompañando documento identificativo oficial.",
+    "derechos_texto": "Cualquier persona puede ejercer sus derechos de Acceso, Rectificación, Supresión (olvido), Limitación del tratamiento, Portabilidad y Oposición (derechos ARSOPL) dirigiendo solicitud escrita y firmada ante el Registro General del Ayuntamiento de Huelma (Plaza de España, 1 · 23560 Huelma), presencialmente en el Centro de Interpretación (Calle Cárcel, 2 · 23560 Huelma), telemáticamente en la Sede Electrónica (https://aytohuelma.sedelectronica.es/) o vía email a dpd@huelma.es, acompañando documento identificativo oficial.",
     "seguridad_titulo": "2.5. Medidas de Seguridad y Cesiones",
     "seguridad_texto": "No se cederán datos a terceros salvo obligación legal expresa. La entidad aplica medidas de seguridad técnicas y organizativas conformes al Esquema Nacional de Seguridad (ENS) para garantizar la integridad, confidencialidad y disponibilidad de la información."
   },
@@ -74,7 +74,7 @@
     "preparacion_titulo": "4.3. Preparación de la Presente Declaración",
     "preparacion_texto": "La presente declaración fue preparada el 14 de septiembre de 2026 y actualizada periódicamente mediante autoevaluación interna combinada con herramientas automáticas de validación (W3C Validator, Wave y herramientas del Observatorio de Accesibilidad Web del Ministerio de Transformación Digital).",
     "contacto_titulo": "4.4. Mecanismos de Comunicación y Observaciones",
-    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@elpajarillo.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Centro de Interpretación Santuario Ibérico de “El Pajarillo”, Calle Cárcel, 2 · 23560 Huelma (Jaén) o en el Ayuntamiento de Huelma, Plaza de España, 1 · 23560 Huelma (Jaén)\n• Sede electrónica: https://huelma.sedelectronica.es\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
+    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@elpajarillo.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Centro de Interpretación Santuario Ibérico de “El Pajarillo”, Calle Cárcel, 2 · 23560 Huelma (Jaén) o en el Ayuntamiento de Huelma, Plaza de España, 1 · 23560 Huelma (Jaén)\n• Sede electrónica: https://aytohuelma.sedelectronica.es/\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
     "reclamaciones_titulo": "4.5. Procedimiento de Aplicación y Reclamaciones",
     "reclamaciones_texto": "Si una solicitud de información accesible o queja es desestimada o no se obtiene respuesta adecuada en los plazos previstos en el artículo 12.5 del RD 1112/2018, la persona interesada podrá iniciar una reclamación ante la Unidad Responsable de Accesibilidad o a través de las vías de la Ley 39/2015 del Procedimiento Administrativo Común."
   },
