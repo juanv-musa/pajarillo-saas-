@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fondo Audiovisual 2 (Planta Alta) · Centro de Interpretación Santuario Ibérico de “El Pajarillo” (TV 65")</title>
 
-  <meta name="description" content="Proyección continua en pantalla completa para TV 65 de la Planta Alta del Centro de Interpretación Santuario Ibérico de El Pajarillo.">
+  <meta name="description" content="Sala audiovisual interactiva en pantalla completa para TV 65 de la Planta Alta del Centro de Interpretación Santuario Ibérico de El Pajarillo.">
 
   <!-- Favicon Oficial Multidispositivo -->
   <link rel="icon" type="image/svg+xml" href="./assets/images/favicon.svg">
@@ -22,343 +22,128 @@
   <!-- Estilos de Sala Audiovisual TV 65" -->
   <link rel="stylesheet" href="./css/audiovisual.css">
   <style>
-    /* Estilos específicos para proyección continua de vídeo único (Planta Alta · P1) */
-    body.kiosk-p1 {
-      margin: 0;
-      padding: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: #000;
-      position: relative;
-    }
-
-    .p1-video-viewport {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
+    /* Parrilla centrada de 2 vídeos de la Planta Alta */
+    .tv-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(360px, 500px));
+      gap: 2.5rem;
       justify-content: center;
-      background: #000;
-      z-index: 1;
-    }
-
-    .p1-video-element {
+      align-items: stretch;
       width: 100%;
-      height: 100%;
-      object-fit: cover; /* Pantalla completa en TV 65" sin bandas */
-      display: block;
+      max-width: 1060px;
+      margin: 0 auto;
     }
-
-    /* Capa de interfaz superpuesta que se oculta automáticamente */
-    .p1-overlay {
-      position: absolute;
-      inset: 0;
-      z-index: 10;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 2.5rem 3.5rem;
-      pointer-events: none;
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      background: linear-gradient(
-        180deg,
-        rgba(15, 22, 18, 0.85) 0%,
-        rgba(15, 22, 18, 0.1) 25%,
-        transparent 50%,
-        rgba(15, 22, 18, 0.2) 75%,
-        rgba(15, 22, 18, 0.88) 100%
-      );
-    }
-
-    .p1-overlay.hidden-overlay {
-      opacity: 0;
-    }
-
-    .p1-interactive {
-      pointer-events: auto;
-    }
-
-    /* Cabecera P1 */
-    .p1-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .p1-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: rgba(26, 36, 30, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(181, 154, 87, 0.4);
-      padding: 0.5rem 1.25rem;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--tv-accent-gold-text);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    .p1-badge-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 10px #22c55e;
-      animation: pulseDot 2s infinite;
-    }
-
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.85); }
-    }
-
-    /* Barra inferior con metadatos y controles */
-    .p1-bottom-bar {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 2rem;
-    }
-
-    .p1-video-info {
-      max-width: 65%;
-      background: rgba(26, 36, 30, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(220, 220, 214, 0.15);
-      border-radius: 16px;
-      padding: 1.2rem 1.8rem;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .p1-video-title {
-      font-family: var(--font-condensed);
-      font-size: clamp(1.8rem, 2.2vw, 2.6rem);
-      font-weight: 800;
-      color: #fff;
-      line-height: 1.15;
-      margin: 0;
-    }
-
-    .p1-time-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(0, 0, 0, 0.65);
-      border: 1px solid rgba(181, 154, 87, 0.45);
-      padding: 0.35rem 0.9rem;
-      border-radius: 999px;
-      font-family: var(--font-condensed);
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--tv-accent-gold-text);
-      letter-spacing: 1px;
-      margin-top: 0.5rem;
-    }
-
-    .p1-time-icon {
-      font-size: 1.05rem;
-    }
-
-    /* Barra de control flotante */
-    .p1-controls-group {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      background: rgba(26, 36, 30, 0.85);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(181, 154, 87, 0.35);
-      padding: 0.6rem 1rem;
-      border-radius: 999px;
-    }
-
-    .p1-track-btn {
-      background: transparent;
-      border: none;
-      color: rgba(255, 255, 255, 0.75);
-      font-family: var(--font-condensed);
-      font-size: 1rem;
-      font-weight: 700;
-      padding: 6px 14px;
-      border-radius: 999px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .p1-track-btn:hover {
-      color: #fff;
-      background: rgba(255, 255, 255, 0.12);
-    }
-
-    .p1-track-btn.active {
-      background: var(--tv-accent-gold);
-      color: #111;
-      font-weight: 800;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    .p1-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: white;
-      font-size: 1.2rem;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-
-    .p1-btn:hover {
-      background: var(--tv-accent-gold);
-      color: #111;
-      border-color: var(--tv-accent-gold);
-      transform: scale(1.08);
-    }
-
-    /* Notificación flotante de sonido bloqueado */
-    .p1-sound-alert {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(17, 25, 20, 0.92);
-      border: 1.5px solid var(--tv-accent-gold);
-      padding: 1.5rem 2.5rem;
-      border-radius: 20px;
-      text-align: center;
-      z-index: 20;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      cursor: pointer;
-      animation: bounceAlert 2s infinite ease-in-out;
-    }
-
-    @keyframes bounceAlert {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.03); }
-    }
-
-    .p1-sound-alert.hidden {
-      display: none;
-    }
-
-    .p1-sound-alert h3 {
-      font-family: var(--font-condensed);
-      font-size: 1.8rem;
-      color: #fff;
-      margin: 0 0 0.5rem;
-    }
-
-    .p1-sound-alert p {
-      color: var(--tv-text-muted);
-      font-size: 1rem;
-      margin: 0;
-    }
-
-    /* Barra de progreso sutil */
-    .p1-progress-bar-wrap {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.15);
-      z-index: 15;
-    }
-
-    .p1-progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: var(--tv-accent-gold);
-      transition: width 0.25s linear;
+    @media (max-width: 900px) {
+      .tv-grid-2 {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
     }
   </style>
 </head>
-<body class="kiosk-p1">
+<body>
 
-  <!-- Contenedor del Vídeo en Bucle Continuo -->
-  <div class="p1-video-viewport" id="viewport">
-    <video
-      id="p1-video"
-      class="p1-video-element"
-      playsinline
-      autoplay
-      loop
-      muted
-      preload="auto">
-      Tu pantalla o navegador no soporta reproducción de vídeo HTML5.
-    </video>
-  </div>
+  <!-- Fondo dinámico sutil -->
+  <div class="tv-background-glow"></div>
 
-  <!-- Barra de progreso muy fina en la base inferior -->
-  <div class="p1-progress-bar-wrap">
-    <div id="p1-progress-fill" class="p1-progress-bar-fill"></div>
-  </div>
-
-  <!-- Aviso de activación de sonido si el navegador lo bloqueó -->
-  <div id="p1-sound-alert" class="p1-sound-alert p1-interactive">
-    <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">🔊</div>
-    <h3>Reproducción Continua Iniciada</h3>
-    <p>Toca la pantalla o pulsa cualquier tecla para activar el audio en esta sala.</p>
-  </div>
-
-  <!-- Capa de interfaz superpuesta (Modo salvapantallas: se oculta automáticamente tras 3.5s) -->
-  <div id="p1-overlay" class="p1-overlay">
-    
-    <!-- Cabecera reducida a lo mínimo: Logotipo Centro y Logotipo Ayuntamiento -->
-    <header class="p1-header">
-      <div class="tv-brand-wrap p1-interactive">
+  <!-- ═══════════════════════════════════════════
+       MODO SALVAPANTALLAS INTERACTIVO (VIDEO RESUMEN EN BUCLE)
+       ═══════════════════════════════════════════ -->
+  <div id="tv-screensaver" class="tv-screensaver" role="button" tabindex="0" aria-label="Modo salvapantallas. Toca para explorar documentales">
+    <div class="tv-screensaver-video-wrap">
+      <video id="tv-screensaver-video" class="tv-screensaver-video" playsinline muted loop preload="auto">
+        Tu navegador no soporta vídeo HTML5.
+      </video>
+    </div>
+    <div class="tv-screensaver-overlay">
+      <div class="tv-screensaver-header">
         <img src="./assets/images/10_LOGO_PAJARILLO_BLANCO.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
         <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
       </div>
+      <div class="tv-screensaver-center">
+        <h1 class="tv-screensaver-title">SANTUARIO IBÉRICO DE “EL PAJARILLO”</h1>
+        <div class="tv-screensaver-prompt">
+          <span class="tv-screensaver-hand">👆</span>
+          <span>Toca para reproducir</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <button type="button" id="btn-p1-toggle-screensaver" class="p1-btn p1-interactive" title="Modo Salvapantallas (Ocultar información)">
-        📺
-      </button>
+  <!-- Contenedor Principal Kiosco (Menú de los 2 Vídeos) -->
+  <div class="tv-app-shell">
+    
+    <!-- Cabecera Institucional Mínima: Logotipo Centro y Logotipo Ayuntamiento -->
+    <header class="tv-header">
+      <div class="tv-brand-wrap">
+        <img src="./assets/images/10_LOGO_PAJARILLO_BLANCO.png" alt="Centro de Interpretación Santuario Ibérico de “El Pajarillo”" class="tv-logo-pajarillo">
+        <img src="./assets/images/logo-ayuntamiento-huelma.png" alt="Ayuntamiento de Huelma" class="tv-logo-ayto">
+        <div class="tv-brand-titles">
+          <h1>Santuario Ibérico de “El Pajarillo”</h1>
+        </div>
+      </div>
     </header>
 
-    <!-- Barra inferior: Título, Tiempo y controles mínimos -->
-    <footer class="p1-bottom-bar">
-      <div class="p1-video-info p1-interactive">
-        <h2 id="p1-title" class="p1-video-title">Cargando audiovisual...</h2>
-        <div class="p1-time-badge">
-          <span class="p1-time-icon">⏱</span>
-          <span id="p1-time-current">00:00</span> / <span id="p1-time-total">00:00</span>
-        </div>
-      </div>
+    <!-- Zona Central: Parrilla limpia de los 2 Vídeos -->
+    <main class="tv-main-content">
+      <div id="tv-video-grid" class="tv-grid-2"></div>
+    </main>
 
-      <div class="p1-controls-group p1-interactive">
-        <!-- Selector Versión Normal vs Audiodescripción -->
-        <div id="p1-track-selector" style="display: flex; gap: 4px; background: rgba(0, 0, 0, 0.55); padding: 4px; border-radius: 999px; border: 1px solid rgba(181, 154, 87, 0.4);">
-          <button type="button" id="btn-p1-track-normal" class="p1-track-btn active" title="Vídeo Estándar Locutado y Subtitulado">
-            🎬 Vídeo Normal
-          </button>
-          <button type="button" id="btn-p1-track-audiodesc" class="p1-track-btn" title="Vídeo con Audiodescripción Accesible">
-            👁️ Audiodescripción
-          </button>
-        </div>
-        <button type="button" id="btn-p1-playpause" class="p1-btn" title="Pausar / Reanudar">⏸</button>
-        <button type="button" id="btn-p1-mute" class="p1-btn" title="Activar / Desactivar Sonido">🔊</button>
+    <!-- Pie Informativo Minimalista -->
+    <footer class="tv-footer">
+      <div class="tv-instructions">
+        <span>👆 Toca para reproducir</span>
       </div>
     </footer>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       REPRODUCTOR CINEMATOGRÁFICO DE PANTALLA COMPLETA
+       ═══════════════════════════════════════════ -->
+  <div id="tv-player-modal" class="tv-player-modal" role="dialog" aria-modal="true" aria-label="Reproductor audiovisual">
+    
+    <!-- Barra superior flotante -->
+    <div class="tv-player-topbar">
+      <button type="button" id="btn-back-menu" class="btn-back-menu" aria-label="Volver a la selección de vídeos">
+        ← Volver a la Selección de Vídeos
+      </button>
+
+      <div id="tv-playing-title" class="tv-current-playing-title">Cargando contenido...</div>
+    </div>
+
+    <!-- Contenedor del Vídeo -->
+    <div class="tv-video-container">
+      <video id="tv-video" class="tv-video-element" playsinline preload="auto">
+        Tu pantalla o navegador no soporta reproducción de vídeo HTML5.
+      </video>
+    </div>
+
+    <!-- Barra de Controles Táctiles Gigantes -->
+    <div class="tv-player-controls">
+      <!-- Línea de tiempo interactiva -->
+      <div id="tv-progress-bar" class="tv-timeline-bar-wrap" role="slider" aria-label="Barra de progreso" tabindex="0">
+        <div id="tv-progress-fill" class="tv-timeline-bar-fill"></div>
+      </div>
+
+      <div class="tv-controls-row">
+        <div class="tv-controls-left">
+          <button type="button" id="tv-btn-play" class="tv-btn-control" aria-label="Reproducir o pausar">⏸</button>
+          <button type="button" id="tv-btn-replay" class="tv-btn-control" aria-label="Reiniciar desde el inicio">↺</button>
+          <button type="button" id="tv-btn-mute" class="tv-btn-control" aria-label="Activar o desactivar sonido">🔊</button>
+          
+          <div class="tv-time-indicator">
+            <span id="tv-time-current">00:00</span> / <span id="tv-time-total">00:00</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </div>
 
   <!-- Telemetría y Analítica Real -->
   <script type="module" src="./js/analytics.js"></script>
   <!-- Controlador Lógico de Planta 1 -->
-  <script src="./js/audiovisual_p1.js?v=3.2"></script>
+  <script src="./js/audiovisual_p1.js?v=4.0"></script>
 </body>
 </html>
