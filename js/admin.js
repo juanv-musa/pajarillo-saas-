@@ -3923,10 +3923,10 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
     tarifa_gratuita_precio: "0,00 €",
     como_llegar_titulo: "Cómo llegar",
-    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén)",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
     como_llegar_parking: "Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.",
     como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Cultural y Actividades",
     agenda_subtitle: "Participa en nuestras visitas temáticas, talleres arqueológicos y conferencias",
@@ -3936,7 +3936,7 @@ const DEFAULT_LOCALES = {
     email: "turismo@elpajarillo.es",
     ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
     horario_atencion: "Lunes a Viernes de 9:00 a 14:00 h",
-    direccion: "Plaza de España, 1 · 23140 Huelma (Jaén)",
+    direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
     footer_copy: "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados."
   },
   en: {
@@ -3992,10 +3992,10 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Children under 12, accredited persons with disabilities and residents.",
     tarifa_gratuita_precio: "€0.00",
     como_llegar_titulo: "How to get here",
-    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén), Spain",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén), Spain",
     como_llegar_parking: "Free parking area for cars and tourist coaches.",
     como_llegar_accesibilidad: "Accessible facilities for people with reduced mobility and braille signage.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Cultural Agenda & Activities",
     agenda_subtitle: "Join our specialized guided tours, archaeological workshops and scientific lectures",
@@ -4005,7 +4005,7 @@ const DEFAULT_LOCALES = {
     email: "tourism@elpajarillo.es",
     ayto: "Huelma Town Council · Heritage and Tourism Department",
     horario_atencion: "Monday to Friday from 9:00 AM to 2:00 PM",
-    direccion: "Plaza de España, 1 · 23140 Huelma (Jaén, Spain)",
+    direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén, Spain)",
     footer_copy: "© 2026 El Pajarillo Iberian Sanctuary Interpretation Centre. Huelma Town Council. All rights reserved."
   },
   fr: {
@@ -4061,10 +4061,10 @@ const DEFAULT_LOCALES = {
     tarifa_gratuita: "Moins de 12 ans, personnes en situation de handicap et résidents.",
     tarifa_gratuita_precio: "0,00 €",
     como_llegar_titulo: "Comment venir",
-    como_llegar_direccion: "Calle Cárcel, 2 · 23140 Huelma (Jaén), Espagne",
+    como_llegar_direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén), Espagne",
     como_llegar_parking: "Parking gratuit pour véhicules particuliers et autocars touristiques.",
     como_llegar_accesibilidad: "Installations accessibles aux personnes à mobilité réduite et cartels braille.",
-    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n",
+    como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
     agenda_title: "Agenda Culturel & Activités",
     agenda_subtitle: "Participez à nos visites guidées, ateliers d'archéologie et conférences scientifiques",
@@ -4074,7 +4074,7 @@ const DEFAULT_LOCALES = {
     email: "tourisme@elpajarillo.es",
     ayto: "Mairie d'Huelma · Direction du Patrimoine et du Tourisme",
     horario_atencion: "Du lundi au vendredi de 9h00 à 14h00",
-    direccion: "Plaza de España, 1 · 23140 Huelma (Jaén, Espagne)",
+    direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén), Espagne",
     footer_copy: "© 2026 Centre d'Interprétation Sanctuaire Ibérique d'El Pajarillo. Mairie d'Huelma. Tous droits réservés."
   }
 };
@@ -4673,10 +4673,10 @@ function populateFormWithLang(lang) {
 
   // 7. Contacto y Cómo llegar
   setVal('cnt-como-llegar-titulo', c.como_llegar_titulo || 'Cómo llegar');
-  setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Calle Cárcel, 2 · 23140 Huelma (Jaén)');
+  setVal('cnt-como-llegar-direccion', c.como_llegar_direccion || 'Calle Cárcel, 2 · 23560 Huelma (Jaén)');
   setVal('cnt-como-llegar-parking', c.como_llegar_parking || 'Zona de aparcamiento gratuito para vehículos particulares y autobuses turísticos.');
   setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida y cartelas con lectura braille.');
-  setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23140+Huelma,+Ja%C3%A9n');
+  setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n');
   setVal('cnt-como-llegar-mapa-embed', c.como_llegar_mapa_embed || 'https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178');
 
   setVal('cnt-tel', c.tel);
