@@ -107,6 +107,23 @@
   ],
   "resources": [
     {
+      "id": "res_iltiraka",
+      "title": {
+        "es": "Paisaje, camino y liturgia en el mito del héroe de Iltiraka",
+        "en": "Landscape, Path and Liturgy in the Myth of the Hero of Iltiraka",
+        "fr": "Paysage, Chemin et Liturgie dans le Mythe du Héros d'Iltiraka"
+      },
+      "format": "PDF / 13.4 MB",
+      "icon": "📄",
+      "badge": "Documentación",
+      "description": {
+        "es": "En este estudio se reinterpreta el heroon de El Pajarillo, en el marco del mito de la katabasis o viaje del héroe al inframundo.",
+        "en": "This study reinterprets the heroon of El Pajarillo within the framework of the myth of katabasis or the hero's journey to the underworld.",
+        "fr": "Cette étude réinterprète le hérôon d'El Pajarillo dans le cadre du mythe de la katabase ou voyage du héros aux enfers."
+      },
+      "url": "./assets/docs/heroe_de_Iltiraka.pdf"
+    },
+    {
       "id": "res_1",
       "title": {
         "es": "Dossier Oficial: Centro de Interpretación de El Pajarillo",

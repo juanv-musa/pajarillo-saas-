@@ -77,6 +77,7 @@ export class GalleryManager {
             .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
             .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
             .replace(/gallery\/retablo\.jpg/g, 'gallery/leon.png')
+            .replace(/heroe_de_lltiraka\.pdf/gi, 'heroe_de_Iltiraka.pdf')
             .replace(/lobo\.jpg/g, 'lobo.png');
         };
 

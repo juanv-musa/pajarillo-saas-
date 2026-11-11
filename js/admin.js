@@ -4974,6 +4974,28 @@ const INITIAL_GALLERY_ITEMS = [
     }
   },
   {
+    id: 10,
+    type: 'pdf',
+    title: {
+      es: 'Paisaje, camino y liturgia en el mito del héroe de Iltiraka',
+      en: 'Landscape, Path and Liturgy in the Myth of the Hero of Iltiraka',
+      fr: 'Paysage, Chemin et Liturgie dans le Mythe du Héros d\'Iltiraka'
+    },
+    category: {
+      es: 'Documentación',
+      en: 'Documentation',
+      fr: 'Documentation'
+    },
+    full: './assets/docs/heroe_de_Iltiraka.pdf',
+    thumb: './assets/icons/icon-document.png',
+    file: './assets/docs/heroe_de_Iltiraka.pdf',
+    desc: {
+      es: 'En este estudio se reinterpreta el heroon de El Pajarillo, en el marco del mito de la katabasis o viaje del héroe al inframundo.',
+      en: 'This study reinterprets the heroon of El Pajarillo within the framework of the myth of katabasis or the hero\'s journey to the underworld.',
+      fr: 'Cette étude réinterprète le hérôon d\'El Pajarillo dans le cadre du mythe de la katabase ou voyage du héros aux enfers.'
+    }
+  },
+  {
     id: 5,
     type: 'pdf',
     title: {
@@ -5311,25 +5333,84 @@ function setupGalleryManager() {
   }
 }
 
-function handleGalleryFile(file) {
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const dataUrl = e.target.result;
-    const urlInput = document.getElementById('gallery-item-url');
-    const previewWrap = document.getElementById('gallery-preview-wrap');
-    const previewImg = document.getElementById('gallery-preview-img');
+async function handleGalleryFile(file) {
+  if (!file) return;
 
-    if (urlInput) urlInput.value = dataUrl;
-    if (previewImg) previewImg.src = dataUrl;
+  const urlInput = document.getElementById('gallery-item-url');
+  const dlInput = document.getElementById('gallery-item-download-url');
+  const previewWrap = document.getElementById('gallery-preview-wrap');
+  const previewImg = document.getElementById('gallery-preview-img');
+  const previewPdf = document.getElementById('gallery-preview-pdf');
+  const previewPdfName = document.getElementById('gallery-preview-pdf-name');
+  const previewPdfSize = document.getElementById('gallery-preview-pdf-size');
+  const typeSelect = document.getElementById('gallery-item-type');
+
+  const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+
+  if (isPdf) {
+    if (typeSelect) typeSelect.value = 'pdf';
+    if (previewImg) previewImg.style.display = 'none';
+    if (previewPdf) {
+      previewPdf.style.display = 'block';
+      if (previewPdfName) previewPdfName.textContent = file.name;
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+      if (previewPdfSize) previewPdfSize.textContent = `${sizeMb} MB · Archivo PDF preparado`;
+    }
     if (previewWrap) previewWrap.style.display = 'block';
-    showToast('📎 Archivo cargado para vista previa');
-  };
-  if (file.type.startsWith('image/')) {
-    reader.readAsDataURL(file);
+
+    // Auto-rellenar título por defecto si está vacío
+    const titleInput = document.getElementById('gallery-item-title-es');
+    if (titleInput && !titleInput.value.trim()) {
+      const cleanName = file.name.replace(/\.pdf$/i, '').replace(/[_-]/g, ' ');
+      titleInput.value = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+    }
   } else {
-    const urlInput = document.getElementById('gallery-item-url');
-    if (urlInput) urlInput.value = `./assets/docs/${file.name}`;
-    showToast(`📄 Documento seleccionado: ${file.name}`);
+    if (previewPdf) previewPdf.style.display = 'none';
+    if (previewImg) {
+      previewImg.style.display = 'inline-block';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        previewImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+    if (previewWrap) previewWrap.style.display = 'block';
+  }
+
+  // 1. Intentar subir al servidor mediante api/upload.php si hay backend disponible
+  let uploadedUrl = null;
+  try {
+    const fd = new FormData();
+    fd.append('file', file);
+    const res = await fetch('./api/upload.php', {
+      method: 'POST',
+      body: fd
+    }).catch(() => null);
+
+    if (res && res.ok) {
+      const data = await res.json();
+      if (data && data.url) {
+        uploadedUrl = data.url;
+        showToast('✅ Archivo subido con éxito al servidor');
+      }
+    }
+  } catch (err) {}
+
+  // 2. Si no hay backend PHP (ej. GitHub Pages), asignar la ruta institucional fija
+  if (!uploadedUrl) {
+    const cleanFilename = file.name.replace(/\s+/g, '_');
+    if (isPdf) {
+      uploadedUrl = `./assets/docs/${cleanFilename}`;
+      showToast(`📄 Documento asignado a: ${uploadedUrl}`);
+    } else {
+      uploadedUrl = `./assets/images/${cleanFilename}`;
+      showToast(`🖼️ Imagen asignada a: ${uploadedUrl}`);
+    }
+  }
+
+  if (urlInput) urlInput.value = uploadedUrl;
+  if (dlInput && (!dlInput.value || dlInput.value.includes('.pdf') || isPdf)) {
+    dlInput.value = uploadedUrl;
   }
 }
 
@@ -5347,6 +5428,7 @@ function loadGalleryData() {
           .replace(/gallery\/claustro\.jpg/g, 'santuario_ilustracion.png')
           .replace(/gallery\/interior\.jpg/g, 'santuario_ilustracion.png')
           .replace(/gallery\/retablo\.jpg/g, 'gallery/leon.png')
+          .replace(/heroe_de_lltiraka\.pdf/gi, 'heroe_de_Iltiraka.pdf')
           .replace(/lobo\.jpg/g, 'lobo.png');
       };
       // Normalizar elementos previos para asegurar que sean multilingües y con rutas actualizadas
@@ -5365,6 +5447,14 @@ function loadGalleryData() {
         }
         return item;
       });
+
+      // Asegurar que recursos clave de INITIAL_GALLERY_ITEMS estén incluidos
+      INITIAL_GALLERY_ITEMS.forEach(initItem => {
+        const exists = galleryItems.some(i => i.id === initItem.id || (i.file && initItem.file && i.file.includes('heroe_de_Iltiraka')));
+        if (!exists) {
+          galleryItems.push(initItem);
+        }
+      });
     } else {
       galleryItems = [...INITIAL_GALLERY_ITEMS];
       localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
@@ -5375,6 +5465,24 @@ function loadGalleryData() {
   updateGalleryCounts();
   renderGalleryGrid(currentGalleryFilter);
 }
+
+window.saveAllGallery = async function(showToastMsg = true) {
+  localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_data' }));
+
+  try {
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
+    });
+  } catch(e) {}
+
+  if (showToastMsg) {
+    const pdfs = galleryItems.filter(i => i.type === 'pdf').length;
+    showToast(`💾 Galería y recursos sincronizados con la web (${pdfs} documentos PDF disponibles)`);
+  }
+};
 
 function updateGalleryCounts() {
   const allCount = galleryItems.length;
