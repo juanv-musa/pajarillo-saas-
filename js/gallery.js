@@ -91,15 +91,20 @@ export class GalleryManager {
           category: typeof i.category === 'object' ? (i.category.es || 'Fototeca') : (i.category || 'Fototeca')
         }));
 
-        const resources = items.filter(i => i.type === 'pdf').map(i => ({
-          id: 'res_' + i.id,
-          title: toLocObj(i.title),
-          description: toLocObj(i.desc),
-          badge: typeof i.category === 'object' ? (i.category.es || 'PDF Oficial') : (i.category || 'PDF Oficial'),
-          file: migratePath(i.file || i.full),
-          format: 'PDF / Digital',
-          icon: '📄'
-        }));
+        const resources = items.filter(i => i.type === 'pdf' || i.type === 'web' || i.type === 'enlace').map(i => {
+          const isWeb = i.type === 'web' || i.type === 'enlace' || (i.full && (i.full.startsWith('http://') || i.full.startsWith('https://')) && !i.full.endsWith('.pdf'));
+          return {
+            id: 'res_' + i.id,
+            type: isWeb ? 'web' : 'pdf',
+            title: toLocObj(i.title),
+            description: toLocObj(i.desc),
+            badge: typeof i.category === 'object' ? (i.category.es || (isWeb ? 'Enlace Web' : 'PDF Oficial')) : (i.category || (isWeb ? 'Enlace Web' : 'PDF Oficial')),
+            file: migratePath(i.file || i.full),
+            url: migratePath(i.file || i.full),
+            format: isWeb ? 'Sitio Web / Enlace' : 'PDF / Digital',
+            icon: isWeb ? '🌐' : '📄'
+          };
+        });
 
         const videos = items.filter(i => i.type === 'video' || i.type === '3d').map(i => ({
           id: 'vid_' + i.id,
@@ -383,9 +388,10 @@ export class GalleryManager {
       }).join('');
     }
 
-    // 2. Recursos descargables (Fichas, Didáctica, Cartografía)
+    // 2. Recursos descargables y Enlaces Web (Fichas, Didáctica, Cartografía, Portales)
     if (this.resourcesContainer && this.data.resources) {
       const downloadLabel = this.i18n.t('galeria.download_btn') || '⬇ Descargar';
+      const visitWebLabel = this.i18n.t('galeria.visit_web_btn') || (lang === 'en' ? '🌐 Visit Web' : (lang === 'fr' ? '🌐 Visiter le site' : '🌐 Visitar Web'));
       this.resourcesContainer.innerHTML = this.data.resources.map(res => {
         const title = getLang(res.title, 'Documento');
         const desc = getLang(res.description || res.desc, '');
@@ -393,17 +399,25 @@ export class GalleryManager {
         const badgeLabel = this.i18n.t(`galeria.badges.${badge}`) !== `galeria.badges.${badge}`
           ? this.i18n.t(`galeria.badges.${badge}`)
           : badge;
+        const targetUrl = res.url || res.file || './assets/docs/dossier_pajarillo.pdf';
+        const isWeb = res.type === 'web' || (!targetUrl.toLowerCase().endsWith('.pdf') && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.startsWith('www.')));
+        const actionLabel = isWeb ? visitWebLabel : downloadLabel;
+        const formatLabel = res.format || (isWeb ? 'Sitio Web / Portal' : 'PDF / Digital');
+        const iconHtml = isWeb 
+          ? `<div style="font-size: 2.2rem; line-height: 1; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;">🌐</div>`
+          : `<img src="./assets/icons/icon-document.png" alt="" class="custom-icon-img" style="width: 44px; height: 44px; object-fit: contain;">`;
+
         return `
           <div class="resource-card">
-            <div class="resource-icon"><img src="./assets/icons/icon-document.png" alt="" class="custom-icon-img" style="width: 44px; height: 44px; object-fit: contain;"></div>
+            <div class="resource-icon">${iconHtml}</div>
             <div class="resource-content">
               <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 800; padding: 2px 8px; border-radius: 999px;">${badgeLabel}</span>
               <h3 style="margin-top: 6px;">${title}</h3>
               <p>${desc}</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${res.format || 'PDF / Digital'}</span>
-                <a href="${res.url || res.file || './assets/docs/dossier_pajarillo.pdf'}" download class="btn-point-action btn-point-qr" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
-                  ${downloadLabel}
+                <span style="font-size: 0.75rem; color: var(--c-text-muted); font-weight: 600;">${formatLabel}</span>
+                <a href="${targetUrl}" ${isWeb ? 'rel="noopener noreferrer"' : 'download'} class="btn-point-action btn-point-qr" target="_blank" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">
+                  ${actionLabel}
                 </a>
               </div>
             </div>

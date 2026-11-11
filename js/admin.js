@@ -4986,9 +4986,9 @@ const INITIAL_GALLERY_ITEMS = [
       en: 'Documentation',
       fr: 'Documentation'
     },
-    full: './assets/docs/heroe_de_Iltiraka.pdf',
+    full: './assets/docs/heroe_de_iltiraka.pdf',
     thumb: './assets/icons/icon-document.png',
-    file: './assets/docs/heroe_de_Iltiraka.pdf',
+    file: './assets/docs/heroe_de_iltiraka.pdf',
     desc: {
       es: 'En este estudio se reinterpreta el heroon de El Pajarillo, en el marco del mito de la katabasis o viaje del héroe al inframundo.',
       en: 'This study reinterprets the heroon of El Pajarillo within the framework of the myth of katabasis or the hero\'s journey to the underworld.',
@@ -5296,6 +5296,13 @@ function setupGalleryManager() {
     form.addEventListener('submit', handleSaveGalleryItem);
   }
 
+  const typeSelect = document.getElementById('gallery-item-type');
+  if (typeSelect) {
+    typeSelect.addEventListener('change', () => {
+      updateModalTypeUI(typeSelect.value);
+    });
+  }
+
   const filterBtns = document.querySelectorAll('.btn-filter-period[data-gallery-filter]');
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -5488,17 +5495,20 @@ function updateGalleryCounts() {
   const allCount = galleryItems.length;
   const fotoCount = galleryItems.filter(i => i.type === 'foto').length;
   const pdfCount = galleryItems.filter(i => i.type === 'pdf').length;
+  const webCount = galleryItems.filter(i => i.type === 'web' || i.type === 'enlace').length;
   const videoCount = galleryItems.filter(i => i.type === 'video' || i.type === '3d').length;
 
   const countAll = document.getElementById('count-all-gallery');
   const countFoto = document.getElementById('count-foto-gallery');
   const countPdf = document.getElementById('count-pdf-gallery');
+  const countWeb = document.getElementById('count-web-gallery');
   const countVideo = document.getElementById('count-video-gallery');
   const badge = document.getElementById('gallery-count-badge');
 
   if (countAll) countAll.textContent = allCount;
   if (countFoto) countFoto.textContent = fotoCount;
   if (countPdf) countPdf.textContent = pdfCount;
+  if (countWeb) countWeb.textContent = webCount;
   if (countVideo) countVideo.textContent = videoCount;
   if (badge) badge.textContent = allCount;
 }
@@ -5510,6 +5520,7 @@ function renderGalleryGrid(filter = 'all') {
   let filtered = galleryItems;
   if (filter === 'foto') filtered = galleryItems.filter(i => i.type === 'foto');
   else if (filter === 'pdf') filtered = galleryItems.filter(i => i.type === 'pdf');
+  else if (filter === 'web') filtered = galleryItems.filter(i => i.type === 'web' || i.type === 'enlace');
   else if (filter === 'video') filtered = galleryItems.filter(i => i.type === 'video' || i.type === '3d');
 
   if (filtered.length === 0) {
@@ -5517,7 +5528,7 @@ function renderGalleryGrid(filter = 'all') {
       <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: var(--admin-surface); border: 1px dashed var(--admin-border); border-radius: var(--admin-radius);">
         <p style="font-size: 2rem; margin-bottom: 0.5rem;">📂</p>
         <h4 style="color: var(--admin-primary); font-weight: 700;">No hay recursos en esta categoría</h4>
-        <p style="color: var(--admin-muted); font-size: 0.85rem;">Puedes añadir fotografías, documentos PDF, vídeos o modelos 3D con traducciones.</p>
+        <p style="color: var(--admin-muted); font-size: 0.85rem;">Puedes añadir fotografías, documentos PDF, enlaces a páginas web, vídeos o modelos 3D.</p>
         <button type="button" class="btn-admin btn-admin-primary" onclick="openGalleryModal()" style="margin-top: 1rem;">
           ➕ Añadir el Primer Recurso
         </button>
@@ -5529,15 +5540,23 @@ function renderGalleryGrid(filter = 'all') {
   const typeLabels = {
     foto: '🖼️ Fotografía HD',
     pdf: '📄 Ficha Didáctica PDF',
+    web: '🌐 Enlace a Página Web',
     video: '🎬 Vídeo / Audiovisual',
     '3d': '🏛️ Modelo 3D'
   };
 
   grid.innerHTML = filtered.map(item => {
-    const isImage = item.type === 'foto' || (item.thumb && !item.thumb.endsWith('.pdf'));
-    const thumbHtml = isImage
-      ? `<img src="${item.thumb || item.full}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`
-      : `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
+    const isImage = (item.type === 'foto' || (item.thumb && !item.thumb.endsWith('.pdf'))) && item.type !== 'web';
+    let thumbHtml;
+    if (item.type === 'web') {
+      thumbHtml = (item.thumb && item.thumb.startsWith('http') && (item.thumb.endsWith('.png') || item.thumb.endsWith('.jpg') || item.thumb.endsWith('.webp')))
+        ? `<img src="${item.thumb}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`
+        : `<div style="height: 140px; background: linear-gradient(135deg, #1C2720 0%, #2A3B30 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.8rem; color: #F8E29B; border-bottom: 1px solid var(--admin-border);"><span style="font-size: 2.6rem;">🌐</span><span style="font-size: 0.72rem; color: #DCDCD6; font-weight: 700; margin-top: 4px; letter-spacing: 0.5px;">ENLACE WEB</span></div>`;
+    } else if (isImage) {
+      thumbHtml = `<img src="${item.thumb || item.full}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`;
+    } else {
+      thumbHtml = `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
+    }
 
     const title = typeof item.title === 'object' ? (item.title.es || item.title.en || '') : item.title;
     const desc = typeof item.desc === 'object' ? (item.desc.es || item.desc.en || '') : item.desc;
@@ -5613,6 +5632,47 @@ window.deleteGalleryItem = function(id) {
   showToast('🗑️ Contenido eliminado correctamente de la galería');
 };
 
+function updateModalTypeUI(type) {
+  const lblUrl = document.getElementById('lbl-gallery-item-url');
+  const inputUrl = document.getElementById('gallery-item-url');
+  const lblFile = document.getElementById('lbl-gallery-file');
+  const descFile = document.getElementById('desc-gallery-file');
+  const groupDl = document.getElementById('group-download-url');
+
+  if (type === 'web') {
+    if (lblUrl) lblUrl.textContent = 'Enlace o URL de la Página Web *';
+    if (inputUrl) inputUrl.placeholder = 'https://... (ej. https://museo.es o portal web)';
+    if (lblFile) lblFile.textContent = 'Logotipo o Imagen de Portada (Opcional)';
+    if (descFile) descFile.textContent = 'Opcional: Arrastra o selecciona una imagen o logo para la tarjeta';
+    if (groupDl) groupDl.style.display = 'none';
+  } else if (type === 'pdf') {
+    if (lblUrl) lblUrl.textContent = 'URL o Ruta del Documento PDF *';
+    if (inputUrl) inputUrl.placeholder = './assets/docs/heroe_de_iltiraka.pdf o https://...';
+    if (lblFile) lblFile.textContent = 'Archivo / Ficha Didáctica (PDF)';
+    if (descFile) descFile.textContent = 'Haz clic para seleccionar o arrastra el archivo PDF';
+    if (groupDl) groupDl.style.display = 'block';
+  } else if (type === 'video') {
+    if (lblUrl) lblUrl.textContent = 'URL del Vídeo o Documental (MP4 o Enlace) *';
+    if (inputUrl) inputUrl.placeholder = './assets/videos/video.mp4 o https://...';
+    if (lblFile) lblFile.textContent = 'Miniatura / Fotograma de Portada';
+    if (descFile) descFile.textContent = 'Haz clic para seleccionar la imagen de portada';
+    if (groupDl) groupDl.style.display = 'block';
+  } else if (type === '3d') {
+    if (lblUrl) lblUrl.textContent = 'URL del Modelo 3D (Sketchfab, GLB o Visor) *';
+    if (inputUrl) inputUrl.placeholder = 'https://sketchfab.com/models/...';
+    if (lblFile) lblFile.textContent = 'Imagen de Previsualización del Modelo 3D';
+    if (descFile) descFile.textContent = 'Haz clic para seleccionar o arrastra una captura del modelo';
+    if (groupDl) groupDl.style.display = 'block';
+  } else {
+    // foto
+    if (lblUrl) lblUrl.textContent = 'URL o Ruta de la Fotografía *';
+    if (inputUrl) inputUrl.placeholder = './assets/images/foto.jpg o https://...';
+    if (lblFile) lblFile.textContent = 'Archivo / Fotografía en Alta Resolución';
+    if (descFile) descFile.textContent = 'Haz clic para seleccionar o arrastra una imagen';
+    if (groupDl) groupDl.style.display = 'block';
+  }
+}
+
 function openGalleryModal(item = null) {
   const modal = document.getElementById('modal-gallery-item');
   const titleEl = document.getElementById('modal-gallery-title');
@@ -5650,10 +5710,13 @@ function openGalleryModal(item = null) {
     return lang === 'es' ? val : '';
   };
 
+  const itemType = item ? (item.type || 'foto') : 'foto';
+  if (typeSelect) typeSelect.value = itemType;
+  updateModalTypeUI(itemType);
+
   if (item) {
     if (titleEl) titleEl.textContent = '✏️ Modificar Recurso Multilingüe';
     if (idInput) idInput.value = item.id;
-    if (typeSelect) typeSelect.value = item.type || 'foto';
     if (urlInput) urlInput.value = item.full || item.src || '';
     if (dlInput) dlInput.value = item.file || item.downloadUrl || '';
 
@@ -5676,7 +5739,6 @@ function openGalleryModal(item = null) {
   } else {
     if (titleEl) titleEl.textContent = '➕ Añadir Nuevo Recurso';
     if (idInput) idInput.value = '';
-    if (typeSelect) typeSelect.value = 'foto';
     if (urlInput) urlInput.value = '';
     if (dlInput) dlInput.value = '';
 
@@ -5709,6 +5771,7 @@ function handleSaveGalleryItem(e) {
   const typeSelect = document.getElementById('gallery-item-type');
   const urlInput = document.getElementById('gallery-item-url');
   const dlInput = document.getElementById('gallery-item-download-url');
+  const previewImg = document.getElementById('gallery-preview-img');
 
   const titleEs = document.getElementById('gallery-item-title-es')?.value.trim() || 'Sin título';
   const titleEn = document.getElementById('gallery-item-title-en')?.value.trim() || titleEs;
@@ -5723,14 +5786,18 @@ function handleSaveGalleryItem(e) {
   const descFr = document.getElementById('gallery-item-desc-fr')?.value.trim() || descEs;
 
   const id = idInput && idInput.value ? Number(idInput.value) : Date.now();
+  const currentType = typeSelect ? typeSelect.value : 'foto';
+  const isWeb = currentType === 'web';
+  const urlVal = urlInput ? urlInput.value.trim() : '';
+
   const newItem = {
     id: id,
-    type: typeSelect ? typeSelect.value : 'foto',
+    type: currentType,
     title: { es: titleEs, en: titleEn, fr: titleFr },
     category: { es: catEs, en: catEn, fr: catFr },
-    full: urlInput ? urlInput.value.trim() : './assets/images/lobo.png',
-    thumb: urlInput ? urlInput.value.trim() : './assets/images/lobo.png',
-    file: dlInput && dlInput.value.trim() ? dlInput.value.trim() : (urlInput ? urlInput.value.trim() : ''),
+    full: urlVal || (isWeb ? 'https://' : './assets/images/lobo.png'),
+    thumb: (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : (isWeb ? './assets/icons/icon-document.png' : (urlVal || './assets/images/lobo.png')),
+    file: dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal,
     desc: { es: descEs, en: descEn, fr: descFr }
   };
 
@@ -5740,7 +5807,7 @@ function handleSaveGalleryItem(e) {
     showToast('✅ Recurso multilingüe actualizado correctamente');
   } else {
     galleryItems.unshift(newItem);
-    showToast('✅ Nuevo recurso multilingüe publicado en la galería');
+    showToast('✅ Nuevo recurso publicado en la galería');
   }
 
   localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));

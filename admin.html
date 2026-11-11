@@ -1640,6 +1640,7 @@
           <button type="button" class="btn-filter-period active" data-gallery-filter="all">📁 Todos (<span id="count-all-gallery">0</span>)</button>
           <button type="button" class="btn-filter-period" data-gallery-filter="foto">🖼️ Fotografías (<span id="count-foto-gallery">0</span>)</button>
           <button type="button" class="btn-filter-period" data-gallery-filter="pdf">📄 Fichas PDF (<span id="count-pdf-gallery">0</span>)</button>
+          <button type="button" class="btn-filter-period" data-gallery-filter="web">🌐 Enlaces Web (<span id="count-web-gallery">0</span>)</button>
           <button type="button" class="btn-filter-period" data-gallery-filter="video">🎬 Vídeos y 3D (<span id="count-video-gallery">0</span>)</button>
         </div>
 
@@ -2189,18 +2190,19 @@
           <select id="gallery-item-type" class="admin-select" required>
             <option value="foto">🖼️ Fotografía en Alta Resolución</option>
             <option value="pdf">📄 Ficha Didáctica / Documento (PDF)</option>
+            <option value="web">🌐 Enlace a Página Web / Portal Externo</option>
             <option value="video">🎬 Enlace a Vídeo / Documental</option>
             <option value="3d">🏛️ Modelo 3D Interactivo</option>
           </select>
         </div>
 
         <!-- Archivo o Imagen con Dropzone y Preview -->
-        <div class="admin-form-group">
-          <label>Archivo / Imagen de Portada</label>
+        <div class="admin-form-group" id="group-gallery-file">
+          <label id="lbl-gallery-file">Archivo / Imagen de Portada</label>
           <div class="admin-dropzone" id="drop-gallery-file" style="padding: 1rem; border: 2px dashed var(--admin-border); border-radius: 8px; text-align: center; cursor: pointer; background: var(--admin-bg);">
             <input type="file" id="gallery-file-input" accept="image/*,.pdf" style="display: none;">
             <div style="font-size: 1.8rem; margin-bottom: 4px;">📤</div>
-            <p style="font-size: 0.82rem; color: var(--admin-muted); margin: 0;">
+            <p id="desc-gallery-file" style="font-size: 0.82rem; color: var(--admin-muted); margin: 0;">
               Haz clic para seleccionar o arrastra una imagen o PDF
             </p>
           </div>
@@ -2216,8 +2218,8 @@
         </div>
 
         <div class="admin-form-group">
-          <label>URL o Ruta del Recurso (Imagen, Vídeo o PDF) *</label>
-          <input type="text" id="gallery-item-url" class="admin-input" required placeholder="./assets/images/foto.jpg o https://...">
+          <label id="lbl-gallery-item-url">URL o Ruta del Recurso (Web, Imagen, Vídeo o PDF) *</label>
+          <input type="text" id="gallery-item-url" class="admin-input" required placeholder="https://... o ./assets/images/...">
         </div>
 
         <div class="admin-form-group" id="group-download-url">

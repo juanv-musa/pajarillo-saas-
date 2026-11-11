@@ -204,14 +204,16 @@ if ($method === 'POST') {
                     'author' => 'Centro de Interpretación',
                     'category' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? 'Patrimonio') : ($item['category'] ?? 'Patrimonio')
                 ];
-            } elseif ($type === 'pdf') {
+            } elseif ($type === 'pdf' || $type === 'web' || $type === 'enlace') {
+                $isWeb = ($type === 'web' || $type === 'enlace');
                 $resources[] = [
                     'id' => 'res_' . ($item['id'] ?? uniqid()),
+                    'type' => $isWeb ? 'web' : 'pdf',
                     'title' => $item['title'] ?? '',
                     'file' => $item['file'] ?? ($item['full'] ?? ''),
-                    'format' => 'PDF / Digital',
-                    'icon' => '📄',
-                    'badge' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? 'Documentación') : ($item['category'] ?? 'Documentación'),
+                    'format' => $isWeb ? 'Sitio Web / Enlace' : 'PDF / Digital',
+                    'icon' => $isWeb ? '🌐' : '📄',
+                    'badge' => is_array($item['category'] ?? null) ? ($item['category']['es'] ?? ($isWeb ? 'Enlace Web' : 'Documentación')) : ($item['category'] ?? ($isWeb ? 'Enlace Web' : 'Documentación')),
                     'description' => $item['desc'] ?? '',
                     'url' => $item['file'] ?? ($item['full'] ?? '')
                 ];
