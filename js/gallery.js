@@ -240,12 +240,53 @@ export class GalleryManager {
 
     this.updateTrackButtonsUI(track);
 
-    this.videoLightboxElement.src = targetUrl;
-    this.videoLightboxElement.load();
-    this.videoLightbox.classList.remove('hidden');
+    const ytMatch = targetUrl ? targetUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i) : null;
+    const vimeoMatch = targetUrl ? targetUrl.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i) : null;
 
-    const playPromise = this.videoLightboxElement.play();
-    if (playPromise) playPromise.catch(() => {});
+    if (ytMatch) {
+      this.videoLightboxElement.style.display = 'none';
+      let iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'video-lightbox-iframe';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+        iframe.allowFullscreen = true;
+        this.videoLightboxElement.parentNode.appendChild(iframe);
+      }
+      iframe.style.display = 'block';
+      iframe.src = `https://www.youtube-nocookie.com/embed/${ytMatch[1]}?autoplay=1`;
+    } else if (vimeoMatch) {
+      this.videoLightboxElement.style.display = 'none';
+      let iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'video-lightbox-iframe';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = '0';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.allowFullscreen = true;
+        this.videoLightboxElement.parentNode.appendChild(iframe);
+      }
+      iframe.style.display = 'block';
+      iframe.src = `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+    } else {
+      const iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+      if (iframe) {
+        iframe.src = '';
+        iframe.style.display = 'none';
+      }
+      this.videoLightboxElement.style.display = 'block';
+      this.videoLightboxElement.src = targetUrl;
+      this.videoLightboxElement.load();
+      const playPromise = this.videoLightboxElement.play();
+      if (playPromise) playPromise.catch(() => {});
+    }
+
+    this.videoLightbox.classList.remove('hidden');
 
     if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
       window.PajarilloAnalytics.track('video_play', {
@@ -253,6 +294,16 @@ export class GalleryManager {
         track_mode: track,
         has_audiodesc: hasAudioDesc
       });
+    }
+  }
+
+  playTrailer() {
+    if (!this.data.videos || this.data.videos.length === 0) return;
+    const trailerIdx = this.data.videos.findIndex(v => v.id === 'vid_trailer' || (v.category && String(v.category).toLowerCase().includes('tráiler')));
+    if (trailerIdx >= 0) {
+      this.openVideoModal(trailerIdx, 'normal');
+    } else {
+      this.openVideoModal(0, 'normal');
     }
   }
 
@@ -315,6 +366,11 @@ export class GalleryManager {
       this.videoLightboxElement.src = '';
     }
     if (this.videoLightbox) {
+      const iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+      if (iframe) {
+        iframe.src = '';
+        iframe.style.display = 'none';
+      }
       this.videoLightbox.classList.add('hidden');
     }
     this.activeVideoIndex = null;
@@ -430,47 +486,47 @@ export class GalleryManager {
     // 3. Vídeos y 3D
     if (this.videosContainer) {
       if (!this.data.videos || this.data.videos.length === 0) {
+        this.videosContainer.className = '';
         this.videosContainer.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1.5rem; color: var(--c-text-muted); background: var(--c-stone-light); border-radius: var(--radius-lg); border: 1.5px dashed var(--c-border); margin: 1rem 0;">
+          <div style="text-align: center; padding: 3.5rem 1.5rem; color: var(--c-text-muted); background: var(--c-stone-light); border-radius: var(--radius-lg); border: 1.5px dashed var(--c-border); margin: 1rem auto; max-width: 680px;">
             <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🎬</div>
             <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--c-primary); margin-bottom: 0.5rem;" data-i18n="galeria.empty_videos">No hay audiovisuales configurados</h4>
             <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto; color: var(--c-text-muted);" data-i18n="galeria.empty_videos_desc">Actualmente no hay vídeos activos en esta sección. Puedes añadir o gestionar documentales desde el Panel de Administración.</p>
           </div>
         `;
       } else {
+        const isSingle = this.data.videos.length === 1;
+        this.videosContainer.className = isSingle ? 'gallery-videos-single' : 'gallery-videos-grid';
         this.videosContainer.innerHTML = this.data.videos.map((vid, idx) => {
           const title = getLang(vid.title, 'Audiovisual');
           const desc = getLang(vid.description || vid.desc, '');
-          const hasAudioDesc = Boolean(vid.videoUrlAudioDesc || vid.videoAudiodescripcionUrl);
           const cat = vid.category || 'Audiovisual';
 
           return `
-            <div class="event-card" style="border: 1.5px solid var(--c-border); display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-lg); background: #fff; box-shadow: var(--shadow-sm); cursor: pointer;" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
-              <div>
-                <div style="position: relative; height: 210px; overflow: hidden; background: #000;">
-                  <img src="${vid.thumb || './assets/images/lobo.png'}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.85; transition: transform 0.4s ease;" onerror="this.src='./assets/images/lobo.png'">
-                  <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
-                    <div class="btn-cta-gold" style="padding: 12px 18px; border-radius: 50%; font-size: 1.4rem; width: 54px; height: 54px; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
-                      ▶
-                    </div>
+            <div class="video-card-item" onclick="window.galleryInstance.openVideoModal(${idx}, 'normal')">
+              <div class="video-card-media">
+                <img class="video-card-thumb" src="${vid.thumb || './assets/images/lobo.png'}" alt="${title.replace(/"/g, '&quot;')}" onerror="this.src='./assets/images/lobo.png'">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.28);">
+                  <div class="btn-cta-gold" style="padding: 0; border-radius: 50%; font-size: 1.3rem; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.45);">
+                    ▶
                   </div>
-                  <span style="position: absolute; top: 10px; left: 10px; background: rgba(26,36,30,0.85); color: #fff; padding: 3px 9px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;">
-                    ${cat}
-                  </span>
-                  <span style="position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.8); color: #D4AF37; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">
-                    ⏱ ${vid.duration || '05:00'}
+                </div>
+                <span style="position: absolute; top: 12px; left: 12px; background: rgba(26,36,30,0.85); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3px;">
+                  ${cat}
+                </span>
+                <span style="position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.82); color: #D4AF37; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">
+                  ⏱ ${vid.duration || '00:40'}
+                </span>
+              </div>
+              
+              <div class="video-card-body">
+                <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
+                  <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">
+                    🔊 Locutado / Subtítulos
                   </span>
                 </div>
-                
-                <div class="event-body" style="padding: 1.25rem;">
-                  <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem;">
-                    <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px;">
-                      🔊 Locutado / Subtítulos
-                    </span>
-                  </div>
-                  <h3 class="event-title" style="font-size: 1.2rem; line-height: 1.35; margin-bottom: 0.5rem; color: var(--c-primary);">${title}</h3>
-                  <p class="event-desc" style="font-size: 0.88rem; line-height: 1.5; color: var(--c-text-muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 0;">${desc}</p>
-                </div>
+                <h3 class="video-card-title">${title}</h3>
+                <p class="video-card-desc">${desc}</p>
               </div>
             </div>
           `;

@@ -17,6 +17,3 @@ node_modules/
 *.zip
 backups/
 generate_canvas_ui.js
-
-# Vídeos pesados locales (alojamiento en servidor / CDN)
-assets/videos/*.mp4

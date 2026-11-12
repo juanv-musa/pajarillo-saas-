@@ -855,14 +855,24 @@
           stopAudioPlayback();
         }
 
-        // 5. Vídeo o Reconstrucción 3D (Opcional)
+        // 5. Vídeo o Reconstrucción 3D (Opcional: compatible con MP4 local, remoto o YouTube/Vimeo)
         const hasVideo = (currentPanel.has_video !== false) && Boolean(currentPanel.video) && currentPanel.video.trim() !== '';
         if (hasVideo) {
-          dom.videoPlayer.src = currentPanel.video;
+          const vUrl = currentPanel.video.trim();
+          const ytMatch = vUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+          const vimeoMatch = vUrl.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
+
+          if (ytMatch) {
+            dom.videoContainer.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+          } else if (vimeoMatch) {
+            dom.videoContainer.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
+          } else {
+            dom.videoContainer.innerHTML = `<video id="punto-video-player" controls preload="metadata" playsinline style="width:100%; display:block; max-height:480px; background:#000;" src="${vUrl}"></video>`;
+          }
           dom.videoContainer.classList.remove('hidden');
         } else {
           dom.videoContainer.classList.add('hidden');
-          dom.videoPlayer.pause();
+          dom.videoContainer.innerHTML = '';
         }
 
         // 6. Documentación PDF asociada (Opcional - solo si existe documento específico)
