@@ -217,13 +217,14 @@ export class GalleryManager {
       }
     } catch(e) {}
 
-    // Si hay vídeos personalizados del Kiosco / Fondos Audiovisuales, usarlos directamente (incluso si está vacío [])
+    // Los vídeos de pantallas de sala (Pantalla 0 y Pantalla 1) son exclusivos del centro.
+    // Solo se publican en la web pública aquellos que tengan explícitamente activado showInWeb === true.
     try {
       const customKiosk = localStorage.getItem('pajarillo_kiosk_videos');
       if (customKiosk !== null) {
         const parsedKiosk = JSON.parse(customKiosk);
         if (Array.isArray(parsedKiosk)) {
-          this.data.videos = parsedKiosk;
+          this.data.videos = parsedKiosk.filter(v => v.showInWeb === true);
         }
       }
     } catch (e) {}

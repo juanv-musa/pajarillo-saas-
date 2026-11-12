@@ -13,6 +13,11 @@ uploads/temp_*
 # Dependencias
 node_modules/
 
+# Vídeos locales de sala que superan el límite de 100MB de GitHub (permanecen en el tótem local)
+assets/videos/DOCUMENTAL EL PAJARILLO.mp4
+assets/videos/*.mov
+assets/videos/*_master.*
+
 # Paquetes y temporales locales
 *.zip
 backups/

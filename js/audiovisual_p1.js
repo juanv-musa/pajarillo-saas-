@@ -90,9 +90,17 @@ class AudiovisualP1 {
 
     if (videos.length === 0) {
       try {
-        const res = await fetch('./data/gallery.json?t=' + Date.now());
-        const data = await res.json();
-        videos = data.videos || [];
+        const res = await fetch('./data/kiosk_videos.json?t=' + Date.now()).catch(() => null);
+        if (res && res.ok) {
+          const data = await res.json();
+          videos = data.videos || [];
+        } else {
+          const fallbackRes = await fetch('./data/gallery.json?t=' + Date.now()).catch(() => null);
+          if (fallbackRes && fallbackRes.ok) {
+            const fallbackData = await fallbackRes.json();
+            videos = fallbackData.videos || [];
+          }
+        }
       } catch (e) {
         videos = [];
       }

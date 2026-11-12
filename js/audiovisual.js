@@ -98,11 +98,19 @@ class AudiovisualKiosk {
     }
 
     try {
-      const res = await fetch('./data/gallery.json?t=' + Date.now());
-      const data = await res.json();
-      this.videos = data.videos || [];
+      const res = await fetch('./data/kiosk_videos.json?t=' + Date.now()).catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json();
+        this.videos = data.videos || [];
+      } else {
+        const fallbackRes = await fetch('./data/gallery.json?t=' + Date.now()).catch(() => null);
+        if (fallbackRes && fallbackRes.ok) {
+          const fallbackData = await fallbackRes.json();
+          this.videos = fallbackData.videos || [];
+        }
+      }
     } catch (e) {
-      console.warn('Error cargando vídeos:', e);
+      console.warn('Error cargando vídeos del kiosco:', e);
       this.videos = [];
     }
   }

@@ -3713,6 +3713,9 @@ function renderKioskVideos() {
                 ${isP1Screensaver 
                   ? '<span style="background: rgba(126, 87, 194, 0.25); color: #D1C4E9; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(126, 87, 194, 0.5);">✨ Salvapantallas 1</span>' 
                   : ''}
+                ${v.showInWeb 
+                  ? '<span style="background: rgba(46, 125, 50, 0.2); color: #2E7D32; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(46, 125, 50, 0.4);">🌐 Web Pública</span>' 
+                  : '<span style="background: rgba(100, 116, 139, 0.15); color: #475569; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 600;">🔒 Exclusivo Pantallas</span>'}
                 ${v.videoUrlAudioDesc 
                   ? '<span style="background: rgba(46, 125, 50, 0.25); color: #2e7d32; padding: 3px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; border: 1px solid rgba(46, 125, 50, 0.4);">👁️ Con Audiodescripción</span>' 
                   : ''}
@@ -3944,6 +3947,9 @@ function setupKioskVideoEditor(onVideosChange) {
 
       const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
       if (checkP1Screensaver) checkP1Screensaver.checked = Boolean(savedP1Screensaver) && (savedP1Screensaver === video.id || (Boolean(video.videoUrl) && savedP1Screensaver === video.videoUrl && video.videoUrl !== ''));
+
+      const checkWeb = document.getElementById('kiosk-video-show-web');
+      if (checkWeb) checkWeb.checked = Boolean(video.showInWeb);
     } else {
       if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
       if (btnDeleteModal) btnDeleteModal.style.display = 'none';
@@ -3962,6 +3968,8 @@ function setupKioskVideoEditor(onVideosChange) {
       if (checkP1) checkP1.checked = false;
       const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
       if (checkP1Screensaver) checkP1Screensaver.checked = false;
+      const checkWeb = document.getElementById('kiosk-video-show-web');
+      if (checkWeb) checkWeb.checked = false;
     }
     modal.classList.remove('hidden');
   };
@@ -4100,10 +4108,12 @@ function setupKioskVideoEditor(onVideosChange) {
     const descVal = document.getElementById('kiosk-video-desc').value.trim();
     const checkP0 = document.getElementById('kiosk-video-show-p0');
     const checkP1 = document.getElementById('kiosk-video-set-p1');
+    const checkWeb = document.getElementById('kiosk-video-show-web');
 
     const videoItem = {
       id: targetId,
       showInP0: checkP0 ? checkP0.checked : true,
+      showInWeb: checkWeb ? checkWeb.checked : false,
       category: document.getElementById('kiosk-video-category').value.trim() || 'Fondo Audiovisual',
       title: {
         es: titleVal,
