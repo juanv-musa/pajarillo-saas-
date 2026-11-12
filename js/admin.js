@@ -5895,15 +5895,6 @@ function setupLegalAdmin() {
     });
   }
 
-  const btnReset = document.getElementById('btn-reset-legal-defaults');
-  if (btnReset) {
-    btnReset.addEventListener('click', () => {
-      if (confirm('¿Restablecer todos los textos legales y carta de calidad a los valores oficiales por defecto?')) {
-        resetLegalDefaults();
-      }
-    });
-  }
-
   // Exportar y Copiar JSON de Legal para sincronización directa
   const handleExportJson = () => {
     const data = collectLegalForm();
