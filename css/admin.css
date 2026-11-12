@@ -53,6 +53,37 @@ body {
   gap: 0.85rem;
 }
 
+.admin-user-pill {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.admin-user-pill .user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: rgba(30, 77, 43, 0.08);
+  border: 1px solid rgba(30, 77, 43, 0.18);
+  border-radius: 20px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--admin-primary);
+  white-space: nowrap;
+}
+
+.admin-user-pill .btn-admin {
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  font-size: 0.82rem;
+}
+
 /* Layout del Panel con Sidebar (Formato Original Estable) */
 .admin-layout {
   display: flex;

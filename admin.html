@@ -48,13 +48,13 @@
     </div>
 
     <div class="admin-user-pill">
-      <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="font-size: 0.8rem;">
+      <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="font-size: 0.82rem; padding: 7px 14px; text-decoration: none;">
         <img src="./assets/icons/icon-globe.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Ver Portal Público
       </a>
       <div id="user-info-badge" class="user-badge hidden">
         <img src="./assets/icons/icon-user.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> <span id="logged-user-name">Gestor Municipal</span>
       </div>
-      <button id="btn-logout" class="btn-admin btn-admin-danger hidden" style="padding: 6px 12px; font-size: 0.8rem;">
+      <button id="btn-logout" class="btn-admin btn-admin-danger hidden" style="padding: 7px 14px; font-size: 0.82rem;">
         Cerrar Sesión
       </button>
     </div>
@@ -2177,12 +2177,6 @@
             <button type="button" id="btn-save-legal-top" class="btn-admin btn-admin-primary" style="padding: 10px 18px; font-weight: 700;">
               💾 Guardar Todo en Legal y Calidad
             </button>
-            <button type="button" id="btn-copy-legal-json" class="btn-admin btn-admin-outline" style="padding: 10px 14px; font-weight: 600;" title="Copiar JSON actual para sincronizar en GitHub">
-              📋 Copiar JSON
-            </button>
-            <button type="button" id="btn-export-legal-json" class="btn-admin btn-admin-outline" style="padding: 10px 14px; font-weight: 600;" title="Descargar archivo data/legal.json">
-              📥 Descargar legal.json
-            </button>
             <a href="./legal.html" target="_blank" rel="noopener" class="btn-admin btn-admin-outline" style="text-decoration: none; padding: 10px 14px;">
               👁️ Ver Página Pública ↗
             </a>
@@ -2673,7 +2667,6 @@
                   5. Carta de Servicios y Compromisos de Calidad del Centro
                 </h3>
               </div>
-              </div>
               <p style="font-size: 0.83rem; color: var(--admin-muted); margin-bottom: 1.25rem;">
                 Define los compromisos públicos de calidad en la atención a visitantes, tiempos máximos de respuesta, estándares de conservación e indicadores de satisfacción ciudadana.
               </p>
@@ -2721,29 +2714,6 @@
                 <label for="legal-calidad-quejas-texto">Texto: Buzón Presencial y Telemático para Aportaciones Ciudadanas</label>
                 <textarea id="legal-calidad-quejas-texto" class="admin-textarea" rows="4" placeholder="Ponemos a disposición de la ciudadanía un buzón presencial en la recepción..."></textarea>
               </div>
-            </div>
-          </div>
-
-          <!-- Barra Inferior de Guardado -->
-          <div style="display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 1.2rem; border-radius: 12px; border: 1px solid var(--admin-border); box-shadow: var(--admin-shadow); margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-            <div>
-              <span style="font-weight: 700; color: var(--admin-primary); font-size: 0.95rem;">
-                💾 Guardar Todos los Cambios Normativos
-              </span>
-              <p style="font-size: 0.8rem; color: var(--admin-muted); margin: 2px 0 0 0;">
-                Los cambios se reflejarán inmediatamente en la página web pública de Legal y Calidad.
-              </p>
-            </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
-              <button type="button" id="btn-copy-legal-json-bottom" class="btn-admin btn-admin-outline" style="padding: 10px 14px; font-weight: 600;">
-                📋 Copiar JSON
-              </button>
-              <button type="button" id="btn-export-legal-json-bottom" class="btn-admin btn-admin-outline" style="padding: 10px 14px; font-weight: 600;">
-                📥 Descargar legal.json
-              </button>
-              <button type="submit" class="btn-admin btn-admin-primary" style="padding: 10px 24px; font-weight: 700; font-size: 0.95rem;">
-                💾 Guardar Todo en Legal y Calidad
-              </button>
             </div>
           </div>
         </form>
