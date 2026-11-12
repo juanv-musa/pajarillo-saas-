@@ -48,6 +48,9 @@
     </div>
 
     <div class="admin-user-pill">
+      <button type="button" id="btn-quick-export-backup" class="btn-admin btn-admin-outline" onclick="window.downloadFullBackupJSON()" title="Descargar copia JSON con todos los datos editados" style="font-size: 0.82rem; padding: 7px 14px;">
+        💾 Descargar Cambios (JSON)
+      </button>
       <a href="./index.html" target="_blank" class="btn-admin btn-admin-outline" style="font-size: 0.82rem; padding: 7px 14px; text-decoration: none;">
         <img src="./assets/icons/icon-globe.png" alt="" class="btn-icon-custom icon-inline" style="width: 1.15em; height: 1.15em; vertical-align: -0.15em; object-fit: contain;"> Ver Portal Público
       </a>
@@ -1737,6 +1740,32 @@
             <p style="color: var(--admin-muted); font-size: 0.88rem;">
               Gestión de credenciales de acceso municipal, identidad visual y backups.
             </p>
+          </div>
+        </div>
+
+        <!-- Tarjeta de Respaldo y Exportación Total JSON -->
+        <div class="admin-card" style="border: 2px solid #52725D; background: #FAFDFB; margin-bottom: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h3 style="margin: 0; color: var(--admin-primary); display: flex; align-items: center; gap: 8px;">
+                💾 Copia de Seguridad y Exportación Total de Datos
+              </h3>
+              <p style="font-size: 0.86rem; color: var(--admin-muted); margin-top: 0.35rem; margin-bottom: 0;">
+                Descarga o restaura en un solo archivo JSON todos los paneles QR, recursos, galería, agenda, TV y textos legales editados.
+              </p>
+            </div>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="btn-admin btn-admin-primary" onclick="window.downloadFullBackupJSON()" style="padding: 10px 16px; font-weight: 700;">
+                📥 Descargar Copia JSON
+              </button>
+              <button type="button" class="btn-admin btn-admin-outline" onclick="window.copyFullBackupJSON()" style="padding: 10px 14px;">
+                📋 Copiar JSON
+              </button>
+              <button type="button" class="btn-admin btn-admin-outline" onclick="document.getElementById('input-restore-full-backup').click()" style="padding: 10px 14px;">
+                📤 Restaurar desde Archivo JSON
+              </button>
+              <input type="file" id="input-restore-full-backup" accept=".json" style="display: none;" onchange="window.restoreFullBackupFromFile(this)">
+            </div>
           </div>
         </div>
 

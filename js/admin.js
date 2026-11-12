@@ -6256,3 +6256,86 @@ async function resetLegalDefaults() {
   }
 }
 
+// ═══════════════════════════════════════════
+// EXPORTACIÓN Y RESTAURACIÓN TOTAL JSON
+// ═══════════════════════════════════════════
+window.getFullBackupData = function() {
+  const safeGet = (key) => {
+    try {
+      const val = localStorage.getItem(key);
+      return val ? JSON.parse(val) : null;
+    } catch (e) {
+      return null;
+    }
+  };
+  return {
+    version: '1.2.0',
+    exported_at: new Date().toISOString(),
+    panels: safeGet('pajarillo_panels') || (typeof panelsData !== 'undefined' ? panelsData : []),
+    gallery: safeGet('pajarillo_gallery_data') || (typeof galleryItems !== 'undefined' ? galleryItems : []),
+    kiosk_videos: safeGet('pajarillo_kiosk_videos') || (typeof kioskVideos !== 'undefined' ? kioskVideos : []),
+    agenda: safeGet('pajarillo_agenda_data') || [],
+    legal: safeGet('pajarillo_legal_data') || (typeof legalData !== 'undefined' ? legalData : null),
+    locales: safeGet('pajarillo_locales') || (typeof customLocales !== 'undefined' ? customLocales : null),
+    p0_screensaver: localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || '',
+    p1_video: localStorage.getItem('pajarillo_kiosk_p1_video') || '',
+    p1_screensaver: localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || ''
+  };
+};
+
+window.downloadFullBackupJSON = function() {
+  const data = window.getFullBackupData();
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const now = new Date();
+  const ts = now.toISOString().slice(0, 10) + '_' + String(now.getHours()).padStart(2, '0') + String(now.getMinutes()).padStart(2, '0');
+  a.href = url;
+  a.download = `pajarillo_datos_completos_${ts}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  if (typeof showToast === 'function') {
+    showToast('📥 Copia de seguridad JSON descargada correctamente');
+  }
+};
+
+window.copyFullBackupJSON = function() {
+  const data = window.getFullBackupData();
+  const jsonStr = JSON.stringify(data, null, 2);
+  navigator.clipboard.writeText(jsonStr).then(() => {
+    if (typeof showToast === 'function') showToast('📋 Datos JSON copiados al portapapeles');
+  }).catch(() => {
+    if (typeof showToast === 'function') showToast('⚠️ No se pudo copiar automáticamente');
+  });
+};
+
+window.restoreFullBackupFromFile = function(inputEl) {
+  const file = inputEl && inputEl.files && inputEl.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.panels) localStorage.setItem('pajarillo_panels', JSON.stringify(data.panels));
+      if (data.gallery) localStorage.setItem('pajarillo_gallery_data', JSON.stringify(data.gallery));
+      if (data.kiosk_videos) localStorage.setItem('pajarillo_kiosk_videos', JSON.stringify(data.kiosk_videos));
+      if (data.agenda) localStorage.setItem('pajarillo_agenda_data', JSON.stringify(data.agenda));
+      if (data.legal) localStorage.setItem('pajarillo_legal_data', JSON.stringify(data.legal));
+      if (data.locales) localStorage.setItem('pajarillo_locales', JSON.stringify(data.locales));
+      if (data.p0_screensaver) localStorage.setItem('pajarillo_kiosk_p0_screensaver_video', data.p0_screensaver);
+      if (data.p1_video) localStorage.setItem('pajarillo_kiosk_p1_video', data.p1_video);
+      if (data.p1_screensaver) localStorage.setItem('pajarillo_kiosk_p1_screensaver_video', data.p1_screensaver);
+
+      alert('✅ Copia de seguridad restaurada con éxito. La página se recargará ahora.');
+      location.reload();
+    } catch (err) {
+      alert('❌ Error al procesar el archivo JSON: ' + err.message);
+    }
+  };
+  reader.readAsText(file);
+};
+
+
