@@ -1929,6 +1929,14 @@ function renderAgendaList() {
     const spotsNum = act.spotsLeft !== undefined ? act.spotsLeft : (act.spotsTotal || 25);
     const isActive = act.active !== false;
 
+    const catLabels = {
+      visitas: 'Visitas Guiadas',
+      talleres: 'Talleres Didácticos',
+      conferencias: 'Conferencias / Cursos',
+      arqueologia: 'Conferencias / Cursos'
+    };
+    const catName = catLabels[act.category] || act.category || 'General';
+
     li.innerHTML = `
       <div class="panel-admin-details" style="flex: 1; min-width: 0;">
         <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 4px; flex-wrap: wrap;">
@@ -1939,7 +1947,7 @@ function renderAgendaList() {
           }
         </div>
         <p style="margin: 0; font-size: 0.8rem; color: var(--admin-muted);">
-          📅 ${act.date} · ⏰ ${act.time || '11:30'} h · 🎟️ ${spotsNum} plazas · <strong>${act.category || 'General'}</strong>
+          📅 ${act.date} · ⏰ ${act.time || '11:30'} h · 🎟️ ${spotsNum} plazas · <strong>${catName}</strong>
         </p>
       </div>
       <div class="panel-actions-group" style="display: flex; align-items: center; gap: 6px; flex-shrink: 0;">
@@ -1986,7 +1994,7 @@ window.editActivity = function(id) {
   document.getElementById('act-title-es').value = (act.title && (act.title.es || act.title)) || '';
   document.getElementById('act-date').value = act.date || '';
   document.getElementById('act-time').value = act.time || '11:30';
-  document.getElementById('act-cat').value = act.category || 'visitas';
+  document.getElementById('act-cat').value = (act.category === 'arqueologia' ? 'conferencias' : act.category) || 'visitas';
   document.getElementById('act-spots').value = act.spotsTotal || act.spotsLeft || 25;
   document.getElementById('act-desc-es').value = (act.description && (act.description.es || act.description)) || '';
 

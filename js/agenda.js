@@ -132,7 +132,12 @@ export class AgendaManager {
 
     const filtered = this.currentFilter === 'todos'
       ? activeActivities
-      : activeActivities.filter(a => a.category === this.currentFilter);
+      : activeActivities.filter(a => {
+          if (this.currentFilter === 'conferencias' || this.currentFilter === 'arqueologia') {
+            return a.category === 'conferencias' || a.category === 'cursos' || a.category === 'conferencias_cursos' || a.category === 'arqueologia';
+          }
+          return a.category === this.currentFilter;
+        });
 
     if (filtered.length === 0) {
       this.container.innerHTML = `
