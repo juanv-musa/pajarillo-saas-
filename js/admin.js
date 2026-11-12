@@ -1739,7 +1739,13 @@ window.handlePanelFormSubmit = async function(e) {
   if (index >= 0) panelsData[index] = newPanel;
   else panelsData.push(newPanel);
 
-  localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+  try {
+    localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+  } catch (storageErr) {
+    console.error('Error guardando en localStorage:', storageErr);
+    showToast('⚠️ No se pudo guardar: la foto o PDF adjunto supera el límite de memoria del navegador. Por favor sube una imagen más ligera o usa una URL directa.');
+    return false;
+  }
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
 
   // Mantener el formulario con los datos actuales (¡NO borrar el formulario!)
@@ -2643,15 +2649,36 @@ setInterval(() => {
 }, 10000);
 
 // ═══════════════════════════════════════════
-// GENERADOR DE CÓDIGOS QR OFICIALES
+// GENERADOR Y VISOR DE CÓDIGOS QR OFICIALES DE IMPRENTA
 // ═══════════════════════════════════════════
 let adminQrInstance = null;
 let currentAdminQrUrl = '';
+let currentAdminQrBaseName = '';
+
+const OFFICIAL_PRINT_QR_MAP = {
+  0: 'QR_PUNTO_PORTAL_portal_general_del_santuario',
+  1: 'QR_PUNTO_01_la_cabeza_de_lobo',
+  2: 'QR_PUNTO_02_el_monumento_heroico_escalonado',
+  3: 'QR_PUNTO_03_el_territorio_de_iltiraka',
+  4: 'QR_PUNTO_04_un_paisaje_sagrado',
+  5: 'QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones',
+  6: 'QR_PUNTO_06_los_grifos_y_seres_alados',
+  7: 'QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado',
+  8: 'QR_PUNTO_08_la_loma_del_perro',
+  9: 'QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic',
+  10: 'QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d',
+  11: 'QR_PUNTO_11_punto_11',
+  12: 'QR_PUNTO_12_punto_12',
+  13: 'QR_PUNTO_13_punto_13',
+  14: 'QR_PUNTO_14_punto_14',
+  15: 'QR_PUNTO_15_punto_15'
+};
 
 function setupQrModalEvents() {
   const closeBtn = document.getElementById('btn-admin-close-qr');
   const closeIcon = document.getElementById('btn-close-qr-icon');
   const downloadBtn = document.getElementById('btn-admin-download-qr');
+  const downloadSvgBtn = document.getElementById('btn-admin-download-qr-svg');
   const copyBtn = document.getElementById('btn-admin-copy-qr-url');
 
   if (closeBtn) closeBtn.addEventListener('click', () => DOM.adminQrModal.classList.add('hidden'));
@@ -2664,8 +2691,37 @@ function setupQrModalEvents() {
     }
   });
 
+  if (downloadSvgBtn) {
+    downloadSvgBtn.addEventListener('click', () => {
+      if (currentAdminQrBaseName) {
+        const a = document.createElement('a');
+        a.href = `./QRS_DEFINITIVOS_IMPRENTA/${currentAdminQrBaseName}.svg`;
+        a.download = `${currentAdminQrBaseName}.svg`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('✅ Archivo vectorial original de imprenta (SVG) descargado');
+      } else {
+        showToast('ℹ️ Formato SVG solo disponible para los 15 códigos de imprenta');
+      }
+    });
+  }
+
   if (downloadBtn) {
     downloadBtn.addEventListener('click', () => {
+      // 1. Si es uno de los 15 códigos oficiales de imprenta, descargar directamente el PNG original
+      if (currentAdminQrBaseName) {
+        const a = document.createElement('a');
+        a.href = `./QRS_DEFINITIVOS_IMPRENTA/${currentAdminQrBaseName}.png`;
+        a.download = `${currentAdminQrBaseName}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('✅ Archivo original de imprenta (PNG HD) descargado');
+        return;
+      }
+
+      // 2. Si es un punto dinámico creado recientemente
       const canvas = DOM.adminQrcodeBox.querySelector('canvas');
       const img = DOM.adminQrcodeBox.querySelector('img');
       let dataUrl = '';
@@ -2718,7 +2774,16 @@ window.openAdminQR = function(id, title) {
     btnOpenPunto.href = `punto.html?id=${id}`;
   }
 
-  if (typeof QRCode !== 'undefined') {
+  const baseFileName = OFFICIAL_PRINT_QR_MAP[Number(id)];
+  currentAdminQrBaseName = baseFileName || '';
+
+  // Si existe el archivo oficial que se entregó a la imprenta, mostrar EXACTAMENTE ese archivo
+  // para que sea 100% idéntico al impreso y evitar variaciones de máscara matemática en pantalla
+  if (baseFileName) {
+    DOM.adminQrcodeBox.innerHTML = `
+      <img src="./QRS_DEFINITIVOS_IMPRENTA/${baseFileName}.png" alt="QR Oficial Nº 0${id}" style="width: 260px; height: 260px; object-fit: contain; display: block; border-radius: 4px;">
+    `;
+  } else if (typeof QRCode !== 'undefined') {
     adminQrInstance = new QRCode(DOM.adminQrcodeBox, {
       text: currentAdminQrUrl,
       width: 260,
@@ -2842,35 +2907,69 @@ function setupDropzone() {
   }
 }
 
-async function handleFileSelected(file) {
-  // Convertir a Base64 con FileReader para persistencia total en localStorage
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    const base64Url = e.target.result;
-    const preview = document.getElementById('panel-img-preview');
-    if (preview) preview.src = base64Url;
-    const previewBox = document.getElementById('panel-img-preview-box');
-    if (previewBox) previewBox.style.display = 'block';
-    document.getElementById('panel-current-img-url').value = base64Url;
-
-    // Subida al servidor si PHP está disponible
-    try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await fetch('./api/upload.php', { method: 'POST', body: formData });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.url) {
-          document.getElementById('panel-current-img-url').value = data.url;
-          showToast('✅ Archivo subido al servidor');
-          return;
+// Función auxiliar para optimizar y comprimir imágenes antes de guardarlas en localStorage
+function compressImageForStorage(file, maxWidth = 1200, quality = 0.82) {
+  return new Promise((resolve) => {
+    if (!file || !file.type.startsWith('image/')) {
+      resolve(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth) {
+          h = Math.round((h * maxWidth) / w);
+          w = maxWidth;
         }
-      }
-    } catch (err) {}
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64);
+      };
+      img.onerror = () => resolve(e.target.result);
+      img.src = e.target.result;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
 
-    showToast('✅ Imagen cargada y lista para guardar');
-  };
-  reader.readAsDataURL(file);
+async function handleFileSelected(file) {
+  if (!file) return;
+
+  // Optimizar y comprimir automáticamente con Canvas a máximo 1200px
+  // para evitar exceder el límite de 5MB de localStorage del navegador
+  const base64Url = await compressImageForStorage(file, 1200, 0.82);
+  if (!base64Url) return;
+
+  const preview = document.getElementById('panel-img-preview');
+  if (preview) preview.src = base64Url;
+  const previewBox = document.getElementById('panel-img-preview-box');
+  if (previewBox) previewBox.style.display = 'block';
+  document.getElementById('panel-current-img-url').value = base64Url;
+
+  // Subida al servidor si PHP está disponible
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch('./api/upload.php', { method: 'POST', body: formData });
+    if (res.ok) {
+      const data = await res.json();
+      if (data.success && data.url) {
+        document.getElementById('panel-current-img-url').value = data.url;
+        showToast('✅ Archivo subido al servidor');
+        return;
+      }
+    }
+  } catch (err) {}
+
+  showToast('✅ Imagen optimizada y lista para guardar');
 }
 
 async function handlePdfSelected(file) {

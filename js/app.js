@@ -1212,7 +1212,30 @@ window.openPanelQR = function(panelId, panelTitle) {
   const targetUrl = `${OFFICIAL_BASE_URL}punto.html?id=${panelId}`;
   linkText.textContent = targetUrl;
 
-  if (typeof QRCode !== 'undefined') {
+  // Archivos oficiales de imprenta (100% idénticos a los paneles impresos)
+  const OFFICIAL_PRINT_MAP = {
+    0: 'QR_PUNTO_PORTAL_portal_general_del_santuario',
+    1: 'QR_PUNTO_01_la_cabeza_de_lobo',
+    2: 'QR_PUNTO_02_el_monumento_heroico_escalonado',
+    3: 'QR_PUNTO_03_el_territorio_de_iltiraka',
+    4: 'QR_PUNTO_04_un_paisaje_sagrado',
+    5: 'QR_PUNTO_05_el_guerrero_de_la_falcata_y_los_leones',
+    6: 'QR_PUNTO_06_los_grifos_y_seres_alados',
+    7: 'QR_PUNTO_07_la_falcata_iberica_y_el_armamento_sagrado',
+    8: 'QR_PUNTO_08_la_loma_del_perro',
+    9: 'QR_PUNTO_09_las_campanas_arqueologicas_de_1994_y_bic',
+    10: 'QR_PUNTO_10_centro_de_interpretacion_y_reconstruccion_3d',
+    11: 'QR_PUNTO_11_punto_11',
+    12: 'QR_PUNTO_12_punto_12',
+    13: 'QR_PUNTO_13_punto_13',
+    14: 'QR_PUNTO_14_punto_14',
+    15: 'QR_PUNTO_15_punto_15'
+  };
+
+  const baseFileName = OFFICIAL_PRINT_MAP[Number(panelId)];
+  if (baseFileName) {
+    container.innerHTML = `<img src="./QRS_DEFINITIVOS_IMPRENTA/${baseFileName}.png" alt="QR ${panelTitle}" style="width: 240px; height: 240px; object-fit: contain; display: block; border-radius: 4px;">`;
+  } else if (typeof QRCode !== 'undefined') {
     qrCodeInstance = new QRCode(container, {
       text: targetUrl,
       width: 240,
