@@ -12,8 +12,6 @@ class AudiovisualP1 {
       videoElement: document.getElementById('tv-video'),
       playingTitle: document.getElementById('tv-playing-title'),
       btnBack: document.getElementById('btn-back-menu'),
-      btnToggleAudiodesc: document.getElementById('btn-toggle-audiodesc'),
-      unmuteOverlay: document.getElementById('tv-unmute-overlay'),
       btnPlayPause: document.getElementById('tv-btn-play'),
       btnReplay: document.getElementById('tv-btn-replay'),
       btnMute: document.getElementById('tv-btn-mute'),
@@ -27,12 +25,10 @@ class AudiovisualP1 {
       screensaverVideo: document.getElementById('tv-screensaver-video')
     };
 
-    this.allVideos = [];
     this.mainVideo = null;
     this.audioDescVideo = null;
     this.activeType = null;
     this.screensaverIdleTimer = null;
-    this.menuIdleTimer = null;
     this.idleTimeoutMs = 120000; // 2 minutos (120 segundos) desde fin de vídeo o reposo
     this.controlsFadeTimer = null;
   }
@@ -45,23 +41,6 @@ class AudiovisualP1 {
     this.setupScreensaver();
     this.setupKioskInactivity();
 
-    // Comprobar parámetros de URL (?id=..., ?video=..., ?menu=1)
-    const params = new URLSearchParams(window.location.search);
-    const videoParam = params.get('id') || params.get('video');
-    const startInMenu = params.get('menu') === '1';
-
-    if (videoParam && this.allVideos && this.allVideos.length > 0) {
-      const found = this.allVideos.find(v => v.id === videoParam || v.videoUrl === videoParam);
-      if (found) {
-        this.mainVideo = found;
-      }
-    }
-
-    // Por defecto, Pantalla 1 (Planta Alta) arranca proyectando el documental en bucle continuo de sala
-    if (!startInMenu && this.mainVideo) {
-      this.playVideo('general', true);
-    }
-
     // Sincronización en tiempo real desde el panel de Administración
     window.addEventListener('storage', async (e) => {
       if (
@@ -73,9 +52,6 @@ class AudiovisualP1 {
         await this.loadVideos();
         this.renderCards();
         this.updateScreensaverSource();
-        if (e.key === 'pajarillo_kiosk_p1_video' && this.mainVideo) {
-          this.playVideo(this.activeType || 'general', true);
-        }
       }
     });
   }
@@ -129,8 +105,6 @@ class AudiovisualP1 {
         videos = [];
       }
     }
-
-    this.allVideos = videos;
 
     // 1. Vídeo Versión General (P1)
     const savedP1Id = localStorage.getItem('pajarillo_kiosk_p1_video');
@@ -239,7 +213,7 @@ class AudiovisualP1 {
     `;
   }
 
-  playVideo(type = 'general', isAutoplay = false) {
+  playVideo(type = 'general') {
     this.activeType = type;
     const targetVideo = (type === 'audiodesc' && this.audioDescVideo)
       ? this.audioDescVideo
@@ -248,7 +222,6 @@ class AudiovisualP1 {
     if (!targetVideo || !this.dom.videoElement) return;
 
     clearTimeout(this.screensaverIdleTimer);
-    clearTimeout(this.menuIdleTimer);
     if (this.dom.screensaver) {
       this.dom.screensaver.classList.remove('active');
       if (this.dom.screensaverVideo) this.dom.screensaverVideo.pause();
@@ -266,43 +239,23 @@ class AudiovisualP1 {
       }
     }
 
-    // Actualizar botón de alternancia rápida de audiodescripción
-    if (this.dom.btnToggleAudiodesc) {
-      if (type === 'audiodesc') {
-        this.dom.btnToggleAudiodesc.innerHTML = '🎬 Ver Versión General';
-        this.dom.btnToggleAudiodesc.style.background = 'rgba(77, 133, 209, 0.9)';
-      } else {
-        this.dom.btnToggleAudiodesc.innerHTML = '👁️ Audiodescripción 🇪🇸';
-        this.dom.btnToggleAudiodesc.style.background = 'rgba(46, 125, 50, 0.9)';
-      }
-    }
-
     const videoUrl = targetVideo.videoUrl || (targetVideo.videoUrlAudioDesc || '');
     this.dom.videoElement.src = encodeURI(videoUrl);
-    this.dom.videoElement.loop = true; // Proyección en bucle continuo de sala
+    this.dom.videoElement.muted = false;
     this.dom.videoElement.currentTime = 0;
 
     if (this.dom.playerModal) {
       this.dom.playerModal.classList.add('active');
     }
 
-    const playPromise = this.dom.videoElement.play();
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        if (this.dom.videoElement.muted) {
-          if (this.dom.unmuteOverlay) this.dom.unmuteOverlay.style.display = 'flex';
-          if (this.dom.btnMute) this.dom.btnMute.textContent = '🔇';
-        } else {
-          if (this.dom.unmuteOverlay) this.dom.unmuteOverlay.style.display = 'none';
-          if (this.dom.btnMute) this.dom.btnMute.textContent = '🔊';
-        }
-      }).catch((err) => {
-        console.warn('Autoplay bloqueado con sonido, arrancando silenciado:', err);
-        this.dom.videoElement.muted = true;
-        if (this.dom.btnMute) this.dom.btnMute.textContent = '🔇';
-        if (this.dom.unmuteOverlay) this.dom.unmuteOverlay.style.display = 'flex';
-        this.dom.videoElement.play().catch(() => {});
-      });
+    this.dom.videoElement.play().catch(() => {
+      this.dom.videoElement.muted = true;
+      if (this.dom.btnMute) this.dom.btnMute.textContent = '🔇';
+      this.dom.videoElement.play().catch(() => {});
+    });
+
+    if (this.dom.btnMute && !this.dom.videoElement.muted) {
+      this.dom.btnMute.textContent = '🔊';
     }
   }
 
@@ -311,17 +264,8 @@ class AudiovisualP1 {
     this.dom.playerModal.classList.remove('active');
     if (this.dom.videoElement) {
       this.dom.videoElement.pause();
+      this.dom.videoElement.src = '';
     }
-    if (this.dom.unmuteOverlay) {
-      this.dom.unmuteOverlay.style.display = 'none';
-    }
-    // Si el usuario vuelve al menú, tras 60 segundos de inactividad reanuda el bucle de sala
-    clearTimeout(this.menuIdleTimer);
-    this.menuIdleTimer = setTimeout(() => {
-      if (!this.dom.playerModal || !this.dom.playerModal.classList.contains('active')) {
-        this.playVideo('general');
-      }
-    }, 60000);
     this.restartIdleTimer();
   }
 
@@ -332,35 +276,6 @@ class AudiovisualP1 {
         this.closePlayer();
       });
     }
-
-    // Botón de alternancia de audiodescripción durante la proyección
-    if (this.dom.btnToggleAudiodesc) {
-      this.dom.btnToggleAudiodesc.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const nextType = this.activeType === 'audiodesc' ? 'general' : 'audiodesc';
-        this.playVideo(nextType);
-      });
-    }
-
-    // Activación de sonido desde overlay o cualquier toque
-    const unmute = () => {
-      if (this.dom.videoElement && this.dom.videoElement.muted) {
-        this.dom.videoElement.muted = false;
-        if (this.dom.btnMute) this.dom.btnMute.textContent = '🔊';
-      }
-      if (this.dom.unmuteOverlay) {
-        this.dom.unmuteOverlay.style.display = 'none';
-      }
-    };
-
-    if (this.dom.unmuteOverlay) {
-      this.dom.unmuteOverlay.addEventListener('click', (e) => {
-        e.stopPropagation();
-        unmute();
-      });
-    }
-    window.addEventListener('click', unmute, { passive: true });
-    window.addEventListener('touchstart', unmute, { passive: true });
 
     if (this.dom.btnPlayPause) {
       this.dom.btnPlayPause.addEventListener('click', (e) => {
@@ -410,9 +325,8 @@ class AudiovisualP1 {
       });
 
       this.dom.videoElement.addEventListener('ended', () => {
-        // En Pantalla 1 (Planta Alta) el vídeo se proyecta en bucle continuo de sala
-        this.dom.videoElement.currentTime = 0;
-        this.dom.videoElement.play().catch(() => {});
+        // Al terminar el vídeo, vuelve automáticamente al menú de selección
+        this.closePlayer();
       });
 
       this.dom.videoElement.addEventListener('play', () => {

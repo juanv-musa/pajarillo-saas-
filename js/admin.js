@@ -3751,8 +3751,8 @@ function renderKioskVideos() {
                 <button type="button" class="btn-admin ${isP0Screensaver ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 95px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP0Screensaver ? 'background: #D4AF37; color: #111; font-weight: 800;' : ''}" onclick="window.assignKioskP0Screensaver('${v.id}')" title="Asignar como vídeo de salvapantallas para Pantalla 0">
                   ${isP0Screensaver ? '★ Salvap. P0' : '☆ Salvap. P0'}
                 </button>
-                <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 85px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Proyectar este vídeo en bucle continuo en la Planta Alta (P1)">
-                  ${isP1 ? '✓ Proy. P1' : '🏛️ Asignar P1'}
+                <button type="button" class="btn-admin ${isP1 ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 85px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1 ? 'background: #4D85D1; color: white;' : ''}" onclick="window.assignKioskP1('${v.id}')" title="Asignar como vídeo documental para la Planta Alta (P1)">
+                  ${isP1 ? '✓ Doc. P1' : '🏛️ Asignar P1'}
                 </button>
                 <button type="button" class="btn-admin ${isP1Screensaver ? 'btn-admin-primary' : 'btn-admin-outline'}" style="flex: 1; min-width: 95px; justify-content: center; padding: 5px 6px; font-size: 0.74rem; ${isP1Screensaver ? 'background: #7E57C2; color: white; font-weight: 800;' : ''}" onclick="window.assignKioskP1Screensaver('${v.id}')" title="Asignar como vídeo de salvapantallas para Pantalla 1">
                   ${isP1Screensaver ? '✨ Salvap. 1' : '☆ Salvap. 1'}
@@ -4054,7 +4054,7 @@ function setupKioskVideoEditor(onVideosChange) {
     if (btnOpenP1) btnOpenP1.href = p1Url;
 
     renderKioskVideos();
-    showToast('🏛️ Vídeo asignado como proyección en bucle para Pantalla 1 (Planta Alta)');
+    showToast('🏛️ Vídeo asignado como documental para Pantalla 1 (Planta Alta)');
   };
 
   window.assignKioskP1Screensaver = (id) => {
