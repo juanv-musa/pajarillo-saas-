@@ -4,7 +4,15 @@
  * Incluye respaldo en memoria inmediato (offline y file://) y sincronización dinámica.
  */
 
-import { DEFAULT_LOCALES } from './locales-data.js';
+import { DEFAULT_LOCALES } from './locales-data.js?v=5.0';
+
+const CRITICAL_FALLBACKS = {
+  'agenda.filtro_todos': { es: 'Todas', en: 'All Events', fr: 'Toutes' },
+  'agenda.filtro_visitas': { es: 'Visitas Guiadas', en: 'Guided Tours', fr: 'Visites Guidées' },
+  'agenda.filtro_talleres': { es: 'Talleres Didácticos', en: 'Educational Workshops', fr: 'Ateliers Pédagogiques' },
+  'agenda.filtro_conferencias': { es: 'Conferencias / Cursos', en: 'Conferences & Courses', fr: 'Conférences & Cours' },
+  'agenda.filtro_arqueologia': { es: 'Conferencias / Cursos', en: 'Conferences & Courses', fr: 'Conférences & Cours' }
+};
 
 export class I18nManager {
   constructor() {
@@ -48,6 +56,11 @@ export class I18nManager {
     // Sobrescribir con cambios guardados en el panel de administración (localStorage o servidor)
     try {
       let savedLocales = localStorage.getItem('pajarillo_locales');
+      // Purga estricta si contiene datos obsoletos de braille o código postal erróneo 23140
+      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales))) {
+        localStorage.removeItem('pajarillo_locales');
+        savedLocales = null;
+      }
       let parsed = null;
       if (savedLocales) {
         try { parsed = JSON.parse(savedLocales); } catch(e) {}
@@ -60,6 +73,18 @@ export class I18nManager {
       }
       if (parsed && parsed[lang]) {
         const l = parsed[lang];
+        // Saneamiento activo de seguridad
+        if (l.como_llegar_direccion) {
+          l.como_llegar_direccion = l.como_llegar_direccion.replace(/23140/g, '23560');
+        }
+        if (l.como_llegar_accesibilidad) {
+          l.como_llegar_accesibilidad = l.como_llegar_accesibilidad
+            .replace(/\s*(y|e)\s*cartelas?\s*(con\s*lectura\s*)?braille\.?/gi, '.')
+            .replace(/\s*and\s*braille\s*signage\.?/gi, '.')
+            .replace(/\s*et\s*cartels?\s*(en\s*)?braille\.?/gi, '.')
+            .replace(/braille/gi, '')
+            .trim();
+        }
         if (!this.translations[lang].hero) this.translations[lang].hero = {};
         if (!this.translations[lang].historia) this.translations[lang].historia = {};
 
@@ -195,27 +220,59 @@ export class I18nManager {
     }
   }
 
+  _sanitizeString(str) {
+    if (typeof str !== 'string') return str;
+    let res = str.replace(/23140/g, '23560');
+    if (/braille/i.test(res)) {
+      res = res
+        .replace(/\s*(y|e)\s*cartelas?\s*(con\s*lectura\s*)?braille\.?/gi, '.')
+        .replace(/\s*and\s*braille\s*signage\.?/gi, '.')
+        .replace(/\s*et\s*cartels?\s*(en\s*)?braille\.?/gi, '.')
+        .replace(/braille/gi, '')
+        .trim();
+    }
+    return res;
+  }
+
   t(path) {
     if (!path || typeof path !== 'string') return '';
     const keys = path.split('.');
     let current = this.translations[this.currentLang];
+    let found = true;
     for (const key of keys) {
       if (current && current[key] !== undefined) {
         current = current[key];
       } else {
-        // Fallback a español si no está en el idioma activo
-        let fallback = this.translations['es'];
-        for (const fbKey of keys) {
-          if (fallback && fallback[fbKey] !== undefined) {
-            fallback = fallback[fbKey];
-          } else {
-            return path;
-          }
-        }
-        return fallback;
+        found = false;
+        break;
       }
     }
-    return current;
+    if (found && current !== undefined) {
+      return this._sanitizeString(current);
+    }
+
+    // Fallback a español si no está en el idioma activo
+    let fallback = this.translations['es'];
+    let fbFound = true;
+    for (const fbKey of keys) {
+      if (fallback && fallback[fbKey] !== undefined) {
+        fallback = fallback[fbKey];
+      } else {
+        fbFound = false;
+        break;
+      }
+    }
+    if (fbFound && fallback !== undefined) {
+      return this._sanitizeString(fallback);
+    }
+
+    // Comprobar mapa de seguridad crítico
+    if (CRITICAL_FALLBACKS[path]) {
+      const fbVal = CRITICAL_FALLBACKS[path][this.currentLang] || CRITICAL_FALLBACKS[path]['es'];
+      if (fbVal) return this._sanitizeString(fbVal);
+    }
+
+    return path;
   }
 
   applyTranslations() {
@@ -224,7 +281,7 @@ export class I18nManager {
     elements.forEach(el => {
       const key = el.getAttribute('data-i18n');
       const val = this.t(key);
-      if (typeof val === 'string') {
+      if (typeof val === 'string' && val !== key) {
         if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
           el.placeholder = val;
         } else {
@@ -239,7 +296,10 @@ export class I18nManager {
       const parts = el.getAttribute('data-i18n-attr').split(':');
       if (parts.length === 2) {
         const [attr, key] = parts;
-        el.setAttribute(attr, this.t(key));
+        const val = this.t(key);
+        if (val && val !== key) {
+          el.setAttribute(attr, val);
+        }
       }
     });
 
@@ -290,5 +350,21 @@ export class I18nManager {
         if (subEl && activeSlide.dataset.sub) subEl.textContent = activeSlide.dataset.sub;
       }
     }
+
+    // 4. Barredor activo de seguridad: erradicar cualquier residuo de 23140 o braille en el DOM
+    try {
+      const scrubTargets = document.querySelectorAll('#horarios, #contacto, .horarios-section, [data-i18n*="como_llegar"], [data-i18n*="accesibilidad"], [data-i18n*="direccion"]');
+      scrubTargets.forEach(el => {
+        if (el.innerHTML && el.innerHTML.includes('23140')) {
+          el.innerHTML = el.innerHTML.replace(/23140/g, '23560');
+        }
+        if (el.innerHTML && /braille/i.test(el.innerHTML)) {
+          el.innerHTML = el.innerHTML
+            .replace(/\s*(and\s*braille\s*signage|et\s*cartels?\s*(en\s*)?braille|(y|e)\s*cartelas?\s*(con\s*lectura\s*)?braille)\.?/gi, '.')
+            .replace(/braille/gi, '')
+            .replace(/\.\.+/g, '.');
+        }
+      });
+    } catch (e) {}
   }
 }

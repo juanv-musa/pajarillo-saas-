@@ -3,8 +3,8 @@
  * Centro de Interpretación Santuario Ibérico de "El Pajarillo"
  */
 
-import { I18nManager } from './i18n.js';
-import { AgendaManager } from './agenda.js';
+import { I18nManager } from './i18n.js?v=5.0';
+import { AgendaManager } from './agenda.js?v=5.0';
 import { GalleryManager } from './gallery.js?v=4.5';
 import { AccessibilityWidget } from './accessibility.js';
 import './analytics.js?v=4.9';
@@ -151,20 +151,20 @@ async function syncLegalFooter() {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v3.7';
+  const CACHE_VERSION = 'v5.0';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
     localStorage.setItem('pajarillo_app_v', CACHE_VERSION);
   }
 
-  // Purga defensiva: eliminar caché antigua si contiene rutas a archivos eliminados (lobo-hero.jpg o lobo.jpg)
+  // Purga defensiva: eliminar caché antigua si contiene rutas a archivos eliminados, códigos erróneos o braille
   const rawLocales = localStorage.getItem('pajarillo_locales') || '';
-  if (rawLocales.includes('lobo-hero') || rawLocales.includes('lobo.jpg')) {
+  if (rawLocales.includes('lobo-hero') || rawLocales.includes('lobo.jpg') || rawLocales.includes('23140') || /braille/i.test(rawLocales)) {
     localStorage.removeItem('pajarillo_locales');
   }
   const rawConfig = localStorage.getItem('pajarillo_site_config') || '';
-  if (rawConfig.includes('lobo-hero') || rawConfig.includes('lobo.jpg')) {
+  if (rawConfig.includes('lobo-hero') || rawConfig.includes('lobo.jpg') || rawConfig.includes('23140') || /braille/i.test(rawConfig)) {
     localStorage.removeItem('pajarillo_site_config');
   }
 

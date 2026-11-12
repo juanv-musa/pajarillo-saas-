@@ -4538,12 +4538,31 @@ function loadSavedLocales() {
   try {
     const saved = localStorage.getItem('pajarillo_locales');
     if (saved) {
+      // Purga estricta si contiene datos obsoletos
+      if (saved.includes('23140') || /braille/i.test(saved)) {
+        localStorage.removeItem('pajarillo_locales');
+      }
       localesData = JSON.parse(saved);
       // Limpieza/migración de tarifa_reducida si incluía descripción embebida
       ['es', 'en', 'fr'].forEach(lang => {
         if (localesData[lang] && localesData[lang].tarifa_reducida) {
           if (localesData[lang].tarifa_reducida.includes('(')) {
             localesData[lang].tarifa_reducida = lang === 'en' ? '€1.50' : '1,50 €';
+          }
+        }
+        // Saneamiento de seguridad: erradicar cualquier código postal erróneo y cualquier rastro de braille
+        if (localesData[lang]) {
+          if (localesData[lang].como_llegar_direccion) {
+            localesData[lang].como_llegar_direccion = localesData[lang].como_llegar_direccion.replace(/23140/g, '23560');
+          }
+          if (localesData[lang].como_llegar_accesibilidad) {
+            localesData[lang].como_llegar_accesibilidad = localesData[lang].como_llegar_accesibilidad
+              .replace(/\s*(y|e)\s*cartelas?\s*(con\s*lectura\s*)?braille\.?/gi, '.')
+              .replace(/\s*and\s*braille\s*signage\.?/gi, '.')
+              .replace(/\s*et\s*cartels?\s*(en\s*)?braille\.?/gi, '.')
+              .replace(/braille/gi, '')
+              .replace(/\.\.+/g, '.')
+              .trim();
           }
         }
         // Migración/enriquecimiento de diapositivas del carrusel con traducciones ES/EN/FR
@@ -4838,10 +4857,16 @@ function saveCurrentFormToLang(lang) {
 
     // 7. Contacto y Cómo llegar
     como_llegar_titulo: getVal('cnt-como-llegar-titulo'),
-    como_llegar_direccion: getVal('cnt-como-llegar-direccion'),
+    como_llegar_direccion: (getVal('cnt-como-llegar-direccion') || '').replace(/23140/g, '23560'),
     como_llegar_parking: getVal('cnt-como-llegar-parking'),
-    como_llegar_accesibilidad: getVal('cnt-como-llegar-accesibilidad'),
-    como_llegar_mapa_url: getVal('cnt-como-llegar-mapa-url'),
+    como_llegar_accesibilidad: (getVal('cnt-como-llegar-accesibilidad') || '')
+      .replace(/\s*(y|e)\s*cartelas?\s*(con\s*lectura\s*)?braille\.?/gi, '.')
+      .replace(/\s*and\s*braille\s*signage\.?/gi, '.')
+      .replace(/\s*et\s*cartels?\s*(en\s*)?braille\.?/gi, '.')
+      .replace(/braille/gi, '')
+      .replace(/\.\.+/g, '.')
+      .trim(),
+    como_llegar_mapa_url: (getVal('cnt-como-llegar-mapa-url') || '').replace(/23140/g, '23560'),
     como_llegar_mapa_embed: getVal('cnt-como-llegar-mapa-embed'),
 
     tel: getVal('cnt-tel'),
