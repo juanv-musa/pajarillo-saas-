@@ -593,6 +593,34 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
     const desc3dEl = document.querySelector('#tab-modelo3d p');
     if (desc3dEl) desc3dEl.textContent = desc3d;
   }
+
+  // Actualizar modelo 3D de Sketchfab dinámicamente si se ha configurado
+  let url3d = getCustomText('url_3d') || localStorage.getItem('pajarillo_3d_model_url');
+  if (!url3d) {
+    try {
+      const gData = localStorage.getItem('pajarillo_gallery_data');
+      if (gData) {
+        const parsed = JSON.parse(gData);
+        const item3d = Array.isArray(parsed) && parsed.find(i => i.type === '3d');
+        if (item3d && (item3d.full || item3d.file)) url3d = item3d.full || item3d.file;
+      }
+    } catch(e) {}
+  }
+
+  if (url3d) {
+    const sfMatch = url3d.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (url3d.includes('sketchfab.com') && url3d.match(/([a-f0-9]{32})/i));
+    const embedSrc = sfMatch
+      ? `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark`
+      : url3d;
+    const iframe = document.getElementById('sketchfab-viewer-iframe');
+    if (iframe && iframe.src !== embedSrc) {
+      iframe.src = embedSrc;
+    }
+    const directLink = document.getElementById('sketchfab-direct-link');
+    if (directLink && sfMatch) {
+      directLink.href = `https://sketchfab.com/3d-models/${sfMatch[1]}`;
+    }
+  }
   const agendaTitle = getCustomText('agenda_title');
   if (agendaTitle !== null) {
     document.querySelectorAll('[data-i18n="agenda.title"]').forEach(el => el.textContent = agendaTitle);

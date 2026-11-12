@@ -221,7 +221,7 @@ export const DEFAULT_LOCALES = {
     "tel_label": "Teléfono de atención",
     "tel_val": "(+34) 953 39 00 10",
     "email_label": "Correo electrónico",
-    "email_val": "turismo@elpajarillo.es",
+    "email_val": "turismo@aytohuelma.es",
     "ayto_label": "Gestión",
     "ayto_val": "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
     "horario_atencion": "Horario de atención telefónica: Lunes a Viernes de 9:00 a 14:00 h"
@@ -510,7 +510,7 @@ export const DEFAULT_LOCALES = {
     "tel_label": "Phone inquiry",
     "tel_val": "(+34) 953 39 00 10",
     "email_label": "Email address",
-    "email_val": "turismo@elpajarillo.es",
+    "email_val": "turismo@aytohuelma.es",
     "ayto_label": "Administration",
     "ayto_val": "Town Hall of Huelma · Department of Culture & Heritage",
     "horario_atencion": "Phone service: Monday to Friday, 9:00 AM – 2:00 PM CET"
@@ -799,7 +799,7 @@ export const DEFAULT_LOCALES = {
     "tel_label": "Standard téléphonique",
     "tel_val": "(+34) 953 39 00 10",
     "email_label": "Courrier électronique",
-    "email_val": "turismo@elpajarillo.es",
+    "email_val": "turismo@aytohuelma.es",
     "ayto_label": "Administration",
     "ayto_val": "Mairie de Huelma · Direction du Patrimoine et du Tourisme",
     "horario_atencion": "Accueil téléphonique : du lundi au vendredi de 9h00 à 14h00"

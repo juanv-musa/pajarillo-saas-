@@ -855,19 +855,22 @@
           stopAudioPlayback();
         }
 
-        // 5. Vídeo o Reconstrucción 3D (Opcional: compatible con MP4 local, remoto o YouTube/Vimeo)
+        // 5. Vídeo o Reconstrucción 3D (Opcional: compatible con MP4 local, remoto, YouTube, Vimeo o Sketchfab 3D)
         const hasVideo = (currentPanel.has_video !== false) && Boolean(currentPanel.video) && currentPanel.video.trim() !== '';
         if (hasVideo) {
           const vUrl = currentPanel.video.trim();
           const ytMatch = vUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
           const vimeoMatch = vUrl.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i);
+          const sfMatch = vUrl.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (vUrl.includes('sketchfab.com') && vUrl.match(/([a-f0-9]{32})/i));
 
-          if (ytMatch) {
-            dom.videoContainer.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
+          if (sfMatch) {
+            dom.videoContainer.innerHTML = `<iframe src="https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark" style="width:100%; aspect-ratio:16/9; min-height:400px; border:0; display:block; border-radius:12px; box-shadow:0 6px 20px rgba(0,0,0,0.15);" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share></iframe>`;
+          } else if (ytMatch) {
+            dom.videoContainer.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${ytMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block; border-radius:12px;" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
           } else if (vimeoMatch) {
-            dom.videoContainer.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
+            dom.videoContainer.innerHTML = `<iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}" style="width:100%; aspect-ratio:16/9; border:0; display:block; border-radius:12px;" allowfullscreen allow="autoplay; fullscreen; picture-in-picture"></iframe>`;
           } else {
-            dom.videoContainer.innerHTML = `<video id="punto-video-player" controls preload="metadata" playsinline style="width:100%; display:block; max-height:480px; background:#000;" src="${vUrl}"></video>`;
+            dom.videoContainer.innerHTML = `<video id="punto-video-player" controls preload="metadata" playsinline style="width:100%; display:block; max-height:480px; background:#000; border-radius:12px;" src="${vUrl}"></video>`;
           }
           dom.videoContainer.classList.remove('hidden');
         } else {

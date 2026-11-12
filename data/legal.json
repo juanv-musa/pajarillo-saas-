@@ -15,7 +15,7 @@
     "direccion": "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
     "web_referencia": "https://www.aytohuelma.es/cipajarillo",
     "telefono": "(+34) 953 39 00 10",
-    "email": "turismo@elpajarillo.es",
+    "email": "turismo@aytohuelma.es",
     "email_secundario": "ayuntamiento@huelma.es",
     "dpd_email": "dpd@huelma.es",
     "sede_electronica": "https://aytohuelma.sedelectronica.es/",
@@ -76,7 +76,7 @@
     "preparacion_titulo": "4.3. Preparación de la Presente Declaración",
     "preparacion_texto": "La presente declaración fue preparada el 14 de septiembre de 2026 y actualizada periódicamente mediante autoevaluación interna combinada con herramientas automáticas de validación (W3C Validator, Wave y herramientas del Observatorio de Accesibilidad Web del Ministerio de Transformación Digital).",
     "contacto_titulo": "4.4. Mecanismos de Comunicación y Observaciones",
-    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@elpajarillo.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Centro de Interpretación Santuario Ibérico de “El Pajarillo”, Calle Cárcel, 2 · 23560 Huelma (Jaén) o en el Ayuntamiento de Huelma, Plaza de España, 1 · 23560 Huelma (Jaén)\n• Sede electrónica: https://aytohuelma.sedelectronica.es/\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
+    "contacto_texto": "Cualquier persona puede formular consultas, sugerencias o quejas sobre accesibilidad a través de:\n• Email: accesibilidad@huelma.es / turismo@aytohuelma.es\n• Teléfono: (+34) 953 39 00 10\n• Presencial: Centro de Interpretación Santuario Ibérico de “El Pajarillo”, Calle Cárcel, 2 · 23560 Huelma (Jaén) o en el Ayuntamiento de Huelma, Plaza de España, 1 · 23560 Huelma (Jaén)\n• Sede electrónica: https://aytohuelma.sedelectronica.es/\nLas comunicaciones serán atendidas por la Unidad Responsable de Accesibilidad del Ayuntamiento de Huelma.",
     "reclamaciones_titulo": "4.5. Procedimiento de Aplicación y Reclamaciones",
     "reclamaciones_texto": "Si una solicitud de información accesible o queja es desestimada o no se obtiene respuesta adecuada en los plazos previstos en el artículo 12.5 del RD 1112/2018, la persona interesada podrá iniciar una reclamación ante la Unidad Responsable de Accesibilidad o a través de las vías de la Ley 39/2015 del Procedimiento Administrativo Común."
   },
@@ -91,6 +91,6 @@
     "indicadores_titulo": "5.3. Indicadores de Calidad y Evaluación Continua",
     "indicadores_texto": "Evaluamos periódicamente la calidad del servicio mediante:\n• Encuestas de satisfacción a la salida del centro y mediante código QR en la plataforma digital.\n• Análisis de quejas y sugerencias recibidas, con compromiso de análisis en menos de 15 días hábiles.\n• Monitorización de afluencia y uso de recursos didácticos para la mejora continua de las salas.",
     "quejas_titulo": "5.4. Buzón de Sugerencias, Quejas y Felicitaciones",
-    "quejas_texto": "Ponemos a disposición de la ciudadanía un buzón presencial en la recepción del centro (Calle Cárcel, 2 · Huelma) y canales telemáticos directos mediante el correo turismo@elpajarillo.es y la Sede Electrónica municipal. Todas las aportaciones serán registradas formalmente para impulsar la mejora constante de nuestro servicio."
+    "quejas_texto": "Ponemos a disposición de la ciudadanía un buzón presencial en la recepción del centro (Calle Cárcel, 2 · Huelma) y canales telemáticos directos mediante el correo turismo@aytohuelma.es y la Sede Electrónica municipal. Todas las aportaciones serán registradas formalmente para impulsar la mejora constante de nuestro servicio."
   }
 }

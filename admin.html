@@ -919,6 +919,12 @@
                 <label>Descripción del Visor 3D Interactivo (Santuario y Escultura)</label>
                 <textarea id="cnt-3d-desc" class="admin-textarea" rows="3"></textarea>
               </div>
+
+              <div class="admin-form-group">
+                <label>Enlace o Modelo 3D de Sketchfab (URL o Código de Inserción)</label>
+                <input type="text" id="cnt-3d-url" class="admin-input" placeholder="https://sketchfab.com/3d-models/... o https://sketchfab.com/models/.../embed">
+                <small style="color: var(--admin-muted); font-size: 0.75rem;">Pega el enlace directo de Sketchfab o el enlace /embed. Se convertirá y optimizará automáticamente.</small>
+              </div>
             </div>
           </div>
 
@@ -1953,7 +1959,7 @@
             <form id="form-notification-settings" onsubmit="event.preventDefault(); window.saveNotificationSettings();" style="display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap;">
               <div class="admin-form-group" style="flex: 1; min-width: 280px; margin-bottom: 0;">
                 <label for="cfg-notify-email">Correo para Copias / Avisos de Reserva (Opcional):</label>
-                <input type="email" id="cfg-notify-email" class="admin-input" placeholder="turismo@elpajarillo.es (Dejar vacío si solo se revisa en el panel)">
+                <input type="email" id="cfg-notify-email" class="admin-input" placeholder="turismo@aytohuelma.es (Dejar vacío si solo se revisa en el panel)">
               </div>
               <div class="admin-form-group" style="margin-bottom: 0;">
                 <label>&nbsp;</label>
@@ -2338,7 +2344,7 @@
                   </div>
                   <div class="admin-form-group" style="margin-bottom: 0;">
                     <label for="legal-email" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Email de Turismo *</label>
-                    <input type="email" id="legal-email" class="admin-input" placeholder="turismo@elpajarillo.es">
+                    <input type="email" id="legal-email" class="admin-input" placeholder="turismo@aytohuelma.es">
                   </div>
                   <div class="admin-form-group" style="margin-bottom: 0;">
                     <label for="legal-email-secundario" style="min-height: 2.2rem; display: flex; align-items: flex-end;">Email Municipal / General</label>

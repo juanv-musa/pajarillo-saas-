@@ -88,7 +88,7 @@ let siteConfigData = {
     hero_cta: "Planifica tu Visita",
     hero_desc: "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
     tel: "(+34) 953 39 00 10",
-    email: "turismo@elpajarillo.es",
+    email: "turismo@aytohuelma.es",
     ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
     horario_atencion: "Lunes a Viernes de 9:00 a 14:00 h",
     horario_invierno: "Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00",
@@ -4297,7 +4297,7 @@ const DEFAULT_LOCALES = {
     reservas_title: "Reserva tu Visita Guiada",
     reservas_subtitle: "Grupos escolares, particulares y colectivos. Reserva tu turno de visita guiada con nuestros mediadores",
     tel: "(+34) 953 39 00 10",
-    email: "turismo@elpajarillo.es",
+    email: "turismo@aytohuelma.es",
     ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
     horario_atencion: "Lunes a Viernes de 9:00 a 14:00 h",
     direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
@@ -5017,6 +5017,7 @@ function populateFormWithLang(lang) {
   setVal('cnt-galeria-tab-recursos', c.galeria_tab_recursos || 'Recursos Digitales');
   setVal('cnt-galeria-tab-videos', c.galeria_tab_videos || 'Audiovisuales');
   setVal('cnt-3d-desc', c.desc_3d);
+  setVal('cnt-3d-url', c.url_3d || localStorage.getItem('pajarillo_3d_model_url') || 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed');
 
   if (lang === 'es') {
     setVal('gallery-cfg-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
@@ -5143,6 +5144,7 @@ function saveCurrentFormToLang(lang) {
     galeria_tab_recursos: getVal('cnt-galeria-tab-recursos'),
     galeria_tab_videos: getVal('cnt-galeria-tab-videos'),
     desc_3d: getVal('cnt-3d-desc'),
+    url_3d: getVal('cnt-3d-url'),
 
     // 5. Horarios y Tarifas
     horarios_title: getVal('cnt-horarios-title'),
@@ -6457,7 +6459,7 @@ function collectLegalForm() {
       direccion: dirCentro,
       web_referencia: webRef,
       telefono: getVal('legal-telefono', '(+34) 953 39 00 10'),
-      email: getVal('legal-email', 'turismo@elpajarillo.es'),
+      email: getVal('legal-email', 'turismo@aytohuelma.es'),
       email_secundario: getVal('legal-email-secundario', 'ayuntamiento@huelma.es'),
       dpd_email: getVal('legal-dpd-email', 'dpd@huelma.es'),
       sede_electronica: getVal('legal-sede-electronica', 'https://aytohuelma.sedelectronica.es/'),

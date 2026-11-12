@@ -242,8 +242,24 @@ export class GalleryManager {
 
     const ytMatch = targetUrl ? targetUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i) : null;
     const vimeoMatch = targetUrl ? targetUrl.match(/vimeo\.com\/(?:video\/)?([0-9]+)/i) : null;
+    const sfMatch = targetUrl ? (targetUrl.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (targetUrl.includes('sketchfab.com') && targetUrl.match(/([a-f0-9]{32})/i))) : null;
 
-    if (ytMatch) {
+    if (sfMatch) {
+      this.videoLightboxElement.style.display = 'none';
+      let iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+      if (!iframe) {
+        iframe = document.createElement('iframe');
+        iframe.id = 'video-lightbox-iframe';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.border = '0';
+        iframe.allow = 'autoplay; fullscreen; xr-spatial-tracking';
+        iframe.allowFullscreen = true;
+        this.videoLightboxElement.parentNode.appendChild(iframe);
+      }
+      iframe.style.display = 'block';
+      iframe.src = `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark`;
+    } else if (ytMatch) {
       this.videoLightboxElement.style.display = 'none';
       let iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
       if (!iframe) {
