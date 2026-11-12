@@ -5832,12 +5832,14 @@ window.saveAllGallery = async function(showToastMsg = true) {
 function updateGalleryCounts() {
   const allCount = galleryItems.length;
   const fotoCount = galleryItems.filter(i => i.type === 'foto').length;
+  const d3Count = galleryItems.filter(i => i.type === '3d').length;
   const pdfCount = galleryItems.filter(i => i.type === 'pdf').length;
   const webCount = galleryItems.filter(i => i.type === 'web' || i.type === 'enlace').length;
-  const videoCount = galleryItems.filter(i => i.type === 'video' || i.type === '3d').length;
+  const videoCount = galleryItems.filter(i => i.type === 'video').length;
 
   const countAll = document.getElementById('count-all-gallery');
   const countFoto = document.getElementById('count-foto-gallery');
+  const count3d = document.getElementById('count-3d-gallery');
   const countPdf = document.getElementById('count-pdf-gallery');
   const countWeb = document.getElementById('count-web-gallery');
   const countVideo = document.getElementById('count-video-gallery');
@@ -5845,6 +5847,7 @@ function updateGalleryCounts() {
 
   if (countAll) countAll.textContent = allCount;
   if (countFoto) countFoto.textContent = fotoCount;
+  if (count3d) count3d.textContent = d3Count;
   if (countPdf) countPdf.textContent = pdfCount;
   if (countWeb) countWeb.textContent = webCount;
   if (countVideo) countVideo.textContent = videoCount;
@@ -5857,9 +5860,10 @@ function renderGalleryGrid(filter = 'all') {
 
   let filtered = galleryItems;
   if (filter === 'foto') filtered = galleryItems.filter(i => i.type === 'foto');
+  else if (filter === '3d') filtered = galleryItems.filter(i => i.type === '3d');
   else if (filter === 'pdf') filtered = galleryItems.filter(i => i.type === 'pdf');
   else if (filter === 'web') filtered = galleryItems.filter(i => i.type === 'web' || i.type === 'enlace');
-  else if (filter === 'video') filtered = galleryItems.filter(i => i.type === 'video' || i.type === '3d');
+  else if (filter === 'video') filtered = galleryItems.filter(i => i.type === 'video');
 
   if (filtered.length === 0) {
     grid.innerHTML = `
@@ -6140,13 +6144,22 @@ function handleSaveGalleryItem(e) {
   const id = idInput && idInput.value ? (isNaN(idInput.value) ? idInput.value : Number(idInput.value)) : Date.now();
   const currentType = typeSelect ? typeSelect.value : 'foto';
   const isWeb = currentType === 'web';
-  const urlVal = urlInput ? urlInput.value.trim() : '';
+  const is3d = currentType === '3d';
+  let urlVal = urlInput ? urlInput.value.trim() : '';
+  if (is3d || urlVal.includes('sketchfab.com')) {
+    const sfMatch = urlVal.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (urlVal.includes('sketchfab.com') && urlVal.match(/([a-f0-9]{32})/i));
+    if (sfMatch) {
+      urlVal = `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark`;
+    }
+  }
   const fileVal = isWeb ? urlVal : (dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal);
 
   let finalThumb = (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : '';
   if (!finalThumb) {
     if (isWeb) {
       finalThumb = './assets/icons/icon-document.png';
+    } else if (is3d) {
+      finalThumb = './assets/images/santuario_ilustracion.png';
     } else if (urlVal && (urlVal.endsWith('.png') || urlVal.endsWith('.jpg') || urlVal.endsWith('.jpeg') || urlVal.endsWith('.webp') || urlVal.endsWith('.svg'))) {
       finalThumb = urlVal;
     } else {

@@ -22,6 +22,13 @@ export class GalleryManager {
 
     this.activeVideoIndex = null;
     this.activeVideoTrack = 'normal';
+    this.activeModel3dIndex = 0;
+    this.data = {
+      media: [],
+      resources: [],
+      videos: [],
+      models3d: []
+    };
     window.galleryInstance = this;
   }
 
@@ -107,12 +114,30 @@ export class GalleryManager {
           };
         });
 
-        const videos = items.filter(i => i.type === 'video' || i.type === '3d').map(i => ({
+        const custom3d = items.filter(i => i.type === '3d').map(i => {
+          const rawUrl = i.full || i.file || i.url || '';
+          const sfMatch = rawUrl.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (rawUrl.includes('sketchfab.com') && rawUrl.match(/([a-f0-9]{32})/i));
+          const embedUrl = sfMatch 
+            ? `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark`
+            : rawUrl;
+          return {
+            id: 'model_' + i.id,
+            type: '3d',
+            title: toLocObj(i.title),
+            category: toLocObj(i.category || 'Modelo 3D'),
+            description: toLocObj(i.desc),
+            thumb: migratePath(i.thumb || './assets/images/santuario_ilustracion.png'),
+            url: embedUrl,
+            sketchfabId: sfMatch ? sfMatch[1] : ''
+          };
+        });
+
+        const videos = items.filter(i => i.type === 'video').map(i => ({
           id: 'vid_' + i.id,
-          category: typeof i.category === 'object' ? (i.category.es || (i.type === '3d' ? 'Modelo 3D' : 'Audiovisual')) : (i.category || 'Audiovisual'),
+          category: typeof i.category === 'object' ? (i.category.es || 'Audiovisual') : (i.category || 'Audiovisual'),
           title: toLocObj(i.title),
           description: toLocObj(i.desc),
-          duration: i.duration || (i.type === '3d' ? '3D' : '05:00'),
+          duration: i.duration || '05:00',
           thumb: migratePath(i.thumb || i.full),
           videoUrl: i.file || i.full
         }));
@@ -120,8 +145,76 @@ export class GalleryManager {
         if (photos.length > 0) this.data.media = photos;
         if (resources.length > 0) this.data.resources = resources;
         if (videos.length > 0) this.data.videos = videos;
+
+        if (!Array.isArray(this.data.models3d)) this.data.models3d = [];
+        if (custom3d.length > 0) {
+          const map = new Map();
+          this.data.models3d.forEach(m => map.set(m.sketchfabId || m.id, m));
+          custom3d.forEach(m => map.set(m.sketchfabId || m.id, m));
+          this.data.models3d = Array.from(map.values());
+        }
       }
     } catch (e) {}
+
+    // Garantizar modelo 3D por defecto si la lista estuviera vacía
+    if (!Array.isArray(this.data.models3d) || this.data.models3d.length === 0) {
+      this.data.models3d = [
+        {
+          id: "model_santuario",
+          type: "3d",
+          title: {
+            es: "Santuario Heroico de El Pajarillo (Huelma, Jaén)",
+            en: "Heroic Sanctuary of El Pajarillo (Huelma, Jaén)",
+            fr: "Sanctuaire Héroïque d'El Pajarillo (Huelma, Jaén)"
+          },
+          category: {
+            es: "Monumento y Enclave",
+            en: "Monument & Site",
+            fr: "Monument et Site"
+          },
+          description: {
+            es: "Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.",
+            en: "Explore the complete volumetric 3D reconstruction: rotate 360°, zoom in, and examine every detail of the sculptural monument.",
+            fr: "Explorez la restitution volumétrique 3D complète : tournez à 360°, zoomez et examinez chaque détail du monument."
+          },
+          thumb: "./assets/images/santuario_ilustracion.png",
+          url: "https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark",
+          sketchfabId: "402ba73cf7bd40ec9d5b03d17206387e"
+        }
+      ];
+    }
+
+    // Comprobar si hay una URL 3D asignada directamente desde los ajustes CMS de la web
+    try {
+      const saved3dUrl = localStorage.getItem('pajarillo_3d_model_url');
+      if (saved3dUrl) {
+        const sfMatch = saved3dUrl.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (saved3dUrl.includes('sketchfab.com') && saved3dUrl.match(/([a-f0-9]{32})/i));
+        const embedUrl = sfMatch ? `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=0&camera=0&preload=1&ui_theme=dark` : saved3dUrl;
+        const existing = this.data.models3d.find(m => m.url === embedUrl || (sfMatch && m.sketchfabId === sfMatch[1]));
+        if (existing) {
+          existing.url = embedUrl;
+        } else {
+          this.data.models3d.unshift({
+            id: 'cfg_3d_' + Date.now(),
+            type: '3d',
+            title: {
+              es: 'Modelo 3D Oficial Personalizado',
+              en: 'Official Custom 3D Model',
+              fr: 'Modèle 3D Officiel Personnalisé'
+            },
+            category: { es: 'Digitalización 3D', en: '3D Digitization', fr: 'Numérisation 3D' },
+            description: {
+              es: 'Modelo tridimensional interactivo disponible en el Centro de Interpretación.',
+              en: 'Interactive 3D model available at the Interpretation Centre.',
+              fr: 'Modèle 3D interactif disponible au Centre d\'Interprétation.'
+            },
+            thumb: './assets/images/santuario_ilustracion.png',
+            url: embedUrl,
+            sketchfabId: sfMatch ? sfMatch[1] : ''
+          });
+        }
+      }
+    } catch(e) {}
 
     // Si hay vídeos personalizados del Kiosco / Fondos Audiovisuales, usarlos directamente (incluso si está vacío [])
     try {
@@ -310,6 +403,54 @@ export class GalleryManager {
         track_mode: track,
         has_audiodesc: hasAudioDesc
       });
+    }
+  }
+
+  switchModel3d(index) {
+    if (!this.data.models3d || !this.data.models3d[index]) return;
+    this.activeModel3dIndex = index;
+    const model = this.data.models3d[index];
+    const getLang = (obj, fallback) => {
+      if (!obj) return fallback || '';
+      if (typeof obj === 'object') return obj[this.currentLang] || obj.es || Object.values(obj)[0] || fallback || '';
+      return String(obj);
+    };
+
+    const container = document.getElementById('gallery-3d-content');
+    if (container) {
+      const pills = container.querySelectorAll('.btn-model3d-pill');
+      pills.forEach((p, i) => {
+        p.classList.toggle('active', i === index);
+      });
+
+      const cards = container.querySelectorAll('.card-model3d');
+      cards.forEach((c, i) => {
+        c.classList.toggle('active-model', i === index);
+      });
+    }
+
+    const titleEl = document.getElementById('sketchfab-viewer-title');
+    if (titleEl) titleEl.textContent = getLang(model.title, 'Modelo 3D Interactivo');
+
+    const descEl = document.getElementById('sketchfab-viewer-desc');
+    if (descEl) descEl.textContent = getLang(model.description, '');
+
+    const iframe = document.getElementById('sketchfab-viewer-iframe');
+    if (iframe && iframe.src !== model.url) {
+      iframe.src = model.url;
+    }
+
+    const directLink = document.getElementById('sketchfab-direct-link');
+    if (directLink) {
+      directLink.href = model.sketchfabId ? `https://sketchfab.com/3d-models/${model.sketchfabId}` : model.url;
+    }
+
+    const viewerCard = document.querySelector('.sketchfab-viewer-card');
+    if (viewerCard) {
+      const rect = viewerCard.getBoundingClientRect();
+      if (rect.top < 80 || rect.bottom > window.innerHeight) {
+        viewerCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     }
   }
 
@@ -543,6 +684,147 @@ export class GalleryManager {
           `;
         }).join('');
       }
+    }
+
+    // 4. Modelos 3D Interactivos (Multi-modelo con selector y galería)
+    const container3d = document.getElementById('gallery-3d-content');
+    if (container3d && this.data.models3d && this.data.models3d.length > 0) {
+      const currentIdx = (this.activeModel3dIndex >= 0 && this.activeModel3dIndex < this.data.models3d.length) ? this.activeModel3dIndex : 0;
+      const activeModel = this.data.models3d[currentIdx];
+      const hasMultiple = this.data.models3d.length > 1;
+
+      const activeTitle = getLang(activeModel.title, 'Modelo 3D Interactivo');
+      const activeDesc = getLang(activeModel.description, 'Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.');
+      const activeCat = getLang(activeModel.category, 'Digitalización 3D Oficial');
+      const activeUrl = activeModel.url;
+      const activeDirect = activeModel.sketchfabId ? `https://sketchfab.com/3d-models/${activeModel.sketchfabId}` : activeUrl;
+
+      let html = '';
+
+      // Si hay más de un modelo, mostrar barra de botones selectores superiores
+      if (hasMultiple) {
+        html += `
+          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 1.75rem; flex-wrap: wrap;">
+            ${this.data.models3d.map((m, idx) => {
+              const mTitle = getLang(m.title, `Modelo 3D #${idx + 1}`);
+              return `
+                <button type="button" class="btn-model3d-pill ${idx === currentIdx ? 'active' : ''}" onclick="window.galleryInstance.switchModel3d(${idx})">
+                  <span>🏛️</span> ${mTitle}
+                </button>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      // Visor Principal Activo
+      html += `
+        <div class="sketchfab-viewer-card" style="background: var(--c-white); border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--c-border); box-shadow: var(--shadow-md);">
+          <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--c-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: var(--c-stone-light);">
+            <div>
+              <span style="background: rgba(56, 79, 62, 0.12); color: var(--c-primary); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
+                🏛️ ${activeCat}
+              </span>
+              <h3 id="sketchfab-viewer-title" style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--c-primary); margin-top: 0.4rem; font-weight: 700; letter-spacing: -0.01em;">
+                ${activeTitle}
+              </h3>
+              <p id="sketchfab-viewer-desc" style="font-size: 0.88rem; color: var(--c-text-muted); margin: 0;">
+                ${activeDesc}
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.75rem; align-items: center;">
+              <span style="font-size: 0.82rem; color: var(--c-primary-light); font-weight: 700; background: var(--c-white); border: 1px solid var(--c-border); padding: 6px 14px; border-radius: 999px;">
+                🖱️ Ratón · 📱 Táctil · 🥽 Realidad Virtual
+              </span>
+            </div>
+          </div>
+
+          <div class="sketchfab-embed-wrapper" style="position: relative; width: 100%; height: 580px; max-height: 75vh; background: #0b100d;">
+            <iframe 
+              id="sketchfab-viewer-iframe"
+              title="${activeTitle.replace(/"/g, '&quot;')}" 
+              style="width: 100%; height: 100%; border: none;"
+              frameborder="0" 
+              allowfullscreen 
+              mozallowfullscreen="true" 
+              webkitallowfullscreen="true" 
+              allow="autoplay; fullscreen; xr-spatial-tracking" 
+              xr-spatial-tracking 
+              execution-while-out-of-viewport 
+              execution-while-not-rendered 
+              web-share 
+              loading="lazy"
+              src="${activeUrl}">
+            </iframe>
+          </div>
+
+          <div style="padding: 1rem 2rem; background: var(--c-stone-warm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--c-text-muted);">
+            <div>
+              Digitalización 3D oficial de <a href="https://sketchfab.com/El_Pajarillo" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary); text-decoration: underline;">El_Pajarillo</a> · Ayuntamiento de Huelma
+            </div>
+            <div>
+              <a id="sketchfab-direct-link" href="${activeDirect}" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary-light); text-decoration: underline;">
+                Ver modelo original en Sketchfab ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Si hay más de un modelo, mostrar cuadrícula de tarjetas de los modelos disponibles abajo
+      if (hasMultiple) {
+        html += `
+          <div style="margin-top: 2.5rem;">
+            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--c-primary); margin-bottom: 0.4rem;">
+              🏛️ Todos los Modelos 3D Disponibles (${this.data.models3d.length})
+            </h4>
+            <p style="font-size: 0.88rem; color: var(--c-text-muted); margin-bottom: 1.25rem;">
+              Haz clic en cualquier modelo para cargarlo en el visor interactivo superior.
+            </p>
+            <div class="gallery-3d-grid">
+              ${this.data.models3d.map((m, idx) => {
+                const mTitle = getLang(m.title, `Modelo 3D #${idx + 1}`);
+                const mDesc = getLang(m.description, '');
+                const mThumb = m.thumb || './assets/images/santuario_ilustracion.png';
+                const isCur = idx === currentIdx;
+
+                return `
+                  <div class="card-model3d ${isCur ? 'active-model' : ''}" onclick="window.galleryInstance.switchModel3d(${idx})">
+                    <div style="position: relative; height: 180px; background: #0b100d; overflow: hidden;">
+                      <img src="${mThumb}" alt="${mTitle.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.88; transition: transform 0.4s ease;" onerror="this.src='./assets/images/santuario_ilustracion.png'">
+                      <span style="position: absolute; top: 10px; left: 10px; background: rgba(26,36,30,0.88); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;">
+                        🏛️ 3D INTERACTIVO
+                      </span>
+                      ${isCur ? `
+                        <span style="position: absolute; top: 10px; right: 10px; background: var(--c-accent-gold, #B59A57); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 800;">
+                          ● Activo en Visor
+                        </span>
+                      ` : ''}
+                      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
+                        <span style="background: rgba(255,255,255,0.92); color: var(--c-primary); font-weight: 700; font-size: 0.8rem; padding: 6px 14px; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+                          👁️ Cargar en Visor
+                        </span>
+                      </div>
+                    </div>
+                    <div style="padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1;">
+                      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--c-primary); margin-bottom: 0.35rem; line-height: 1.35;">${mTitle}</h4>
+                      <p style="font-size: 0.84rem; color: var(--c-text-muted); line-height: 1.45; margin-bottom: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${mDesc}</p>
+                      <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.75rem; color: var(--c-accent-gold); font-weight: 700;">Modo Orbital 360°</span>
+                        <a href="${m.sketchfabId ? `https://sketchfab.com/3d-models/${m.sketchfabId}` : m.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: var(--c-primary-light); text-decoration: underline;" onclick="event.stopPropagation();">
+                          Sketchfab ↗
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      container3d.innerHTML = html;
     }
   }
 }
