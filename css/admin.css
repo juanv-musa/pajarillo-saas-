@@ -1308,15 +1308,36 @@ input:checked + .slider:before {
     border-top: 1px dashed var(--admin-border);
   }
   .admin-footer-funding {
-    padding: 0.75rem 0.5rem;
+    max-width: 480px;
+    width: 92%;
+    margin: 1.5rem auto 1rem;
+    padding: 1.25rem 1rem;
+    border-radius: 22px;
+    box-sizing: border-box;
   }
   .admin-footer-funding-grid {
-    gap: 0.75rem 1rem;
-    justify-content: center;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.25rem 1rem !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
   }
   .admin-footer-funding-grid .funding-logo {
-    height: 24px;
-    max-height: 24px;
+    height: 32px !important;
+    max-height: 34px !important;
+    max-width: 95% !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+  .admin-footer-funding-grid .funding-logo:nth-child(5) {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    height: 36px !important;
+    max-height: 38px !important;
+    max-width: 65% !important;
   }
   .admin-footer-bottom {
     flex-direction: column;

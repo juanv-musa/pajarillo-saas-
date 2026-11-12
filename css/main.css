@@ -2299,20 +2299,42 @@ img, video, canvas, svg {
     padding-top: 1.5rem;
   }
 
+  /* Logotipos Institucionales en móvil: Disposición 2, 2, 1 */
   .footer-funding {
-    padding: 0.9rem 0.85rem;
-    margin: 1.25rem auto 1rem;
+    max-width: 480px;
+    width: 92%;
+    margin: 2rem auto 1.5rem;
+    padding: 1.35rem 1.15rem;
+    border-radius: 22px;
+    box-sizing: border-box;
   }
 
   .footer-funding-grid {
-    justify-content: center;
-    gap: 1.15rem 1.25rem;
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.35rem 1.25rem !important;
+    align-items: center !important;
+    justify-items: center !important;
+    width: 100% !important;
   }
 
   .footer-funding-grid .funding-logo {
-    height: 36px;
-    max-height: 36px;
-    max-width: 44%;
+    height: 34px !important;
+    max-height: 36px !important;
+    max-width: 95% !important;
+    width: auto !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+  }
+
+  /* Logotipo 5 (Ayuntamiento de Huelma): Centrado en la 3ª fila (Disposición 2, 2, 1) */
+  .footer-funding-grid .funding-logo:nth-child(5) {
+    grid-column: 1 / -1 !important;
+    justify-self: center !important;
+    height: 38px !important;
+    max-height: 40px !important;
+    max-width: 65% !important;
   }
 
   /* Modales y Visores */
@@ -2358,5 +2380,25 @@ img, video, canvas, svg {
 
   .tarifa-price {
     align-self: flex-end;
+  }
+
+  .footer-funding {
+    padding: 1.1rem 0.75rem;
+    border-radius: 18px;
+  }
+
+  .footer-funding-grid {
+    gap: 1.1rem 0.65rem !important;
+  }
+
+  .footer-funding-grid .funding-logo {
+    height: 28px !important;
+    max-height: 30px !important;
+  }
+
+  .footer-funding-grid .funding-logo:nth-child(5) {
+    height: 32px !important;
+    max-height: 34px !important;
+    max-width: 80% !important;
   }
 }
