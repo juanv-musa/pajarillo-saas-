@@ -15,6 +15,9 @@ node_modules/
 
 # Vídeos locales de sala que superan el límite de 100MB de GitHub (permanecen en el tótem local)
 assets/videos/DOCUMENTAL EL PAJARILLO.mp4
+assets/videos/DOCUMENTAL EL PAJARILLO_AUDIODESCRIPCION.mp4
+assets/videos/documental_pajarillo.mp4
+assets/videos/documental_audiodesc_1080.mp4
 assets/videos/*.mov
 assets/videos/*_master.*
 

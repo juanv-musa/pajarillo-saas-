@@ -111,17 +111,17 @@ class AudiovisualP1 {
     if (savedP1Id) {
       this.mainVideo = videos.find(v => v.id === savedP1Id || v.videoUrl === savedP1Id);
     }
-    if (!this.mainVideo && videos.length > 0) {
-      this.mainVideo = videos[0];
+    if (!this.mainVideo) {
+      this.mainVideo = videos.find(v => v.showInP1 === true && (v.id === 'vid_doc_pajarillo' || !v.id.includes('_ad'))) || videos.find(v => v.showInP1 === true) || videos[0];
     }
     if (!this.mainVideo) {
       this.mainVideo = {
         id: 'vid_default',
-        title: { es: 'Reconstrucción Virtual 3D: El Combate del Héroe y el Lobo' },
-        category: 'Proyección Oficial',
-        duration: '04:15',
-        thumb: './assets/images/lobo.png',
-        videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4'
+        title: { es: 'Documental Oficial: El Santuario de El Pajarillo' },
+        category: 'Documental Oficial',
+        duration: '08:53',
+        thumb: './assets/images/santuario_ilustracion.png',
+        videoUrl: './assets/videos/documental_general_720.mp4'
       };
     }
 
@@ -129,6 +129,9 @@ class AudiovisualP1 {
     const savedAdId = localStorage.getItem('pajarillo_kiosk_p1_audiodesc_video');
     if (savedAdId) {
       this.audioDescVideo = videos.find(v => v.id === savedAdId || v.videoUrl === savedAdId);
+    }
+    if (!this.audioDescVideo) {
+      this.audioDescVideo = videos.find(v => v.showInP1 === true && (v.id === 'vid_doc_pajarillo_ad' || (v.category && v.category.toLowerCase().includes('audio'))));
     }
     if (!this.audioDescVideo && (this.mainVideo.videoUrlAudioDesc || this.mainVideo.videoAudiodescripcionUrl)) {
       this.audioDescVideo = {
@@ -237,7 +240,7 @@ class AudiovisualP1 {
     }
 
     const videoUrl = targetVideo.videoUrl || (targetVideo.videoUrlAudioDesc || '');
-    this.dom.videoElement.src = videoUrl;
+    this.dom.videoElement.src = encodeURI(videoUrl);
     this.dom.videoElement.muted = false;
     this.dom.videoElement.currentTime = 0;
 
@@ -332,6 +335,26 @@ class AudiovisualP1 {
 
       this.dom.videoElement.addEventListener('pause', () => {
         if (this.dom.btnPlayPause) this.dom.btnPlayPause.textContent = '▶';
+      });
+
+      this.dom.videoElement.addEventListener('error', (e) => {
+        console.warn('Fallo en reproducción de vídeo en P1:', this.dom.videoElement.src, e);
+        const curSrc = decodeURI(this.dom.videoElement.src || '');
+        if (curSrc.includes('AUDIODESCRIPCION') || curSrc.includes('audiodesc')) {
+          if (!curSrc.includes('documental_audiodesc_web.mp4')) {
+            console.log('Aplicando fallback a documental_audiodesc_web.mp4');
+            this.dom.videoElement.src = './assets/videos/documental_audiodesc_web.mp4';
+            this.dom.videoElement.load();
+            this.dom.videoElement.play().catch(() => {});
+          }
+        } else if (curSrc.includes('DOCUMENTAL') || curSrc.includes('documental')) {
+          if (!curSrc.includes('documental_general_720.mp4') && !curSrc.includes('documental_web.mp4')) {
+            console.log('Aplicando fallback a documental_general_720.mp4');
+            this.dom.videoElement.src = './assets/videos/documental_general_720.mp4';
+            this.dom.videoElement.load();
+            this.dom.videoElement.play().catch(() => {});
+          }
+        }
       });
     }
 

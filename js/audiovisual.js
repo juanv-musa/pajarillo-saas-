@@ -315,6 +315,18 @@ class AudiovisualKiosk {
       this.dom.videoElement.addEventListener('pause', () => {
         if (this.dom.btnPlayPause) this.dom.btnPlayPause.textContent = '▶';
       });
+      this.dom.videoElement.addEventListener('error', (e) => {
+        console.warn('Fallo en reproducción de vídeo en P0:', this.dom.videoElement.src, e);
+        const curSrc = decodeURI(this.dom.videoElement.src || '');
+        if (curSrc.includes('DOCUMENTAL') || curSrc.includes('documental')) {
+          if (!curSrc.includes('documental_general_720.mp4') && !curSrc.includes('documental_web.mp4')) {
+            console.log('Aplicando fallback a documental_general_720.mp4');
+            this.dom.videoElement.src = './assets/videos/documental_general_720.mp4';
+            this.dom.videoElement.load();
+            this.dom.videoElement.play().catch(() => {});
+          }
+        }
+      });
     }
 
     if (this.dom.progressBar) {
@@ -407,7 +419,7 @@ class AudiovisualKiosk {
 
     this.updateTrackButtonsUI(track);
 
-    this.dom.videoElement.src = targetSrc;
+    this.dom.videoElement.src = encodeURI(targetSrc);
     this.dom.videoElement.load();
     this.dom.playerModal.classList.add('active');
 
@@ -448,7 +460,7 @@ class AudiovisualKiosk {
 
     this.updateTrackButtonsUI(track);
 
-    this.dom.videoElement.src = targetSrc;
+    this.dom.videoElement.src = encodeURI(targetSrc);
     this.dom.videoElement.currentTime = curTime;
     if (!wasPaused) {
       this.dom.videoElement.play().catch(() => {});

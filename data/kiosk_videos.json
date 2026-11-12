@@ -17,6 +17,7 @@
       "thumb": "./assets/images/iltiraka.png",
       "videoUrl": "./assets/videos/01_NATURALEZA_V1.mp4",
       "showInP0": true,
+      "showInP1": false,
       "showInWeb": false
     },
     {
@@ -36,6 +37,7 @@
       "thumb": "./assets/images/excavacion_medios.png",
       "videoUrl": "./assets/videos/02_AGUA_V1.mp4",
       "showInP0": true,
+      "showInP1": false,
       "showInWeb": false
     },
     {
@@ -55,6 +57,7 @@
       "thumb": "./assets/images/santuario_ilustracion.png",
       "videoUrl": "./assets/videos/03_CASTILLO_V1.mp4",
       "showInP0": true,
+      "showInP1": false,
       "showInWeb": false
     },
     {
@@ -74,6 +77,48 @@
       "thumb": "./assets/images/arqueologia.png",
       "videoUrl": "./assets/videos/04_IGLESIA_V1.mp4",
       "showInP0": true,
+      "showInP1": false,
+      "showInWeb": false
+    },
+    {
+      "id": "vid_doc_pajarillo",
+      "category": "Documental Oficial",
+      "title": {
+        "es": "Documental Oficial: El Santuario de El Pajarillo",
+        "en": "Official Documentary: The Sanctuary of El Pajarillo",
+        "fr": "Documentaire Officiel : Le Sanctuaire d'El Pajarillo"
+      },
+      "description": {
+        "es": "Investigación arqueológica, significado ritual y reconstrucción del monumento escultórico ibérico.",
+        "en": "Archaeological research, ritual significance and reconstruction of the Iberian monument.",
+        "fr": "Recherche archéologique, signification rituelle et reconstitution du monument ibérique."
+      },
+      "duration": "08:53",
+      "thumb": "./assets/images/santuario_ilustracion.png",
+      "videoUrl": "./assets/videos/documental_general_720.mp4",
+      "videoUrlAudioDesc": "./assets/videos/documental_audiodesc_web.mp4",
+      "showInP0": false,
+      "showInP1": true,
+      "showInWeb": false
+    },
+    {
+      "id": "vid_doc_pajarillo_ad",
+      "category": "Audiodescripción en Español",
+      "title": {
+        "es": "Documental Oficial con Audiodescripción",
+        "en": "Official Documentary with Audio Description",
+        "fr": "Documentaire Officiel avec Audiodescription"
+      },
+      "description": {
+        "es": "Versión accesible con narración descriptiva completa para personas con discapacidad visual y subtitulado.",
+        "en": "Accessible version with audio description for visually impaired visitors and subtitles.",
+        "fr": "Version accessible avec audiodescription et sous-titres."
+      },
+      "duration": "09:59",
+      "thumb": "./assets/images/excavacion_medios.png",
+      "videoUrl": "./assets/videos/documental_audiodesc_web.mp4",
+      "showInP0": false,
+      "showInP1": true,
       "showInWeb": false
     }
   ]

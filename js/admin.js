@@ -3645,9 +3645,17 @@ async function loadKioskVideos() {
   }
 
   try {
-    const res = await fetch('./data/gallery.json?t=' + Date.now());
-    const data = await res.json();
-    kioskVideos = data.videos || [];
+    const res = await fetch('./data/kiosk_videos.json?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      const data = await res.json();
+      kioskVideos = data.videos || [];
+    } else {
+      const fallbackRes = await fetch('./data/gallery.json?t=' + Date.now()).catch(() => null);
+      if (fallbackRes && fallbackRes.ok) {
+        const fallbackData = await fallbackRes.json();
+        kioskVideos = fallbackData.videos || [];
+      }
+    }
   } catch (e) {
     console.warn('Error cargando vídeos del kiosco:', e);
     kioskVideos = [];
