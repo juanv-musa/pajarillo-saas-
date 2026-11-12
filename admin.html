@@ -1324,14 +1324,16 @@
               <!-- Imagen del Panel -->
               <div class="admin-form-group">
                 <label>Imagen Representativa</label>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                  <input type="text" id="panel-current-img-url" class="admin-input" placeholder="./assets/images/lobo.png o URL externa" style="flex: 1;">
+                </div>
                 <div class="admin-dropzone" id="drop-panel-image">
                   <input type="file" id="panel-file-img" accept="image/*">
                   <div style="font-size: 1.8rem;">🖼️</div>
                   <p style="font-size: 0.85rem; color: var(--admin-muted);">
-                    Arrastra una imagen o <strong>haz clic para examinar</strong>
+                    Arrastra una imagen o <strong>haz clic para examinar</strong> (se optimiza automáticamente)
                   </p>
                 </div>
-                <input type="hidden" id="panel-current-img-url">
                 <div id="panel-img-preview-box" style="margin-top: 0.75rem; display: none;">
                   <img id="panel-img-preview" src="" alt="Vista previa" style="max-height: 120px; border-radius: 6px; border: 1px solid var(--admin-border);">
                 </div>
@@ -3085,6 +3087,6 @@
   <!-- Notificación Toast -->
   <div id="admin-toast" class="admin-toast"></div>
 
-  <script type="module" src="./js/admin.js?v=8.0"></script>
+  <script type="module" src="./js/admin.js?v=9.0"></script>
 </body>
 </html>

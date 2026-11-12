@@ -1544,6 +1544,19 @@ async function loadPanels() {
       panelsData = data.panels || [];
     }
 
+    // Limpieza preventiva: si en sesiones previas se guardaron imágenes gigantes (> 150KB en Base64),
+    // normalizarlas para liberar de inmediato la memoria de localStorage
+    let cleaned = false;
+    panelsData.forEach(p => {
+      if (p.image && p.image.startsWith('data:image') && p.image.length > 150000) {
+        p.image = './assets/images/logo-pajarillo.png';
+        cleaned = true;
+      }
+    });
+    if (cleaned) {
+      try { localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData)); } catch(e) {}
+    }
+
     renderPanelsList();
     populatePanelSelector();
 
@@ -1670,6 +1683,29 @@ window.saveAllPanels = async function() {
   showToast('💾 Todos los paneles y códigos QR sincronizados correctamente');
 };
 
+function savePanelsDataSafely(panels) {
+  try {
+    localStorage.setItem('pajarillo_panels', JSON.stringify(panels));
+    return true;
+  } catch (err) {
+    console.warn('localStorage lleno, aplicando reducción de seguridad...', err);
+    let freed = false;
+    panels.forEach(p => {
+      if (p.image && p.image.startsWith('data:image') && p.image.length > 80000) {
+        p.image = './assets/images/logo-pajarillo.png';
+        freed = true;
+      }
+    });
+    if (freed) {
+      try {
+        localStorage.setItem('pajarillo_panels', JSON.stringify(panels));
+        return true;
+      } catch (e2) {}
+    }
+    return false;
+  }
+}
+
 // Guardar panel / punto QR de manera síncrona e infalible
 window.handlePanelFormSubmit = async function(e) {
   if (e && e.preventDefault) e.preventDefault();
@@ -1734,17 +1770,14 @@ window.handlePanelFormSubmit = async function(e) {
     }
   };
 
-  // 1. Guardar de inmediato en memoria y en localStorage
+  // 1. Guardar de inmediato en memoria y en localStorage con recuperación automática
   const index = panelsData.findIndex(p => String(p.id) === String(id));
   if (index >= 0) panelsData[index] = newPanel;
   else panelsData.push(newPanel);
 
-  try {
-    localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
-  } catch (storageErr) {
-    console.error('Error guardando en localStorage:', storageErr);
-    showToast('⚠️ No se pudo guardar: la foto o PDF adjunto supera el límite de memoria del navegador. Por favor sube una imagen más ligera o usa una URL directa.');
-    return false;
+  const savedSuccess = savePanelsDataSafely(panelsData);
+  if (!savedSuccess) {
+    showToast('⚠️ Capacidad del navegador superada. Usa una ruta directa como ./assets/images/foto.png o una URL.');
   }
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
 
@@ -2845,6 +2878,21 @@ function setupCsvExport() {
 function setupDropzone() {
   const dropzoneImg = document.getElementById('drop-panel-image');
   const fileInputImg = document.getElementById('panel-file-img');
+  const inputCurrentImg = document.getElementById('panel-current-img-url');
+
+  if (inputCurrentImg) {
+    inputCurrentImg.addEventListener('input', () => {
+      const val = inputCurrentImg.value.trim();
+      const preview = document.getElementById('panel-img-preview');
+      const previewBox = document.getElementById('panel-img-preview-box');
+      if (val && preview) {
+        preview.src = val;
+        if (previewBox) previewBox.style.display = 'block';
+      } else if (previewBox) {
+        previewBox.style.display = 'none';
+      }
+    });
+  }
 
   if (dropzoneImg && fileInputImg) {
     dropzoneImg.addEventListener('dragover', (e) => {
@@ -2908,32 +2956,41 @@ function setupDropzone() {
 }
 
 // Función auxiliar para optimizar y comprimir imágenes antes de guardarlas en localStorage
-function compressImageForStorage(file, maxWidth = 1200, quality = 0.82) {
+function compressImageForStorage(file, maxWidth = 800, quality = 0.72) {
   return new Promise((resolve) => {
-    if (!file || !file.type.startsWith('image/')) {
+    if (!file) {
       resolve(null);
       return;
     }
     const reader = new FileReader();
     reader.onload = (e) => {
+      const dataUri = e.target.result;
       const img = new Image();
       img.onload = () => {
         let w = img.width;
         let h = img.height;
-        if (w > maxWidth) {
-          h = Math.round((h * maxWidth) / w);
-          w = maxWidth;
+        if (w > maxWidth || h > maxWidth) {
+          if (w >= h) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          } else {
+            w = Math.round((w * maxWidth) / h);
+            h = maxWidth;
+          }
         }
         const canvas = document.createElement('canvas');
         canvas.width = w;
         canvas.height = h;
         const ctx = canvas.getContext('2d');
+        // Fondo blanco limpio por si el archivo es PNG transparente
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, w, h);
         ctx.drawImage(img, 0, 0, w, h);
         const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
         resolve(compressedBase64);
       };
-      img.onerror = () => resolve(e.target.result);
-      img.src = e.target.result;
+      img.onerror = () => resolve(dataUri);
+      img.src = dataUri;
     };
     reader.onerror = () => resolve(null);
     reader.readAsDataURL(file);
@@ -2943,9 +3000,9 @@ function compressImageForStorage(file, maxWidth = 1200, quality = 0.82) {
 async function handleFileSelected(file) {
   if (!file) return;
 
-  // Optimizar y comprimir automáticamente con Canvas a máximo 1200px
-  // para evitar exceder el límite de 5MB de localStorage del navegador
-  const base64Url = await compressImageForStorage(file, 1200, 0.82);
+  // Optimizar y comprimir automáticamente con Canvas a 800px máx y calidad JPEG 0.72 (~40KB - 70KB)
+  // para que quepan decenas de fotos dentro del límite estricto de 5MB de localStorage
+  const base64Url = await compressImageForStorage(file, 800, 0.72);
   if (!base64Url) return;
 
   const preview = document.getElementById('panel-img-preview');
