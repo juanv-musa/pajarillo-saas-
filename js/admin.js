@@ -67,6 +67,108 @@ let monthlyChart = null;
 let langChart = null;
 
 // ═══════════════════════════════════════════
+// ALMACENAMIENTO DEFENSIVO Y COMPRESIÓN CANVAS
+// ═══════════════════════════════════════════
+function compressImageForStorage(file, maxWidth = 900, quality = 0.76) {
+  return new Promise((resolve) => {
+    if (!file) {
+      resolve(null);
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUri = e.target.result;
+      const img = new Image();
+      img.onload = () => {
+        let w = img.width;
+        let h = img.height;
+        if (w > maxWidth || h > maxWidth) {
+          if (w >= h) {
+            h = Math.round((h * maxWidth) / w);
+            w = maxWidth;
+          } else {
+            w = Math.round((w * maxWidth) / h);
+            h = maxWidth;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 0, w, h);
+        ctx.drawImage(img, 0, 0, w, h);
+        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressedBase64);
+      };
+      img.onerror = () => resolve(dataUri);
+      img.src = dataUri;
+    };
+    reader.onerror = () => resolve(null);
+    reader.readAsDataURL(file);
+  });
+}
+
+function sanitizeStorageQuota() {
+  try {
+    // Saneamiento de vídeos del quiosco
+    const rawKiosk = localStorage.getItem('pajarillo_kiosk_videos');
+    if (rawKiosk && rawKiosk.length > 400000) {
+      const parsed = JSON.parse(rawKiosk);
+      let changed = false;
+      parsed.forEach(v => {
+        if (v.thumb && v.thumb.startsWith('data:') && v.thumb.length > 120000) {
+          v.thumb = './assets/images/logo-pajarillo.png';
+          changed = true;
+        }
+      });
+      if (changed) {
+        localStorage.setItem('pajarillo_kiosk_videos', JSON.stringify(parsed));
+      }
+    }
+    // Saneamiento de galería
+    const rawGallery = localStorage.getItem('pajarillo_gallery_data');
+    if (rawGallery && rawGallery.length > 800000) {
+      const parsed = JSON.parse(rawGallery);
+      let changed = false;
+      parsed.forEach(item => {
+        if (item.thumb && item.thumb.startsWith('data:') && item.thumb.length > 120000) {
+          item.thumb = './assets/images/santuario_ilustracion.png';
+          changed = true;
+        }
+      });
+      if (changed) {
+        localStorage.setItem('pajarillo_gallery_data', JSON.stringify(parsed));
+      }
+    }
+  } catch (e) {
+    console.warn('Saneamiento de almacenamiento:', e);
+  }
+}
+
+function safeStorageSet(key, value) {
+  try {
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    console.warn(`Alerta de cuota al guardar ${key}:`, e);
+    sanitizeStorageQuota();
+    try {
+      localStorage.setItem(key, value);
+      return true;
+    } catch (e2) {
+      if (typeof showToast === 'function') {
+        showToast('⚠️ Espacio del navegador optimizado. Usa rutas directas ./assets/...');
+      }
+      return false;
+    }
+  }
+}
+
+// Ejecutar saneamiento preventivo de cuota de forma inmediata
+sanitizeStorageQuota();
+
+// ═══════════════════════════════════════════
 // INICIALIZACIÓN
 // ═══════════════════════════════════════════
 let siteConfigData = {
@@ -3777,11 +3879,25 @@ function setupKioskVideoEditor(onVideosChange) {
   const fileInputVideo = document.getElementById('kiosk-video-file-input');
   if (btnBrowseVideo && fileInputVideo) {
     btnBrowseVideo.addEventListener('click', () => fileInputVideo.click());
-    fileInputVideo.addEventListener('change', (e) => {
+    fileInputVideo.addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
-      document.getElementById('kiosk-video-url').value = `./assets/videos/${file.name}`;
-      showToast(`📁 Archivo de vídeo "${file.name}" seleccionado`);
+      const cleanName = file.name.replace(/\s+/g, '_');
+      document.getElementById('kiosk-video-url').value = `./assets/videos/${cleanName}`;
+      showToast(`📁 Archivo de vídeo "${cleanName}" seleccionado`);
+
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('./api/upload.php', { method: 'POST', body: fd }).catch(() => null);
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data && data.url) {
+            document.getElementById('kiosk-video-url').value = data.url;
+            showToast('✅ Vídeo subido con éxito al servidor');
+          }
+        }
+      } catch (err) {}
     });
   }
 
@@ -3789,11 +3905,25 @@ function setupKioskVideoEditor(onVideosChange) {
   const fileInputVideoAd = document.getElementById('kiosk-video-ad-file-input');
   if (btnBrowseVideoAd && fileInputVideoAd) {
     btnBrowseVideoAd.addEventListener('click', () => fileInputVideoAd.click());
-    fileInputVideoAd.addEventListener('change', (e) => {
+    fileInputVideoAd.addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
-      document.getElementById('kiosk-video-ad-url').value = `./assets/videos/${file.name}`;
-      showToast(`👁️ Archivo de audiodescripción "${file.name}" seleccionado`);
+      const cleanName = file.name.replace(/\s+/g, '_');
+      document.getElementById('kiosk-video-ad-url').value = `./assets/videos/${cleanName}`;
+      showToast(`👁️ Archivo de audiodescripción "${cleanName}" seleccionado`);
+
+      try {
+        const fd = new FormData();
+        fd.append('file', file);
+        const res = await fetch('./api/upload.php', { method: 'POST', body: fd }).catch(() => null);
+        if (res && res.ok) {
+          const data = await res.json();
+          if (data && data.url) {
+            document.getElementById('kiosk-video-ad-url').value = data.url;
+            showToast('✅ Audiodescripción subida con éxito al servidor');
+          }
+        }
+      } catch (err) {}
     });
   }
 
@@ -3801,15 +3931,20 @@ function setupKioskVideoEditor(onVideosChange) {
   const fileInputThumb = document.getElementById('kiosk-thumb-file-input');
   if (btnBrowseThumb && fileInputThumb) {
     btnBrowseThumb.addEventListener('click', () => fileInputThumb.click());
-    fileInputThumb.addEventListener('change', (e) => {
+    fileInputThumb.addEventListener('change', async (e) => {
       const file = e.target.files && e.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        document.getElementById('kiosk-video-thumb').value = ev.target.result;
-        showToast(`🖼️ Portada "${file.name}" cargada`);
-      };
-      reader.readAsDataURL(file);
+      try {
+        const compressed = await compressImageForStorage(file, 800, 0.75);
+        if (compressed) {
+          document.getElementById('kiosk-video-thumb').value = compressed;
+          showToast(`🖼️ Portada "${file.name}" optimizada y cargada`);
+          return;
+        }
+      } catch (err) {}
+      const cleanName = file.name.replace(/\s+/g, '_');
+      document.getElementById('kiosk-video-thumb').value = `./assets/images/${cleanName}`;
+      showToast(`🖼️ Portada asignada a: ./assets/images/${cleanName}`);
     });
   }
 
@@ -3844,13 +3979,13 @@ function setupKioskVideoEditor(onVideosChange) {
       if (checkP0) checkP0.checked = video.showInP0 !== false;
 
       const checkP0Screensaver = document.getElementById('kiosk-video-set-p0-screensaver');
-      if (checkP0Screensaver) checkP0Screensaver.checked = Boolean(savedP0Screensaver) && (savedP0Screensaver === video.id || (Boolean(video.videoUrl) && savedP0Screensaver === video.videoUrl));
+      if (checkP0Screensaver) checkP0Screensaver.checked = Boolean(savedP0Screensaver) && (savedP0Screensaver === video.id || (Boolean(video.videoUrl) && savedP0Screensaver === video.videoUrl && video.videoUrl !== ''));
 
       const checkP1 = document.getElementById('kiosk-video-set-p1');
-      if (checkP1) checkP1.checked = Boolean(savedP1) && (savedP1 === video.id || (Boolean(video.videoUrl) && savedP1 === video.videoUrl));
+      if (checkP1) checkP1.checked = Boolean(savedP1) && (savedP1 === video.id || (Boolean(video.videoUrl) && savedP1 === video.videoUrl && video.videoUrl !== ''));
 
       const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
-      if (checkP1Screensaver) checkP1Screensaver.checked = Boolean(savedP1Screensaver) && (savedP1Screensaver === video.id || (Boolean(video.videoUrl) && savedP1Screensaver === video.videoUrl));
+      if (checkP1Screensaver) checkP1Screensaver.checked = Boolean(savedP1Screensaver) && (savedP1Screensaver === video.id || (Boolean(video.videoUrl) && savedP1Screensaver === video.videoUrl && video.videoUrl !== ''));
     } else {
       if (modalTitle) modalTitle.textContent = '➕ Añadir Vídeo al Fondo Audiovisual';
       if (btnDeleteModal) btnDeleteModal.style.display = 'none';
@@ -3903,7 +4038,7 @@ function setupKioskVideoEditor(onVideosChange) {
     const v = kioskVideos.find(item => item.id === id);
     if (!v) return;
     v.showInP0 = (v.showInP0 === false) ? true : false;
-    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    safeStorageSet(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
     window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
     renderKioskVideos();
     showToast(v.showInP0 ? '📺 Vídeo activado en Pantalla 0 (Entrada)' : '👁️ Vídeo ocultado de Pantalla 0 (Entrada)');
@@ -3958,7 +4093,7 @@ function setupKioskVideoEditor(onVideosChange) {
     if (!confirm(`¿Deseas eliminar el vídeo "${title}" del fondo audiovisual?`)) return;
 
     kioskVideos = kioskVideos.filter(v => v.id !== id);
-    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    safeStorageSet(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
     window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
 
     if (localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') === id) {
@@ -4038,7 +4173,7 @@ function setupKioskVideoEditor(onVideosChange) {
       showToast('✅ Nuevo vídeo añadido al fondo audiovisual');
     }
 
-    localStorage.setItem(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    safeStorageSet(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
     window.dispatchEvent(new StorageEvent('storage', { key: KIOSK_VIDEOS_STORAGE_KEY }));
 
     const checkP0Screensaver = document.getElementById('kiosk-video-set-p0-screensaver');
@@ -5678,6 +5813,7 @@ async function handleGalleryFile(file) {
   const typeSelect = document.getElementById('gallery-item-type');
 
   const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  const isVideo = file.type.startsWith('video/') || /\.(mp4|webm|mov|mkv|avi)$/i.test(file.name);
 
   if (isPdf) {
     if (typeSelect) typeSelect.value = 'pdf';
@@ -5696,15 +5832,42 @@ async function handleGalleryFile(file) {
       const cleanName = file.name.replace(/\.pdf$/i, '').replace(/[_-]/g, ' ');
       titleInput.value = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
     }
+  } else if (isVideo) {
+    if (typeSelect) typeSelect.value = 'video';
+    if (previewImg) previewImg.style.display = 'none';
+    if (previewPdf) {
+      previewPdf.style.display = 'block';
+      if (previewPdfName) previewPdfName.textContent = `🎬 ${file.name}`;
+      const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+      if (previewPdfSize) previewPdfSize.textContent = `${sizeMb} MB · Archivo de Vídeo preparado`;
+    }
+    if (previewWrap) previewWrap.style.display = 'block';
+
+    const titleInput = document.getElementById('gallery-item-title-es');
+    if (titleInput && !titleInput.value.trim()) {
+      const cleanName = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[_-]/g, ' ');
+      titleInput.value = cleanName.charAt(0).toUpperCase() + cleanName.slice(1);
+    }
   } else {
+    // Es imagen (fotografía, miniatura de modelo 3D, portada de recurso)
     if (previewPdf) previewPdf.style.display = 'none';
     if (previewImg) {
       previewImg.style.display = 'inline-block';
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        previewImg.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
+      // Compresión Canvas automática: reduce fotos de 10 MB a ~40-60 KB sin pérdida visible
+      try {
+        const compressedBase64 = await compressImageForStorage(file, 900, 0.76);
+        if (compressedBase64) {
+          previewImg.src = compressedBase64;
+        } else {
+          const reader = new FileReader();
+          reader.onload = (e) => { previewImg.src = e.target.result; };
+          reader.readAsDataURL(file);
+        }
+      } catch (e) {
+        const reader = new FileReader();
+        reader.onload = (e) => { previewImg.src = e.target.result; };
+        reader.readAsDataURL(file);
+      }
     }
     if (previewWrap) previewWrap.style.display = 'block';
   }
@@ -5734,6 +5897,9 @@ async function handleGalleryFile(file) {
     if (isPdf) {
       uploadedUrl = `./assets/docs/${cleanFilename}`;
       showToast(`📄 Documento asignado a: ${uploadedUrl}`);
+    } else if (isVideo) {
+      uploadedUrl = `./assets/videos/${cleanFilename}`;
+      showToast(`🎬 Vídeo asignado a: ${uploadedUrl}`);
     } else {
       uploadedUrl = `./assets/images/${cleanFilename}`;
       showToast(`🖼️ Imagen asignada a: ${uploadedUrl}`);
@@ -6154,7 +6320,7 @@ function handleSaveGalleryItem(e) {
   }
   const fileVal = isWeb ? urlVal : (dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal);
 
-  let finalThumb = (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : '';
+  let finalThumb = (previewImg && previewImg.src && previewImg.src.length > 20) ? previewImg.src : '';
   if (!finalThumb) {
     if (isWeb) {
       finalThumb = './assets/icons/icon-document.png';
@@ -6187,7 +6353,7 @@ function handleSaveGalleryItem(e) {
     showToast('✅ Nuevo recurso publicado en la galería');
   }
 
-  localStorage.setItem('pajarillo_gallery_data', JSON.stringify(galleryItems));
+  safeStorageSet('pajarillo_gallery_data', JSON.stringify(galleryItems));
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_gallery_data' }));
 
   try {
