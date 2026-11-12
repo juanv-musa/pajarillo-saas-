@@ -1558,11 +1558,11 @@ function renderPanelsList() {
     li.dataset.id = panel.id;
     const title = (panel.content && panel.content.es && panel.content.es.title) || 'Punto';
     const safeTitle = title.replace(/'/g, "\\'");
-    const img = panel.image || './assets/images/lobo.png';
+    const img = panel.image || './assets/images/logo-pajarillo.png';
 
     li.innerHTML = `
       <div class="panel-drag-grip" title="Arrastrar para reordenar">⋮⋮</div>
-      <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/lobo.png'">
+      <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/logo-pajarillo.png'">
       <div class="panel-admin-details">
         <h4>Nº 0${panel.id} — ${title}</h4>
         <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong>${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}${panel.external_url ? ' · <span style="background: rgba(30, 144, 255, 0.12); color: #0984e3; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🌐 ' + (panel.redirect_external ? 'Redirección QR' : 'Web Externa') + '</span>' : ''}</p>
@@ -1641,7 +1641,7 @@ DOM.panelForm.addEventListener('submit', async (e) => {
   const newPanel = {
     id: id,
     tag: document.getElementById('panel-edit-tag').value,
-    image: document.getElementById('panel-current-img-url').value || './assets/images/lobo.png',
+    image: document.getElementById('panel-current-img-url').value || './assets/images/logo-pajarillo.png',
     audio: audioInput || null,
     video: document.getElementById('panel-video-url').value || null,
     pdf: pdfUrlInput || null,
@@ -3324,7 +3324,7 @@ function renderKioskVideos() {
       grid.innerHTML = kioskVideos.map(v => {
         const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
         const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
-        const thumb = v.thumb || './assets/images/lobo.png';
+        const thumb = v.thumb || './assets/images/logo-pajarillo.png';
         const duration = v.duration || '--:--';
         const cat = v.category || 'Audiovisual';
         const url = v.videoUrl || '';
@@ -3338,7 +3338,7 @@ function renderKioskVideos() {
           <div class="admin-card" style="display: flex; flex-direction: column; justify-content: space-between; padding: 1.15rem; border: 1.5px solid ${isP1 ? '#4D85D1' : (isP0Screensaver ? '#D4AF37' : (isP0 ? 'rgba(181, 154, 87, 0.45)' : 'var(--admin-border)'))}; background: var(--admin-surface); border-radius: 10px; margin-bottom: 0;">
             <div>
               <div style="position: relative; width: 100%; height: 160px; border-radius: 8px; overflow: hidden; margin-bottom: 0.85rem; background: #0b0f13;">
-                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
+                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: contain; background: #F8F9FA; padding: 10px;" onerror="this.src='./assets/images/logo-pajarillo.png'">
                 <span style="position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.75); color: #B59A57; font-size: 0.72rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">
                   ${cat}
                 </span>
@@ -3427,7 +3427,7 @@ function renderKioskVideos() {
       galleryGrid.innerHTML = kioskVideos.map(v => {
         const title = typeof v.title === 'object' ? (v.title.es || Object.values(v.title)[0]) : v.title;
         const desc = typeof v.description === 'object' ? (v.description.es || Object.values(v.description)[0]) : (v.description || '');
-        const thumb = v.thumb || './assets/images/lobo.png';
+        const thumb = v.thumb || './assets/images/logo-pajarillo.png';
         const duration = v.duration || '--:--';
         const cat = v.category || 'Audiovisual';
 
@@ -3435,7 +3435,7 @@ function renderKioskVideos() {
           <div style="background: rgba(0, 0, 0, 0.45); border: 1.5px solid rgba(181, 154, 87, 0.35); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
             <div>
               <div style="position: relative; height: 145px; overflow: hidden; background: #000;">
-                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src='./assets/images/lobo.png'">
+                <img src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: contain; background: #F8F9FA; padding: 8px;" onerror="this.src='./assets/images/logo-pajarillo.png'">
                 <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(0,0,0,0.85); color: #D4AF37; font-size: 0.75rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid rgba(181, 154, 87, 0.4);">
                   ⏱ ${duration}
                 </span>
@@ -3566,7 +3566,7 @@ function setupKioskVideoEditor(onVideosChange) {
       document.getElementById('kiosk-video-id').value = '';
       document.getElementById('kiosk-video-category').value = 'Recreación 3D';
       document.getElementById('kiosk-video-duration').value = '05:00';
-      document.getElementById('kiosk-video-thumb').value = './assets/images/lobo.png';
+      document.getElementById('kiosk-video-thumb').value = './assets/images/logo-pajarillo.png';
       const adInput = document.getElementById('kiosk-video-ad-url');
       if (adInput) adInput.value = '';
       const checkP0 = document.getElementById('kiosk-video-show-p0');
@@ -3726,7 +3726,7 @@ function setupKioskVideoEditor(onVideosChange) {
         fr: (existing && existing.title && existing.title.fr) || titleVal
       },
       duration: document.getElementById('kiosk-video-duration').value.trim() || '05:00',
-      thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/lobo.png',
+      thumb: document.getElementById('kiosk-video-thumb').value.trim() || './assets/images/logo-pajarillo.png',
       videoUrl: document.getElementById('kiosk-video-url').value.trim(),
       videoUrlAudioDesc: document.getElementById('kiosk-video-ad-url') ? document.getElementById('kiosk-video-ad-url').value.trim() : '',
       description: {
@@ -4286,10 +4286,10 @@ function renderAdminHeroCarouselSlides(slides = [], activeLang = currentCmsLang 
         </button>
       </div>
       <div style="display: flex; gap: 12px; align-items: flex-start; margin-top: 4px;">
-        <img class="hero-slide-preview" src="${slide.img || './assets/images/lobo.png'}" alt="Preview" style="width: 58px; height: 58px; object-fit: cover; border-radius: 6px; border: 1px solid var(--admin-border); flex-shrink: 0;" onerror="this.src='./assets/images/lobo.png';">
+        <img class="hero-slide-preview" src="${slide.img || './assets/images/logo-pajarillo.png'}" alt="Preview" style="width: 58px; height: 58px; object-fit: contain; background: #F8F9FA; padding: 4px; border-radius: 6px; border: 1px solid var(--admin-border); flex-shrink: 0;" onerror="this.src='./assets/images/logo-pajarillo.png';">
         <div style="flex: 1; display: flex; flex-direction: column; gap: 6px;">
           <div style="display: flex; gap: 6px; align-items: center;">
-            <input type="text" class="admin-input hero-slide-img-input" value="${escapeAttr(slide.img || '')}" placeholder="./assets/images/lobo.png" style="flex: 1; font-size: 0.82rem; padding: 5px 8px;">
+            <input type="text" class="admin-input hero-slide-img-input" value="${escapeAttr(slide.img || '')}" placeholder="./assets/images/logo-pajarillo.png" style="flex: 1; font-size: 0.82rem; padding: 5px 8px;">
             <select class="admin-select hero-slide-preset-select" style="width: auto; font-size: 0.82rem; padding: 5px 8px;">
               <option value="">-- Predefinida --</option>
               ${presetOptions}
@@ -4388,7 +4388,7 @@ function getAdminHeroCarouselSlides() {
 
     if (img || titleEs || titleEn || titleFr) {
       slides.push({
-        img: img || './assets/images/lobo.png',
+        img: img || './assets/images/logo-pajarillo.png',
         title: titleEs || titleEn || titleFr || 'Patrimonio de El Pajarillo',
         sub: subEs || subEn || subFr || '',
         title_es: titleEs,
@@ -4407,7 +4407,7 @@ function getAdminHeroCarouselSlides() {
 function addAdminHeroSlide() {
   const currentSlides = getAdminHeroCarouselSlides();
   currentSlides.push({
-    img: './assets/images/lobo.png',
+    img: './assets/images/logo-pajarillo.png',
     title: '',
     sub: '',
     title_es: '',
@@ -5104,7 +5104,7 @@ const INITIAL_GALLERY_ITEMS = [
       fr: 'Modèle 3D'
     },
     full: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
-    thumb: './assets/images/lobo.png',
+    thumb: './assets/images/logo-pajarillo.png',
     file: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
     desc: {
       es: 'Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.',
@@ -5467,6 +5467,17 @@ function loadGalleryData() {
           if (typeof item.desc === 'string') {
             item.desc = { es: item.desc, en: item.desc, fr: item.desc };
           }
+          // Sustituir la cabeza de lobo por el logotipo oficial en elementos sin foto propia o que no sean la escultura del lobo
+          const titleStr = typeof item.title === 'object' ? (item.title.es || '') : String(item.title || '');
+          const isLoboSculpture = (String(item.id) === '1' || titleStr.toLowerCase().includes('cabeza de lobo'));
+          if (!isLoboSculpture) {
+            if (item.thumb && (item.thumb.endsWith('/lobo.png') || item.thumb === './assets/images/lobo.png' || item.thumb === 'assets/images/lobo.png')) {
+              item.thumb = './assets/images/logo-pajarillo.png';
+            }
+            if (item.full && (item.full.endsWith('/lobo.png') || item.full === './assets/images/lobo.png' || item.full === 'assets/images/lobo.png') && item.type !== 'foto') {
+              item.full = './assets/images/logo-pajarillo.png';
+            }
+          }
           return item;
         });
 
@@ -5555,21 +5566,33 @@ function renderGalleryGrid(filter = 'all') {
   };
 
   grid.innerHTML = filtered.map(item => {
-    const isImage = (item.type === 'foto' || (item.thumb && !item.thumb.endsWith('.pdf'))) && item.type !== 'web';
-    let thumbHtml;
-    if (item.type === 'web') {
-      thumbHtml = (item.thumb && item.thumb.startsWith('http') && (item.thumb.endsWith('.png') || item.thumb.endsWith('.jpg') || item.thumb.endsWith('.webp')))
-        ? `<img src="${item.thumb}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`
-        : `<div style="height: 140px; background: linear-gradient(135deg, #1C2720 0%, #2A3B30 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.8rem; color: #F8E29B; border-bottom: 1px solid var(--admin-border);"><span style="font-size: 2.6rem;">🌐</span><span style="font-size: 0.72rem; color: #DCDCD6; font-weight: 700; margin-top: 4px; letter-spacing: 0.5px;">ENLACE WEB</span></div>`;
-    } else if (isImage) {
-      thumbHtml = `<img src="${item.thumb || item.full}" alt="${typeof item.title === 'object' ? item.title.es : item.title}" class="gallery-admin-thumb" onerror="this.src='./assets/images/lobo.png'">`;
-    } else {
-      thumbHtml = `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
-    }
-
     const title = typeof item.title === 'object' ? (item.title.es || item.title.en || '') : item.title;
     const desc = typeof item.desc === 'object' ? (item.desc.es || item.desc.en || '') : item.desc;
     const cat = typeof item.category === 'object' ? (item.category.es || item.category.en || '') : (item.category || 'General');
+
+    const titleStr = String(title || '');
+    const isLoboSculpture = (String(item.id) === '1' || titleStr.toLowerCase().includes('cabeza de lobo'));
+
+    let thumbSrc = item.thumb || item.full;
+    if (!thumbSrc || (!isLoboSculpture && (thumbSrc.endsWith('/lobo.png') || thumbSrc === './assets/images/lobo.png' || thumbSrc === 'assets/images/lobo.png'))) {
+      thumbSrc = './assets/images/logo-pajarillo.png';
+    }
+
+    const isImage = (item.type === 'foto' || (thumbSrc && !thumbSrc.endsWith('.pdf'))) && item.type !== 'web';
+    let thumbHtml;
+    if (item.type === 'web') {
+      thumbHtml = (thumbSrc && thumbSrc.startsWith('http') && (thumbSrc.endsWith('.png') || thumbSrc.endsWith('.jpg') || thumbSrc.endsWith('.webp')))
+        ? `<img src="${thumbSrc}" alt="${titleStr.replace(/"/g, '&quot;')}" class="gallery-admin-thumb" onerror="this.src='./assets/images/logo-pajarillo.png'; this.style.objectFit='contain'; this.style.background='#F8F9FA'; this.style.padding='14px';">`
+        : `<div style="height: 140px; background: linear-gradient(135deg, #1C2720 0%, #2A3B30 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 2.8rem; color: #F8E29B; border-bottom: 1px solid var(--admin-border);"><span style="font-size: 2.6rem;">🌐</span><span style="font-size: 0.72rem; color: #DCDCD6; font-weight: 700; margin-top: 4px; letter-spacing: 0.5px;">ENLACE WEB</span></div>`;
+    } else if (item.type === 'pdf' && (thumbSrc.endsWith('.pdf') || thumbSrc === './assets/icons/icon-document.png')) {
+      thumbHtml = `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
+    } else if (isImage || item.type === '3d' || item.type === 'video' || item.type === 'pdf') {
+      const isLogo = thumbSrc.includes('logo-pajarillo');
+      const extraStyle = isLogo ? 'style="object-fit: contain; background: #F8F9FA; padding: 14px;"' : '';
+      thumbHtml = `<img src="${thumbSrc}" alt="${titleStr.replace(/"/g, '&quot;')}" class="gallery-admin-thumb" ${extraStyle} onerror="this.src='./assets/images/logo-pajarillo.png'; this.style.objectFit='contain'; this.style.background='#F8F9FA'; this.style.padding='14px';">`;
+    } else {
+      thumbHtml = `<div style="height: 140px; background: #2E3E33; display: flex; align-items: center; justify-content: center; font-size: 3rem; color: white;">📄</div>`;
+    }
 
     const hasEn = typeof item.title === 'object' && Boolean(item.title.en && item.title.en !== item.title.es);
     const hasFr = typeof item.title === 'object' && Boolean(item.title.fr && item.title.fr !== item.title.es);
@@ -5802,13 +5825,24 @@ function handleSaveGalleryItem(e) {
   const urlVal = urlInput ? urlInput.value.trim() : '';
   const fileVal = isWeb ? urlVal : (dlInput && dlInput.value.trim() ? dlInput.value.trim() : urlVal);
 
+  let finalThumb = (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : '';
+  if (!finalThumb) {
+    if (isWeb) {
+      finalThumb = './assets/icons/icon-document.png';
+    } else if (urlVal && (urlVal.endsWith('.png') || urlVal.endsWith('.jpg') || urlVal.endsWith('.jpeg') || urlVal.endsWith('.webp') || urlVal.endsWith('.svg'))) {
+      finalThumb = urlVal;
+    } else {
+      finalThumb = './assets/images/logo-pajarillo.png';
+    }
+  }
+
   const newItem = {
     id: id,
     type: currentType,
     title: { es: titleEs, en: titleEn, fr: titleFr },
     category: { es: catEs, en: catEn, fr: catFr },
-    full: urlVal || (isWeb ? 'https://' : './assets/images/lobo.png'),
-    thumb: (previewImg && previewImg.src && !previewImg.src.startsWith('data:')) ? previewImg.src : (isWeb ? './assets/icons/icon-document.png' : (urlVal || './assets/images/lobo.png')),
+    full: urlVal || (isWeb ? 'https://' : './assets/images/logo-pajarillo.png'),
+    thumb: finalThumb,
     file: fileVal,
     desc: { es: descEs, en: descEn, fr: descFr }
   };
