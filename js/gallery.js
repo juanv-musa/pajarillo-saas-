@@ -520,11 +520,6 @@ export class GalleryManager {
               </div>
               
               <div class="video-card-body">
-                <div style="display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.5rem;">
-                  <span style="background: var(--c-stone-warm); color: var(--c-primary); font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 4px;">
-                    🔊 Locutado / Subtítulos
-                  </span>
-                </div>
                 <h3 class="video-card-title">${title}</h3>
                 <p class="video-card-desc">${desc}</p>
               </div>
