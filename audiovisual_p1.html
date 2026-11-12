@@ -106,17 +106,31 @@
     <!-- Barra superior flotante -->
     <div class="tv-player-topbar">
       <button type="button" id="btn-back-menu" class="btn-back-menu" aria-label="Volver a la selección de vídeos">
-        ← Volver a la Selección de Vídeos
+        ← Menú de Opciones
       </button>
+
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <span class="badge-loop" style="background: rgba(77, 133, 209, 0.25); border: 1px solid rgba(118, 160, 220, 0.5); color: #94BDF2; font-size: 0.8rem; font-weight: 700; padding: 4px 12px; border-radius: 999px; letter-spacing: 0.5px;">
+          🔄 BUCLE CONTINUO
+        </span>
+        <button type="button" id="btn-toggle-audiodesc" class="btn-toggle-audiodesc" style="background: rgba(46, 125, 50, 0.9); color: #fff; border: 1px solid rgba(255,255,255,0.35); border-radius: 999px; padding: 5px 14px; font-weight: 700; font-size: 0.82rem; cursor: pointer; transition: all 0.2s ease;">
+          👁️ Audiodescripción 🇪🇸
+        </button>
+      </div>
 
       <div id="tv-playing-title" class="tv-current-playing-title">Cargando contenido...</div>
     </div>
 
     <!-- Contenedor del Vídeo -->
     <div class="tv-video-container">
-      <video id="tv-video" class="tv-video-element" playsinline preload="auto">
+      <video id="tv-video" class="tv-video-element" playsinline loop preload="auto">
         Tu pantalla o navegador no soporta reproducción de vídeo HTML5.
       </video>
+      <!-- Aviso flotante para activar sonido si el navegador inició silenciado -->
+      <button type="button" id="tv-unmute-overlay" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(15, 23, 19, 0.92); border: 2px solid #D4AF37; color: #fff; padding: 18px 36px; border-radius: 999px; font-size: 1.3rem; font-weight: 800; cursor: pointer; z-index: 50; box-shadow: 0 12px 40px rgba(0,0,0,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); align-items: center; gap: 12px;">
+        <span style="font-size: 1.6rem;">🔊</span>
+        <span>Toca la pantalla para activar el sonido</span>
+      </button>
     </div>
 
     <!-- Barra de Controles Táctiles Gigantes -->
@@ -144,6 +158,6 @@
   <!-- Telemetría y Analítica Real -->
   <script type="module" src="./js/analytics.js"></script>
   <!-- Controlador Lógico de Planta 1 -->
-  <script src="./js/audiovisual_p1.js?v=4.1"></script>
+  <script src="./js/audiovisual_p1.js?v=4.2"></script>
 </body>
 </html>

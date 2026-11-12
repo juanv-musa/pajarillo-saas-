@@ -3951,7 +3951,7 @@ function setupKioskVideoEditor(onVideosChange) {
       if (checkP0Screensaver) checkP0Screensaver.checked = Boolean(savedP0Screensaver) && (savedP0Screensaver === video.id || (Boolean(video.videoUrl) && savedP0Screensaver === video.videoUrl && video.videoUrl !== ''));
 
       const checkP1 = document.getElementById('kiosk-video-set-p1');
-      if (checkP1) checkP1.checked = Boolean(savedP1) && (savedP1 === video.id || (Boolean(video.videoUrl) && savedP1 === video.videoUrl && video.videoUrl !== ''));
+      if (checkP1) checkP1.checked = Boolean(video.showInP1) || (Boolean(savedP1) && (savedP1 === video.id || (Boolean(video.videoUrl) && savedP1 === video.videoUrl && video.videoUrl !== '')));
 
       const checkP1Screensaver = document.getElementById('kiosk-video-set-p1-screensaver');
       if (checkP1Screensaver) checkP1Screensaver.checked = Boolean(savedP1Screensaver) && (savedP1Screensaver === video.id || (Boolean(video.videoUrl) && savedP1Screensaver === video.videoUrl && video.videoUrl !== ''));
@@ -4032,6 +4032,15 @@ function setupKioskVideoEditor(onVideosChange) {
   window.assignKioskP1 = (id) => {
     localStorage.setItem('pajarillo_kiosk_p1_video', id);
     window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p1_video' }));
+
+    if (Array.isArray(kioskVideos)) {
+      kioskVideos.forEach(v => {
+        if (v.id === id || v.videoUrl === id) {
+          v.showInP1 = true;
+        }
+      });
+      safeStorageSet(KIOSK_VIDEOS_STORAGE_KEY, JSON.stringify(kioskVideos));
+    }
     
     const selectP1 = document.getElementById('select-p1-video');
     if (selectP1) selectP1.value = id;
@@ -4121,6 +4130,7 @@ function setupKioskVideoEditor(onVideosChange) {
     const videoItem = {
       id: targetId,
       showInP0: checkP0 ? checkP0.checked : true,
+      showInP1: checkP1 ? checkP1.checked : false,
       showInWeb: checkWeb ? checkWeb.checked : false,
       category: document.getElementById('kiosk-video-category').value.trim() || 'Fondo Audiovisual',
       title: {
