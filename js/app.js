@@ -44,14 +44,6 @@ const initApp = async () => {
     gallery = new GalleryManager(i18n);
     await gallery.init();
     window.galleryInstance = gallery;
-
-    const heroTrailerBtn = document.getElementById('btn-hero-trailer');
-    if (heroTrailerBtn) {
-      heroTrailerBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        gallery.playTrailer();
-      });
-    }
   } catch (err) {
     console.warn('Error inicializando Galería:', err);
   }
