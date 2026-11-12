@@ -1511,27 +1511,30 @@ async function loadPanels() {
   try {
     let loaded = false;
 
-    // 1. Intentar API en vivo
-    try {
-      const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
-      if (res.ok) {
-        const data = await res.json();
-        if (data.panels && data.panels.length > 0) {
-          panelsData = data.panels;
+    // 1. Prioridad: localStorage en este navegador si el gestor ha editado paneles
+    const saved = localStorage.getItem('pajarillo_panels');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          panelsData = parsed;
           loaded = true;
         }
-      }
-    } catch (e) {}
+      } catch (e) {}
+    }
 
-    // 2. Fallback a localStorage (para entornos estáticos como GitHub Pages)
+    // 2. Si no hay en localStorage, intentar API en vivo
     if (!loaded) {
-      const saved = localStorage.getItem('pajarillo_panels');
-      if (saved) {
-        try {
-          panelsData = JSON.parse(saved);
-          loaded = true;
-        } catch (e) {}
-      }
+      try {
+        const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (data.panels && data.panels.length > 0) {
+            panelsData = data.panels;
+            loaded = true;
+          }
+        }
+      } catch (e) {}
     }
 
     // 3. Fallback a archivo JSON estático
@@ -1542,10 +1545,44 @@ async function loadPanels() {
     }
 
     renderPanelsList();
+    populatePanelSelector();
+
+    // Cargar automáticamente en el formulario el primer panel
+    if (panelsData.length > 0) {
+      window.editPanel(panelsData[0].id, false);
+    }
   } catch (err) {
     console.error('Error cargando paneles:', err);
   }
 }
+
+function populatePanelSelector(selectedId = null) {
+  const sel = document.getElementById('panel-select-target');
+  if (!sel) return;
+  const currentVal = selectedId !== null ? String(selectedId) : sel.value;
+  sel.innerHTML = `
+    <option value="new">➕ Crear Nuevo Punto QR...</option>
+    ${panelsData.map(p => {
+      const title = (p.content && p.content.es && p.content.es.title) || p.title || 'Punto';
+      return `<option value="${p.id}">Nº 0${p.id} — ${title}</option>`;
+    }).join('')}
+  `;
+  if (currentVal && (currentVal === 'new' || panelsData.some(p => String(p.id) === currentVal))) {
+    sel.value = currentVal;
+  } else if (panelsData.length > 0) {
+    sel.value = String(panelsData[0].id);
+  } else {
+    sel.value = 'new';
+  }
+}
+
+window.onPanelSelectChange = function(val) {
+  if (val === 'new') {
+    resetPanelForm();
+  } else {
+    window.editPanel(val, true);
+  }
+};
 
 function renderPanelsList() {
   if (!DOM.panelsList) return;
@@ -1652,7 +1689,10 @@ window.handlePanelFormSubmit = async function(e) {
   const descEs = (descEsInput?.value || '').trim();
 
   const idInput = document.getElementById('panel-edit-id')?.value;
-  const id = idInput ? parseInt(idInput) : (panelsData.length > 0 ? Math.max(...panelsData.map(p => p.id)) + 1 : 1);
+  const isNew = !idInput || idInput === 'new';
+  const id = isNew
+    ? (panelsData.length > 0 ? Math.max(...panelsData.map(p => Number(p.id) || 0)) + 1 : 1)
+    : (isNaN(idInput) ? idInput : Number(idInput));
 
   const pdfUrlInput = (document.getElementById('panel-pdf-url')?.value || '').trim();
   const pdfTitleInput = (document.getElementById('panel-pdf-title')?.value || '').trim();
@@ -1694,16 +1734,30 @@ window.handlePanelFormSubmit = async function(e) {
     }
   };
 
-  // 1. Guardar de inmediato en memoria y en localStorage (instantáneo para el usuario)
-  const index = panelsData.findIndex(p => p.id === id);
+  // 1. Guardar de inmediato en memoria y en localStorage
+  const index = panelsData.findIndex(p => String(p.id) === String(id));
   if (index >= 0) panelsData[index] = newPanel;
   else panelsData.push(newPanel);
 
   localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
 
+  // Mantener el formulario con los datos actuales (¡NO borrar el formulario!)
+  document.getElementById('panel-edit-id').value = id;
   renderPanelsList();
-  resetPanelForm();
+  populatePanelSelector(id);
+  DOM.panelFormTitle.textContent = 'Editar Panel Nº 0' + id;
+
+  // Banner visual verde persistente en pantalla
+  const banner = document.getElementById('panel-save-status-banner');
+  if (banner) {
+    const now = new Date();
+    const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0') + ':' + String(now.getSeconds()).padStart(2, '0');
+    banner.textContent = `✅ Punto QR Nº 0${id} («${titleEs}») guardado con éxito a las ${timeStr}`;
+    banner.style.display = 'block';
+    setTimeout(() => { if (banner) banner.style.display = 'none'; }, 4500);
+  }
+
   showToast(`✅ Punto QR Nº 0${id} guardado con éxito`);
 
   // 2. Sincronización asíncrona no bloqueante con backend
@@ -1722,13 +1776,31 @@ window.savePanelManual = function(e) {
   window.handlePanelFormSubmit(e);
 };
 
+window.downloadPanelsJSON = function() {
+  const data = { panels: panelsData };
+  const jsonStr = JSON.stringify(data, null, 2);
+  const blob = new Blob([jsonStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'paneles.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  showToast('📥 Archivo paneles.json descargado correctamente');
+};
+
 if (DOM.panelForm) {
   DOM.panelForm.addEventListener('submit', window.handlePanelFormSubmit);
 }
 
-window.editPanel = function(id) {
-  const panel = panelsData.find(p => p.id === id);
+window.editPanel = function(id, doScroll = true) {
+  const panel = panelsData.find(p => String(p.id) === String(id));
   if (!panel) return;
+
+  const sel = document.getElementById('panel-select-target');
+  if (sel) sel.value = String(panel.id);
 
   document.getElementById('panel-edit-id').value = panel.id;
   document.getElementById('panel-edit-tag').value = panel.tag || 'escultura';
@@ -1746,11 +1818,13 @@ window.editPanel = function(id) {
   document.getElementById('panel-title-fr').value = frContent.title || '';
   document.getElementById('panel-desc-fr').value = (frContent.description || '').replace(/<\/?[^>]+(>|$)/g, "");
 
-  document.getElementById('panel-current-img-url').value = panel.image;
+  document.getElementById('panel-current-img-url').value = panel.image || '';
   document.getElementById('panel-video-url').value = panel.video || '';
   const preview = document.getElementById('panel-img-preview');
-  preview.src = panel.image;
-  document.getElementById('panel-img-preview-box').style.display = 'block';
+  if (preview && panel.image) {
+    preview.src = panel.image;
+    document.getElementById('panel-img-preview-box').style.display = 'block';
+  }
 
   // Cargar enlaces externos
   const extUrlEl = document.getElementById('panel-external-url');
@@ -1787,13 +1861,16 @@ window.editPanel = function(id) {
   }
 
   DOM.panelFormTitle.textContent = 'Editar Panel Nº 0' + panel.id;
-  DOM.btnCancelPanelEdit.classList.remove('hidden');
+  const cancelBtn = document.getElementById('btn-cancel-panel-edit');
+  if (cancelBtn) cancelBtn.classList.remove('hidden');
 
-  DOM.panelForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  const card = DOM.panelForm.closest('.admin-card');
-  if (card) {
-    card.classList.add('editing-highlight');
-    setTimeout(() => card.classList.remove('editing-highlight'), 1800);
+  if (doScroll && DOM.panelForm) {
+    DOM.panelForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    const card = DOM.panelForm.closest('.admin-card');
+    if (card) {
+      card.classList.add('editing-highlight');
+      setTimeout(() => card.classList.remove('editing-highlight'), 1800);
+    }
   }
 };
 
@@ -1802,10 +1879,13 @@ DOM.btnCancelPanelEdit.addEventListener('click', resetPanelForm);
 function resetPanelForm() {
   DOM.panelForm.reset();
   DOM.panelFormTitle.textContent = 'Añadir Nuevo Panel';
-  DOM.btnCancelPanelEdit.classList.add('hidden');
+  const sel = document.getElementById('panel-select-target');
+  if (sel) sel.value = 'new';
   document.getElementById('panel-edit-id').value = '';
   document.getElementById('panel-current-img-url').value = '';
   document.getElementById('panel-video-url').value = '';
+  document.getElementById('panel-img-preview-box').style.display = 'none';
+  document.getElementById('panel-pdf-url').value = '';
   document.getElementById('panel-img-preview-box').style.display = 'none';
   document.getElementById('panel-pdf-url').value = '';
   document.getElementById('panel-pdf-title').value = '';

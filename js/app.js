@@ -715,21 +715,24 @@ async function loadExhibitionPoints(i18n) {
   try {
     let panels = [];
 
-    // 1. Intentar API en vivo
-    try {
-      const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
-      if (res.ok) {
-        const data = await res.json();
-        if (data.panels && data.panels.length > 0) panels = data.panels;
-      }
-    } catch (e) {}
+    // 1. Prioridad: localStorage en este navegador si el gestor ha modificado paneles
+    const saved = localStorage.getItem('pajarillo_panels');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) panels = parsed;
+      } catch (e) {}
+    }
 
-    // 2. Fallback a localStorage
+    // 2. Intentar API en vivo
     if (!panels || panels.length === 0) {
-      const saved = localStorage.getItem('pajarillo_panels');
-      if (saved) {
-        try { panels = JSON.parse(saved); } catch (e) {}
-      }
+      try {
+        const res = await fetch('./api/data.php?entity=panels&t=' + Date.now());
+        if (res.ok) {
+          const data = await res.json();
+          if (data.panels && data.panels.length > 0) panels = data.panels;
+        }
+      } catch (e) {}
     }
 
     // 3. Fallback a archivo JSON estático

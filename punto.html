@@ -726,18 +726,21 @@
       // Carga de datos con fallbacks jerárquicos
       async function loadPanelsData() {
         try {
-          // 1. Intentar API en vivo
-          let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
-          if (res && res.ok) {
-            const data = await res.json();
-            if (data.panels && data.panels.length > 0) panelsList = data.panels;
+          // 1. Prioridad: localStorage en este navegador si el gestor ha editado paneles
+          const saved = localStorage.getItem('pajarillo_panels');
+          if (saved) {
+            try {
+              const parsed = JSON.parse(saved);
+              if (Array.isArray(parsed) && parsed.length > 0) panelsList = parsed;
+            } catch (e) {}
           }
 
-          // 2. Fallback a localStorage
+          // 2. Intentar API en vivo
           if (!panelsList || panelsList.length === 0) {
-            const saved = localStorage.getItem('pajarillo_panels');
-            if (saved) {
-              try { panelsList = JSON.parse(saved); } catch (e) {}
+            let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
+            if (res && res.ok) {
+              const data = await res.json();
+              if (data.panels && data.panels.length > 0) panelsList = data.panels;
             }
           }
 
