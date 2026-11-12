@@ -3057,48 +3057,6 @@ function setupDropzone() {
   }
 }
 
-// Función auxiliar para optimizar y comprimir imágenes antes de guardarlas en localStorage
-function compressImageForStorage(file, maxWidth = 800, quality = 0.72) {
-  return new Promise((resolve) => {
-    if (!file) {
-      resolve(null);
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUri = e.target.result;
-      const img = new Image();
-      img.onload = () => {
-        let w = img.width;
-        let h = img.height;
-        if (w > maxWidth || h > maxWidth) {
-          if (w >= h) {
-            h = Math.round((h * maxWidth) / w);
-            w = maxWidth;
-          } else {
-            w = Math.round((w * maxWidth) / h);
-            h = maxWidth;
-          }
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = w;
-        canvas.height = h;
-        const ctx = canvas.getContext('2d');
-        // Fondo blanco limpio por si el archivo es PNG transparente
-        ctx.fillStyle = '#FFFFFF';
-        ctx.fillRect(0, 0, w, h);
-        ctx.drawImage(img, 0, 0, w, h);
-        const compressedBase64 = canvas.toDataURL('image/jpeg', quality);
-        resolve(compressedBase64);
-      };
-      img.onerror = () => resolve(dataUri);
-      img.src = dataUri;
-    };
-    reader.onerror = () => resolve(null);
-    reader.readAsDataURL(file);
-  });
-}
-
 async function handleFileSelected(file) {
   if (!file) return;
 
