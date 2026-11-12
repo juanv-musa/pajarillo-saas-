@@ -422,11 +422,6 @@ export class GalleryManager {
       pills.forEach((p, i) => {
         p.classList.toggle('active', i === index);
       });
-
-      const cards = container.querySelectorAll('.card-model3d');
-      cards.forEach((c, i) => {
-        c.classList.toggle('active-model', i === index);
-      });
     }
 
     const titleEl = document.getElementById('sketchfab-viewer-title');
@@ -770,59 +765,6 @@ export class GalleryManager {
           </div>
         </div>
       `;
-
-      // Si hay más de un modelo, mostrar cuadrícula de tarjetas de los modelos disponibles abajo
-      if (hasMultiple) {
-        html += `
-          <div style="margin-top: 2.5rem;">
-            <h4 style="font-size: 1.15rem; font-weight: 800; color: var(--c-primary); margin-bottom: 0.4rem;">
-              🏛️ Todos los Modelos 3D Disponibles (${this.data.models3d.length})
-            </h4>
-            <p style="font-size: 0.88rem; color: var(--c-text-muted); margin-bottom: 1.25rem;">
-              Haz clic en cualquier modelo para cargarlo en el visor interactivo superior.
-            </p>
-            <div class="gallery-3d-grid">
-              ${this.data.models3d.map((m, idx) => {
-                const mTitle = getLang(m.title, `Modelo 3D #${idx + 1}`);
-                const mDesc = getLang(m.description, '');
-                const mThumb = m.thumb || './assets/images/santuario_ilustracion.png';
-                const isCur = idx === currentIdx;
-
-                return `
-                  <div class="card-model3d ${isCur ? 'active-model' : ''}" onclick="window.galleryInstance.switchModel3d(${idx})">
-                    <div style="position: relative; height: 180px; background: #0b100d; overflow: hidden;">
-                      <img src="${mThumb}" alt="${mTitle.replace(/"/g, '&quot;')}" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.88; transition: transform 0.4s ease;" onerror="this.src='./assets/images/santuario_ilustracion.png'">
-                      <span style="position: absolute; top: 10px; left: 10px; background: rgba(26,36,30,0.88); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700;">
-                        🏛️ 3D INTERACTIVO
-                      </span>
-                      ${isCur ? `
-                        <span style="position: absolute; top: 10px; right: 10px; background: var(--c-accent-gold, #B59A57); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 800;">
-                          ● Activo en Visor
-                        </span>
-                      ` : ''}
-                      <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.25);">
-                        <span style="background: rgba(255,255,255,0.92); color: var(--c-primary); font-weight: 700; font-size: 0.8rem; padding: 6px 14px; border-radius: 999px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
-                          👁️ Cargar en Visor
-                        </span>
-                      </div>
-                    </div>
-                    <div style="padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1;">
-                      <h4 style="font-size: 1.05rem; font-weight: 700; color: var(--c-primary); margin-bottom: 0.35rem; line-height: 1.35;">${mTitle}</h4>
-                      <p style="font-size: 0.84rem; color: var(--c-text-muted); line-height: 1.45; margin-bottom: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${mDesc}</p>
-                      <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 0.75rem; color: var(--c-accent-gold); font-weight: 700;">Modo Orbital 360°</span>
-                        <a href="${m.sketchfabId ? `https://sketchfab.com/3d-models/${m.sketchfabId}` : m.url}" target="_blank" rel="noopener noreferrer" style="font-size: 0.78rem; font-weight: 700; color: var(--c-primary-light); text-decoration: underline;" onclick="event.stopPropagation();">
-                          Sketchfab ↗
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                `;
-              }).join('')}
-            </div>
-          </div>
-        `;
-      }
 
       container3d.innerHTML = html;
     }
