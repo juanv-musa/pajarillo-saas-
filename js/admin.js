@@ -5903,6 +5903,37 @@ function setupLegalAdmin() {
       }
     });
   }
+
+  // Exportar y Copiar JSON de Legal para sincronización directa
+  const handleExportJson = () => {
+    const data = collectLegalForm();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'legal.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📥 Archivo legal.json descargado correctamente.');
+  };
+
+  const handleCopyJson = async () => {
+    const data = collectLegalForm();
+    const jsonStr = JSON.stringify(data, null, 2);
+    try {
+      await navigator.clipboard.writeText(jsonStr);
+      showToast('📋 JSON de Legal copiado al portapapeles.');
+    } catch (e) {
+      prompt('Copia este JSON para sincronizar en GitHub:', jsonStr);
+    }
+  };
+
+  document.getElementById('btn-export-legal-json')?.addEventListener('click', handleExportJson);
+  document.getElementById('btn-export-legal-json-bottom')?.addEventListener('click', handleExportJson);
+  document.getElementById('btn-copy-legal-json')?.addEventListener('click', handleCopyJson);
+  document.getElementById('btn-copy-legal-json-bottom')?.addEventListener('click', handleCopyJson);
 }
 
 function updateLegalStatusPill(secKey) {
