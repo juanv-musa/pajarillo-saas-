@@ -1201,7 +1201,7 @@
               Añadir / Editar Panel
             </h3>
 
-            <form id="form-panel-edit">
+            <form id="form-panel-edit" novalidate onsubmit="window.handlePanelFormSubmit(event)">
               <input type="hidden" id="panel-edit-id">
 
               <div class="admin-form-group">
@@ -1267,7 +1267,7 @@
                 </p>
                 <div class="admin-form-group" style="margin-bottom: 0.6rem;">
                   <label style="font-size: 0.8rem;">URL de destino externa</label>
-                  <input type="url" id="panel-external-url" class="admin-input" placeholder="https://www.aytohuelma.es/... o https://museoibero.es">
+                  <input type="text" id="panel-external-url" class="admin-input" placeholder="https://www.aytohuelma.es/... o https://museoibero.es">
                 </div>
                 <div style="display: flex; align-items: flex-start; gap: 0.5rem; background: #fff; padding: 0.6rem 0.8rem; border-radius: 6px; border: 1px solid #E2E8F0;">
                   <input type="checkbox" id="panel-redirect-external" style="margin-top: 3px; cursor: pointer;">
@@ -1334,7 +1334,7 @@
               <!-- Vídeo / Recurso 3D Opcional (Nuevo) -->
               <div class="admin-form-group">
                 <label>Vídeo Asociado / Recurso 3D (Opcional)</label>
-                <input type="url" id="panel-video-url" class="admin-input" placeholder="https://.../video.mp4 o enlace YouTube/Vimeo">
+                <input type="text" id="panel-video-url" class="admin-input" placeholder="https://.../video.mp4 o enlace YouTube/Vimeo">
                 <small style="color: var(--admin-muted); font-size: 0.75rem;">Permite reproducir un audiovisual o reconstrucción 3D cuando el visitante consulte este punto.</small>
               </div>
 
@@ -1371,8 +1371,8 @@
               </div>
 
               <div style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
-                <button type="submit" class="btn-admin btn-admin-primary" style="flex: 1; justify-content: center;">
-                  Guardar Punto / Panel
+                <button type="submit" id="btn-save-panel" class="btn-admin btn-admin-primary" style="flex: 1; justify-content: center;" onclick="window.savePanelManual(event)">
+                  💾 Guardar Punto / Panel
                 </button>
                 <button type="button" id="btn-cancel-panel-edit" class="btn-admin btn-admin-outline hidden">
                   Cancelar

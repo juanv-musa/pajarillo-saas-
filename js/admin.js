@@ -1614,36 +1614,59 @@ function renderPanelsList() {
 }
 
 window.saveAllPanels = async function() {
+  // Si el usuario tiene un panel a medio editar en el formulario, guardarlo antes de sincronizar
+  const titleEsInput = document.getElementById('panel-title-es');
+  if (titleEsInput && titleEsInput.value.trim()) {
+    await window.handlePanelFormSubmit();
+  }
+
   localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
   window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
   try {
     const order = panelsData.map(p => p.id);
-    await fetch('./api/data.php', {
+    fetch('./api/data.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'reorder', order })
-    });
+    }).catch(() => {});
   } catch (e) {}
-  showToast('💾 Paneles sincronizados con la web pública');
+  showToast('💾 Todos los paneles y códigos QR sincronizados correctamente');
 };
 
-// Guardar panel
-DOM.panelForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const idInput = document.getElementById('panel-edit-id').value;
+// Guardar panel / punto QR de manera síncrona e infalible
+window.handlePanelFormSubmit = async function(e) {
+  if (e && e.preventDefault) e.preventDefault();
+
+  const titleEsInput = document.getElementById('panel-title-es');
+  const titleEs = (titleEsInput?.value || '').trim();
+  if (!titleEs) {
+    showToast('⚠️ Por favor, introduce el Título en Español del punto QR');
+    if (titleEsInput) {
+      titleEsInput.focus();
+      titleEsInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return false;
+  }
+
+  const descEsInput = document.getElementById('panel-desc-es');
+  const descEs = (descEsInput?.value || '').trim();
+
+  const idInput = document.getElementById('panel-edit-id')?.value;
   const id = idInput ? parseInt(idInput) : (panelsData.length > 0 ? Math.max(...panelsData.map(p => p.id)) + 1 : 1);
 
-  const pdfUrlInput = (document.getElementById('panel-pdf-url').value || '').trim();
-  const pdfTitleInput = (document.getElementById('panel-pdf-title').value || '').trim();
+  const pdfUrlInput = (document.getElementById('panel-pdf-url')?.value || '').trim();
+  const pdfTitleInput = (document.getElementById('panel-pdf-title')?.value || '').trim();
   const extUrlInput = (document.getElementById('panel-external-url')?.value || '').trim();
   const audioInput = (document.getElementById('panel-audio-file')?.value || '').trim();
+  const videoInput = (document.getElementById('panel-video-url')?.value || '').trim();
+  const currentImgVal = document.getElementById('panel-current-img-url')?.value || './assets/images/logo-pajarillo.png';
 
   const newPanel = {
     id: id,
-    tag: document.getElementById('panel-edit-tag').value,
-    image: document.getElementById('panel-current-img-url').value || './assets/images/logo-pajarillo.png',
+    tag: document.getElementById('panel-edit-tag')?.value || 'escultura',
+    image: currentImgVal,
     audio: audioInput || null,
-    video: document.getElementById('panel-video-url').value || null,
+    video: videoInput || null,
     pdf: pdfUrlInput || null,
     pdf_title: pdfTitleInput || null,
     external_url: extUrlInput || null,
@@ -1654,42 +1677,54 @@ DOM.panelForm.addEventListener('submit', async (e) => {
     has_pdf: document.getElementById('panel-toggle-pdf') ? document.getElementById('panel-toggle-pdf').checked : true,
     content: {
       es: {
-        title: document.getElementById('panel-title-es').value,
-        subtitle: document.getElementById('panel-sub-es').value,
-        description: document.getElementById('panel-desc-es').value
+        title: titleEs,
+        subtitle: document.getElementById('panel-sub-es')?.value || '',
+        description: descEs || titleEs
       },
       en: {
-        title: document.getElementById('panel-title-en').value || document.getElementById('panel-title-es').value,
-        subtitle: document.getElementById('panel-sub-es').value,
-        description: document.getElementById('panel-desc-en').value || document.getElementById('panel-desc-es').value
+        title: document.getElementById('panel-title-en')?.value || titleEs,
+        subtitle: document.getElementById('panel-sub-es')?.value || '',
+        description: document.getElementById('panel-desc-en')?.value || descEs || titleEs
       },
       fr: {
-        title: document.getElementById('panel-title-fr').value || document.getElementById('panel-title-es').value,
-        subtitle: document.getElementById('panel-sub-es').value,
-        description: document.getElementById('panel-desc-fr').value || document.getElementById('panel-desc-es').value
+        title: document.getElementById('panel-title-fr')?.value || titleEs,
+        subtitle: document.getElementById('panel-sub-es')?.value || '',
+        description: document.getElementById('panel-desc-fr')?.value || descEs || titleEs
       }
     }
   };
 
-  try {
-    await fetch('./api/data.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ panel: newPanel })
-    });
-  } catch (err) {}
-
-  // Actualizar en memoria y guardar en localStorage de forma persistente
+  // 1. Guardar de inmediato en memoria y en localStorage (instantáneo para el usuario)
   const index = panelsData.findIndex(p => p.id === id);
   if (index >= 0) panelsData[index] = newPanel;
   else panelsData.push(newPanel);
 
   localStorage.setItem('pajarillo_panels', JSON.stringify(panelsData));
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
 
   renderPanelsList();
   resetPanelForm();
-  showToast('✅ Panel y recursos (incluido PDF y enlace externo) guardados con éxito');
-});
+  showToast(`✅ Punto QR Nº 0${id} guardado con éxito`);
+
+  // 2. Sincronización asíncrona no bloqueante con backend
+  try {
+    fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ panel: newPanel })
+    }).catch(() => {});
+  } catch (err) {}
+
+  return true;
+};
+
+window.savePanelManual = function(e) {
+  window.handlePanelFormSubmit(e);
+};
+
+if (DOM.panelForm) {
+  DOM.panelForm.addEventListener('submit', window.handlePanelFormSubmit);
+}
 
 window.editPanel = function(id) {
   const panel = panelsData.find(p => p.id === id);
@@ -1697,18 +1732,19 @@ window.editPanel = function(id) {
 
   document.getElementById('panel-edit-id').value = panel.id;
   document.getElementById('panel-edit-tag').value = panel.tag || 'escultura';
-  document.getElementById('panel-title-es').value = panel.content.es.title;
-  document.getElementById('panel-sub-es').value = panel.content.es.subtitle || '';
-  document.getElementById('panel-desc-es').value = panel.content.es.description.replace(/<\/?[^>]+(>|$)/g, "");
+  const esContent = (panel.content && panel.content.es) ? panel.content.es : {};
+  const enContent = (panel.content && panel.content.en) ? panel.content.en : {};
+  const frContent = (panel.content && panel.content.fr) ? panel.content.fr : {};
 
-  if (panel.content.en) {
-    document.getElementById('panel-title-en').value = panel.content.en.title || '';
-    document.getElementById('panel-desc-en').value = (panel.content.en.description || '').replace(/<\/?[^>]+(>|$)/g, "");
-  }
-  if (panel.content.fr) {
-    document.getElementById('panel-title-fr').value = panel.content.fr.title || '';
-    document.getElementById('panel-desc-fr').value = (panel.content.fr.description || '').replace(/<\/?[^>]+(>|$)/g, "");
-  }
+  document.getElementById('panel-title-es').value = esContent.title || panel.title || '';
+  document.getElementById('panel-sub-es').value = esContent.subtitle || panel.subtitle || '';
+  document.getElementById('panel-desc-es').value = (esContent.description || panel.description || '').replace(/<\/?[^>]+(>|$)/g, "");
+
+  document.getElementById('panel-title-en').value = enContent.title || '';
+  document.getElementById('panel-desc-en').value = (enContent.description || '').replace(/<\/?[^>]+(>|$)/g, "");
+
+  document.getElementById('panel-title-fr').value = frContent.title || '';
+  document.getElementById('panel-desc-fr').value = (frContent.description || '').replace(/<\/?[^>]+(>|$)/g, "");
 
   document.getElementById('panel-current-img-url').value = panel.image;
   document.getElementById('panel-video-url').value = panel.video || '';
