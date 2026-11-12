@@ -12,6 +12,7 @@ export class GalleryManager {
     this.photosContainer = document.getElementById('gallery-photos');
     this.resourcesContainer = document.getElementById('gallery-resources');
     this.videosContainer = document.getElementById('gallery-videos');
+    this.models3dContainer = document.getElementById('gallery-3d');
 
     this.tabButtons = document.querySelectorAll('.gallery-tabs .tab-btn');
     this.tabPanes = document.querySelectorAll('.gallery-pane');
@@ -406,9 +407,8 @@ export class GalleryManager {
     }
   }
 
-  switchModel3d(index) {
+  openModel3dModal(index) {
     if (!this.data.models3d || !this.data.models3d[index]) return;
-    this.activeModel3dIndex = index;
     const model = this.data.models3d[index];
     const getLang = (obj, fallback) => {
       if (!obj) return fallback || '';
@@ -416,36 +416,39 @@ export class GalleryManager {
       return String(obj);
     };
 
-    const container = document.getElementById('gallery-3d-content');
-    if (container) {
-      const pills = container.querySelectorAll('.btn-model3d-pill');
-      pills.forEach((p, i) => {
-        p.classList.toggle('active', i === index);
+    const title = getLang(model.title, 'Modelo 3D Interactivo');
+    const targetUrl = model.url;
+
+    if (this.videoLightboxTitle) {
+      this.videoLightboxTitle.textContent = '🏛️ ' + title;
+    }
+
+    const sfMatch = targetUrl ? (targetUrl.match(/sketchfab\.com.*?(?:models\/|3d-models\/(?:[^\/]+-)?)([a-f0-9]{32})/i) || (targetUrl.includes('sketchfab.com') && targetUrl.match(/([a-f0-9]{32})/i))) : null;
+
+    this.videoLightboxElement.style.display = 'none';
+    let iframe = this.videoLightbox.querySelector('#video-lightbox-iframe');
+    if (!iframe) {
+      iframe = document.createElement('iframe');
+      iframe.id = 'video-lightbox-iframe';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.border = '0';
+      iframe.allow = 'autoplay; fullscreen; xr-spatial-tracking';
+      iframe.allowFullscreen = true;
+      this.videoLightboxElement.parentNode.appendChild(iframe);
+    }
+    iframe.style.display = 'block';
+    iframe.src = sfMatch 
+      ? `https://sketchfab.com/models/${sfMatch[1]}/embed?autostart=1&camera=0&preload=1&ui_theme=dark`
+      : targetUrl;
+
+    this.videoLightbox.classList.remove('hidden');
+
+    if (window.PajarilloAnalytics && typeof window.PajarilloAnalytics.track === 'function') {
+      window.PajarilloAnalytics.track('3d_view', {
+        title: title,
+        url: targetUrl
       });
-    }
-
-    const titleEl = document.getElementById('sketchfab-viewer-title');
-    if (titleEl) titleEl.textContent = getLang(model.title, 'Modelo 3D Interactivo');
-
-    const descEl = document.getElementById('sketchfab-viewer-desc');
-    if (descEl) descEl.textContent = getLang(model.description, '');
-
-    const iframe = document.getElementById('sketchfab-viewer-iframe');
-    if (iframe && iframe.src !== model.url) {
-      iframe.src = model.url;
-    }
-
-    const directLink = document.getElementById('sketchfab-direct-link');
-    if (directLink) {
-      directLink.href = model.sketchfabId ? `https://sketchfab.com/3d-models/${model.sketchfabId}` : model.url;
-    }
-
-    const viewerCard = document.querySelector('.sketchfab-viewer-card');
-    if (viewerCard) {
-      const rect = viewerCard.getBoundingClientRect();
-      if (rect.top < 80 || rect.bottom > window.innerHeight) {
-        viewerCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
     }
   }
 
@@ -681,92 +684,51 @@ export class GalleryManager {
       }
     }
 
-    // 4. Modelos 3D Interactivos (Multi-modelo con selector y galería)
-    const container3d = document.getElementById('gallery-3d-content');
-    if (container3d && this.data.models3d && this.data.models3d.length > 0) {
-      const currentIdx = (this.activeModel3dIndex >= 0 && this.activeModel3dIndex < this.data.models3d.length) ? this.activeModel3dIndex : 0;
-      const activeModel = this.data.models3d[currentIdx];
-      const hasMultiple = this.data.models3d.length > 1;
-
-      const activeTitle = getLang(activeModel.title, 'Modelo 3D Interactivo');
-      const activeDesc = getLang(activeModel.description, 'Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.');
-      const activeCat = getLang(activeModel.category, 'Digitalización 3D Oficial');
-      const activeUrl = activeModel.url;
-      const activeDirect = activeModel.sketchfabId ? `https://sketchfab.com/3d-models/${activeModel.sketchfabId}` : activeUrl;
-
-      let html = '';
-
-      // Si hay más de un modelo, mostrar barra de botones selectores superiores
-      if (hasMultiple) {
-        html += `
-          <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 1.75rem; flex-wrap: wrap;">
-            ${this.data.models3d.map((m, idx) => {
-              const mTitle = getLang(m.title, `Modelo 3D #${idx + 1}`);
-              return `
-                <button type="button" class="btn-model3d-pill ${idx === currentIdx ? 'active' : ''}" onclick="window.galleryInstance.switchModel3d(${idx})">
-                  <span>🏛️</span> ${mTitle}
-                </button>
-              `;
-            }).join('')}
+    // 4. Modelos 3D Interactivos (Formato idéntico a vídeos y fotos con apertura en modal)
+    if (this.models3dContainer) {
+      if (!this.data.models3d || this.data.models3d.length === 0) {
+        this.models3dContainer.className = '';
+        this.models3dContainer.innerHTML = `
+          <div style="text-align: center; padding: 3.5rem 1.5rem; color: var(--c-text-muted); background: var(--c-stone-light); border-radius: var(--radius-lg); border: 1.5px dashed var(--c-border); margin: 1rem auto; max-width: 680px;">
+            <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🏛️</div>
+            <h4 style="font-size: 1.2rem; font-weight: 700; color: var(--c-primary); margin-bottom: 0.5rem;" data-i18n="galeria.empty_3d">No hay modelos 3D configurados</h4>
+            <p style="font-size: 0.92rem; max-width: 480px; margin: 0 auto; color: var(--c-text-muted);" data-i18n="galeria.empty_3d_desc">Actualmente no hay modelos 3D activos. Puedes añadir modelos de Sketchfab desde el Panel de Administración.</p>
           </div>
         `;
+      } else {
+        const isSingle = this.data.models3d.length === 1;
+        this.models3dContainer.className = isSingle ? 'gallery-videos-single' : 'gallery-videos-grid';
+        this.models3dContainer.innerHTML = this.data.models3d.map((m, idx) => {
+          const title = getLang(m.title, 'Modelo 3D Interactivo');
+          const desc = getLang(m.description || m.desc, '');
+          const cat = getLang(m.category, 'Modelo 3D');
+          const thumb = m.thumb || './assets/images/santuario_ilustracion.png';
+
+          return `
+            <div class="video-card-item" onclick="window.galleryInstance.openModel3dModal(${idx})">
+              <div class="video-card-media">
+                <img class="video-card-thumb" src="${thumb}" alt="${title.replace(/"/g, '&quot;')}" onerror="this.src='./assets/images/santuario_ilustracion.png'">
+                <div style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.28);">
+                  <div class="btn-cta-gold" style="padding: 0; border-radius: 50%; font-size: 1.3rem; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.45);">
+                    🏛️
+                  </div>
+                </div>
+                <span style="position: absolute; top: 12px; left: 12px; background: rgba(26,36,30,0.85); color: #fff; padding: 3px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.3px;">
+                  ${cat}
+                </span>
+                <span style="position: absolute; bottom: 12px; right: 12px; background: rgba(0,0,0,0.82); color: #D4AF37; padding: 2px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 700;">
+                  🥽 3D Interactivo
+                </span>
+              </div>
+              
+              <div class="video-card-body">
+                <h3 class="video-card-title">${title}</h3>
+                <p class="video-card-desc">${desc}</p>
+              </div>
+            </div>
+          `;
+        }).join('');
       }
-
-      // Visor Principal Activo
-      html += `
-        <div class="sketchfab-viewer-card" style="background: var(--c-white); border-radius: var(--radius-lg); overflow: hidden; border: 1.5px solid var(--c-border); box-shadow: var(--shadow-md);">
-          <div style="padding: 1.5rem 2rem; border-bottom: 1px solid var(--c-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; background: var(--c-stone-light);">
-            <div>
-              <span style="background: rgba(56, 79, 62, 0.12); color: var(--c-primary); font-size: 0.78rem; font-weight: 800; padding: 4px 12px; border-radius: 999px; text-transform: uppercase; letter-spacing: 1px;">
-                🏛️ ${activeCat}
-              </span>
-              <h3 id="sketchfab-viewer-title" style="font-family: var(--font-heading); font-size: 1.35rem; color: var(--c-primary); margin-top: 0.4rem; font-weight: 700; letter-spacing: -0.01em;">
-                ${activeTitle}
-              </h3>
-              <p id="sketchfab-viewer-desc" style="font-size: 0.88rem; color: var(--c-text-muted); margin: 0;">
-                ${activeDesc}
-              </p>
-            </div>
-            <div style="display: flex; gap: 0.75rem; align-items: center;">
-              <span style="font-size: 0.82rem; color: var(--c-primary-light); font-weight: 700; background: var(--c-white); border: 1px solid var(--c-border); padding: 6px 14px; border-radius: 999px;">
-                🖱️ Ratón · 📱 Táctil · 🥽 Realidad Virtual
-              </span>
-            </div>
-          </div>
-
-          <div class="sketchfab-embed-wrapper" style="position: relative; width: 100%; height: 580px; max-height: 75vh; background: #0b100d;">
-            <iframe 
-              id="sketchfab-viewer-iframe"
-              title="${activeTitle.replace(/"/g, '&quot;')}" 
-              style="width: 100%; height: 100%; border: none;"
-              frameborder="0" 
-              allowfullscreen 
-              mozallowfullscreen="true" 
-              webkitallowfullscreen="true" 
-              allow="autoplay; fullscreen; xr-spatial-tracking" 
-              xr-spatial-tracking 
-              execution-while-out-of-viewport 
-              execution-while-not-rendered 
-              web-share 
-              loading="lazy"
-              src="${activeUrl}">
-            </iframe>
-          </div>
-
-          <div style="padding: 1rem 2rem; background: var(--c-stone-warm); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-size: 0.85rem; color: var(--c-text-muted);">
-            <div>
-              Digitalización 3D oficial de <a href="https://sketchfab.com/El_Pajarillo" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary); text-decoration: underline;">El_Pajarillo</a> · Ayuntamiento de Huelma
-            </div>
-            <div>
-              <a id="sketchfab-direct-link" href="${activeDirect}" target="_blank" rel="noopener noreferrer" style="font-weight: 700; color: var(--c-primary-light); text-decoration: underline;">
-                Ver modelo original en Sketchfab ↗
-              </a>
-            </div>
-          </div>
-        </div>
-      `;
-
-      container3d.innerHTML = html;
     }
   }
 }
