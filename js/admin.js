@@ -3337,6 +3337,28 @@ async function setupKioskSection() {
     }
   }
 
+  // Configuración del control de volumen para Salvapantallas P0
+  const rangeP0Volume = document.getElementById('range-p0-screensaver-volume');
+  const labelP0Volume = document.getElementById('label-p0-screensaver-volume');
+  if (rangeP0Volume && labelP0Volume) {
+    const savedVol = localStorage.getItem('pajarillo_kiosk_p0_screensaver_volume');
+    let initPct = 25;
+    if (savedVol !== null && !isNaN(parseFloat(savedVol))) {
+      const parsed = parseFloat(savedVol);
+      initPct = parsed > 1 ? Math.round(parsed) : Math.round(parsed * 100);
+      initPct = Math.min(100, Math.max(5, initPct));
+    }
+    rangeP0Volume.value = initPct;
+    labelP0Volume.textContent = `${initPct}%`;
+
+    rangeP0Volume.addEventListener('input', (e) => {
+      const pct = parseInt(e.target.value, 10) || 25;
+      labelP0Volume.textContent = `${pct}%`;
+      localStorage.setItem('pajarillo_kiosk_p0_screensaver_volume', (pct / 100).toFixed(2));
+      window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_kiosk_p0_screensaver_volume' }));
+    });
+  }
+
   // Subida directa de vídeo para P0 desde ordenador
   if (btnBrowseP0Video && inputFileP0Video) {
     btnBrowseP0Video.addEventListener('click', () => inputFileP0Video.click());
@@ -6761,6 +6783,7 @@ window.getFullBackupData = function() {
     legal: safeGet('pajarillo_legal_data') || (typeof legalData !== 'undefined' ? legalData : null),
     locales: safeGet('pajarillo_locales') || (typeof customLocales !== 'undefined' ? customLocales : null),
     p0_screensaver: localStorage.getItem('pajarillo_kiosk_p0_screensaver_video') || '',
+    p0_screensaver_volume: localStorage.getItem('pajarillo_kiosk_p0_screensaver_volume') || '0.25',
     p1_video: localStorage.getItem('pajarillo_kiosk_p1_video') || '',
     p1_screensaver: localStorage.getItem('pajarillo_kiosk_p1_screensaver_video') || ''
   };
@@ -6809,6 +6832,7 @@ window.restoreFullBackupFromFile = function(inputEl) {
       if (data.legal) localStorage.setItem('pajarillo_legal_data', JSON.stringify(data.legal));
       if (data.locales) localStorage.setItem('pajarillo_locales', JSON.stringify(data.locales));
       if (data.p0_screensaver) localStorage.setItem('pajarillo_kiosk_p0_screensaver_video', data.p0_screensaver);
+      if (data.p0_screensaver_volume) localStorage.setItem('pajarillo_kiosk_p0_screensaver_volume', data.p0_screensaver_volume);
       if (data.p1_video) localStorage.setItem('pajarillo_kiosk_p1_video', data.p1_video);
       if (data.p1_screensaver) localStorage.setItem('pajarillo_kiosk_p1_screensaver_video', data.p1_screensaver);
 

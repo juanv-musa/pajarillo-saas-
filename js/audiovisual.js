@@ -54,6 +54,8 @@ class AudiovisualKiosk {
         this.updateScreensaverSource();
       } else if (e.key === 'pajarillo_kiosk_p0_screensaver_video') {
         this.updateScreensaverSource();
+      } else if (e.key === 'pajarillo_kiosk_p0_screensaver_volume') {
+        this.applyScreensaverVolume();
       }
     });
   }
@@ -154,6 +156,54 @@ class AudiovisualKiosk {
     }).join('');
   }
 
+  getScreensaverVolume() {
+    const saved = localStorage.getItem('pajarillo_kiosk_p0_screensaver_volume');
+    if (saved !== null && !isNaN(parseFloat(saved))) {
+      let val = parseFloat(saved);
+      if (val > 1) val = val / 100;
+      return Math.min(1, Math.max(0.01, val));
+    }
+    return 0.25; // 25% por defecto: volumen ambiental suave no intrusivo
+  }
+
+  applyScreensaverVolume() {
+    if (!this.dom.screensaverVideo) return;
+    const vol = this.getScreensaverVolume();
+    this.dom.screensaverVideo.volume = vol;
+    this.dom.screensaverVideo.muted = false;
+  }
+
+  playScreensaverVideo() {
+    if (!this.dom.screensaverVideo) return;
+    this.applyScreensaverVolume();
+
+    const promise = this.dom.screensaverVideo.play();
+    if (promise !== undefined) {
+      promise.catch((err) => {
+        console.warn('Autoplay con audio restringido por navegador antes del primer toque:', err);
+        // Si la política de autoplay del navegador bloquea audio antes del primer gesto,
+        // reproducir en silencio provisionalmente para que la imagen se vea...
+        this.dom.screensaverVideo.muted = true;
+        this.dom.screensaverVideo.play().catch(() => {});
+
+        // ...y en cuanto haya cualquier interacción en pantalla, reactivar el volumen deseado
+        const unlockAudio = () => {
+          if (this.dom.screensaverVideo) {
+            this.applyScreensaverVolume();
+          }
+          window.removeEventListener('click', unlockAudio);
+          window.removeEventListener('touchstart', unlockAudio);
+          window.removeEventListener('pointerdown', unlockAudio);
+          window.removeEventListener('keydown', unlockAudio);
+        };
+        window.addEventListener('click', unlockAudio, { passive: true });
+        window.addEventListener('touchstart', unlockAudio, { passive: true });
+        window.addEventListener('pointerdown', unlockAudio, { passive: true });
+        window.addEventListener('keydown', unlockAudio, { passive: true });
+      });
+    }
+  }
+
   updateScreensaverSource() {
     if (!this.dom.screensaverVideo) return;
 
@@ -183,7 +233,7 @@ class AudiovisualKiosk {
       this.dom.screensaverVideo.src = videoSrc;
       this.dom.screensaverVideo.load();
       if (this.dom.screensaver && this.dom.screensaver.classList.contains('active')) {
-        this.dom.screensaverVideo.play().catch(() => {});
+        this.playScreensaverVideo();
       }
     }
   }
@@ -191,8 +241,22 @@ class AudiovisualKiosk {
   setupScreensaver() {
     if (!this.dom.screensaver) return;
 
-    // Configurar vídeo en bucle para el salvapantallas
+    // Configurar vídeo en bucle para el salvapantallas y volumen suave (25%)
     this.updateScreensaverSource();
+    this.applyScreensaverVolume();
+
+    // Desbloqueo de audio garantizado al interactuar
+    const onUserTouchAudio = () => {
+      this.applyScreensaverVolume();
+      window.removeEventListener('click', onUserTouchAudio);
+      window.removeEventListener('touchstart', onUserTouchAudio);
+      window.removeEventListener('pointerdown', onUserTouchAudio);
+      window.removeEventListener('keydown', onUserTouchAudio);
+    };
+    window.addEventListener('click', onUserTouchAudio, { passive: true });
+    window.addEventListener('touchstart', onUserTouchAudio, { passive: true });
+    window.addEventListener('pointerdown', onUserTouchAudio, { passive: true });
+    window.addEventListener('keydown', onUserTouchAudio, { passive: true });
 
     // Iniciar con la parrilla de selección de documentales directamente
     this.hideScreensaver();
@@ -249,9 +313,7 @@ class AudiovisualKiosk {
     if (this.dom.videoElement && !this.dom.videoElement.paused && !this.dom.videoElement.ended) return;
 
     this.dom.screensaver.classList.add('active');
-    if (this.dom.screensaverVideo) {
-      this.dom.screensaverVideo.play().catch(() => {});
-    }
+    this.playScreensaverVideo();
   }
 
   hideScreensaver() {

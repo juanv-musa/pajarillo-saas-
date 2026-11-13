@@ -2032,6 +2032,14 @@
                 <p style="font-size: 0.74rem; color: #A3B5AA; margin: 0; line-height: 1.4;">
                   Vídeo en bucle continuo que se reproduce automáticamente de fondo cuando ningún visitante está interactuando con la pantalla.
                 </p>
+
+                <!-- Control de volumen del salvapantallas P0 -->
+                <div style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px dashed rgba(181, 154, 87, 0.25); display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+                  <label for="range-p0-screensaver-volume" style="font-size: 0.76rem; font-weight: 700; color: #D4AF37; margin: 0; text-transform: uppercase;">
+                    🔊 Nivel de audio en reposo: <span id="label-p0-screensaver-volume" style="color: #fff; font-weight: 800;">25%</span>
+                  </label>
+                  <input type="range" id="range-p0-screensaver-volume" min="5" max="100" step="5" value="25" style="width: 140px; accent-color: #D4AF37; cursor: pointer;" title="Ajusta el volumen ambiental del salvapantallas (por defecto 25%)">
+                </div>
               </div>
 
               <!-- URL Directa P0 -->
