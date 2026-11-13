@@ -2,35 +2,35 @@
   "panels": [
     {
       "id": 1,
-      "tag": "escultura",
+      "tag": "arquelogia",
       "image": "./assets/images/lobo.png",
-      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
       "audio": null,
+      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "La Cabeza de Lobo",
-          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
-          "description": "<p>Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.</p><p>Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.</p><p>En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización.</p>"
-        },
-        "en": {
-          "title": "The Wolf's Head",
-          "subtitle": "Pinnacle sculpture of El Pajarillo Sanctuary · 4th c. BC",
-          "description": "<p>Carved from local white limestone over 2,400 years ago, the Wolf's Head represents a high watermark of ancient Iberian stone sculpture.</p><p>Depicting a snarling wolf larger than life, with open jaws revealing intricately chiselled fangs, alert eyes, and folded ears in an aggressive stance.</p><p>Originally positioned on the monument's summit terrace, it formed part of a mythic struggle where a noble youth faced the savage beast to achieve heroic apotheosis.</p>"
-        },
-        "fr": {
-          "title": "La Tête de Loup",
-          "subtitle": "Chef-d'œuvre du sanctuaire d'El Pajarillo · IVe s. av. J.-C.",
-          "description": "<p>Sculptée dans le calcaire il y a plus de 2 400 ans, la Tête de Loup constitue l'un des sommets de l'art ibérique antique.</p><p>Elle figure un loup grandeur nature aux babines retroussées, dévoilant des crocs acérés et des oreilles dressées vers l'arrière dans una posture de combat.</p><p>Elle incarnait l'adversaire mythique terrassé par le prince héroïsé pour légitimer son prestige divinisé.</p>"
-        }
-      },
+      "external_url": null,
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": true,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "BIENVENIDA Y RECORRIDO",
+          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
+          "description": "Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización."
+        },
+        "en": {
+          "title": "The Wolf's Head",
+          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
+          "description": "Carved from local white limestone over 2,400 years ago, the Wolf's Head represents a high watermark of ancient Iberian stone sculpture.Depicting a snarling wolf larger than life, with open jaws revealing intricately chiselled fangs, alert eyes, and folded ears in an aggressive stance.Originally positioned on the monument's summit terrace, it formed part of a mythic struggle where a noble youth faced the savage beast to achieve heroic apotheosis."
+        },
+        "fr": {
+          "title": "La Tête de Loup",
+          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
+          "description": "Sculptée dans le calcaire il y a plus de 2 400 ans, la Tête de Loup constitue l'un des sommets de l'art ibérique antique.Elle figure un loup grandeur nature aux babines retroussées, dévoilant des crocs acérés et des oreilles dressées vers l'arrière dans una posture de combat.Elle incarnait l'adversaire mythique terrassé par le prince héroïsé pour légitimer son prestige divinisé."
+        }
+      }
     },
     {
       "id": 2,

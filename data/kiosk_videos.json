@@ -1,125 +1,140 @@
 {
   "videos": [
     {
-      "id": "vid_1",
-      "category": "Naturaleza y Paisaje",
+      "id": "vid_1794485975819",
+      "showInP0": false,
+      "showInWeb": true,
+      "category": "Fondo Audiovisual",
       "title": {
-        "es": "Naturaleza y Paisaje de Sierra Mágina",
-        "en": "Nature and Landscape of Sierra Mágina",
-        "fr": "Nature et Paysage de Sierra Mágina"
+        "es": "Trailer",
+        "en": "Trailer",
+        "fr": "Trailer"
       },
+      "duration": "01:00",
+      "thumb": "./assets/images/logo-pajarillo.png",
+      "videoUrl": "./assets/videos/trailer_pajarillo.mp4",
+      "videoUrlAudioDesc": "",
       "description": {
-        "es": "Recorrido por la riqueza botánica, la fauna y el entorno natural de Sierra Mágina que rodea el Santuario de El Pajarillo.",
-        "en": "Journey through the botanical richness, wildlife and natural landscape of Sierra Mágina surrounding El Pajarillo.",
-        "fr": "Parcours à travers la richesse botanique, la faune et le paysage naturel de la Sierra Mágina autour d'El Pajarillo."
+        "es": "Trailer del audiovisual principal de centro",
+        "en": "Trailer del audiovisual principal de centro",
+        "fr": "Trailer del audiovisual principal de centro"
+      }
+    },
+    {
+      "id": "vid_1794491083757",
+      "showInP0": true,
+      "category": "Paisaje y Territorio",
+      "title": {
+        "es": "Naturaleza",
+        "en": "Naturaleza",
+        "fr": "Naturaleza"
       },
-      "duration": "00:40",
-      "thumb": "./assets/images/iltiraka.png",
+      "duration": "00:30",
+      "thumb": "./assets/images/logo-pajarillo.png",
       "videoUrl": "./assets/videos/01_NATURALEZA_V1.mp4",
-      "showInP0": true,
-      "showInP1": false,
-      "showInWeb": false
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Minivideo Naturaleza",
+        "en": "Minivideo Naturaleza",
+        "fr": "Minivideo Naturaleza"
+      }
     },
     {
-      "id": "vid_2",
-      "category": "Agua y Territorio",
+      "id": "vid_1794491183457",
+      "showInP0": true,
+      "category": "Paisaje y Territorio",
       "title": {
-        "es": "El Río Jandulilla y la Cultura del Agua",
-        "en": "The Jandulilla River and Water Culture",
-        "fr": "La Rivière Jandulilla et la Culture de l'Eau"
+        "es": "AGUA",
+        "en": "AGUA",
+        "fr": "AGUA"
       },
-      "description": {
-        "es": "El valle del río Jandulilla como eje vertebrador de comunicación, agricultura y vida ritual en época ibérica.",
-        "en": "The Jandulilla River valley as the historical corridor of communication, agriculture and ritual life in Iberian times.",
-        "fr": "La vallée du Jandulilla comme axe de communication, d'agriculture et de vie rituelle à l'époque ibérique."
-      },
-      "duration": "00:40",
-      "thumb": "./assets/images/excavacion_medios.png",
+      "duration": "00:30",
+      "thumb": "./assets/images/logo-pajarillo.png",
       "videoUrl": "./assets/videos/02_AGUA_V1.mp4",
-      "showInP0": true,
-      "showInP1": false,
-      "showInWeb": false
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Minivideo Agua",
+        "en": "Minivideo Agua",
+        "fr": "Minivideo Agua"
+      }
     },
     {
-      "id": "vid_3",
-      "category": "Patrimonio Histórico",
+      "id": "vid_1794491232458",
+      "showInP0": true,
+      "category": "Paisaje y Territorio",
       "title": {
-        "es": "El Castillo y las Fortalezas de Huelma",
-        "en": "The Castle and Fortresses of Huelma",
-        "fr": "Le Château et les Forteresses d'Huelma"
+        "es": "CASTILLO",
+        "en": "CASTILLO",
+        "fr": "CASTILLO"
       },
-      "description": {
-        "es": "Vistas aéreas y evolución arquitectónica de las fortificaciones y el baluarte histórico de Huelma sobre el territorio.",
-        "en": "Aerial views and architectural history of the castle and medieval fortifications of Huelma over the territory.",
-        "fr": "Vues aériennes et histoire architecturale du château et des fortifications médiévales d'Huelma."
-      },
-      "duration": "00:40",
-      "thumb": "./assets/images/santuario_ilustracion.png",
+      "duration": "00:30",
+      "thumb": "./assets/images/logo-pajarillo.png",
       "videoUrl": "./assets/videos/03_CASTILLO_V1.mp4",
-      "showInP0": true,
-      "showInP1": false,
-      "showInWeb": false
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Minivideo Castillo",
+        "en": "Minivideo Castillo",
+        "fr": "Minivideo Castillo"
+      }
     },
     {
-      "id": "vid_4",
-      "category": "Arquitectura y Arte",
+      "id": "vid_1794491279957",
+      "showInP0": true,
+      "category": "Paisaje y Territorio",
       "title": {
-        "es": "Iglesia y Patrimonio Monumental de Huelma",
-        "en": "Church and Monumental Heritage of Huelma",
-        "fr": "Église et Patrimoine Monumental d'Huelma"
+        "es": "IGLESIA",
+        "en": "IGLESIA",
+        "fr": "IGLESIA"
       },
-      "description": {
-        "es": "La Iglesia de la Inmaculada Concepción obra del maestro Andrés de Vandelvira y el legado cultural renacentista.",
-        "en": "The Church of the Immaculate Conception by master Andrés de Vandelvira and the Renaissance heritage of Huelma.",
-        "fr": "L'Église de l'Immaculée Conception du maître Andrés de Vandelvira et le patrimoine renaissant d'Huelma."
-      },
-      "duration": "00:40",
-      "thumb": "./assets/images/arqueologia.png",
+      "duration": "00:30",
+      "thumb": "./assets/images/logo-pajarillo.png",
       "videoUrl": "./assets/videos/04_IGLESIA_V1.mp4",
-      "showInP0": true,
-      "showInP1": false,
-      "showInWeb": false
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Minivideo Iglesia",
+        "en": "Minivideo Iglesia",
+        "fr": "Minivideo Iglesia"
+      }
     },
     {
-      "id": "vid_doc_pajarillo",
-      "category": "Documental Oficial",
-      "title": {
-        "es": "Documental Oficial: El Santuario de El Pajarillo",
-        "en": "Official Documentary: The Sanctuary of El Pajarillo",
-        "fr": "Documentaire Officiel : Le Sanctuaire d'El Pajarillo"
-      },
-      "description": {
-        "es": "Investigación arqueológica, significado ritual y reconstrucción del monumento escultórico ibérico.",
-        "en": "Archaeological research, ritual significance and reconstruction of the Iberian monument.",
-        "fr": "Recherche archéologique, signification rituelle et reconstitution du monument ibérique."
-      },
-      "duration": "08:53",
-      "thumb": "./assets/images/santuario_ilustracion.png",
-      "videoUrl": "./assets/videos/documental_general_720.mp4",
-      "videoUrlAudioDesc": "./assets/videos/documental_audiodesc_web.mp4",
+      "id": "vid_1794492336092",
       "showInP0": false,
-      "showInP1": true,
-      "showInWeb": false
+      "showInWeb": false,
+      "category": "Documental Histórico",
+      "title": {
+        "es": "La investigación arqueológica del Santuario de El Pajarillo",
+        "en": "La investigación arqueológica del Santuario de El Pajarillo",
+        "fr": "La investigación arqueológica del Santuario de El Pajarillo"
+      },
+      "duration": "09:00",
+      "thumb": "./assets/images/logo-pajarillo.png",
+      "videoUrl": "./assets/videos/DOCUMENTAL_EL_PAJARILLO.mp4",
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Entrevistas a los directores de la excavación arqueológica realizada en 1994.",
+        "en": "Entrevistas a los directores de la excavación arqueológica realizada en 1994.",
+        "fr": "Entrevistas a los directores de la excavación arqueológica realizada en 1994."
+      }
     },
     {
-      "id": "vid_doc_pajarillo_ad",
-      "category": "Audiodescripción en Español",
-      "title": {
-        "es": "Documental Oficial con Audiodescripción",
-        "en": "Official Documentary with Audio Description",
-        "fr": "Documentaire Officiel avec Audiodescription"
-      },
-      "description": {
-        "es": "Versión accesible con narración descriptiva completa para personas con discapacidad visual y subtitulado.",
-        "en": "Accessible version with audio description for visually impaired visitors and subtitles.",
-        "fr": "Version accessible avec audiodescription et sous-titres."
-      },
-      "duration": "09:59",
-      "thumb": "./assets/images/excavacion_medios.png",
-      "videoUrl": "./assets/videos/documental_audiodesc_web.mp4",
+      "id": "vid_1794493227074",
       "showInP0": false,
-      "showInP1": true,
-      "showInWeb": false
+      "showInWeb": false,
+      "category": "Documental Histórico",
+      "title": {
+        "es": "Investigación arqueológica del Santuario de El Pajarillo",
+        "en": "La investigación arqueológica del Santuario de El Pajarillo",
+        "fr": "La investigación arqueológica del Santuario de El Pajarillo"
+      },
+      "duration": "10:00",
+      "thumb": "./assets/images/logo-pajarillo.png",
+      "videoUrl": "./assets/videos/DOCUMENTAL_EL_PAJARILLO_AUDIODESCRIPCION.mp4",
+      "videoUrlAudioDesc": "",
+      "description": {
+        "es": "Entrevistas a los directores de la excavación arqueológica realizada en 1994.",
+        "en": "Entrevistas a los directores de la excavación arqueológica realizada en 1994.",
+        "fr": "Entrevistas a los directores de la excavación arqueológica realizada en 1994."
+      }
     }
   ]
 }

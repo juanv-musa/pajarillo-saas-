@@ -20,19 +20,19 @@
   "hero": {
     "eyebrow": "",
     "title": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”",
-    "subtitle": "Descubre el legendario santuario monumental ibérico del Héroe y el Lobo, el dominio territorial de Iltiraka y el paisaje ritual del valle del río Jandulilla.",
+    "subtitle": "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
     "cta_primary": "Planifica tu visita",
     "cta_secondary": "Explorar santuario y territorio",
     "scroll": "Descubrir más",
     "card_title": "Cabeza de Lobo",
     "card_sub": "Escultura ibérica en caliza · Siglo IV a.C.",
-    "slide_lobo_title": "Cabeza de Lobo",
+    "slide_lobo_title": "Cabeza de lobo",
     "slide_lobo_sub": "Escultura ibérica en caliza · Siglo IV a.C.",
     "slide_leon_title": "León de El Pajarillo",
     "slide_leon_sub": "Fiera guardiana del santuario heroico",
-    "slide_santuario_title": "Santuario Heroico",
+    "slide_santuario_title": "Santuario heroico",
     "slide_santuario_sub": "Reconstrucción volumétrica del monumento",
-    "slide_yacimiento_title": "Yacimiento Arqueológico",
+    "slide_yacimiento_title": "Yacimiento arqueológico",
     "slide_yacimiento_sub": "Terrazas excavadas en el valle del Jandulilla",
     "slide_iltiraka_title": "Territorio de Iltiraka",
     "slide_iltiraka_sub": "Paisaje sagrado y oppidum protohistórico"
@@ -65,12 +65,30 @@
       "title": "Hitos cronológicos y hallazgos arqueológicos",
       "subtitle": "Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.",
       "events": [
-        { "year": "Siglos VI–V a.n.e.", "text": "Surgen los primeros oppida fortificados en el Alto Guadalquivir (Puente Tablas) y las esculturas de linajes heroicos (Cerrillo Blanco, Porcuna)." },
-        { "year": "1ª mitad S. IV a.n.e.", "text": "El oppidum de Iltiraka coloniza el valle del Jandulilla y erige el Santuario Heroico de El Pajarillo y el conjunto escultórico del Lobo." },
-        { "year": "2ª mitad S. IV a.n.e.", "text": "Crisis de las aristocracias clientelares ibéricas: el santuario de El Pajarillo es ritualmente amortizado, destruido y abandonado." },
-        { "year": "1933", "text": "Aparece la primera escultura de un león ibérico durante las obras de la carretera que une Solera con la N-324." },
-        { "year": "1993–1994", "text": "Hallazgo de un nuevo león y figura con falcata. Excavación de urgencia por Manuel Molinos, Arturo Ruiz, Teresa Chapa y Juan Pereira." },
-        { "year": "2006 – Actualidad", "text": "Decreto 12/2006: Declaración de Bien de Interés Cultural (BIC) como Zona Arqueológica e inauguración del Centro de Interpretación." }
+        {
+          "year": "Siglos VI–V a.n.e. · Primeros oppida y escultura heroica",
+          "text": "Surgimiento de oppida fortificados en el Alto Guadalquivir y monumentos heroicos como Cerrillo Blanco."
+        },
+        {
+          "year": "1ª mitad siglo IV a.n.e. · Fundación del santuario de El Pajarillo",
+          "text": "Iltiraka coloniza el valle del río Jandulilla y levanta el monumento heroico del Lobo."
+        },
+        {
+          "year": "2ª mitad siglo IV a.n.e. · Crisis y amortización ritual",
+          "text": "Crisis de las aristocracias clientelares ibéricas y abandono ritual del monumento de El Pajarillo."
+        },
+        {
+          "year": "1933 · Hallazgo del primer león ibérico",
+          "text": "Descubrimiento de la primera escultura de león durante las obras de la carretera a Solera."
+        },
+        {
+          "year": "1993–1994 · Guerrero con falcata y excavación Universidad de Jaén",
+          "text": "Aparición de un segundo león y el guerrero; excavación de urgencia del Instituto de Arqueología Ibérica."
+        },
+        {
+          "year": "2006 – Actualidad · BIC y centro de interpretación",
+          "text": "Declaración de Bien de Interés Cultural como Zona Arqueológica y apertura del centro de interpretación."
+        }
       ]
     }
   },
@@ -86,25 +104,25 @@
   },
   "horarios": {
     "section_label": "",
-    "title": "Horarios, Acceso y Tarifas",
+    "title": "Horarios, tarifas y localización",
     "subtitle": "Todo lo necesario para organizar tu recorrido por el conjunto monumental y arqueológico.",
-    "horarios_title": "Horarios de Apertura",
-    "temporada_alta": "Horario de Verano (Jun–Sep)",
-    "alta_dias": "Martes a Sábado: 10:00 – 14:00 h y 17:30 – 20:30 h",
+    "horarios_title": "Horarios de apertura",
+    "temporada_alta": "Horario de verano (Jun–Sep)",
+    "alta_dias": "Miércoles a domingo: 9:30 - 13:30 | 18:00 - 20:30",
     "alta_dom": "Domingos y festivos: 10:00 – 14:30 h",
-    "temporada_baja": "Horario de Invierno (Oct–May)",
-    "baja_dias": "Martes a Sábado: 10:00 – 14:00 h y 16:00 – 18:30 h",
+    "temporada_baja": "Horario de invierno (Oct–May)",
+    "baja_dias": "Miércoles a domingo: 10:00 - 14:00 | 16:30 - 19:00",
     "baja_dom": "Domingos y festivos: 10:00 – 14:30 h",
-    "lunes_cerrado": "Lunes cerrado por mantenimiento (excepto festivos)",
+    "lunes_cerrado": "⚠️ Lunes cerrado por mantenimiento (excepto festivos)",
     "aviso_lunes": "⚠️ Lunes cerrado por mantenimiento (excepto festivos)",
-    "tarifas_title": "Tarifas y Entradas",
-    "tarifa_general": "Entrada General",
+    "tarifas_title": "Tarifas y entradas",
+    "tarifa_general": "Entrada general",
     "tarifa_general_desc": "Acceso al centro de interpretación y sala exposición temporal.",
     "tarifa_general_price": "3,00 €",
-    "tarifa_reducida": "Tarifa Reducida",
+    "tarifa_reducida": "Tarifa reducida",
     "tarifa_reducida_desc": "Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.",
     "tarifa_reducida_price": "1,50 €",
-    "tarifa_gratuita": "Entrada Gratuita",
+    "tarifa_gratuita": "Entrada gratuita",
     "tarifa_gratuita_desc": "Menores de 12 años, personas con discapacidad acreditada y empadronados.",
     "tarifa_gratuita_price": "0,00 €",
     "localizacion_title": "Cómo llegar",
@@ -118,7 +136,7 @@
   },
   "agenda": {
     "section_label": "",
-    "title": "Actividades y eventos programados",
+    "title": "Agenda cultural y actividades",
     "subtitle": "Conoce los talleres didácticos, visitas teatralizadas y conferencias organizadas por el Ayuntamiento.",
     "filtro_todos": "Todas",
     "filtro_visitas": "Visitas Guiadas",
@@ -160,7 +178,7 @@
   },
   "reservas": {
     "section_label": "",
-    "title": "Reserva online para visitas guiadas",
+    "title": "Reserva tu visita guiada",
     "subtitle": "Plataforma digital integrada para la gestión anticipada de visitas de particulares y grupos.",
     "badge_mvp": "SaaS MVP Integrado",
     "info_title": "Visitas Guiadas Oficiales",
@@ -201,7 +219,7 @@
     "email_val": "turismo@aytohuelma.es",
     "ayto_label": "Gestión",
     "ayto_val": "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
-    "horario_atencion": "Horario de atención telefónica: Lunes a Viernes de 9:00 a 14:00 h"
+    "horario_atencion": "Lunes a Viernes de 9:00 a 14:00 h"
   },
   "footer": {
     "about": "Centro de Interpretación Santuario Ibérico de “El Pajarillo”. Espacio patrimonial y arqueológico de referencia en Sierra Mágina, Jaén.",

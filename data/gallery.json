@@ -3,12 +3,12 @@
     {
       "id": "foto_1",
       "type": "photo",
-      "src": "./assets/images/gallery/lobo.png",
-      "thumb": "./assets/images/gallery/lobo.png",
+      "src": "./assets/images/lobo.png",
+      "thumb": "./assets/images/lobo.png",
       "caption": {
-        "es": "Cabeza de Lobo Ibérico de El Pajarillo (Siglo IV a.C.)",
-        "en": "Iberian Wolf Head of El Pajarillo (4th Century BC)",
-        "fr": "Tête de Loup Ibérique d'El Pajarillo (IVe siècle av. J.-C.)"
+        "es": "Cabeza de Lobo Ibérico de El Pajarillo",
+        "en": "Iberian Wolf Head of El Pajarillo",
+        "fr": "Tête de Loup Ibérique d'El Pajarillo"
       },
       "author": "Centro de Interpretación",
       "category": "Escultura"
@@ -16,15 +16,15 @@
     {
       "id": "foto_2",
       "type": "photo",
-      "src": "./assets/images/gallery/leon.png",
-      "thumb": "./assets/images/gallery/leon.png",
+      "src": "./assets/images/hero/hero.jpg",
+      "thumb": "./assets/images/hero/hero.jpg",
       "caption": {
-        "es": "León Ibérico de El Pajarillo (Siglo IV a.C.)",
-        "en": "Iberian Lion of El Pajarillo (4th Century BC)",
-        "fr": "Lion Ibérique d'El Pajarillo (IVe siècle av. J.-C.)"
+        "es": "Vista aérea del yacimiento",
+        "en": "Aerial view of the site",
+        "fr": "Vue aérienne du site"
       },
       "author": "Centro de Interpretación",
-      "category": "Escultura"
+      "category": "Arquitectura"
     },
     {
       "id": "foto_3",
@@ -32,11 +32,11 @@
       "src": "./assets/images/arqueologia.png",
       "thumb": "./assets/images/arqueologia.png",
       "caption": {
-        "es": "Excavaciones y terrazas arqueológicas en el Santuario de El Pajarillo",
-        "en": "Archaeological excavation terraces at El Pajarillo Sanctuary",
-        "fr": "Terrasses et fouilles archéologiques du sanctuaire d'El Pajarillo"
+        "es": "Hallazgo de las esculturas",
+        "en": "Discovery of the sculptures",
+        "fr": "Découverte des sculptures"
       },
-      "author": "Instituto Arqueológico",
+      "author": "Centro de Interpretación",
       "category": "Yacimiento"
     },
     {
@@ -45,12 +45,12 @@
       "src": "./assets/images/santuario_ilustracion.png",
       "thumb": "./assets/images/santuario_ilustracion.png",
       "caption": {
-        "es": "Recreación ilustrada del Santuario Heroico de El Pajarillo",
-        "en": "Illustrated reconstruction of the Heroic Sanctuary of El Pajarillo",
-        "fr": "Restitution illustrée du Sanctuaire Héroïque d'El Pajarillo"
+        "es": "Recreación de santuario",
+        "en": "Sanctuary recreation",
+        "fr": "Recréation du sanctuaire"
       },
-      "author": "Patrimonio",
-      "category": "Arquitectura"
+      "author": "Centro de Interpretación",
+      "category": "Ilustración"
     }
   ],
   "resources": [
@@ -59,63 +59,91 @@
       "type": "pdf",
       "title": {
         "es": "Paisaje, camino y liturgia en el mito del héroe de Iltiraka",
-        "en": "Landscape, Path and Liturgy in the Myth of the Hero of Iltiraka",
-        "fr": "Paysage, Chemin et Liturgie dans le Mythe du Héros d'Iltiraka"
+        "en": "Landscape, path and liturgy in the myth of the hero of Iltiraka",
+        "fr": "Paysage, chemin et liturgie dans le mythe du héros d'Iltiraka"
       },
-      "format": "PDF / 13.4 MB",
-      "icon": "📄",
-      "badge": "Documentación",
       "description": {
         "es": "En este estudio se reinterpreta el heroon de El Pajarillo, en el marco del mito de la katabasis o viaje del héroe al inframundo.",
-        "en": "This study reinterprets the heroon of El Pajarillo within the framework of the myth of katabasis or the hero's journey to the underworld.",
-        "fr": "Cette étude réinterprète le hérôon d'El Pajarillo dans le cadre du mythe de la katabase ou voyage du héros aux enfers."
+        "en": "This study reinterprets the heroon of El Pajarillo within the framework of the myth of the katabasis or the hero's journey to the underworld.",
+        "fr": "Cette étude réinterprète le heroon d'El Pajarillo dans le cadre du mythe de la katabase ou voyage du héros aux Enfers."
       },
+      "badge": "Documentación",
       "file": "./assets/docs/heroe_de_iltiraka.pdf",
-      "url": "./assets/docs/heroe_de_iltiraka.pdf"
+      "url": "./assets/docs/heroe_de_iltiraka.pdf",
+      "format": "PDF / Digital",
+      "icon": "📄"
     },
     {
       "id": "res_6",
       "type": "web",
       "title": {
-        "es": "Portal Oficial de Turismo y Patrimonio de Huelma",
-        "en": "Official Tourism & Heritage Portal of Huelma",
-        "fr": "Portail Officiel du Tourisme et Patrimoine de Huelma"
+        "es": "Ceca de Iltiraka",
+        "en": "Mint of Iltiraka",
+        "fr": "Atelier monétaire d'Iltiraka / Monnaie d'Iltiraka"
       },
-      "format": "Sitio Web / Enlace",
-      "icon": "🌐",
-      "badge": "Enlace Web",
       "description": {
-        "es": "Acceso directo a la información turística, cultural y natural del entorno de Sierra Mágina y Huelma.",
-        "en": "Direct access to tourism, cultural, and natural heritage of Sierra Mágina and Huelma.",
-        "fr": "Accès direct aux informations touristiques et culturelles de la Sierra Mágina et Huelma."
+        "es": "La leyenda iltiŕaka corresponde a un nombre de lugar conocido sólo a través de las monedas.",
+        "en": "The legend iltiŕaka corresponds to a place name known only through coins.",
+        "fr": "La légende iltiŕaka correspond à un nom de lieu connu uniquement à travers les monnaies."
       },
-      "file": "https://jaenparaisointerior.es",
-      "url": "https://jaenparaisointerior.es"
+      "badge": "Didáctica",
+      "file": "https://monedaiberica.org/v6/mint/104",
+      "url": "https://monedaiberica.org/v6/mint/104",
+      "format": "Sitio Web / Portal",
+      "icon": "🌐"
     }
   ],
-  "videos": [],
-  "models3d": [
+  "videos": [
     {
-      "id": "model_santuario",
-      "type": "3d",
+      "id": "vid_1794485975819",
       "title": {
-        "es": "Santuario Heroico de El Pajarillo (Huelma, Jaén)",
-        "en": "Heroic Sanctuary of El Pajarillo (Huelma, Jaén)",
-        "fr": "Sanctuaire Héroïque d'El Pajarillo (Huelma, Jaén)"
-      },
-      "category": {
-        "es": "Monumento y Enclave",
-        "en": "Monument & Site",
-        "fr": "Monument et Site"
+        "es": "Trailer",
+        "en": "Trailer",
+        "fr": "Trailer"
       },
       "description": {
-        "es": "Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.",
-        "en": "Explore the complete volumetric 3D reconstruction: rotate 360°, zoom in, and examine every detail of the sculptural monument.",
-        "fr": "Explorez la restitution volumétrique 3D complète : tournez à 360°, zoomez et examinez chaque détail du monument."
+        "es": "Trailer del audiovisual principal de centro",
+        "en": "Trailer del audiovisual principal de centro",
+        "fr": "Trailer del audiovisual principal de centro"
       },
-      "thumb": "./assets/images/santuario_ilustracion.png",
-      "url": "https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark",
-      "sketchfabId": "402ba73cf7bd40ec9d5b03d17206387e"
+      "duration": "01:00",
+      "category": "Fondo Audiovisual",
+      "thumb": "./assets/images/logo-pajarillo.png",
+      "videoUrl": "./assets/videos/trailer_pajarillo.mp4"
+    }
+  ],
+  "models3d": [
+    {
+      "id": "3d_1794487557107",
+      "title": {
+        "es": "Escultura Héroe de El Pajarillo",
+        "en": "Sculpture of the Hero of El Pajarillo",
+        "fr": "Sculpture du Héros de El Pajarillo"
+      },
+      "category": "Modelo 3D",
+      "url": "https://sketchfab.com/3d-models/santuario-heroico-de-el-pajarillo-huelma-jaen-1db32c3265824fe4a07ee68598f74197",
+      "thumb": "https://juanv-musa.github.io/pajarillo-saas-/admin.html",
+      "description": {
+        "es": "Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.",
+        "en": "Official Sketchfab model with orbital orbit controls and VR exploration.",
+        "fr": "Modèle officiel Sketchfab avec commandes orbitales et réalité virtuelle du sanctuaire orétan."
+      }
+    },
+    {
+      "id": "3d_7",
+      "title": {
+        "es": "Escultura Lobo de El Pajarillo",
+        "en": "El Pajarillo Wolf Sculpture",
+        "fr": "Sculpture du loup de El Pajarillo"
+      },
+      "category": "Modelo 3D",
+      "url": "https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed",
+      "thumb": "https://juanv-musa.github.io/pajarillo-saas-/assets/images/logo-pajarillo.png",
+      "description": {
+        "es": "Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.",
+        "en": "Official Sketchfab model with orbital orbit controls and VR exploration.",
+        "fr": "Modèle officiel Sketchfab avec commandes orbitales et réalité virtuelle du sanctuaire orétan."
+      }
     }
   ]
 }
