@@ -401,159 +401,144 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
     return val;
   };
 
+  const formatRichText = (str) => {
+    if (!str || typeof str !== 'string') return '';
+    let res = str;
+    res = res.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    res = res.replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+    return res;
+  };
+
+  const setContent = (selector, val) => {
+    if (val === null || val === undefined) return;
+    const formatted = formatRichText(val);
+    document.querySelectorAll(selector).forEach(el => {
+      if (/<[a-z][\s\S]*>/i.test(formatted)) {
+        el.innerHTML = formatted;
+      } else {
+        el.textContent = val;
+      }
+    });
+  };
+
   const heroEyebrow = getCustomText('hero_eyebrow');
-  if (heroEyebrow !== null) {
-    document.querySelectorAll('[data-i18n="hero.eyebrow"]').forEach(el => el.textContent = heroEyebrow);
-  }
+  if (heroEyebrow !== null) setContent('[data-i18n="hero.eyebrow"]', heroEyebrow);
+
   const siteTitle = getCustomText('site_title');
-  if (siteTitle !== null) {
-    document.querySelectorAll('.brand-text strong, [data-i18n="hero.title"]').forEach(el => el.textContent = siteTitle);
-  }
+  if (siteTitle !== null) setContent('.brand-text strong, [data-i18n="hero.title"]', siteTitle);
+
   const siteTagline = getCustomText('site_tagline');
-  if (siteTagline !== null) {
-    document.querySelectorAll('.brand-text span, [data-i18n="hero.subtitle"]').forEach(el => el.textContent = siteTagline);
-  }
+  if (siteTagline !== null) setContent('.brand-text span, [data-i18n="hero.subtitle"]', siteTagline);
+
   const heroCta = getCustomText('hero_cta');
-  if (heroCta !== null) {
-    document.querySelectorAll('[data-i18n="hero.cta_primary"], [data-i18n="hero.btn_plan"]').forEach(el => el.textContent = heroCta);
-  }
+  if (heroCta !== null) setContent('[data-i18n="hero.cta_primary"], [data-i18n="hero.btn_plan"]', heroCta);
+
   const heroDesc = getCustomText('hero_desc');
-  if (heroDesc !== null) {
-    document.querySelectorAll('[data-i18n="hero.card_desc"]').forEach(el => el.textContent = heroDesc);
-  }
+  if (heroDesc !== null) setContent('[data-i18n="hero.card_desc"]', heroDesc);
+
   const heroCardTitle = getCustomText('hero_card_title');
   if (heroCardTitle !== null) {
-    document.querySelectorAll('[data-i18n="hero.card_title"]').forEach(el => el.textContent = heroCardTitle);
+    setContent('[data-i18n="hero.card_title"]', heroCardTitle);
     const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
     if (slide0) slide0.dataset.title = heroCardTitle;
   }
   const heroCardSub = getCustomText('hero_card_sub');
   if (heroCardSub !== null) {
-    document.querySelectorAll('[data-i18n="hero.card_sub"]').forEach(el => el.textContent = heroCardSub);
+    setContent('[data-i18n="hero.card_sub"]', heroCardSub);
     const slide0 = document.querySelector('.hero-carousel-slide[data-index="0"]');
     if (slide0) slide0.dataset.sub = heroCardSub;
   }
 
   const ayto = getCustomText('ayto');
-  if (ayto !== null) {
-    document.querySelectorAll('[data-i18n="contacto.ayto_val"]').forEach(el => el.textContent = ayto);
-  }
+  if (ayto !== null) setContent('[data-i18n="contacto.ayto_val"]', ayto);
+
   const horarioAtencion = getCustomText('horario_atencion');
-  if (horarioAtencion !== null) {
-    document.querySelectorAll('[data-i18n="contacto.horario_atencion"]').forEach(el => el.textContent = horarioAtencion);
-  }
+  if (horarioAtencion !== null) setContent('[data-i18n="contacto.horario_atencion"]', horarioAtencion);
 
   // 5. Horarios de Apertura y Tarifas
   const horariosTitle = getCustomText('horarios_title');
-  if (horariosTitle !== null) {
-    document.querySelectorAll('[data-i18n="horarios.horarios_title"]').forEach(el => el.textContent = horariosTitle);
-  }
+  if (horariosTitle !== null) setContent('[data-i18n="horarios.horarios_title"]', horariosTitle);
+
   const horarioVeranoTitulo = getCustomText('horario_verano_titulo');
-  if (horarioVeranoTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.temporada_alta"]').forEach(el => el.textContent = horarioVeranoTitulo);
-  }
+  if (horarioVeranoTitulo !== null) setContent('[data-i18n="horarios.temporada_alta"]', horarioVeranoTitulo);
+
   const horarioVerano = getCustomText('horario_verano');
-  if (horarioVerano !== null) {
-    document.querySelectorAll('[data-i18n="horarios.alta_dias"]').forEach(el => el.textContent = horarioVerano);
-  }
+  if (horarioVerano !== null) setContent('[data-i18n="horarios.alta_dias"]', horarioVerano);
+
   const horarioVeranoDom = getCustomText('horario_verano_dom');
-  if (horarioVeranoDom !== null) {
-    document.querySelectorAll('[data-i18n="horarios.alta_dom"]').forEach(el => el.textContent = horarioVeranoDom);
-  }
+  if (horarioVeranoDom !== null) setContent('[data-i18n="horarios.alta_dom"]', horarioVeranoDom);
+
   const horarioInviernoTitulo = getCustomText('horario_invierno_titulo');
-  if (horarioInviernoTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.temporada_baja"]').forEach(el => el.textContent = horarioInviernoTitulo);
-  }
+  if (horarioInviernoTitulo !== null) setContent('[data-i18n="horarios.temporada_baja"]', horarioInviernoTitulo);
+
   const horarioInvierno = getCustomText('horario_invierno');
-  if (horarioInvierno !== null) {
-    document.querySelectorAll('[data-i18n="horarios.baja_dias"]').forEach(el => el.textContent = horarioInvierno);
-  }
+  if (horarioInvierno !== null) setContent('[data-i18n="horarios.baja_dias"]', horarioInvierno);
+
   const horarioInviernoDom = getCustomText('horario_invierno_dom');
-  if (horarioInviernoDom !== null) {
-    document.querySelectorAll('[data-i18n="horarios.baja_dom"]').forEach(el => el.textContent = horarioInviernoDom);
-  }
+  if (horarioInviernoDom !== null) setContent('[data-i18n="horarios.baja_dom"]', horarioInviernoDom);
+
   const horarioAviso = getCustomText('horario_aviso');
-  if (horarioAviso !== null) {
-    document.querySelectorAll('[data-i18n="horarios.aviso_lunes"]').forEach(el => el.textContent = horarioAviso);
-  }
+  if (horarioAviso !== null) setContent('[data-i18n="horarios.aviso_lunes"]', horarioAviso);
 
   // Tarifas
   const tarifasTitle = getCustomText('tarifas_title');
-  if (tarifasTitle !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifas_title"]').forEach(el => el.textContent = tarifasTitle);
-  }
+  if (tarifasTitle !== null) setContent('[data-i18n="horarios.tarifas_title"]', tarifasTitle);
+
   const tarifaGeneralTitulo = getCustomText('tarifa_general_titulo');
-  if (tarifaGeneralTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general"]').forEach(el => el.textContent = tarifaGeneralTitulo);
-  }
+  if (tarifaGeneralTitulo !== null) setContent('[data-i18n="horarios.tarifa_general"]', tarifaGeneralTitulo);
+
   const tarifaGeneralDesc = getCustomText('tarifa_general_desc');
-  if (tarifaGeneralDesc !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general_desc"]').forEach(el => el.textContent = tarifaGeneralDesc);
-  }
+  if (tarifaGeneralDesc !== null) setContent('[data-i18n="horarios.tarifa_general_desc"]', tarifaGeneralDesc);
+
   const tarifaGeneral = getCustomText('tarifa_general');
-  if (tarifaGeneral !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_general_price"]').forEach(el => el.textContent = tarifaGeneral);
-  }
+  if (tarifaGeneral !== null) setContent('[data-i18n="horarios.tarifa_general_price"]', tarifaGeneral);
+
   const tarifaReducidaTitulo = getCustomText('tarifa_reducida_titulo');
-  if (tarifaReducidaTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida"]').forEach(el => el.textContent = tarifaReducidaTitulo);
-  }
+  if (tarifaReducidaTitulo !== null) setContent('[data-i18n="horarios.tarifa_reducida"]', tarifaReducidaTitulo);
+
   const tarifaReducidaDesc = getCustomText('tarifa_reducida_desc');
-  if (tarifaReducidaDesc !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_desc"]').forEach(el => el.textContent = tarifaReducidaDesc);
-  }
+  if (tarifaReducidaDesc !== null) setContent('[data-i18n="horarios.tarifa_reducida_desc"]', tarifaReducidaDesc);
+
   const tarifaReducida = getCustomText('tarifa_reducida');
   if (tarifaReducida !== null) {
     const cleanReducida = tarifaReducida.includes('(') ? (currentLang === 'en' ? '€1.50' : '1,50 €') : tarifaReducida;
-    document.querySelectorAll('[data-i18n="horarios.tarifa_reducida_price"]').forEach(el => el.textContent = cleanReducida);
+    setContent('[data-i18n="horarios.tarifa_reducida_price"]', cleanReducida);
   }
   const tarifaGratuitaTitulo = getCustomText('tarifa_gratuita_titulo');
-  if (tarifaGratuitaTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita"]').forEach(el => el.textContent = tarifaGratuitaTitulo);
-  }
+  if (tarifaGratuitaTitulo !== null) setContent('[data-i18n="horarios.tarifa_gratuita"]', tarifaGratuitaTitulo);
+
   const tarifaGratuitaDesc = getCustomText('tarifa_gratuita_desc') || getCustomText('tarifa_gratuita');
-  if (tarifaGratuitaDesc !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_desc"]').forEach(el => el.textContent = tarifaGratuitaDesc);
-  }
+  if (tarifaGratuitaDesc !== null) setContent('[data-i18n="horarios.tarifa_gratuita_desc"]', tarifaGratuitaDesc);
+
   const tarifaGratuitaPrecio = getCustomText('tarifa_gratuita_precio');
-  if (tarifaGratuitaPrecio !== null) {
-    document.querySelectorAll('[data-i18n="horarios.tarifa_gratuita_price"]').forEach(el => el.textContent = tarifaGratuitaPrecio);
-  }
+  if (tarifaGratuitaPrecio !== null) setContent('[data-i18n="horarios.tarifa_gratuita_price"]', tarifaGratuitaPrecio);
 
   // Cómo llegar y Localización
   const comoLlegarTitulo = getCustomText('como_llegar_titulo');
-  if (comoLlegarTitulo !== null) {
-    document.querySelectorAll('[data-i18n="horarios.localizacion_title"]').forEach(el => el.textContent = comoLlegarTitulo);
-  }
+  if (comoLlegarTitulo !== null) setContent('[data-i18n="horarios.localizacion_title"]', comoLlegarTitulo);
+
   const comoLlegarDireccion = getCustomText('como_llegar_direccion');
-  if (comoLlegarDireccion !== null) {
-    document.querySelectorAll('[data-i18n="horarios.direccion_val"]').forEach(el => el.textContent = comoLlegarDireccion);
-  }
+  if (comoLlegarDireccion !== null) setContent('[data-i18n="horarios.direccion_val"]', comoLlegarDireccion);
+
   const comoLlegarParking = getCustomText('como_llegar_parking');
-  if (comoLlegarParking !== null) {
-    document.querySelectorAll('[data-i18n="horarios.parking_val"]').forEach(el => el.textContent = comoLlegarParking);
-  }
+  if (comoLlegarParking !== null) setContent('[data-i18n="horarios.parking_val"]', comoLlegarParking);
+
   const comoLlegarAccesibilidad = getCustomText('como_llegar_accesibilidad');
-  if (comoLlegarAccesibilidad !== null) {
-    document.querySelectorAll('[data-i18n="horarios.accesibilidad_val"]').forEach(el => el.textContent = comoLlegarAccesibilidad);
-  }
+  if (comoLlegarAccesibilidad !== null) setContent('[data-i18n="horarios.accesibilidad_val"]', comoLlegarAccesibilidad);
+
   const footerCopy = getCustomText('footer_copy');
-  if (footerCopy !== null) {
-    document.querySelectorAll('[data-i18n="footer.copy"]').forEach(el => el.textContent = footerCopy);
-  }
+  if (footerCopy !== null) setContent('[data-i18n="footer.copy"]', footerCopy);
 
   // Galería Multimedia y Recursos Digitales (Títulos y Textos Editables)
   const galeriaTitle = getCustomText('galeria_title');
-  if (galeriaTitle !== null) {
-    document.querySelectorAll('[data-i18n="galeria.title"]').forEach(el => el.textContent = galeriaTitle);
-  }
+  if (galeriaTitle !== null) setContent('[data-i18n="galeria.title"]', galeriaTitle);
+
   const galeriaSubtitle = getCustomText('galeria_subtitle');
-  if (galeriaSubtitle !== null) {
-    document.querySelectorAll('[data-i18n="galeria.subtitle"]').forEach(el => el.textContent = galeriaSubtitle);
-  }
+  if (galeriaSubtitle !== null) setContent('[data-i18n="galeria.subtitle"]', galeriaSubtitle);
+
   const galeriaTabFotos = getCustomText('galeria_tab_fotos');
   if (galeriaTabFotos !== null) {
-    document.querySelectorAll('[data-i18n="galeria.tab_fotos"]').forEach(el => el.textContent = galeriaTabFotos);
+    setContent('[data-i18n="galeria.tab_fotos"]', galeriaTabFotos);
     const btnFotos = document.getElementById('gallery-tab-btn-fotos');
     if (btnFotos) {
       const sp = btnFotos.querySelector('[data-i18n="galeria.tab_fotos"]') || btnFotos.querySelector('span');
@@ -562,7 +547,7 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   }
   const galeriaTabModelo3d = getCustomText('galeria_tab_modelo3d');
   if (galeriaTabModelo3d !== null) {
-    document.querySelectorAll('[data-i18n="galeria.tab_modelo3d"]').forEach(el => el.textContent = galeriaTabModelo3d);
+    setContent('[data-i18n="galeria.tab_modelo3d"]', galeriaTabModelo3d);
     const btn3d = document.getElementById('gallery-tab-btn-modelo3d');
     if (btn3d) {
       const sp = btn3d.querySelector('[data-i18n="galeria.tab_modelo3d"]') || btn3d.querySelector('span');
@@ -571,7 +556,7 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   }
   const galeriaTabRecursos = getCustomText('galeria_tab_recursos');
   if (galeriaTabRecursos !== null) {
-    document.querySelectorAll('[data-i18n="galeria.tab_recursos"]').forEach(el => el.textContent = galeriaTabRecursos);
+    setContent('[data-i18n="galeria.tab_recursos"]', galeriaTabRecursos);
     const btnRec = document.getElementById('gallery-tab-btn-recursos');
     if (btnRec) {
       const sp = btnRec.querySelector('[data-i18n="galeria.tab_recursos"]') || btnRec.querySelector('span');
@@ -580,7 +565,7 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   }
   const galeriaTabVideos = getCustomText('galeria_tab_videos');
   if (galeriaTabVideos !== null) {
-    document.querySelectorAll('[data-i18n="galeria.tab_videos"]').forEach(el => el.textContent = galeriaTabVideos);
+    setContent('[data-i18n="galeria.tab_videos"]', galeriaTabVideos);
     const btnVid = document.getElementById('gallery-tab-btn-videos');
     if (btnVid) {
       const sp = btnVid.querySelector('[data-i18n="galeria.tab_videos"]') || btnVid.querySelector('span');
@@ -591,7 +576,7 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   const desc3d = getCustomText('desc_3d');
   if (desc3d !== null) {
     const desc3dEl = document.querySelector('#tab-modelo3d p');
-    if (desc3dEl) desc3dEl.textContent = desc3d;
+    if (desc3dEl) setContent('#tab-modelo3d p', desc3d);
   }
 
   // Actualizar modelo 3D de Sketchfab dinámicamente si se ha configurado
@@ -622,51 +607,40 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
     }
   }
   const agendaTitle = getCustomText('agenda_title');
-  if (agendaTitle !== null) {
-    document.querySelectorAll('[data-i18n="agenda.title"]').forEach(el => el.textContent = agendaTitle);
-  }
+  if (agendaTitle !== null) setContent('[data-i18n="agenda.title"]', agendaTitle);
+
   const agendaSubtitle = getCustomText('agenda_subtitle');
-  if (agendaSubtitle !== null) {
-    document.querySelectorAll('[data-i18n="agenda.subtitle"]').forEach(el => el.textContent = agendaSubtitle);
-  }
+  if (agendaSubtitle !== null) setContent('[data-i18n="agenda.subtitle"]', agendaSubtitle);
+
   const reservasTitle = getCustomText('reservas_title');
-  if (reservasTitle !== null) {
-    document.querySelectorAll('[data-i18n="reservas.title"]').forEach(el => el.textContent = reservasTitle);
-  }
+  if (reservasTitle !== null) setContent('[data-i18n="reservas.title"]', reservasTitle);
+
   const reservasSubtitle = getCustomText('reservas_subtitle');
-  if (reservasSubtitle !== null) {
-    document.querySelectorAll('[data-i18n="reservas.subtitle"]').forEach(el => el.textContent = reservasSubtitle);
-  }
+  if (reservasSubtitle !== null) setContent('[data-i18n="reservas.subtitle"]', reservasSubtitle);
 
   // 3. Cronología / Línea de Tiempo (Hitos 1 a 6)
   for (let i = 1; i <= 6; i++) {
     const idx = i - 1;
     const hitoTitle = getCustomText(`hito${i}_title`);
     if (hitoTitle !== null) {
-      document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.year"]`).forEach(el => {
-        el.textContent = hitoTitle;
-      });
+      setContent(`[data-i18n="historia.timeline.events.${idx}.year"]`, hitoTitle);
     }
     const hitoDesc = getCustomText(`hito${i}_desc`);
     if (hitoDesc !== null) {
-      document.querySelectorAll(`[data-i18n="historia.timeline.events.${idx}.text"]`).forEach(el => {
-        el.textContent = hitoDesc;
-      });
+      setContent(`[data-i18n="historia.timeline.events.${idx}.text"]`, hitoDesc);
     }
   }
 
   // 4. Patrimonio Milenario / Santuario y Territorio
   const patrimonioTitle = getCustomText('patrimonio_title');
-  if (patrimonioTitle !== null) {
-    document.querySelectorAll('[data-i18n="historia.title"]').forEach(el => el.textContent = patrimonioTitle);
-  }
+  if (patrimonioTitle !== null) setContent('[data-i18n="historia.title"]', patrimonioTitle);
+
   const patrimonioSubtitle = getCustomText('patrimonio_subtitle');
-  if (patrimonioSubtitle !== null) {
-    document.querySelectorAll('[data-i18n="historia.subtitle"]').forEach(el => el.textContent = patrimonioSubtitle);
-  }
+  if (patrimonioSubtitle !== null) setContent('[data-i18n="historia.subtitle"]', patrimonioSubtitle);
+
   const formatStoryParagraphs = (txt) => {
     if (!txt) return '';
-    return txt.split(/\n\s*\n/).map(p => `<p>${p.trim()}</p>`).join('');
+    return txt.split(/\n\s*\n/).map(p => `<p>${formatRichText(p.trim())}</p>`).join('');
   };
 
   const patrimonioTab1 = getCustomText('patrimonio_tab1');

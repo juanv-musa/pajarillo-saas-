@@ -800,9 +800,15 @@
 
         document.title = `${title} · Santuario Ibérico de El Pajarillo`;
 
+        const formatRich = (str) => {
+          if (!str || typeof str !== 'string') return '';
+          return str.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+                    .replace(/(^|[^*])\*([^*]+)\*/g, '$1<em>$2</em>');
+        };
+
         dom.title.textContent = title;
         dom.subtitle.textContent = subtitle;
-        dom.description.innerHTML = descHtml;
+        dom.description.innerHTML = formatRich(descHtml);
 
         const badgeNumText = `Nº ${String(currentPanel.id).padStart(2, '0')}`;
         const badgeTagText = currentPanel.tag || 'Exposición';
