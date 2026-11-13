@@ -4383,6 +4383,8 @@ const DEFAULT_LOCALES = {
     hero_card_title: "Cabeza de Lobo",
     hero_card_sub: "",
     hero_card_img: "./assets/images/lobo.png",
+    cronologia_title: "Hitos cronológicos y hallazgos arqueológicos",
+    "cronologia_subtitle": "Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.",
     hito1_title: "Siglos VI–V a.n.e. · Primeros Oppida y Escultura Heroica",
     hito1_desc: "Surgimiento de oppida fortificados en el Alto Guadalquivir y monumentos heroicos como Cerrillo Blanco.",
     hito2_title: "1ª mitad S. IV a.n.e. · Fundación del Santuario de El Pajarillo",
@@ -4395,7 +4397,7 @@ const DEFAULT_LOCALES = {
     hito5_desc: "Aparición de un segundo león y el guerrero; excavación de urgencia del Instituto de Arqueología Ibérica.",
     hito6_title: "2006 – Actualidad · BIC y Centro de Interpretación",
     hito6_desc: "Declaración de Bien de Interés Cultural como Zona Arqueológica y apertura de la plataforma digital accesible.",
-    patrimonio_title: "Santuario y Territorio Íbero",
+    patrimonio_title: "Santuario y territorio ibero",
     patrimonio_subtitle: "Hace 2.400 años, la aristocracia de Iltiraka domesticó el valle salvaje del río Jandulilla",
     patrimonio_tab1: "Ubicado estratégicamente sobre una loma dominante en el valle del río Jandulilla, el Santuario Ibérico de El Pajarillo constituye uno de los hallazgos arqueológicos más trascendentales de la protohistoria peninsular (c. 350 a.n.e.).\n\nEl monumento conmemorativo fue concebido como un gran escenario escalonado en tres terrazas de mampostería y sillares labrados para la apoteosis o heroización de un príncipe o aristócrata oretano. En su cima se alzaba el célebre conjunto escultórico que escenificaba el combate mítico entre un joven aristócrata y una fiera salvaje: la portentosa Cabeza de Lobo, escoltada por leones protectores y grifos alados, símbolo de poder, valor y trascendencia de la cultura ibérica.",
     patrimonio_tab2: "Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka —Úbeda la Vieja— puso los ojos en este valle. Decidió apropiarse de un territorio salvaje: el valle del río Jandulilla.\n\nPara las gentes iberas, el valle del Jandulilla era territorio salvaje (silva): bosque profundo, dominio de lobos y seres fantásticos, un lugar donde el poder humano aún no llegaba. Eran territorios que querían incorporar y para ello hacía falta un héroe capaz de justificarlo.\n\nEl oppidum de Iltiraka desplegó un ambicioso proyecto de ocupación: estableció una población en la Loma del Perro (entre las actuales Úbeda y Jódar), controló las rutas que subían desde el sur y levantó, en la cabecera del río, un santuario en memoria de su héroe fundador: El Pajarillo. Así nació un territorio convertido en dominio de un linaje (pagus).",
@@ -4403,7 +4405,7 @@ const DEFAULT_LOCALES = {
     patrimonio_img_iltiraka: "./assets/images/iltiraka.png",
     patrimonio_img_iberico: "./assets/images/arqueologia.png",
     patrimonio_img_fontanar: "./assets/images/santuario_ilustracion.png",
-    galeria_title: "Galería Multimedia y Recursos Digitales",
+    galeria_title: "Galería multimedia y recursos digitales",
     galeria_subtitle: "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
     galeria_tab_fotos: "Fotografías",
     galeria_tab_modelo3d: "Modelo 3D Interactivo",
@@ -4435,10 +4437,14 @@ const DEFAULT_LOCALES = {
     como_llegar_accesibilidad: "Instalaciones accesibles para personas con movilidad reducida.",
     como_llegar_mapa_url: "https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n",
     como_llegar_mapa_embed: "https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178",
-    agenda_title: "Agenda Cultural y Actividades",
+    horarios_section_title: "Horarios, tarifas y localización",
+    horarios_section_subtitle: "Toda la información necesaria para preparar tu experiencia turística y cultural.",
+    agenda_title: "Actividades y eventos programados",
     agenda_subtitle: "Participa en nuestras visitas temáticas, talleres arqueológicos y conferencias",
-    reservas_title: "Reserva tu Visita Guiada",
+    reservas_title: "Reserva online para visitas guiadas",
     reservas_subtitle: "Grupos escolares, particulares y colectivos. Reserva tu turno de visita guiada con nuestros mediadores",
+    contacto_title: "Contacto e información institucional",
+    contacto_subtitle: "¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.",
     tel: "(+34) 953 39 00 10",
     email: "turismo@aytohuelma.es",
     ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
@@ -5106,6 +5112,9 @@ function populateFormWithLang(lang) {
     renderAdminHeroCarouselSlides(slidesToRender, lang);
   }
 
+  setVal('cnt-cronologia-title', c.cronologia_title || 'Hitos cronológicos y hallazgos arqueológicos');
+  setVal('cnt-cronologia-subtitle', c.cronologia_subtitle !== undefined ? c.cronologia_subtitle : 'Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.');
+
   setVal('cnt-hito1-title', c.hito1_title);
   setVal('cnt-hito1-desc', c.hito1_desc);
   setVal('cnt-hito2-title', c.hito2_title);
@@ -5172,6 +5181,8 @@ function populateFormWithLang(lang) {
   }
 
   // 5. Horarios y Tarifas
+  setVal('cnt-horarios-section-title', c.horarios_section_title || 'Horarios, tarifas y localización');
+  setVal('cnt-horarios-section-subtitle', c.horarios_section_subtitle || 'Toda la información necesaria para preparar tu experiencia turística y cultural.');
   setVal('cnt-horarios-title', c.horarios_title || 'Horarios de Apertura');
   setVal('cnt-horario-verano-titulo', c.horario_verano_titulo || 'Horario de Verano (Jun–Sep)');
   setVal('cnt-horario-verano', c.horario_verano || 'Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30');
@@ -5205,6 +5216,9 @@ function populateFormWithLang(lang) {
   setVal('cnt-como-llegar-accesibilidad', c.como_llegar_accesibilidad || 'Instalaciones accesibles para personas con movilidad reducida.');
   setVal('cnt-como-llegar-mapa-url', c.como_llegar_mapa_url || 'https://maps.google.com/?q=Calle+C%C3%A1rcel,+2,+23560+Huelma,+Ja%C3%A9n');
   setVal('cnt-como-llegar-mapa-embed', c.como_llegar_mapa_embed || 'https://www.openstreetmap.org/export/embed.html?bbox=-3.4655%2C37.6485%2C-3.4580%2C37.6525&layer=mapnik&marker=37.65045%2C-3.46178');
+
+  setVal('cnt-contacto-title', c.contacto_title || 'Contacto e información institucional');
+  setVal('cnt-contacto-subtitle', c.contacto_subtitle || '¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.');
 
   setVal('cnt-tel', c.tel);
   setVal('cnt-email', c.email);
@@ -5244,6 +5258,9 @@ function saveCurrentFormToLang(lang) {
     })),
     hero_carousel_autoplay: document.getElementById('cnt-hero-carousel-autoplay')?.checked !== false,
     hero_carousel_interval: getVal('cnt-hero-carousel-interval') || '3500',
+
+    cronologia_title: getVal('cnt-cronologia-title'),
+    cronologia_subtitle: getVal('cnt-cronologia-subtitle'),
 
     hito1_title: getVal('cnt-hito1-title'),
     hito1_desc: getVal('cnt-hito1-desc'),
@@ -5290,6 +5307,8 @@ function saveCurrentFormToLang(lang) {
     url_3d: getVal('cnt-3d-url'),
 
     // 5. Horarios y Tarifas
+    horarios_section_title: getVal('cnt-horarios-section-title'),
+    horarios_section_subtitle: getVal('cnt-horarios-section-subtitle'),
     horarios_title: getVal('cnt-horarios-title'),
     horario_verano_titulo: getVal('cnt-horario-verano-titulo'),
     horario_verano: getVal('cnt-horario-verano'),
@@ -5329,6 +5348,9 @@ function saveCurrentFormToLang(lang) {
       .trim(),
     como_llegar_mapa_url: (getVal('cnt-como-llegar-mapa-url') || '').replace(/23140/g, '23560'),
     como_llegar_mapa_embed: getVal('cnt-como-llegar-mapa-embed'),
+
+    contacto_title: getVal('cnt-contacto-title'),
+    contacto_subtitle: getVal('cnt-contacto-subtitle'),
 
     tel: getVal('cnt-tel'),
     email: getVal('cnt-email'),

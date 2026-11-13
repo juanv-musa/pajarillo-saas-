@@ -12,7 +12,9 @@
     "contacto": true
   },
   "content": {
-    "galeria_title": "Galería Multimedia y Recursos Digitales",
+    "cronologia_title": "Hitos cronológicos y hallazgos arqueológicos",
+    "cronologia_subtitle": "Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.",
+    "galeria_title": "Galería multimedia y recursos digitales",
     "galeria_subtitle": "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
     "galeria_tab_fotos": "Fotografías",
     "galeria_tab_modelo3d": "Modelo 3D Interactivo",

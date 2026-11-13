@@ -693,9 +693,21 @@
           <div class="cms-section-accordion">
             <div class="cms-accordion-header">
               <span>⏳ 2. Cronología e Hitos del Conjunto Histórico</span>
-              <span style="font-size: 0.82rem; color: var(--admin-muted);">6 hitos de la línea de tiempo</span>
+              <span style="font-size: 0.82rem; color: var(--admin-muted);">Título, subtítulo y 6 hitos temporales</span>
             </div>
             <div class="cms-accordion-body">
+              <!-- Encabezado general de la Sección de Cronología -->
+              <div style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-bottom: 1.2rem; border: 1px solid var(--admin-border);">
+                <div class="admin-form-group">
+                  <label>Título de la Sección de Cronología e Hitos</label>
+                  <input type="text" id="cnt-cronologia-title" class="admin-input" placeholder="Hitos cronológicos y hallazgos arqueológicos">
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Subtítulo de la Sección de Cronología</label>
+                  <textarea id="cnt-cronologia-subtitle" class="admin-textarea" rows="2" placeholder="Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural."></textarea>
+                </div>
+              </div>
+
               <div class="grid-2col">
                 <div class="admin-form-group" style="background: var(--admin-bg); padding: 10px; border-radius: 8px;">
                   <strong style="font-size: 0.85rem; color: var(--admin-primary);">Hito 1</strong>
@@ -935,6 +947,18 @@
               <span style="font-size: 0.82rem; color: var(--admin-muted);">Temporadas, domingos/festivos, aviso y precios</span>
             </div>
             <div class="cms-accordion-body">
+              <!-- Encabezado general de la Sección de Horarios, Tarifas y Localización -->
+              <div style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-bottom: 1.2rem; border: 1px solid var(--admin-border);">
+                <div class="admin-form-group">
+                  <label>Título General de la Sección</label>
+                  <input type="text" id="cnt-horarios-section-title" class="admin-input" placeholder="Horarios, tarifas y localización">
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Subtítulo General de la Sección</label>
+                  <textarea id="cnt-horarios-section-subtitle" class="admin-textarea" rows="2" placeholder="Toda la información necesaria para preparar tu experiencia turística y cultural."></textarea>
+                </div>
+              </div>
+
               <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin-bottom: 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
                 🕒 Bloque de Horarios de Apertura
               </h4>
@@ -1126,7 +1150,19 @@
                 <small style="color: var(--admin-muted); display: block; margin-top: 0.25rem;">URL de inserción con coordenadas de encuadre (bbox) y chincheta (marker).</small>
               </div>
 
-              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin: 1.5rem 0 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
+              <!-- Encabezado general de la Sección de Contacto -->
+              <div style="background: var(--admin-bg); padding: 14px; border-radius: 8px; margin-top: 1.5rem; margin-bottom: 1.2rem; border: 1px solid var(--admin-border);">
+                <div class="admin-form-group">
+                  <label>Título de la Sección de Contacto</label>
+                  <input type="text" id="cnt-contacto-title" class="admin-input" placeholder="Contacto e información institucional">
+                </div>
+                <div class="admin-form-group" style="margin-bottom: 0;">
+                  <label>Subtítulo de la Sección de Contacto</label>
+                  <textarea id="cnt-contacto-subtitle" class="admin-textarea" rows="2" placeholder="¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos."></textarea>
+                </div>
+              </div>
+
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: var(--admin-primary); margin: 1.2rem 0 0.8rem; border-bottom: 1px solid var(--admin-border); padding-bottom: 0.4rem;">
                 📞 Contacto Institucional y Atención Telefónica
               </h4>
               <div class="grid-2col">

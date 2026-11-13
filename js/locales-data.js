@@ -44,7 +44,7 @@ export const DEFAULT_LOCALES = {
   },
   "historia": {
     "section_label": "",
-    "title": "Santuario y Territorio Íbero",
+    "title": "Santuario y territorio ibero",
     "subtitle": "Hace 2.400 años, la aristocracia de Iltiraka domesticó el valle salvaje del río Jandulilla",
     "tab_iberico": "Santuario Heroico",
     "tab_iltiraka": "Territorio de Iltiraka",
@@ -67,7 +67,7 @@ export const DEFAULT_LOCALES = {
     },
     "timeline": {
       "section_label": "",
-      "title": "Hitos Cronológicos y Hallazgos Arqueológicos",
+      "title": "Hitos cronológicos y hallazgos arqueológicos",
       "subtitle": "Desde la colonización ibérica de Iltiraka en el siglo IV a.n.e. hasta las excavaciones sistemáticas y la declaración como Bien de Interés Cultural.",
       "events": [
         {
@@ -99,7 +99,7 @@ export const DEFAULT_LOCALES = {
   },
   "puntos": {
     "section_label": "",
-    "title": "Recorrido y Puntos Clave",
+    "title": "Recorrido y puntos clave",
     "subtitle": "Escanea los códigos QR situados en las salas y en el yacimiento para escuchar la audioguía y visualizar los modelos digitales.",
     "listen_audio": "Audioguía disponible",
     "view_qr": "Código QR",
@@ -141,7 +141,7 @@ export const DEFAULT_LOCALES = {
   },
   "agenda": {
     "section_label": "",
-    "title": "Actividades y Eventos Programados",
+    "title": "Actividades y eventos programados",
     "subtitle": "Conoce los talleres didácticos, visitas teatralizadas y conferencias organizadas por el Ayuntamiento.",
     "filtro_todos": "Todas",
     "filtro_visitas": "Visitas Guiadas",
@@ -155,7 +155,7 @@ export const DEFAULT_LOCALES = {
   },
   "galeria": {
     "section_label": "",
-    "title": "Galería Multimedia y Recursos Digitales",
+    "title": "Galería multimedia y recursos digitales",
     "subtitle": "Fotografías de alta resolución, reconstrucciones volumétricas, audiovisuales y piezas digitalizadas.",
     "tab_fotos": "Fotografías",
     "tab_modelo3d": "Modelo 3D Interactivo",
@@ -183,7 +183,7 @@ export const DEFAULT_LOCALES = {
   },
   "reservas": {
     "section_label": "",
-    "title": "Reserva Online para Visitas Guiadas",
+    "title": "Reserva online para visitas guiadas",
     "subtitle": "Plataforma digital integrada para la gestión anticipada de visitas de particulares y grupos.",
     "badge_mvp": "SaaS MVP Integrado",
     "info_title": "Visitas Guiadas Oficiales",
@@ -211,7 +211,7 @@ export const DEFAULT_LOCALES = {
   },
   "contacto": {
     "section_label": "",
-    "title": "Contacto e Información Institucional",
+    "title": "Contacto e información institucional",
     "subtitle": "¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.",
     "oficina_title": "Oficina de Turismo y Patrimonio",
     "form_asunto": "Asunto de la consulta",

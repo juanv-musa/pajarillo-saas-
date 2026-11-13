@@ -449,6 +449,11 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
     if (slide0) slide0.dataset.sub = heroCardSub;
   }
 
+  const contactoSecTitle = getCustomText('contacto_title');
+  if (contactoSecTitle !== null) setContent('[data-i18n="contacto.title"]', contactoSecTitle);
+  const contactoSecSub = getCustomText('contacto_subtitle');
+  if (contactoSecSub !== null) setContent('[data-i18n="contacto.subtitle"]', contactoSecSub);
+
   const ayto = getCustomText('ayto');
   if (ayto !== null) setContent('[data-i18n="contacto.ayto_val"]', ayto);
 
@@ -456,6 +461,11 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   if (horarioAtencion !== null) setContent('[data-i18n="contacto.horario_atencion"]', horarioAtencion);
 
   // 5. Horarios de Apertura y Tarifas
+  const horariosSecTitle = getCustomText('horarios_section_title');
+  if (horariosSecTitle !== null) setContent('[data-i18n="horarios.title"]', horariosSecTitle);
+  const horariosSecSub = getCustomText('horarios_section_subtitle');
+  if (horariosSecSub !== null) setContent('[data-i18n="horarios.subtitle"]', horariosSecSub);
+
   const horariosTitle = getCustomText('horarios_title');
   if (horariosTitle !== null) setContent('[data-i18n="horarios.horarios_title"]', horariosTitle);
 
@@ -619,6 +629,12 @@ function applySiteConfig(config, currentLang = 'es', locales = null) {
   if (reservasSubtitle !== null) setContent('[data-i18n="reservas.subtitle"]', reservasSubtitle);
 
   // 3. Cronología / Línea de Tiempo (Hitos 1 a 6)
+  const cronologiaTitle = getCustomText('cronologia_title');
+  if (cronologiaTitle !== null) setContent('[data-i18n="historia.timeline.title"]', cronologiaTitle);
+
+  const cronologiaSubtitle = getCustomText('cronologia_subtitle');
+  if (cronologiaSubtitle !== null) setContent('[data-i18n="historia.timeline.subtitle"]', cronologiaSubtitle);
+
   for (let i = 1; i <= 6; i++) {
     const idx = i - 1;
     const hitoTitle = getCustomText(`hito${i}_title`);
