@@ -4398,7 +4398,7 @@ const DEFAULT_LOCALES = {
     horario_aviso: "⚠️ Lunes cerrado por mantenimiento (excepto festivos)",
     tarifas_title: "Tarifas y Entradas",
     tarifa_general_titulo: "Entrada General",
-    tarifa_general_desc: "Acceso libre al centro de interpretación, salas expositivas y claustro.",
+    tarifa_general_desc: "Acceso al centro de interpretación y sala exposición temporal.",
     tarifa_general: "3,00 €",
     tarifa_reducida_titulo: "Tarifa Reducida",
     tarifa_reducida_desc: "Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.",
@@ -4467,7 +4467,7 @@ const DEFAULT_LOCALES = {
     horario_aviso: "⚠️ Closed on Mondays for maintenance (except holidays)",
     tarifas_title: "Admission Fees",
     tarifa_general_titulo: "General Admission",
-    tarifa_general_desc: "Full access to the interpretation centre, exhibition halls and courtyard.",
+    tarifa_general_desc: "Access to the interpretation centre and temporary exhibition hall.",
     tarifa_general: "€3.00",
     tarifa_reducida_titulo: "Reduced Admission",
     tarifa_reducida_desc: "Seniors, students, youth card, large families and groups > 15 people.",
@@ -4536,7 +4536,7 @@ const DEFAULT_LOCALES = {
     horario_aviso: "⚠️ Fermé le lundi pour entretien (sauf jours fériés)",
     tarifas_title: "Tarifs et Billetterie",
     tarifa_general_titulo: "Billet Général",
-    tarifa_general_desc: "Accès libre au centre d'interprétation, salles d'exposition et cloître.",
+    tarifa_general_desc: "Accès au centre d'interprétation et à la salle d'exposition temporaire.",
     tarifa_general: "3,00 €",
     tarifa_reducida_titulo: "Tarif Réduit",
     tarifa_reducida_desc: "Retraités, étudiants, carte jeune, familles nombreuses et groupes > 15 pers.",
@@ -5161,7 +5161,7 @@ function populateFormWithLang(lang) {
 
   setVal('cnt-tarifas-title', c.tarifas_title || 'Tarifas y Entradas');
   setVal('cnt-tarifa-general-titulo', c.tarifa_general_titulo || 'Entrada General');
-  setVal('cnt-tarifa-general-desc', c.tarifa_general_desc || 'Acceso libre al centro de interpretación, salas expositivas y claustro.');
+  setVal('cnt-tarifa-general-desc', c.tarifa_general_desc || 'Acceso al centro de interpretación y sala exposición temporal.');
   setVal('cnt-tarifa-general', c.tarifa_general || '3,00 €');
   setVal('cnt-tarifa-reducida-titulo', c.tarifa_reducida_titulo || 'Tarifa Reducida');
   setVal('cnt-tarifa-reducida-desc', c.tarifa_reducida_desc || 'Jubilados, estudiantes, carné joven, familias numerosas y grupos > 15 pers.');
