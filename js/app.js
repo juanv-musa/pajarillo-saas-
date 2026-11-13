@@ -1287,7 +1287,7 @@ window.prefillActivity = function(title) {
 };
 
 window.downloadResource = function(title, fileUrl) {
-  const target = fileUrl || './assets/docs/dossier_pajarillo.pdf';
+  const target = fileUrl || './assets/docs/heroe_de_iltiraka.pdf';
   const a = document.createElement('a');
   a.href = target;
   a.download = target.split('/').pop();

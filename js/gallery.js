@@ -612,7 +612,7 @@ export class GalleryManager {
         const badgeLabel = this.i18n.t(`galeria.badges.${badge}`) !== `galeria.badges.${badge}`
           ? this.i18n.t(`galeria.badges.${badge}`)
           : badge;
-        const targetUrl = res.url || res.file || './assets/docs/dossier_pajarillo.pdf';
+        const targetUrl = res.url || res.file || './assets/docs/heroe_de_iltiraka.pdf';
         const isWeb = res.type === 'web' || (!targetUrl.toLowerCase().endsWith('.pdf') && (targetUrl.startsWith('http://') || targetUrl.startsWith('https://') || targetUrl.startsWith('www.')));
         const actionLabel = isWeb ? visitWebLabel : downloadLabel;
         const formatLabel = res.format || (isWeb ? 'Sitio Web / Portal' : 'PDF / Digital');
