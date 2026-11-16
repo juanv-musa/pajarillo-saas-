@@ -105,6 +105,17 @@ if ($method === 'GET') {
             exit;
         }
         echo json_encode(readJson($reservasFile, ['bookings' => []]));
+    } elseif ($entity === 'captcha') {
+        $n1 = random_int(2, 9);
+        $n2 = random_int(1, 9);
+        $_SESSION['booking_captcha_result'] = $n1 + $n2;
+        echo json_encode([
+            'success' => true,
+            'question' => "¿Cuánto es $n1 + $n2?",
+            'n1' => $n1,
+            'n2' => $n2
+        ]);
+        exit;
     } else {
         echo json_encode(readJson($panelesFile, ['panels' => []]));
     }
@@ -124,6 +135,26 @@ if ($method === 'POST') {
             http_response_code(400);
             echo json_encode(['error' => 'Datos de reserva inválidos']);
             exit;
+        }
+
+        // 1. Verificación Honeypot anti-bot
+        if (!empty($booking['website_hp'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Solicitud rechazada por detección automática de bot.']);
+            exit;
+        }
+
+        // 2. Verificación CAPTCHA matemático anti-spam
+        $expectedCaptcha = $_SESSION['booking_captcha_result'] ?? null;
+        $userCaptcha = isset($booking['captcha']) ? (int)$booking['captcha'] : null;
+
+        if ($expectedCaptcha !== null) {
+            if ($userCaptcha === null || $userCaptcha !== $expectedCaptcha) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para confirmar la reserva.']);
+                exit;
+            }
+            unset($_SESSION['booking_captcha_result']);
         }
 
         // Sanitización y validación estricta de entradas

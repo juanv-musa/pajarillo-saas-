@@ -456,6 +456,8 @@ function showLogin() {
   DOM.dashboardView.classList.add('hidden');
   DOM.userInfoBadge.classList.add('hidden');
   DOM.btnLogout.classList.add('hidden');
+  const btnExport = document.getElementById('btn-quick-export-backup');
+  if (btnExport) btnExport.classList.add('hidden');
 }
 
 function showDashboard(username, permissions, role) {
@@ -464,6 +466,8 @@ function showDashboard(username, permissions, role) {
   DOM.dashboardView.classList.remove('hidden');
   DOM.userInfoBadge.classList.remove('hidden');
   DOM.btnLogout.classList.remove('hidden');
+  const btnExport = document.getElementById('btn-quick-export-backup');
+  if (btnExport) btnExport.classList.remove('hidden');
   DOM.loggedUserName.textContent = role ? `${username} (${role})` : (username || 'Gestor Municipal');
 
   const userDisplay = document.getElementById('pwd-user-display');
@@ -6876,6 +6880,10 @@ window.getFullBackupData = function() {
 };
 
 window.downloadFullBackupJSON = function() {
+  if (!sessionStorage.getItem('pajarillo_admin_user')) {
+    alert('Acceso denegado: debes iniciar sesión como administrador para descargar la copia de seguridad.');
+    return;
+  }
   const data = window.getFullBackupData();
   const jsonStr = JSON.stringify(data, null, 2);
   const blob = new Blob([jsonStr], { type: 'application/json' });
@@ -6895,6 +6903,10 @@ window.downloadFullBackupJSON = function() {
 };
 
 window.copyFullBackupJSON = function() {
+  if (!sessionStorage.getItem('pajarillo_admin_user')) {
+    alert('Acceso denegado: debes iniciar sesión como administrador para copiar datos de seguridad.');
+    return;
+  }
   const data = window.getFullBackupData();
   const jsonStr = JSON.stringify(data, null, 2);
   navigator.clipboard.writeText(jsonStr).then(() => {

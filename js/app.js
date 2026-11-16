@@ -1093,8 +1093,74 @@ function setupBookingForm(i18n) {
   const errorText = document.getElementById('booking-error-text');
   if (!form) return;
 
+  // ──────────────────────────────────────────
+  // Control Anti-Bot / CAPTCHA Dinámico
+  // ──────────────────────────────────────────
+  let currentCaptchaExpected = null;
+
+  async function loadCaptcha() {
+    const qEl = document.getElementById('captcha-question');
+    const inputEl = document.getElementById('b-captcha');
+    if (!qEl) return;
+    if (inputEl) inputEl.value = '';
+
+    try {
+      const res = await fetch('./api/data.php?entity=captcha&t=' + Date.now(), { credentials: 'same-origin' }).catch(() => null);
+      if (res && res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data && data.success && data.question) {
+          qEl.textContent = data.question;
+          currentCaptchaExpected = data.n1 + data.n2;
+          return;
+        }
+      }
+    } catch (e) {}
+
+    // Fallback matemático dinámico en cliente
+    const n1 = Math.floor(Math.random() * 8) + 2;
+    const n2 = Math.floor(Math.random() * 9) + 1;
+    currentCaptchaExpected = n1 + n2;
+    qEl.textContent = `¿Cuánto es ${n1} + ${n2}?`;
+  }
+
+  loadCaptcha();
+
+  const btnRefresh = document.getElementById('btn-refresh-captcha');
+  if (btnRefresh) {
+    btnRefresh.addEventListener('click', (e) => {
+      e.preventDefault();
+      loadCaptcha();
+    });
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    // Verificación 1: Campo trampa invisible (Honeypot)
+    const hpVal = (document.getElementById('b-website-hp')?.value || '').trim();
+    if (hpVal !== '') {
+      // Rechazo silencioso frente a spambots
+      alert('Error en la verificación de seguridad.');
+      return;
+    }
+
+    // Verificación 2: CAPTCHA matemático anti-spam
+    const captchaInput = document.getElementById('b-captcha');
+    const captchaVal = captchaInput ? parseInt(captchaInput.value, 10) : null;
+    if (currentCaptchaExpected !== null && (isNaN(captchaVal) || captchaVal !== currentCaptchaExpected)) {
+      if (errorBox) {
+        if (errorText) errorText.textContent = 'Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para verificar que eres una persona.';
+        errorBox.style.display = 'block';
+      } else {
+        alert('Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma.');
+      }
+      if (captchaInput) {
+        captchaInput.focus();
+        captchaInput.select();
+      }
+      return;
+    }
+
     const btn = form.querySelector('button[type="submit"]');
     const originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Verificando y registrando solicitud...';
@@ -1109,7 +1175,9 @@ function setupBookingForm(i18n) {
       time: document.getElementById('b-time').value,
       people: parseInt(document.getElementById('b-people').value) || 2,
       lang: document.getElementById('b-lang').value,
-      notes: (document.getElementById('b-notes').value || '').trim()
+      notes: (document.getElementById('b-notes').value || '').trim(),
+      captcha: captchaVal,
+      website_hp: hpVal
     };
 
     let serverSuccess = false;
@@ -1134,6 +1202,7 @@ function setupBookingForm(i18n) {
     if (!serverSuccess) {
       btn.innerHTML = originalText;
       btn.disabled = false;
+      loadCaptcha(); // Generar nuevo reto tras fallo
       if (errorBox) {
         if (errorText) errorText.textContent = errorMessage;
         errorBox.style.display = 'block';

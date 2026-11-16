@@ -121,7 +121,7 @@ Si las pantallas de sala o tótems interactivos funcionan con mini PCs locales (
 
 ### 7. COPIAS DE SEGURIDAD Y CONSOLIDACIÓN
 El panel de control (`admin.html`) incluye en la cabecera el botón:
-* **«💾 Descargar Cambios (JSON)»** y en la pestaña *Ajustes* la opción **«Copia de Seguridad Completa»**.
+* **«💾 Descargar Cambios (JSON)»** (protegido: solo visible y ejecutable tras autenticación correcta como administrador) y en la pestaña *Ajustes* la opción **«Copia de Seguridad Completa»**.
 Esto genera un archivo JSON con todos los datos y textos del centro para restaurar o migrar el sistema en segundos sin necesidad de base de datos MySQL externa.
 
 ---
@@ -141,8 +141,12 @@ En la revisión técnica de seguridad y hardening del entorno de producción se 
 3. **Acceso a la administración (Eliminación de accesos alternativos y demo):**
    * Eliminación total de credenciales de demostración (`demo`, `pajarillo`, `1234`, etc.) y atajos en frontend en `js/admin.js`.
    * El acceso al panel requiere autenticación obligatoria contra `api/auth.php`. Se ha eliminado la posibilidad de entrar al panel mediante manipulación de `sessionStorage`.
+   * **Blindaje de exportación:** El botón de descarga JSON de la cabecera está oculto por defecto y solo se muestra y habilita para usuarios con sesión administrativa autenticada en el servidor.
 
-4. **Sistema de reservas (Validación estricta y prevención de duplicados):**
+4. **Sistema de reservas (Validación estricta, anti-bot y prevención de duplicados):**
+   * **Control Anti-Bot / CAPTCHA:** Integración de un sistema dual de protección contra spambots:
+     1. Campo trampa invisible (*Honeypot*) que descarta solicitudes automatizadas de bots.
+     2. Verificación matemática dinámica (*CAPTCHA*) validada criptográficamente en sesión en `api/data.php` (o cliente en fallback).
    * Validación formal de campos en `api/data.php`: formato de email (`FILTER_VALIDATE_EMAIL`), teléfono (expresión regular numérica/internacional), fecha ISO (`AAAA-MM-DD`), rango de visitantes (entero de 1 a 100) y longitud de notas.
    * Generación de identificadores de reserva no colisionables combinando timestamp de microsegundos, incremento secuencial sobre identificadores existentes y generación de localizador alfanumérico seguro (`RES-YYYYMMDD-XXXX`).
 
