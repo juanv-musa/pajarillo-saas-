@@ -4126,6 +4126,7 @@ function setupKioskVideoEditor(onVideosChange) {
     try {
       fetch('./api/data.php', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'save_kiosk_videos', videos: kioskVideos })
       }).catch(() => {});
@@ -4225,6 +4226,7 @@ function setupKioskVideoEditor(onVideosChange) {
     try {
       fetch('./api/data.php', {
         method: 'POST',
+        credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'save_kiosk_videos', videos: kioskVideos })
       }).catch(() => {});
@@ -4288,14 +4290,15 @@ function setupSectionsManager() {
 
 async function loadSectionsConfig() {
   try {
-    const local = localStorage.getItem('pajarillo_site_config');
-    if (local) {
-      siteConfigData = { ...siteConfigData, ...JSON.parse(local) };
+    const res = await fetch('./data/site_config.json?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      const data = await res.json();
+      siteConfigData = { ...siteConfigData, ...data };
+      localStorage.setItem('pajarillo_site_config', JSON.stringify(siteConfigData));
     } else {
-      const res = await fetch('./data/site_config.json?t=' + Date.now()).catch(() => null);
-      if (res && res.ok) {
-        const data = await res.json();
-        siteConfigData = { ...siteConfigData, ...data };
+      const local = localStorage.getItem('pajarillo_site_config');
+      if (local) {
+        siteConfigData = { ...siteConfigData, ...JSON.parse(local) };
       }
     }
   } catch (e) {}
@@ -4346,6 +4349,7 @@ async function saveSectionsConfig() {
   try {
     await fetch('./api/data.php?entity=config', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_config', config: siteConfigData })
     });
@@ -4898,6 +4902,7 @@ function setupContentEditor() {
   }
 
   loadSavedLocales();
+  syncLocalesFromServer();
 
   langPills.forEach(pill => {
     pill.addEventListener('click', () => {
@@ -5406,17 +5411,28 @@ async function saveAllLocales() {
   if (inputGalSubtitle && curEs.galeria_subtitle) inputGalSubtitle.value = curEs.galeria_subtitle;
 
   // Persistir en servidor (API PHP / JSON) para sincronización entre dispositivos y navegadores
+  let serverSaved = false;
+  let serverError = null;
   try {
-    await fetch('./api/data.php?entity=config', {
+    const resCfg = await fetch('./api/data.php?entity=config', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_config', config: siteConfigData })
     });
-    await fetch('./api/data.php?entity=locales', {
+    const resLoc = await fetch('./api/data.php?entity=locales', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_locales', locales: localesData })
     });
+    if (resCfg && resCfg.ok && resLoc && resLoc.ok) {
+      serverSaved = true;
+    } else if ((resCfg && resCfg.status === 401) || (resLoc && resLoc.status === 401)) {
+      serverError = 'auth';
+    } else {
+      serverError = 'server';
+    }
   } catch (e) {}
 
   // Notificar a otras pestañas
@@ -5426,11 +5442,35 @@ async function saveAllLocales() {
   } catch (e) {}
 
   const langNames = { es: 'Español', en: 'Inglés', fr: 'Francés' };
-  showToast(`✅ Textos guardados con éxito para ${langNames[currentCmsLang] || currentCmsLang}.`);
+  const currentLangLabel = langNames[currentCmsLang] || currentCmsLang;
+
+  if (serverSaved) {
+    showToast(`✅ Textos guardados y sincronizados en el servidor para ${currentLangLabel}.`);
+  } else if (serverError === 'auth') {
+    showToast(`⚠️ Guardado en memoria local. Tu sesión de administración ha caducado. Vuelve a iniciar sesión para sincronizar con el servidor.`, 'warning');
+  } else {
+    showToast(`💾 Textos guardados localmente (${currentLangLabel}).`);
+  }
+}
+
+async function syncLocalesFromServer() {
+  try {
+    const res = await fetch('./data/locales.json?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      const serverLocales = await res.json();
+      if (serverLocales && typeof serverLocales === 'object') {
+        localesData = { ...DEFAULT_LOCALES, ...serverLocales };
+        localStorage.setItem('pajarillo_locales', JSON.stringify(localesData));
+        populateFormWithLang(currentCmsLang);
+        setAllHeroSlidesLang(currentCmsLang);
+      }
+    }
+  } catch (e) {}
 }
 
 function loadSiteContent() {
   loadSavedLocales();
+  syncLocalesFromServer();
   populateFormWithLang(currentCmsLang);
 }
 
@@ -5614,6 +5654,7 @@ function setupGalleryHeaderAndTabs() {
 
   // Cargar datos actuales
   loadSavedLocales();
+  syncLocalesFromServer();
   const c = (localesData && localesData.es) || {};
 
   if (inputTitle) inputTitle.value = c.galeria_title || 'Galería Multimedia y Recursos Digitales';
@@ -6014,6 +6055,7 @@ window.saveAllGallery = async function(showToastMsg = true) {
   try {
     await fetch('./api/data.php', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
     });
@@ -6172,6 +6214,7 @@ window.deleteGalleryItem = function(id) {
   try {
     fetch('./api/data.php', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
     }).catch(() => {});
@@ -6389,6 +6432,7 @@ function handleSaveGalleryItem(e) {
   try {
     fetch('./api/data.php', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_gallery_items', items: galleryItems })
     }).catch(() => {});
@@ -6756,6 +6800,7 @@ async function saveLegalData(showToastMsg = true) {
   try {
     await fetch('./api/data.php', {
       method: 'POST',
+      credentials: 'same-origin',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'save_legal', data: data })
     });

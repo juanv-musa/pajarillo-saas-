@@ -170,30 +170,36 @@ async function initSiteConfig() {
 
   const currentLang = (window.pajarilloI18n && window.pajarilloI18n.currentLang) || localStorage.getItem('pajarillo_lang') || 'es';
   let config = null;
-  const local = localStorage.getItem('pajarillo_site_config');
-  if (local) {
-    try { config = JSON.parse(local); } catch(e) {}
-  }
+
+  // 1. Obtener siempre la configuración más reciente del servidor (con timestamp anti-caché)
+  try {
+    const res = await fetch('./data/site_config.json?t=' + Date.now()).catch(() => null);
+    if (res && res.ok) {
+      config = await res.json();
+    }
+  } catch(e) {}
+
+  // Fallback a memoria local si no hay conexión al servidor
   if (!config) {
-    try {
-      const res = await fetch('./data/site_config.json?t=' + Date.now()).catch(() => null);
-      if (res && res.ok) {
-        config = await res.json();
-      }
-    } catch(e) {}
+    const local = localStorage.getItem('pajarillo_site_config');
+    if (local) {
+      try { config = JSON.parse(local); } catch(e) {}
+    }
   }
 
-  // Integrar traducciones personalizadas guardadas en el CMS multilingüe
+  // 2. Obtener traducciones y contenidos personalizados del servidor
   let locales = null;
-  const savedLocales = localStorage.getItem('pajarillo_locales');
-  if (savedLocales) {
-    try { locales = JSON.parse(savedLocales); } catch(e) {}
-  }
+  try {
+    const resLoc = await fetch('./data/locales.json?t=' + Date.now()).catch(() => null);
+    if (resLoc && resLoc.ok) locales = await resLoc.json();
+  } catch(e) {}
+
+  // Fallback a memoria local si no hay conexión al servidor
   if (!locales) {
-    try {
-      const resLoc = await fetch('./data/locales.json?t=' + Date.now()).catch(() => null);
-      if (resLoc && resLoc.ok) locales = await resLoc.json();
-    } catch(e) {}
+    const savedLocales = localStorage.getItem('pajarillo_locales');
+    if (savedLocales) {
+      try { locales = JSON.parse(savedLocales); } catch(e) {}
+    }
   }
 
   if (config) {
