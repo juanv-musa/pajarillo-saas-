@@ -2,13 +2,17 @@
 // Configuración de cookies de sesión segura
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+           (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+           (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off');
+if ($isHttps) {
     ini_set('session.cookie_secure', 1);
 }
 if (PHP_VERSION_ID >= 70300) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
+        'secure' => $isHttps,
         'httponly' => true,
         'samesite' => 'Lax'
     ]);
@@ -45,6 +49,23 @@ function saveAnalytics($data) {
     @file_put_contents($analyticsFile, $encoded, LOCK_EX);
 }
 
+// Verificación de protección CSRF para acciones administrativas de analítica
+function verifyCsrfToken($inputData = null) {
+    if (empty($_SESSION['is_admin'])) return;
+    if (!empty($_SESSION['csrf_token'])) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        $token = $headers['X-CSRF-Token'] ?? $headers['x-csrf-token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+        if (!$token && is_array($inputData) && isset($inputData['csrf_token'])) {
+            $token = $inputData['csrf_token'];
+        }
+        if (!$token || !hash_equals($_SESSION['csrf_token'], (string)$token)) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Petición rechazada: token de seguridad CSRF inválido o ausente.']);
+            exit;
+        }
+    }
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // GET: Devolver analíticas (restringido exclusivamente a gestores autenticados)
@@ -77,13 +98,14 @@ if ($method === 'POST') {
 
     $type = $payload['type'];
 
-    // Restablecer analíticas a cero (exige sesión administrativa)
+    // Restablecer analíticas a cero (exige sesión administrativa y CSRF)
     if ($type === 'reset_all') {
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['error' => 'No autorizado']);
             exit;
         }
+        verifyCsrfToken($payload);
         $fresh = [
             'summary' => ['totalVisits' => 0, 'uniqueVisitors' => 0, 'qrScans' => 0, 'tourBookings' => 0, 'audioListens' => 0, 'downloads' => 0],
             'languages' => ['es' => 0, 'en' => 0, 'fr' => 0],
@@ -99,13 +121,14 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Sincronización analítica desde administración (exige sesión administrativa)
+    // Sincronización analítica desde administración (exige sesión administrativa y CSRF)
     if ($type === 'sync_analytics' && !empty($payload['data'])) {
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['error' => 'No autorizado']);
             exit;
         }
+        verifyCsrfToken($payload);
         $inc = $payload['data'];
         $cur = getAnalytics();
 
@@ -168,8 +191,15 @@ if ($method === 'POST') {
         exit;
     }
 
+    $allowedTypes = ['page_view', 'qr_scan', 'audio_play', 'download', 'booking'];
+    if (!in_array($type, $allowedTypes, true)) {
+        http_response_code(400);
+        echo json_encode(['error' => 'Tipo de evento no permitido']);
+        exit;
+    }
+
     $data = getAnalytics();
-    $lang = $payload['lang'] ?? 'es';
+    $lang = in_array(strtolower($payload['lang'] ?? 'es'), ['es', 'en', 'fr'], true) ? strtolower($payload['lang']) : 'es';
 
     $todayStr = date('Y-m-d');
     $monthStr = date('Y-m');
@@ -250,13 +280,21 @@ if ($method === 'POST') {
         $data['historyByYear'][$yearStr]['bookings']++;
     }
 
+    $rawDetail = $payload['detail'] ?? ($payload['section'] ?? ($payload['panel'] ?? ''));
+    $cleanDetail = htmlspecialchars(strip_tags((string)$rawDetail), ENT_QUOTES, 'UTF-8');
+    if (mb_strlen($cleanDetail) > 100) $cleanDetail = mb_substr($cleanDetail, 0, 100);
+
+    $rawDevice = $payload['device'] ?? 'Móvil';
+    $cleanDevice = htmlspecialchars(strip_tags((string)$rawDevice), ENT_QUOTES, 'UTF-8');
+    if (mb_strlen($cleanDevice) > 40) $cleanDevice = mb_substr($cleanDevice, 0, 40);
+
     // Registrar en eventos recientes (mantener últimos 40)
     $eventRecord = [
         'time' => date('Y-m-d H:i'),
         'type' => $type,
         'lang' => $lang,
-        'detail' => $payload['detail'] ?? ($payload['section'] ?? ($payload['panel'] ?? '')),
-        'device' => $payload['device'] ?? 'Móvil'
+        'detail' => $cleanDetail,
+        'device' => $cleanDevice
     ];
     if (!isset($data['recentEvents'])) $data['recentEvents'] = [];
     array_unshift($data['recentEvents'], $eventRecord);

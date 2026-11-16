@@ -2,13 +2,17 @@
 // Configuración de cookies de sesión segura
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+           (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+           (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off');
+if ($isHttps) {
     ini_set('session.cookie_secure', 1);
 }
 if (PHP_VERSION_ID >= 70300) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
+        'secure' => $isHttps,
         'httponly' => true,
         'samesite' => 'Lax'
     ]);
@@ -59,6 +63,23 @@ function hasModulePermission($module) {
     return in_array($module, $perms);
 }
 
+// Verificación de protección CSRF para acciones administrativas
+function verifyCsrfToken($inputData = null) {
+    if (empty($_SESSION['is_admin'])) return;
+    if (!empty($_SESSION['csrf_token'])) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        $token = $headers['X-CSRF-Token'] ?? $headers['x-csrf-token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+        if (!$token && is_array($inputData) && isset($inputData['csrf_token'])) {
+            $token = $inputData['csrf_token'];
+        }
+        if (!$token || !hash_equals($_SESSION['csrf_token'], (string)$token)) {
+            http_response_code(403);
+            echo json_encode(['error' => 'Petición rechazada: token de seguridad CSRF inválido o ausente.']);
+            exit;
+        }
+    }
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 $entity = $_GET['entity'] ?? 'panels'; // 'panels', 'agenda', 'bookings', 'config'
 
@@ -99,23 +120,80 @@ if ($method === 'POST') {
     // CASO ESPECIAL: Reserva desde la web pública (no requiere sesión)
     if (isset($input['action']) && $input['action'] === 'new_booking') {
         $booking = $input['booking'] ?? null;
-        if (!$booking || empty($booking['name']) || empty($booking['email'])) {
+        if (!is_array($booking)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Datos incompletos de la reserva']);
+            echo json_encode(['error' => 'Datos de reserva inválidos']);
             exit;
         }
+
+        // Sanitización y validación estricta de entradas
+        $name = trim(htmlspecialchars(strip_tags($booking['name'] ?? ''), ENT_QUOTES, 'UTF-8'));
+        $email = trim(filter_var($booking['email'] ?? '', FILTER_SANITIZE_EMAIL));
+        $phone = trim(preg_replace('/[^0-9+\s\-()]/', '', (string)($booking['phone'] ?? '')));
+        $date = trim($booking['date'] ?? '');
+        $time = trim(htmlspecialchars(strip_tags($booking['time'] ?? '11:00'), ENT_QUOTES, 'UTF-8'));
+        $people = filter_var($booking['people'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 100]]) ?: 1;
+        $lang = in_array(strtolower($booking['lang'] ?? 'es'), ['es', 'en', 'fr']) ? strtolower($booking['lang']) : 'es';
+        $notes = trim(htmlspecialchars(strip_tags($booking['notes'] ?? ''), ENT_QUOTES, 'UTF-8'));
+        if (mb_strlen($notes) > 500) {
+            $notes = mb_substr($notes, 0, 500);
+        }
+
+        if (mb_strlen($name) < 2 || mb_strlen($name) > 100) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El nombre debe tener entre 2 y 100 caracteres.']);
+            exit;
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El correo electrónico no es válido.']);
+            exit;
+        }
+        if (strlen($phone) < 7 || strlen($phone) > 25) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El número de teléfono no es válido (mínimo 7 dígitos).']);
+            exit;
+        }
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La fecha seleccionada no tiene un formato válido (AAAA-MM-DD).']);
+            exit;
+        }
+
         $data = readJson($reservasFile, ['bookings' => []]);
-        $booking['id'] = time();
-        $booking['createdAt'] = date('Y-m-d H:i');
-        $booking['status'] = 'pending';
-        $booking['seen'] = false;
-        $data['bookings'][] = $booking;
+
+        // Prevención estricta de colisión de identificadores
+        $maxId = 0;
+        foreach ($data['bookings'] as $b) {
+            $bNum = isset($b['id']) ? (int)$b['id'] : 0;
+            if ($bNum > $maxId) $maxId = $bNum;
+        }
+        $newId = max($maxId + 1, (int)(microtime(true) * 1000));
+        $refCode = 'RES-' . date('Ymd') . '-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 5));
+
+        $cleanBooking = [
+            'id' => $newId,
+            'ref' => $refCode,
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'date' => $date,
+            'time' => $time ?: '11:00',
+            'people' => $people,
+            'lang' => $lang,
+            'notes' => $notes,
+            'createdAt' => date('Y-m-d H:i'),
+            'status' => 'pending',
+            'seen' => false
+        ];
+
+        $data['bookings'][] = $cleanBooking;
         writeJson($reservasFile, $data);
-        echo json_encode(['success' => true, 'id' => $booking['id']]);
+        echo json_encode(['success' => true, 'id' => $cleanBooking['id'], 'ref' => $cleanBooking['ref']]);
         exit;
     }
 
-    // Para el resto de acciones POST se exige sesión de administración activa
+    // Para el resto de acciones POST se exige sesión de administración activa y verificación CSRF
     $isAdminAuth = isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true;
 
     if (!$isAdminAuth) {
@@ -123,6 +201,10 @@ if ($method === 'POST') {
         echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
         exit;
     }
+
+    verifyCsrfToken($input);
+
+    verifyCsrfToken($input);
 
     // Guardar configuración global del sitio (secciones y textos)
     if (isset($input['action']) && $input['action'] === 'save_config') {
@@ -407,6 +489,8 @@ if ($method === 'DELETE') {
         echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
         exit;
     }
+
+    verifyCsrfToken($input);
     $id = $input['id'] ?? null;
     $type = $input['type'] ?? 'panel'; // 'panel', 'activity', 'booking'
 

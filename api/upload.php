@@ -2,13 +2,17 @@
 // Configuración de cookies de sesión segura
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+           (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+           (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off');
+if ($isHttps) {
     ini_set('session.cookie_secure', 1);
 }
 if (PHP_VERSION_ID >= 70300) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
+        'secure' => $isHttps,
         'httponly' => true,
         'samesite' => 'Lax'
     ]);
@@ -23,6 +27,17 @@ if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     http_response_code(401);
     echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
     exit;
+}
+
+// Verificación de protección CSRF
+if (!empty($_SESSION['csrf_token'])) {
+    $headers = function_exists('getallheaders') ? getallheaders() : [];
+    $token = $headers['X-CSRF-Token'] ?? $headers['x-csrf-token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? ($_POST['csrf_token'] ?? ''));
+    if (!$token || !hash_equals($_SESSION['csrf_token'], (string)$token)) {
+        http_response_code(403);
+        echo json_encode(['error' => 'Petición rechazada: token de seguridad CSRF inválido o ausente.']);
+        exit;
+    }
 }
 
 $uploadDir = '../uploads/';
@@ -52,29 +67,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Lista blanca estricta de extensiones permitidas
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'mp3', 'wav', 'ogg', 'pdf'];
+    // Lista blanca estricta de extensiones permitidas (excluye SVG y scripts por seguridad)
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'mp3', 'wav', 'ogg', 'pdf'];
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
 
     if (!in_array($ext, $allowedExtensions, true)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Extensión no permitida. Solo imágenes, audios o documentos PDF.']);
+        echo json_encode(['error' => 'Extensión no permitida. Solo imágenes (JPG, PNG, WEBP, GIF), audios (MP3, WAV, OGG) o documentos PDF.']);
         exit;
     }
 
-    // Bloquear archivos con extensiones dobles sospechosas (ej: exploit.php.png)
+    // Bloquear archivos con extensiones dobles o sospechosas (ej: exploit.php.png, archivo.phtml)
     $fileNameLower = strtolower($file['name']);
-    if (preg_match('/\.(php|phtml|phar|pl|py|cgi|sh|exe|bat|js)(\.|$)/i', $fileNameLower)) {
+    if (preg_match('/\.(php|phtml|phar|pl|py|cgi|sh|exe|bat|js|svg|html|htm)(\.|$)/i', $fileNameLower)) {
         http_response_code(400);
-        echo json_encode(['error' => 'Nombre de archivo potencialmente peligroso rechazado.']);
+        echo json_encode(['error' => 'Nombre de archivo o formato potencialmente peligroso rechazado.']);
         exit;
     }
 
     // Comprobación de tipo MIME real del contenido
     $allowedMimes = [
-        'image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml',
+        'image/jpeg', 'image/png', 'image/webp', 'image/gif',
         'audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/ogg', 'audio/x-wav',
-        'application/pdf', 'application/x-pdf'
+        'application/pdf', 'application/x-pdf', 'application/octet-stream'
     ];
 
     if (function_exists('finfo_open')) {
@@ -82,9 +97,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mimeType = finfo_file($finfo, $file['tmp_name']);
         finfo_close($finfo);
 
-        if (!in_array($mimeType, $allowedMimes, true) && $mimeType !== 'text/plain') {
+        if (!in_array($mimeType, $allowedMimes, true)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Tipo MIME no permitido (' . htmlspecialchars($mimeType) . '). Solo imágenes, audios o PDFs válidos.']);
+            echo json_encode(['error' => 'Tipo de contenido no permitido (' . htmlspecialchars($mimeType) . ').']);
+            exit;
+        }
+    }
+
+    // Validación profunda del formato real:
+    // 1. Imágenes ráster: deben ser imágenes binarias válidas comprobadas por getimagesize
+    $imageExts = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+    if (in_array($ext, $imageExts, true)) {
+        $imgInfo = @getimagesize($file['tmp_name']);
+        if ($imgInfo === false || empty($imgInfo[0]) || empty($imgInfo[1])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El archivo de imagen está dañado o no es una imagen gráfica válida.']);
+            exit;
+        }
+    }
+
+    // 2. Documentos PDF: deben comenzar con la cabecera mágica binaria %PDF-
+    if ($ext === 'pdf') {
+        $handle = @fopen($file['tmp_name'], 'rb');
+        $header = $handle ? fread($handle, 5) : '';
+        if ($handle) fclose($handle);
+        if ($header !== '%PDF-') {
+            http_response_code(400);
+            echo json_encode(['error' => 'El archivo no es un documento PDF válido.']);
             exit;
         }
     }

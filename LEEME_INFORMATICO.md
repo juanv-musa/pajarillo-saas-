@@ -123,3 +123,39 @@ Si las pantallas de sala o tótems interactivos funcionan con mini PCs locales (
 El panel de control (`admin.html`) incluye en la cabecera el botón:
 * **«💾 Descargar Cambios (JSON)»** y en la pestaña *Ajustes* la opción **«Copia de Seguridad Completa»**.
 Esto genera un archivo JSON con todos los datos y textos del centro para restaurar o migrar el sistema en segundos sin necesidad de base de datos MySQL externa.
+
+---
+
+### 8. AUDITORÍA TÉCNICA Y RESOLUCIÓN DE INCIDENCIAS DE SEGURIDAD
+En la revisión técnica de seguridad y hardening del entorno de producción se han implementado y verificado las siguientes soluciones punto por punto:
+
+1. **Seguridad de contraseñas:**
+   * Sustitución completa de contraseñas legibles en `data/users.json` por hashes estándar **Bcrypt (`$2y$10$...`)**.
+   * Eliminación definitiva de cualquier mecanismo de fallback o comparación en texto legible en `api/auth.php`. La verificación se realiza exclusivamente a través de la función nativa `password_verify()`.
+
+2. **Seguridad del panel de reservas (Prevención de XSS):**
+   * Creación e integración de la función de escape contextual `escapeHtml()` en `js/admin.js`.
+   * Todo dato procedente de usuarios externos (nombre, correo electrónico, teléfono, observaciones/notas, etc.) se sanitiza en el renderizado de la tabla de reservas de `admin.html`.
+   * En el backend (`api/data.php`), los datos recibidos son higienizados con `htmlspecialchars(strip_tags(...), ENT_QUOTES, 'UTF-8')` antes de su persistencia.
+
+3. **Acceso a la administración (Eliminación de accesos alternativos y demo):**
+   * Eliminación total de credenciales de demostración (`demo`, `pajarillo`, `1234`, etc.) y atajos en frontend en `js/admin.js`.
+   * El acceso al panel requiere autenticación obligatoria contra `api/auth.php`. Se ha eliminado la posibilidad de entrar al panel mediante manipulación de `sessionStorage`.
+
+4. **Sistema de reservas (Validación estricta y prevención de duplicados):**
+   * Validación formal de campos en `api/data.php`: formato de email (`FILTER_VALIDATE_EMAIL`), teléfono (expresión regular numérica/internacional), fecha ISO (`AAAA-MM-DD`), rango de visitantes (entero de 1 a 100) y longitud de notas.
+   * Generación de identificadores de reserva no colisionables combinando timestamp de microsegundos, incremento secuencial sobre identificadores existentes y generación de localizador alfanumérico seguro (`RES-YYYYMMDD-XXXX`).
+
+5. **Privacidad y RGPD (Almacenamiento innecesario en cliente y analíticas):**
+   * En `js/app.js`, se ha suprimido completamente el guardado de datos de la reserva en el `localStorage` del visitante.
+   * En el sistema de analítica, se ha disociado la información eliminando cualquier dato identificativo (nombres, correos o teléfonos) de los eventos registrados (`recentEvents`).
+
+6. **Subida de archivos (Validación profunda de tipos y ejecución de código):**
+   * En `api/upload.php`, se ha eliminado el soporte de formatos con riesgo de script embebido (como SVG sin sanear o `text/plain`).
+   * Validación binaria real: para imágenes ráster (JPG, PNG, WEBP, GIF) se exige verificación mediante `getimagesize()`; para documentos PDF se comprueba la cabecera binaria mágica `%PDF-`.
+   * Se mantiene activo el archivo `.htaccess` en `uploads/` que deshabilita cualquier motor o handler de ejecución de scripts PHP/CGI en dicho directorio.
+
+7. **Estadísticas, sesiones y CSRF:**
+   * Configuración de cookies de sesión con flags `HttpOnly`, `SameSite=Lax` y activación automática del flag `Secure` bajo entornos HTTPS y proxies inversos.
+   * Generación de token CSRF (`$_SESSION['csrf_token']`) tras la autenticación y validación obligatoria en todos los métodos POST/DELETE de administración (`api/auth.php`, `api/data.php`, `api/analytics.php`, `api/upload.php`).
+   * En `js/analytics.js`, se supedita el uso de identificadores persistentes al consentimiento expreso del usuario mediante el banner de cookies. Si no hay consentimiento o se rechaza, las métricas son estrictamente anónimas y no persistentes.

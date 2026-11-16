@@ -1143,27 +1143,17 @@ function setupBookingForm(i18n) {
       return;
     }
 
-    // Persistir copia en navegador para el panel de administración offline
+    // Por privacidad y RGPD: NO almacenar datos de carácter personal en el navegador del visitante
     try {
-      const storageKey = 'pajarillo_bookings_data';
-      const existing = JSON.parse(localStorage.getItem(storageKey) || '[]');
-      const newEntry = {
-        ...bookingData,
-        id: Date.now(),
-        createdAt: new Date().toLocaleString('es-ES', { dateStyle: 'short', timeStyle: 'short' }),
-        status: 'pending',
-        seen: false
-      };
-      existing.unshift(newEntry);
-      localStorage.setItem(storageKey, JSON.stringify(existing));
+      localStorage.removeItem('pajarillo_bookings_data');
     } catch (e) {}
 
-    // Registrar evento analítico
+    // Registrar evento analítico disociado (sin datos de carácter personal)
     if (window.PajarilloAnalytics) {
       window.PajarilloAnalytics.track('booking', {
         people: bookingData.people,
         lang: bookingData.lang,
-        detail: `Reserva para ${bookingData.date} (${bookingData.name})`
+        detail: `Reserva para ${bookingData.date} (${bookingData.people} pers.)`
       });
     }
 
@@ -1339,6 +1329,7 @@ function setupCookieConsentBanner() {
     btnAccept.addEventListener('click', () => {
       localStorage.setItem('pajarillo_cookie_consent', 'accepted');
       banner.style.display = 'none';
+      window.dispatchEvent(new CustomEvent('pajarillo_cookie_consent_updated'));
     });
   }
 
@@ -1346,6 +1337,7 @@ function setupCookieConsentBanner() {
     btnReject.addEventListener('click', () => {
       localStorage.setItem('pajarillo_cookie_consent', 'rejected');
       banner.style.display = 'none';
+      window.dispatchEvent(new CustomEvent('pajarillo_cookie_consent_updated'));
     });
   }
 }

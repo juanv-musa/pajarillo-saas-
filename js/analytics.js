@@ -17,6 +17,15 @@ class AnalyticsTracker {
       return;
     }
 
+    if (typeof window !== 'undefined') {
+      window.addEventListener('pajarillo_cookie_consent_updated', () => {
+        this.visitorId = this.getOrCreateVisitorId();
+        if (this.hasConsent()) {
+          this.init();
+        }
+      });
+    }
+
     this.init();
   }
 
@@ -44,8 +53,28 @@ class AnalyticsTracker {
     }
   }
 
+  hasConsent() {
+    try {
+      return localStorage.getItem('pajarillo_cookie_consent') === 'accepted';
+    } catch (e) {
+      return false;
+    }
+  }
+
   getOrCreateVisitorId() {
     try {
+      const consent = localStorage.getItem('pajarillo_cookie_consent');
+      if (consent === 'rejected') {
+        localStorage.removeItem('pajarillo_vid');
+        localStorage.removeItem('pajarillo_unique_ever');
+        localStorage.removeItem('pajarillo_unique_day');
+        localStorage.removeItem('pajarillo_unique_month');
+        localStorage.removeItem('pajarillo_unique_year');
+        return 'v_anon';
+      }
+      if (consent !== 'accepted') {
+        return 'v_pending';
+      }
       let vid = localStorage.getItem('pajarillo_vid');
       if (!vid) {
         vid = 'v_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
@@ -53,7 +82,7 @@ class AnalyticsTracker {
       }
       return vid;
     } catch (e) {
-      return 'v_' + Date.now();
+      return 'v_anon';
     }
   }
 
@@ -233,6 +262,10 @@ class AnalyticsTracker {
     let isUniqueMonth = false;
     let isUniqueYear = false;
     let isUniqueEver = false;
+
+    if (!this.hasConsent()) {
+      return { isUniqueToday, isUniqueMonth, isUniqueYear, isUniqueEver };
+    }
 
     try {
       // 1. Visitante único global (por dispositivo)

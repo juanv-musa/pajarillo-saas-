@@ -2,22 +2,29 @@
   "ayuntamiento": {
     "name": "Técnico de Patrimonio y Turismo",
     "role": "Gestor de Patrimonio y Turismo · Ayto. Huelma",
-    "hash": "HuelmaPajarillo2026!",
-    "permissions": ["all"],
+    "hash": "$2y$10$1lYlRfy5HyDeQpySJNJy1uyJI./JcqTjbFek.yp4uuV9TEVkNHjHS",
+    "permissions": [
+      "all"
+    ],
     "updated_at": "2026-11-09 19:15"
   },
   "admin": {
     "name": "Administrador",
     "role": "Administrador del Sistema",
-    "hash": "Pajarillo2026!",
-    "permissions": ["all"],
+    "hash": "$2y$10$zgWhOGKEUryNp0XMqTwOO.aXZmGkezFpygPAxPsP3RUxGprEcrftG",
+    "permissions": [
+      "all"
+    ],
     "updated_at": "2026-11-09 19:15"
   },
   "actividades": {
     "name": "Gestor de Actividades y Eventos",
     "role": "Dinamizador Cultural y Agenda",
-    "hash": "Actividades2026!",
-    "permissions": ["agenda", "bookings"],
+    "hash": "$2y$10$c4Z63seKavGl5IdpDO6gQOyaakktKVC3CamaSScPY1SRjI9F2wBT.",
+    "permissions": [
+      "agenda",
+      "bookings"
+    ],
     "updated_at": "2026-11-09 20:30"
   }
 }

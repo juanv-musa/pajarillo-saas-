@@ -4,6 +4,43 @@
  * Hereda y moderniza la arquitectura de WEBAPP_JODAR
  */
 
+// Utilidad global de escape para mitigar inyecciones XSS en el panel
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+window.escapeHtml = escapeHtml;
+
+// Token CSRF dinámico para peticiones administrativas autenticadas
+let adminCsrfToken = sessionStorage.getItem('pajarillo_csrf_token') || '';
+
+// Interceptor global para que todas las llamadas de administración envíen credenciales y CSRF
+const _nativeFetch = window.fetch;
+window.fetch = function(url, options = {}) {
+  if (typeof url === 'string' && (url.includes('api/') || url.startsWith('./api/'))) {
+    options.credentials = options.credentials || 'same-origin';
+    const method = (options.method || 'GET').toUpperCase();
+    if (['POST', 'DELETE', 'PUT', 'PATCH'].includes(method) && adminCsrfToken) {
+      if (!options.headers) {
+        options.headers = {};
+      }
+      if (options.headers instanceof Headers) {
+        if (!options.headers.has('X-CSRF-Token')) {
+          options.headers.set('X-CSRF-Token', adminCsrfToken);
+        }
+      } else {
+        options.headers['X-CSRF-Token'] = options.headers['X-CSRF-Token'] || adminCsrfToken;
+      }
+    }
+  }
+  return _nativeFetch.call(this, url, options);
+};
+
 const DOM = {
   // Vistas
   loginView: document.getElementById('login-view'),
@@ -222,35 +259,33 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ═══════════════════════════════════════════
-// AUTENTICACIÓN Y SESIÓN SEGURA (HÍBRIDA: SERVIDOR PHP & GITHUB PAGES)
+// AUTENTICACIÓN Y SESIÓN SEGURA CON SERVIDOR OFICIAL
 // ═══════════════════════════════════════════
 let currentUserPermissions = ['all'];
 
 async function checkSession() {
-  const savedUser = sessionStorage.getItem('pajarillo_admin_user');
-  const savedPerms = sessionStorage.getItem('pajarillo_admin_perms');
-  const savedRole = sessionStorage.getItem('pajarillo_admin_role');
-
   try {
     const res = await fetch('./api/auth.php', { credentials: 'same-origin' }).catch(() => null);
     if (res && res.ok) {
       const data = await res.json().catch(() => null);
       if (data && data.authenticated) {
         currentUserPermissions = data.permissions || ['all'];
+        if (data.csrf_token) {
+          adminCsrfToken = data.csrf_token;
+          sessionStorage.setItem('pajarillo_csrf_token', data.csrf_token);
+        }
         showDashboard(data.user || 'Administrador', currentUserPermissions, data.role);
         return;
       }
     }
   } catch (err) {}
 
-  // Fallback para GitHub Pages o entorno local sin PHP activo
-  if (savedUser) {
-    let perms = ['all'];
-    try { if (savedPerms) perms = JSON.parse(savedPerms); } catch (e) {}
-    currentUserPermissions = perms;
-    showDashboard(savedUser, currentUserPermissions, savedRole);
-    return;
-  }
+  // Si no hay sesión válida activa en el servidor, limpiar credenciales y mostrar login
+  sessionStorage.removeItem('pajarillo_admin_user');
+  sessionStorage.removeItem('pajarillo_admin_perms');
+  sessionStorage.removeItem('pajarillo_admin_role');
+  sessionStorage.removeItem('pajarillo_csrf_token');
+  adminCsrfToken = '';
 
   showLogin();
 }
@@ -271,7 +306,6 @@ function setupAuthTabs() {
       return;
     }
 
-    let serverOk = false;
     try {
       const res = await fetch('./api/auth.php', {
         method: 'POST',
@@ -283,8 +317,11 @@ function setupAuthTabs() {
       if (res && res.ok) {
         const data = await res.json().catch(() => null);
         if (data && data.success) {
-          serverOk = true;
           currentUserPermissions = data.permissions || ['all'];
+          if (data.csrf_token) {
+            adminCsrfToken = data.csrf_token;
+            sessionStorage.setItem('pajarillo_csrf_token', data.csrf_token);
+          }
           sessionStorage.setItem('pajarillo_admin_user', data.user || user);
           sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(currentUserPermissions));
           sessionStorage.setItem('pajarillo_admin_role', data.role || '');
@@ -293,56 +330,24 @@ function setupAuthTabs() {
           showDashboard(data.user || user, currentUserPermissions, data.role);
           return;
         } else if (data && data.error) {
-          // El servidor PHP respondió con credenciales denegadas
           if (DOM.loginErrorMsg) {
             DOM.loginErrorMsg.textContent = data.error;
             DOM.loginErrorMsg.classList.remove('hidden');
           }
           return;
         }
-      }
-    } catch (err) {}
-
-    // Fallback para GitHub Pages / Modo Pruebas sin PHP
-    if (!serverOk) {
-      const lowerUser = user.toLowerCase();
-      const lowerPass = pass.toLowerCase();
-
-      let authenticated = false;
-      let matchedRole = 'Gestor Municipal';
-      let matchedPerms = ['all'];
-
-      if (lowerUser === 'admin' && (pass === 'Pajarillo2026!' || ['pajarillo', 'pajarillo2026', 'admin', '1234', 'demo'].includes(lowerPass))) {
-        authenticated = true;
-        matchedRole = 'Administrador del Sistema';
-        matchedPerms = ['all'];
-      } else if (lowerUser === 'ayuntamiento' && (pass === 'HuelmaPajarillo2026!' || ['huelma', 'huelma2026', 'pajarillo', 'pajarillo2026'].includes(lowerPass))) {
-        authenticated = true;
-        matchedRole = 'Gestor de Patrimonio y Turismo';
-        matchedPerms = ['all'];
-      } else if (lowerUser === 'actividades' && (pass === 'Actividades2026!' || ['actividades', 'actividades2026', 'pajarillo'].includes(lowerPass))) {
-        authenticated = true;
-        matchedRole = 'Dinamizador Cultural y Agenda';
-        matchedPerms = ['agenda', 'bookings'];
-      } else if (['pajarillo', 'pajarillo2026', 'admin', '1234'].includes(lowerPass)) {
-        authenticated = true;
-        matchedRole = 'Administrador Municipal';
-        matchedPerms = ['all'];
-      }
-
-      if (authenticated) {
-        currentUserPermissions = matchedPerms;
-        sessionStorage.setItem('pajarillo_admin_user', user);
-        sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(matchedPerms));
-        sessionStorage.setItem('pajarillo_admin_role', matchedRole);
-        if (DOM.loginErrorMsg) DOM.loginErrorMsg.classList.add('hidden');
-        showToast('✅ Bienvenido al Panel de Control');
-        showDashboard(user, currentUserPermissions, matchedRole);
       } else {
+        const errData = res ? await res.json().catch(() => null) : null;
         if (DOM.loginErrorMsg) {
-          DOM.loginErrorMsg.textContent = 'Credenciales incorrectas. Comprueba tu usuario y contraseña.';
+          DOM.loginErrorMsg.textContent = (errData && errData.error) ? errData.error : 'Credenciales incorrectas. Comprueba tu usuario y contraseña.';
           DOM.loginErrorMsg.classList.remove('hidden');
         }
+        return;
+      }
+    } catch (err) {
+      if (DOM.loginErrorMsg) {
+        DOM.loginErrorMsg.textContent = 'Error de comunicación con el servidor. Inténtalo de nuevo.';
+        DOM.loginErrorMsg.classList.remove('hidden');
       }
     }
   });
@@ -360,8 +365,10 @@ function setupAuthTabs() {
       sessionStorage.removeItem('pajarillo_admin_user');
       sessionStorage.removeItem('pajarillo_admin_perms');
       sessionStorage.removeItem('pajarillo_admin_role');
+      sessionStorage.removeItem('pajarillo_csrf_token');
+      adminCsrfToken = '';
       showLogin();
-      showToast('🔒 Sesión cerrada con éxito');
+      showToast('Sesión cerrada correctamente');
     });
   }
 }
@@ -2551,45 +2558,57 @@ function renderBookingsList() {
   DOM.bookingsTbody.innerHTML = list.map(b => {
     const isPending = b.status === 'pending';
     const isSeen = Boolean(b.seen);
+    const seenBySafe = escapeHtml(b.seenBy || 'Gestor');
+    const seenAtSafe = escapeHtml(b.seenAt || '');
     const seenInfo = isSeen 
-      ? `<span class="status-badge seen" title="Revisada por ${b.seenBy || 'Gestor'} el ${b.seenAt || ''}">👁️ Vista (${b.seenBy || 'Gestor'})</span><br><small style="color: var(--admin-muted); font-size: 0.72rem;">${b.seenAt || ''}</small>`
+      ? `<span class="status-badge seen" title="Revisada por ${seenBySafe} el ${seenAtSafe}">👁️ Vista (${seenBySafe})</span><br><small style="color: var(--admin-muted); font-size: 0.72rem;">${seenAtSafe}</small>`
       : `<span class="status-badge unseen">⚠️ Sin Abrir</span>`;
 
     const statusBadge = isPending 
       ? `<span class="status-badge pending">⏳ Pendiente</span>`
       : `<span class="status-badge confirmed">✅ Confirmada</span>`;
 
+    const nameSafe = escapeHtml(b.name);
+    const emailSafe = escapeHtml(b.email);
+    const phoneSafe = escapeHtml(b.phone);
+    const notesSafe = escapeHtml(b.notes || '');
+    const dateSafe = escapeHtml(b.date);
+    const timeSafe = escapeHtml(b.time || '11:00');
+    const idSafe = parseInt(b.id, 10) || escapeHtml(b.id);
+    const idNum = parseInt(b.id, 10) || 0;
+    const refSafe = b.ref ? `<br><small style="font-family: monospace; color: var(--admin-muted);">${escapeHtml(b.ref)}</small>` : '';
+
     return `
       <tr style="${!isSeen ? 'background: rgba(254, 242, 242, 0.45); font-weight: 500;' : ''}">
-        <td><strong>#${b.id}</strong></td>
-        <td><strong>${b.date}</strong></td>
-        <td>${b.time || '11:00'}</td>
+        <td><strong>#${idSafe}</strong>${refSafe}</td>
+        <td><strong>${dateSafe}</strong></td>
+        <td>${timeSafe}</td>
         <td>
-          <strong style="color: var(--admin-primary);">${b.name}</strong><br>
-          <small style="color: var(--admin-muted);">${b.email} · <strong>${b.phone}</strong></small>
-          ${b.notes ? `<div style="font-size: 0.75rem; color: #4B5563; margin-top: 3px; font-style: italic;">📝 "${b.notes}"</div>` : ''}
+          <strong style="color: var(--admin-primary);">${nameSafe}</strong><br>
+          <small style="color: var(--admin-muted);">${emailSafe} · <strong>${phoneSafe}</strong></small>
+          ${notesSafe ? `<div style="font-size: 0.75rem; color: #4B5563; margin-top: 3px; font-style: italic;">📝 "${notesSafe}"</div>` : ''}
         </td>
-        <td>${b.people} pers.</td>
-        <td><span style="text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">${b.lang || 'es'}</span></td>
+        <td>${parseInt(b.people, 10) || 1} pers.</td>
+        <td><span style="text-transform: uppercase; font-weight: 700; font-size: 0.8rem;">${escapeHtml(b.lang || 'es')}</span></td>
         <td>${seenInfo}</td>
         <td>${statusBadge}</td>
         <td>
           <div style="display: flex; gap: 4px; flex-wrap: wrap;">
             ${!isSeen ? `
-              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem; background: white;" onclick="markBookingAsSeen(${b.id})" title="Dejar constancia de que se ha revisado en el SaaS">
+              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem; background: white;" onclick="markBookingAsSeen(${idNum})" title="Dejar constancia de que se ha revisado en el SaaS">
                 👁️ Vista
               </button>
             ` : ''}
             ${isPending ? `
-              <button class="btn-admin btn-admin-primary" style="padding: 4px 8px; font-size: 0.74rem;" onclick="confirmAndRegisterBooking(${b.id})" title="Registrar y confirmar oficialmente">
+              <button class="btn-admin btn-admin-primary" style="padding: 4px 8px; font-size: 0.74rem;" onclick="confirmAndRegisterBooking(${idNum})" title="Registrar y confirmar oficialmente">
                 ✅ Confirmar
               </button>
             ` : `
-              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem;" onclick="sendConfirmationEmail(${b.id})" title="Preparar correo de respuesta al visitante">
+              <button class="btn-admin btn-admin-outline" style="padding: 4px 8px; font-size: 0.74rem;" onclick="sendConfirmationEmail(${idNum})" title="Preparar correo de respuesta al visitante">
                 ✉️ Enviar Email
               </button>
             `}
-            <button class="btn-admin btn-admin-danger" style="padding: 4px 8px; font-size: 0.74rem;" onclick="deleteBooking(${b.id})" title="Eliminar registro">
+            <button class="btn-admin btn-admin-danger" style="padding: 4px 8px; font-size: 0.74rem;" onclick="deleteBooking(${idNum})" title="Eliminar registro">
               ✕
             </button>
           </div>

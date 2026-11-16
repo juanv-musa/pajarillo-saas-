@@ -2,13 +2,17 @@
 // Configuración de cookies de sesión segura
 ini_set('session.cookie_httponly', 1);
 ini_set('session.use_only_cookies', 1);
-if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+$isHttps = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ||
+           (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') ||
+           (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off');
+if ($isHttps) {
     ini_set('session.cookie_secure', 1);
 }
 if (PHP_VERSION_ID >= 70300) {
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
+        'secure' => $isHttps,
         'httponly' => true,
         'samesite' => 'Lax'
     ]);
@@ -86,12 +90,16 @@ if ($method === 'GET') {
     }
 
     if (isset($_SESSION['is_admin']) && $_SESSION['is_admin'] === true) {
+        if (empty($_SESSION['csrf_token'])) {
+            $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+        }
         echo json_encode([
             'authenticated' => true,
             'user' => $_SESSION['admin_user'] ?? 'ayuntamiento',
             'role' => $_SESSION['admin_role'] ?? 'Gestor de Patrimonio y Turismo',
             'name' => $_SESSION['admin_name'] ?? 'Técnico Municipal',
-            'permissions' => $_SESSION['admin_permissions'] ?? ['all']
+            'permissions' => $_SESSION['admin_permissions'] ?? ['all'],
+            'csrf_token' => $_SESSION['csrf_token']
         ]);
     } else {
         echo json_encode(['authenticated' => false]);
@@ -167,13 +175,8 @@ if ($method === 'POST') {
             exit;
         }
 
-        // Verificar la contraseña actual
-        $validCurrent = false;
-        if (password_verify($currentPass, $users[$currentUser]['hash'])) {
-            $validCurrent = true;
-        } elseif ($users[$currentUser]['hash'] === $currentPass) {
-            $validCurrent = true;
-        }
+        // Verificar la contraseña actual exclusivamente mediante hash Bcrypt seguro
+        $validCurrent = password_verify($currentPass, $users[$currentUser]['hash']);
 
         if (!$validCurrent) {
             http_response_code(400);
@@ -312,30 +315,27 @@ if ($method === 'POST') {
         if (password_verify($password, $userRecord['hash'])) {
             $authenticated = true;
             $matchedUserKey = $username;
-        } elseif ($userRecord['hash'] === $password) {
-            // Actualizar hash si venía de migración previa
-            $users[$username]['hash'] = password_hash($password, PASSWORD_DEFAULT);
-            saveUsers($users);
-            $authenticated = true;
-            $matchedUserKey = $username;
         }
     }
 
     if ($authenticated && $matchedUserKey) {
         session_regenerate_id(true);
+        $csrfToken = bin2hex(random_bytes(32));
 
         $_SESSION['is_admin'] = true;
         $_SESSION['admin_user'] = $matchedUserKey;
         $_SESSION['admin_name'] = $users[$matchedUserKey]['name'] ?? 'Técnico Municipal';
         $_SESSION['admin_role'] = $users[$matchedUserKey]['role'] ?? 'Gestor de Patrimonio y Turismo';
         $_SESSION['admin_permissions'] = $users[$matchedUserKey]['permissions'] ?? ['all'];
+        $_SESSION['csrf_token'] = $csrfToken;
 
         echo json_encode([
             'success' => true,
             'user' => $_SESSION['admin_user'],
             'role' => $_SESSION['admin_role'],
             'name' => $_SESSION['admin_name'],
-            'permissions' => $_SESSION['admin_permissions']
+            'permissions' => $_SESSION['admin_permissions'],
+            'csrf_token' => $csrfToken
         ]);
         exit;
     }
