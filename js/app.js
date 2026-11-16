@@ -1093,9 +1093,36 @@ function setupBookingForm(i18n) {
   const errorText = document.getElementById('booking-error-text');
   if (!form) return;
 
+  function showBookingError(msg) {
+    if (errorBox) {
+      if (errorText) errorText.textContent = msg;
+      errorBox.style.display = 'block';
+    } else {
+      alert(msg);
+    }
+  }
+
+  // Establecer límites de fecha dinámicamente (hoy hasta +180 días)
+  const dateInput = document.getElementById('b-date');
+  if (dateInput) {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    dateInput.min = `${yyyy}-${mm}-${dd}`;
+
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 180);
+    const maxY = maxDate.getFullYear();
+    const maxM = String(maxDate.getMonth() + 1).padStart(2, '0');
+    const maxD = String(maxDate.getDate()).padStart(2, '0');
+    dateInput.max = `${maxY}-${maxM}-${maxD}`;
+  }
+
   // ──────────────────────────────────────────
   // Control Anti-Bot / CAPTCHA Dinámico
   // ──────────────────────────────────────────
+  let isServerCaptcha = false;
   let currentCaptchaExpected = null;
 
   async function loadCaptcha() {
@@ -1110,13 +1137,15 @@ function setupBookingForm(i18n) {
         const data = await res.json().catch(() => null);
         if (data && data.success && data.question) {
           qEl.textContent = data.question;
-          currentCaptchaExpected = data.n1 + data.n2;
+          isServerCaptcha = true;
+          currentCaptchaExpected = null; // Validación segura delegada al servidor mediante sesión
           return;
         }
       }
     } catch (e) {}
 
-    // Fallback matemático dinámico en cliente
+    // Fallback matemático dinámico en cliente (entorno estático / GitHub Pages)
+    isServerCaptcha = false;
     const n1 = Math.floor(Math.random() * 8) + 2;
     const n2 = Math.floor(Math.random() * 9) + 1;
     currentCaptchaExpected = n1 + n2;
@@ -1135,29 +1164,95 @@ function setupBookingForm(i18n) {
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (errorBox) errorBox.style.display = 'none';
 
     // Verificación 1: Campo trampa invisible (Honeypot)
     const hpVal = (document.getElementById('b-website-hp')?.value || '').trim();
     if (hpVal !== '') {
-      // Rechazo silencioso frente a spambots
       alert('Error en la verificación de seguridad.');
       return;
     }
 
     // Verificación 2: CAPTCHA matemático anti-spam
     const captchaInput = document.getElementById('b-captcha');
-    const captchaVal = captchaInput ? parseInt(captchaInput.value, 10) : null;
-    if (currentCaptchaExpected !== null && (isNaN(captchaVal) || captchaVal !== currentCaptchaExpected)) {
-      if (errorBox) {
-        if (errorText) errorText.textContent = 'Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para verificar que eres una persona.';
-        errorBox.style.display = 'block';
-      } else {
-        alert('Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma.');
+    const captchaRaw = (captchaInput ? captchaInput.value : '').trim();
+    if (captchaRaw === '') {
+      showBookingError('Por favor, resuelve la operación matemática del control anti-spam.');
+      captchaInput?.focus();
+      return;
+    }
+    const captchaVal = parseInt(captchaRaw, 10);
+    if (isNaN(captchaVal)) {
+      showBookingError('El valor del control anti-spam debe ser numérico.');
+      captchaInput?.focus();
+      return;
+    }
+
+    // Si opera en fallback estático (sin servidor PHP)
+    if (!isServerCaptcha && currentCaptchaExpected !== null) {
+      if (captchaVal !== currentCaptchaExpected) {
+        showBookingError('Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para verificar que eres una persona.');
+        captchaInput?.focus();
+        captchaInput?.select();
+        return;
       }
-      if (captchaInput) {
-        captchaInput.focus();
-        captchaInput.select();
-      }
+    }
+
+    // Verificación 3: Validación de campos en cliente
+    const nameVal = (document.getElementById('b-name')?.value || '').trim();
+    if (nameVal.length < 3 || nameVal.length > 70) {
+      showBookingError('El nombre completo debe tener entre 3 y 70 caracteres.');
+      document.getElementById('b-name')?.focus();
+      return;
+    }
+
+    const emailVal = (document.getElementById('b-email')?.value || '').trim();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(emailVal) || emailVal.length > 100) {
+      showBookingError('Por favor, introduce un correo electrónico válido.');
+      document.getElementById('b-email')?.focus();
+      return;
+    }
+
+    const phoneVal = (document.getElementById('b-phone')?.value || '').trim();
+    const digitsOnly = phoneVal.replace(/\D/g, '');
+    if (digitsOnly.length < 7 || digitsOnly.length > 15) {
+      showBookingError('El número de teléfono debe tener un formato numérico válido (entre 7 y 15 dígitos).');
+      document.getElementById('b-phone')?.focus();
+      return;
+    }
+
+    const dateVal = document.getElementById('b-date')?.value || '';
+    if (!dateVal) {
+      showBookingError('Por favor, selecciona una fecha para tu visita.');
+      document.getElementById('b-date')?.focus();
+      return;
+    }
+    const selectedDate = new Date(dateVal + 'T00:00:00');
+    const todayZero = new Date();
+    todayZero.setHours(0, 0, 0, 0);
+    if (selectedDate < todayZero) {
+      showBookingError('No es posible solicitar reservas para fechas pasadas.');
+      document.getElementById('b-date')?.focus();
+      return;
+    }
+    if (selectedDate.getDay() === 1) {
+      showBookingError('El centro permanece cerrado los lunes por mantenimiento. Por favor, selecciona una fecha de martes a domingo.');
+      document.getElementById('b-date')?.focus();
+      return;
+    }
+
+    const peopleVal = parseInt(document.getElementById('b-people')?.value || '2', 10);
+    if (isNaN(peopleVal) || peopleVal < 1 || peopleVal > 25) {
+      showBookingError('El número de visitantes debe ser entre 1 y 25 personas.');
+      document.getElementById('b-people')?.focus();
+      return;
+    }
+
+    const notesVal = (document.getElementById('b-notes')?.value || '').trim();
+    if (/https?:\/\/|www\./i.test(notesVal)) {
+      showBookingError('El campo de observaciones no puede incluir enlaces web ni URLs.');
+      document.getElementById('b-notes')?.focus();
       return;
     }
 
@@ -1165,17 +1260,16 @@ function setupBookingForm(i18n) {
     const originalText = btn.innerHTML;
     btn.innerHTML = '⏳ Verificando y registrando solicitud...';
     btn.disabled = true;
-    if (errorBox) errorBox.style.display = 'none';
 
     const bookingData = {
-      name: document.getElementById('b-name').value.trim(),
-      email: document.getElementById('b-email').value.trim(),
-      phone: document.getElementById('b-phone').value.trim(),
-      date: document.getElementById('b-date').value,
-      time: document.getElementById('b-time').value,
-      people: parseInt(document.getElementById('b-people').value) || 2,
-      lang: document.getElementById('b-lang').value,
-      notes: (document.getElementById('b-notes').value || '').trim(),
+      name: nameVal,
+      email: emailVal,
+      phone: phoneVal,
+      date: dateVal,
+      time: document.getElementById('b-time')?.value || '11:00',
+      people: peopleVal,
+      lang: document.getElementById('b-lang')?.value || 'es',
+      notes: notesVal.slice(0, 300),
       captcha: captchaVal,
       website_hp: hpVal
     };
@@ -1187,18 +1281,19 @@ function setupBookingForm(i18n) {
       const res = await fetch('./api/data.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ action: 'new_booking', booking: bookingData })
       });
       const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success) {
+      if (res && res.ok && data.success) {
         serverSuccess = true;
       } else {
         const isStaticEnv = window.location.hostname.includes('github.io') || window.location.protocol === 'file:' || (res && res.status === 405);
         if (isStaticEnv) {
-          // En GitHub Pages o entorno estático sin PHP, simular el éxito para demostración
+          // En GitHub Pages o entorno estático sin backend PHP, simular el registro para demo
           serverSuccess = true;
         } else {
-          errorMessage = data.error || 'El servidor no pudo procesar la reserva.';
+          errorMessage = (data && data.error) ? data.error : 'El servidor no pudo procesar la reserva. Comprueba los datos introducidos.';
         }
       }
     } catch (err) {
@@ -1214,12 +1309,7 @@ function setupBookingForm(i18n) {
       btn.innerHTML = originalText;
       btn.disabled = false;
       loadCaptcha(); // Generar nuevo reto tras fallo
-      if (errorBox) {
-        if (errorText) errorText.textContent = errorMessage;
-        errorBox.style.display = 'block';
-      } else {
-        alert(errorMessage);
-      }
+      showBookingError(errorMessage);
       return;
     }
 

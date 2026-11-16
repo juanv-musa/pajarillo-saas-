@@ -454,20 +454,24 @@ function setupChangePassword() {
 function showLogin() {
   DOM.loginView.classList.remove('hidden');
   DOM.dashboardView.classList.add('hidden');
-  DOM.userInfoBadge.classList.add('hidden');
-  DOM.btnLogout.classList.add('hidden');
+  const headerActions = document.getElementById('admin-header-actions');
+  if (headerActions) headerActions.style.display = 'none';
+  if (DOM.userInfoBadge) DOM.userInfoBadge.classList.add('hidden');
+  if (DOM.btnLogout) DOM.btnLogout.classList.add('hidden');
   const btnExport = document.getElementById('btn-quick-export-backup');
-  if (btnExport) btnExport.classList.add('hidden');
+  if (btnExport) btnExport.style.display = 'none';
 }
 
 function showDashboard(username, permissions, role) {
   if (permissions) currentUserPermissions = permissions;
   DOM.loginView.classList.add('hidden');
   DOM.dashboardView.classList.remove('hidden');
-  DOM.userInfoBadge.classList.remove('hidden');
-  DOM.btnLogout.classList.remove('hidden');
+  const headerActions = document.getElementById('admin-header-actions');
+  if (headerActions) headerActions.style.display = 'flex';
+  if (DOM.userInfoBadge) DOM.userInfoBadge.classList.remove('hidden');
+  if (DOM.btnLogout) DOM.btnLogout.classList.remove('hidden');
   const btnExport = document.getElementById('btn-quick-export-backup');
-  if (btnExport) btnExport.classList.remove('hidden');
+  if (btnExport) btnExport.style.display = 'inline-flex';
   DOM.loggedUserName.textContent = role ? `${username} (${role})` : (username || 'Gestor Municipal');
 
   const userDisplay = document.getElementById('pwd-user-display');

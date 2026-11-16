@@ -106,14 +106,25 @@ if ($method === 'GET') {
         }
         echo json_encode(readJson($reservasFile, ['bookings' => []]));
     } elseif ($entity === 'captcha') {
-        $n1 = random_int(2, 9);
-        $n2 = random_int(1, 9);
-        $_SESSION['booking_captcha_result'] = $n1 + $n2;
+        $ops = ['+', '-'];
+        $op = $ops[random_int(0, 1)];
+        if ($op === '+') {
+            $n1 = random_int(2, 9);
+            $n2 = random_int(1, 9);
+            $ans = $n1 + $n2;
+            $q = "¿Cuánto es $n1 + $n2?";
+        } else {
+            $n1 = random_int(6, 15);
+            $n2 = random_int(1, $n1 - 1);
+            $ans = $n1 - $n2;
+            $q = "¿Cuánto es $n1 - $n2?";
+        }
+        $_SESSION['booking_captcha_result'] = $ans;
+        $_SESSION['booking_captcha_time'] = time();
+
         echo json_encode([
             'success' => true,
-            'question' => "¿Cuánto es $n1 + $n2?",
-            'n1' => $n1,
-            'n2' => $n2
+            'question' => $q
         ]);
         exit;
     } else {
@@ -128,7 +139,7 @@ if ($method === 'GET') {
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
 
-    // CASO ESPECIAL: Reserva desde la web pública (no requiere sesión)
+    // CASO ESPECIAL: Reserva desde la web pública (no requiere sesión administrativa)
     if (isset($input['action']) && $input['action'] === 'new_booking') {
         $booking = $input['booking'] ?? null;
         if (!is_array($booking)) {
@@ -144,56 +155,165 @@ if ($method === 'POST') {
             exit;
         }
 
-        // 2. Verificación CAPTCHA matemático anti-spam
-        $expectedCaptcha = $_SESSION['booking_captcha_result'] ?? null;
-        $userCaptcha = isset($booking['captcha']) ? (int)$booking['captcha'] : null;
+        // 2. Control de frecuencia / Rate-limiting por sesión
+        $now = time();
+        if (isset($_SESSION['last_booking_ts']) && ($now - $_SESSION['last_booking_ts'] < 10)) {
+            http_response_code(429);
+            echo json_encode(['error' => 'Por favor, espera unos segundos antes de enviar otra solicitud de reserva.']);
+            exit;
+        }
 
-        if ($expectedCaptcha !== null) {
-            if ($userCaptcha === null || $userCaptcha !== $expectedCaptcha) {
-                http_response_code(400);
-                echo json_encode(['error' => 'Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para confirmar la reserva.']);
-                exit;
-            }
+        // 3. Verificación OBLIGATORIA y estricta del CAPTCHA anti-spam
+        if (!isset($_SESSION['booking_captcha_result']) || !isset($_SESSION['booking_captcha_time'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Sesión de seguridad no encontrada o expirada. Por favor, pulsa «Cambiar» o recarga la página.']);
+            exit;
+        }
+
+        // Detección de bots: envío inhumano en menos de 2 segundos desde que se generó el captcha
+        if ($now - $_SESSION['booking_captcha_time'] < 2) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Envío demasiado rápido detectado como posible bot automatizado.']);
+            exit;
+        }
+
+        // Caducidad del captcha: máximo 15 minutos
+        if ($now - $_SESSION['booking_captcha_time'] > 900) {
             unset($_SESSION['booking_captcha_result']);
-        }
-
-        // Sanitización y validación estricta de entradas
-        $name = trim(htmlspecialchars(strip_tags($booking['name'] ?? ''), ENT_QUOTES, 'UTF-8'));
-        $email = trim(filter_var($booking['email'] ?? '', FILTER_SANITIZE_EMAIL));
-        $phone = trim(preg_replace('/[^0-9+\s\-()]/', '', (string)($booking['phone'] ?? '')));
-        $date = trim($booking['date'] ?? '');
-        $time = trim(htmlspecialchars(strip_tags($booking['time'] ?? '11:00'), ENT_QUOTES, 'UTF-8'));
-        $people = filter_var($booking['people'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 100]]) ?: 1;
-        $lang = in_array(strtolower($booking['lang'] ?? 'es'), ['es', 'en', 'fr']) ? strtolower($booking['lang']) : 'es';
-        $notes = trim(htmlspecialchars(strip_tags($booking['notes'] ?? ''), ENT_QUOTES, 'UTF-8'));
-        if (mb_strlen($notes) > 500) {
-            $notes = mb_substr($notes, 0, 500);
-        }
-
-        if (mb_strlen($name) < 2 || mb_strlen($name) > 100) {
+            unset($_SESSION['booking_captcha_time']);
             http_response_code(400);
-            echo json_encode(['error' => 'El nombre debe tener entre 2 y 100 caracteres.']);
-            exit;
-        }
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'El correo electrónico no es válido.']);
-            exit;
-        }
-        if (strlen($phone) < 7 || strlen($phone) > 25) {
-            http_response_code(400);
-            echo json_encode(['error' => 'El número de teléfono no es válido (mínimo 7 dígitos).']);
-            exit;
-        }
-        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
-            http_response_code(400);
-            echo json_encode(['error' => 'La fecha seleccionada no tiene un formato válido (AAAA-MM-DD).']);
+            echo json_encode(['error' => 'El código de seguridad ha caducado. Por favor, pulsa «Cambiar» y resuelve la nueva operación.']);
             exit;
         }
 
+        if (!isset($booking['captcha']) || trim((string)$booking['captcha']) === '') {
+            http_response_code(400);
+            echo json_encode(['error' => 'Debes resolver la operación matemática de seguridad anti-spam.']);
+            exit;
+        }
+
+        $userCaptcha = filter_var($booking['captcha'], FILTER_VALIDATE_INT);
+        $expectedCaptcha = (int)$_SESSION['booking_captcha_result'];
+
+        // Destruir el captcha inmediatamente para que sea de un solo uso (prevención de ataques replay)
+        unset($_SESSION['booking_captcha_result']);
+        unset($_SESSION['booking_captcha_time']);
+
+        if ($userCaptcha === false || $userCaptcha !== $expectedCaptcha) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El resultado del control de seguridad anti-spam es incorrecto.']);
+            exit;
+        }
+
+        // 4. Validación exhaustiva y reforzada de cada dato introducido:
+
+        // A) Nombre completo
+        $name = trim(htmlspecialchars(strip_tags((string)($booking['name'] ?? '')), ENT_QUOTES, 'UTF-8'));
+        if (mb_strlen($name) < 3 || mb_strlen($name) > 70) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El nombre completo debe tener entre 3 y 70 caracteres.']);
+            exit;
+        }
+        if (!preg_match('/^[\p{L}\s\.\'\-]{3,70}$/u', $name)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El nombre solo puede contener letras y caracteres ortográficos válidos.']);
+            exit;
+        }
+
+        // B) Correo electrónico
+        $email = trim(filter_var((string)($booking['email'] ?? ''), FILTER_SANITIZE_EMAIL));
+        if (strlen($email) < 6 || strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El correo electrónico introducido no tiene un formato válido.']);
+            exit;
+        }
+        if (strpos($email, "\r") !== false || strpos($email, "\n") !== false) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Formato de correo no permitido.']);
+            exit;
+        }
+
+        // C) Teléfono de contacto
+        $rawPhone = trim((string)($booking['phone'] ?? ''));
+        $cleanPhone = preg_replace('/[^0-9+\s\-()]/', '', $rawPhone);
+        $digitCount = strlen(preg_replace('/\D/', '', $cleanPhone));
+        if ($digitCount < 7 || $digitCount > 15 || !preg_match('/^(\+?[0-9]{1,4}[\s\-]?)?[0-9\s\-()]{7,20}$/', $cleanPhone)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El número de teléfono debe tener un formato numérico válido (entre 7 y 15 dígitos).']);
+            exit;
+        }
+
+        // D) Fecha de visita
+        $date = trim((string)($booking['date'] ?? ''));
+        if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $matches)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La fecha debe tener el formato AAAA-MM-DD.']);
+            exit;
+        }
+        $year = (int)$matches[1];
+        $month = (int)$matches[2];
+        $day = (int)$matches[3];
+        if (!checkdate($month, $day, $year)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La fecha seleccionada no existe en el calendario.']);
+            exit;
+        }
+
+        $bookingTs = strtotime($date);
+        $todayTs = strtotime(date('Y-m-d'));
+        if ($bookingTs < $todayTs) {
+            http_response_code(400);
+            echo json_encode(['error' => 'No es posible solicitar reservas para fechas pasadas.']);
+            exit;
+        }
+        $maxFutureTs = strtotime('+180 days', $todayTs);
+        if ($bookingTs > $maxFutureTs) {
+            http_response_code(400);
+            echo json_encode(['error' => 'La fecha seleccionada no puede superar los 6 meses de antelación.']);
+            exit;
+        }
+        // Comprobación de horario del centro: Lunes cerrado por mantenimiento
+        if ((int)date('N', $bookingTs) === 1) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El centro permanece cerrado los lunes por mantenimiento. Por favor, selecciona una fecha de martes a domingo.']);
+            exit;
+        }
+
+        // E) Turno horario
+        $validTimes = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00'];
+        $time = trim(htmlspecialchars(strip_tags((string)($booking['time'] ?? '11:00')), ENT_QUOTES, 'UTF-8'));
+        if (!in_array($time, $validTimes, true)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El turno horario seleccionado no es válido.']);
+            exit;
+        }
+
+        // F) Número de personas
+        $people = filter_var($booking['people'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 25]]);
+        if ($people === false) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El número de visitantes debe ser entre 1 y 25 personas. Para grupos mayores, contacta directamente con Turismo de Huelma.']);
+            exit;
+        }
+
+        // G) Idioma
+        $rawLang = strtolower(trim((string)($booking['lang'] ?? 'es')));
+        $lang = in_array($rawLang, ['es', 'en', 'fr'], true) ? $rawLang : 'es';
+
+        // H) Observaciones / Necesidades especiales
+        $rawNotes = (string)($booking['notes'] ?? '');
+        if (preg_match('/https?:\/\/|www\./i', $rawNotes)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El campo de observaciones no puede incluir enlaces web ni URLs.']);
+            exit;
+        }
+        $notes = trim(htmlspecialchars(strip_tags($rawNotes), ENT_QUOTES, 'UTF-8'));
+        if (mb_strlen($notes) > 300) {
+            $notes = mb_substr($notes, 0, 300);
+        }
+
+        // 5. Asignación de ID anti-colisión y código de localizador
         $data = readJson($reservasFile, ['bookings' => []]);
-
-        // Prevención estricta de colisión de identificadores
         $maxId = 0;
         foreach ($data['bookings'] as $b) {
             $bNum = isset($b['id']) ? (int)$b['id'] : 0;
@@ -207,9 +327,9 @@ if ($method === 'POST') {
             'ref' => $refCode,
             'name' => $name,
             'email' => $email,
-            'phone' => $phone,
+            'phone' => $cleanPhone,
             'date' => $date,
-            'time' => $time ?: '11:00',
+            'time' => $time,
             'people' => $people,
             'lang' => $lang,
             'notes' => $notes,
@@ -218,6 +338,7 @@ if ($method === 'POST') {
             'seen' => false
         ];
 
+        $_SESSION['last_booking_ts'] = $now;
         $data['bookings'][] = $cleanBooking;
         writeJson($reservasFile, $data);
         echo json_encode(['success' => true, 'id' => $cleanBooking['id'], 'ref' => $cleanBooking['ref']]);
@@ -232,8 +353,6 @@ if ($method === 'POST') {
         echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
         exit;
     }
-
-    verifyCsrfToken($input);
 
     verifyCsrfToken($input);
 

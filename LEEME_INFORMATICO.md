@@ -85,18 +85,48 @@ Plataforma digital integral para el Centro de Interpretación Santuario Ibérico
 
 ### 5. CREDENCIALES DE ACCESO AL PANEL DE GESTIÓN (`admin.html`)
 
-El panel dispone de tres cuentas preconfiguradas:
+El acceso administrativo se realiza de forma 100% segura mediante autenticación exclusiva en backend (`api/auth.php`) contrastada contra hashes irreversibles Bcrypt almacenados en `data/users.json`. **Ningún archivo de código fuente (.php o .js) contiene contraseñas en claro.**
 
-1. **Administrador General (Acceso Total):**
-   * **Usuario:** `admin`
-   * **Contraseña inicial:** `Pajarillo2026!`
-2. **Gestión Municipal (Acceso Total):**
+Cuentas iniciales configuradas en el archivo protegido `data/users.json`:
+
+1. **Gestión Municipal (Acceso Total):**
    * **Usuario:** `ayuntamiento`
    * **Contraseña inicial:** `HuelmaPajarillo2026!`
+2. **Administrador del Sistema (Acceso Total):**
+   * **Usuario:** `admin`
+   * **Contraseña inicial:** `Pajarillo2026!`
 3. **Gestor de Agenda y Reservas (Perfil Restringido):**
    * **Usuario:** `actividades`
    * **Contraseña inicial:** `Actividades2026!`
    *(Solo tiene acceso a las pestañas de calendario y reservas de visitas)*
+
+> **Recomendación:** Tras el primer acceso, cada gestor puede cambiar su contraseña directamente desde la pestaña "Ajustes" del panel, actualizándose el hash Bcrypt en caliente.
+
+---
+
+### 6. AUDITORÍA DE SEGURIDAD Y SUBSANACIONES TÉCNICAS APLICADAS
+
+En respuesta a las revisiones de seguridad, se han implementado las siguientes medidas definitivas:
+
+1. **Seguridad de contraseñas (Limpieza integral de `api/auth.php` y `js/admin.js`):**
+   - Eliminación total de cualquier credencial residual, array inicial o comentario de prueba en `api/auth.php`. La función `getUsers()` lee exclusivamente los hashes de `data/users.json`.
+   - Supresión absoluta en `js/admin.js` de cualquier mecanismo de fallback o credenciales en cliente. La validación se delega al 100% en backend vía POST con protección de cabeceras HTTP.
+   - El botón de descarga rápida de copias JSON (`btn-quick-export-backup`) permanece completamente oculto (`display: none !important`) y protegido en `admin.html`, activándose únicamente tras verificar la sesión activa en el servidor.
+
+2. **Refuerzo estricto del CAPTCHA y motor de reservas (`api/data.php`, `js/app.js`, `index.html`):**
+   - **CAPTCHA no eludible:** Verificación obligatoria en sesión (`$_SESSION['booking_captcha_result']`). Si la sesión no existe, la petición se rechaza con error 400.
+   - **Ocultación de la solución:** El endpoint `api/data.php?entity=captcha` ya no envía los operandos en el JSON; únicamente entrega la pregunta textual y almacena la solución en la sesión del servidor.
+   - **Prevención anti-replay (un solo uso):** La solución en sesión se destruye (`unset`) inmediatamente al evaluarse, impidiendo reutilizar el mismo captcha para envíos repetidos.
+   - **Control de velocidad y detección de bots:** Rechazo automático de peticiones enviadas en menos de 2 segundos desde la creación del captcha y caducidad automática a los 15 minutos. Rate limiting de 10 segundos entre envíos por IP/sesión.
+   - **Validación robusta de datos en backend:**
+     - *Nombre:* Longitud 3-70 caracteres con expresión regular alfabética estricta (sin dígitos, símbolos o scripts).
+     - *Email:* Saneamiento y validación RFC 5322 con límite de 100 caracteres y bloqueo contra inyección de cabeceras.
+     - *Teléfono:* Validación ITU-T de 7 a 15 dígitos numéricos.
+     - *Fecha de visita:* Validación de existencia real en calendario gregoriano mediante `checkdate()`, prohibición estricta de fechas pasadas, horizonte máximo de 180 días y validación de cierre semanal de lunes por descanso del centro.
+     - *Turno horario:* Validación contra lista blanca fija de turnos del centro.
+     - *Visitantes:* Entero validado entre 1 y 25 personas por turno.
+     - *Observaciones:* Saneamiento HTML, límite de 300 caracteres y rechazo estricto de hipervínculos/URLs para neutralizar spam.
+     - *Localizador único:* Generación de identificador único anti-colisión basado en microsegundos y código alfanumérico seguro (`RES-AAAAMMDD-XXXXX`).
 
 > **Cambio de Contraseña:** Desde la pestaña *«Ajustes & Usuarios»* dentro de `admin.html`, el administrador puede cambiar las contraseñas en cualquier momento con validación segura.
 
