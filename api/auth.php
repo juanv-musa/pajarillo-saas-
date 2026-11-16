@@ -24,7 +24,7 @@ header('X-Content-Type-Options: nosniff');
 
 $usersFile = '../data/users.json';
 
-// Cargar usuarios desde data/users.json o inicializar con contraseñas seguras por defecto
+// Cargar usuarios desde data/users.json (que almacena exclusivamente hashes seguros Bcrypt)
 function getUsers() {
     global $usersFile;
     if (file_exists($usersFile)) {
@@ -34,26 +34,7 @@ function getUsers() {
             return $decoded;
         }
     }
-
-    // Usuarios y Roles Oficiales por Defecto:
-    // 1. ayuntamiento -> Gestor de Patrimonio y Turismo · Ayto. Huelma (Contraseña: HuelmaPajarillo2026!)
-    // 2. admin -> Administrador del Sistema (Contraseña: Pajarillo2026!)
-    $initial = [
-        'ayuntamiento' => [
-            'name' => 'Técnico de Patrimonio y Turismo',
-            'role' => 'Gestor de Patrimonio y Turismo · Ayto. Huelma',
-            'hash' => password_hash('HuelmaPajarillo2026!', PASSWORD_DEFAULT),
-            'updated_at' => date('Y-m-d H:i')
-        ],
-        'admin' => [
-            'name' => 'Administrador',
-            'role' => 'Administrador del Sistema',
-            'hash' => password_hash('Pajarillo2026!', PASSWORD_DEFAULT),
-            'updated_at' => date('Y-m-d H:i')
-        ]
-    ];
-    saveUsers($initial);
-    return $initial;
+    return [];
 }
 
 function saveUsers($users) {

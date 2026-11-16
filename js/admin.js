@@ -264,19 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
 let currentUserPermissions = ['all'];
 
 async function checkSession() {
-  const isStaticEnv = window.location.hostname.includes('github.io') || window.location.protocol === 'file:';
-  const savedUser = sessionStorage.getItem('pajarillo_admin_user');
-  const savedPerms = sessionStorage.getItem('pajarillo_admin_perms');
-  const savedRole = sessionStorage.getItem('pajarillo_admin_role');
-
-  if (isStaticEnv && savedUser) {
-    let perms = ['all'];
-    try { if (savedPerms) perms = JSON.parse(savedPerms); } catch (e) {}
-    currentUserPermissions = perms;
-    showDashboard(savedUser, currentUserPermissions, savedRole);
-    return;
-  }
-
   try {
     const res = await fetch('./api/auth.php', { credentials: 'same-origin' }).catch(() => null);
     if (res && res.ok) {
@@ -350,46 +337,6 @@ function setupAuthTabs() {
           return;
         }
       } else {
-        // En servidores estáticos sin PHP (como GitHub Pages que devuelve HTTP 405),
-        // permitir validación con las credenciales oficiales sin recurrir a backdoors.
-        const isStaticEnv = window.location.hostname.includes('github.io') || window.location.protocol === 'file:' || (res && res.status === 405);
-        if (isStaticEnv) {
-          let auth = false;
-          let matchedRole = 'Gestor Municipal';
-          let matchedPerms = ['all'];
-
-          if (user.toLowerCase() === 'ayuntamiento' && pass === 'HuelmaPajarillo2026!') {
-            auth = true;
-            matchedRole = 'Gestor de Patrimonio y Turismo · Ayto. Huelma';
-            matchedPerms = ['all'];
-          } else if (user.toLowerCase() === 'admin' && pass === 'Pajarillo2026!') {
-            auth = true;
-            matchedRole = 'Administrador del Sistema';
-            matchedPerms = ['all'];
-          } else if (user.toLowerCase() === 'actividades' && pass === 'Actividades2026!') {
-            auth = true;
-            matchedRole = 'Dinamizador Cultural y Agenda';
-            matchedPerms = ['agenda', 'bookings'];
-          }
-
-          if (auth) {
-            currentUserPermissions = matchedPerms;
-            sessionStorage.setItem('pajarillo_admin_user', user);
-            sessionStorage.setItem('pajarillo_admin_perms', JSON.stringify(currentUserPermissions));
-            sessionStorage.setItem('pajarillo_admin_role', matchedRole);
-            if (DOM.loginErrorMsg) DOM.loginErrorMsg.classList.add('hidden');
-            showToast(`✅ Bienvenido, ${user} (Modo Demo GitHub Pages)`);
-            showDashboard(user, currentUserPermissions, matchedRole);
-            return;
-          } else {
-            if (DOM.loginErrorMsg) {
-              DOM.loginErrorMsg.textContent = 'Credenciales incorrectas. Comprueba tu usuario y contraseña.';
-              DOM.loginErrorMsg.classList.remove('hidden');
-            }
-            return;
-          }
-        }
-
         const errData = res ? await res.json().catch(() => null) : null;
         if (DOM.loginErrorMsg) {
           DOM.loginErrorMsg.textContent = (errData && errData.error) ? errData.error : 'Credenciales incorrectas. Comprueba tu usuario y contraseña.';
