@@ -156,8 +156,29 @@ Esto genera un archivo JSON con todos los datos y textos del centro para restaur
 
 ---
 
-### 8. AUDITORÍA TÉCNICA Y RESOLUCIÓN DE INCIDENCIAS DE SEGURIDAD
-En la revisión técnica de seguridad y hardening del entorno de producción se han implementado y verificado las siguientes soluciones punto por punto:
+### 8. AUDITORÍA TÉCNICA Y RESOLUCIÓN DE INCIDENCIAS DE SEGURIDAD (ENTREGA CONSOLIDADA)
+En esta última entrega se han implementado y verificado las siguientes soluciones específicas a los puntos requeridos por la auditoría informática:
+
+1. **Seguridad de contraseñas (Sin credenciales en código):**
+   * Eliminación absoluta de cualquier contraseña o usuario por defecto en `api/auth.php` y `js/admin.js`.
+   * El sistema almacena exclusivamente hashes **Bcrypt (`$2y$10$...`)** en `data/users.json` verificados mediante `password_verify()`.
+
+2. **Refuerzo Criptográfico del CAPTCHA y Validación de Reservas:**
+   * **CAPTCHA SVG Anti-OCR**: Desaparición de cualquier texto plano en el DOM; se genera un gráfico vectorial SVG dinámico con líneas de ruido, puntos y caracteres rotados con jitter angular.
+   * **Firma Criptográfica HMAC SHA-256**: Token de sesión inviolable que vincula la respuesta correcta, timestamp, nonce de un solo uso y el hash de la IP del cliente en tiempo constante (`hash_equals`).
+   * **Protección Anti-Replay y Bloqueo Anti Fuerza Bruta**: El nonce se quema inmediatamente en el primer intento y se activa un bloqueo temporal (120 s) tras 5 fallos consecutivos.
+   * **Ventana Temporal Humana**: Detección de bots automatizados si el envío ocurre en menos de 2.5 segundos; expiración automática a los 10 minutos.
+   * **Validación de Datos**: Longitud y caracteres Unicode para nombres, validación RFC de correo y bloqueo de proveedores de correo temporal desechable, normalización de teléfonos con filtrado de secuencias falsas (`123456789`), comprobación de días de cierre del centro (lunes y domingos tarde), y prohibición estricta de URLs o scripts en observaciones.
+
+3. **Seguridad de la Administración y Protección CSRF:**
+   * Verificación obligatoria de tokens CSRF (`X-CSRF-Token` y campo `csrf_token`) en todas las operaciones críticas de gestión de usuarios (`create_user`, `delete_user`, `change_password`, `restore_full_backup`, etc.) en `api/auth.php` y `api/data.php`.
+
+4. **Acceso a Contenidos y Configuración de Apache (`data/.htaccess`):**
+   * Corrección de directivas en `data/.htaccess`: acceso denegado estrictamente para ficheros confidenciales (`reservas.json`, `users.json`, `analytics.json`), permitiendo la carga pública necesaria de contenidos (`paneles.json`, `locales.json`, `gallery.json`, etc.) para evitar errores 403 Forbidden en el frontend.
+
+---
+
+### 9. DETALLE HISTÓRICO DE AUDITORÍA PREVIA Y BLINDAJE TÉCNICO
 
 1. **Seguridad de contraseñas:**
    * Sustitución completa de contraseñas legibles en `data/users.json` por hashes estándar **Bcrypt (`$2y$10$...`)**.
