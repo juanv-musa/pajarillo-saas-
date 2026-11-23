@@ -10,7 +10,7 @@
 | **Denominación** | Plataforma Digital y Sistema de Mediación del Centro de Interpretación Santuario Ibérico de “El Pajarillo” |
 | **Enclave Patrimonial** | Cortijo de El Pajarillo · Valle del Río Jandulilla (Huelma, Jaén). Bien de Interés Cultural (Decreto 12/2006). |
 | **Discurso Museológico** | Monográfico Cultura Íbera: Santuario Heroico del Lobo, Territorio y Colonización de Iltiraka, Paisaje Sagrado y Camino Ritual El Pajarillo – El Fontanar. |
-| **Entidad Promotora** | Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo |
+| **Entidad Promotora** | Ayuntamiento de Huelma |
 | **Arquitectura de Software** | Single Page Application (SPA) modular, HTML5 Semántico, CSS3 Custom Properties, JavaScript ES6+ Vanilla (sin dependencias externas pesadas), motor i18n trilingüe y API REST local. |
 | **Estándares de Accesibilidad** | Conforme a WCAG 2.1 Nivel AA y directrices UNE 153101:2018 EX de **Lectura Fácil**. |
 | **Idiomas Oficiales** | Español (ES), Inglés (EN) y Francés (FR). |
@@ -77,7 +77,7 @@ graph TD
 4. **Reserva Online de Visitas Guiadas (SaaS MVP):**
    - Selector de turnos (mañanas y tardes), cupo limitado a 25 personas por turno, campos de accesibilidad especial y confirmación con almacenamiento bidireccional (API REST local y almacenamiento en navegador para funcionamiento *offline* o en zonas con cobertura irregular).
 5. **Atención al Visitante:**
-   - Espacio institucional centralizado con teléfonos directos, correo de turismo, horarios de oficina y vinculación con la Concejalía de Turismo del Ayuntamiento de Huelma, omitiendo formularios redundantes con el de reserva.
+   - Espacio institucional centralizado con teléfonos directos, correo de turismo, horarios de oficina y vinculación con el Ayuntamiento de Huelma, omitiendo formularios redundantes con el de reserva.
 6. **Widget de Accesibilidad Universal:**
    - Conforme a WCAG 2.1 Nivel AA. Control de tamaño de letra, tipografía para dislexia, guía de lectura visual para problemas de concentración, lector en voz alta multilingüe con Web Speech API y paletas de alto contraste o inversión cromática adaptativa.
 

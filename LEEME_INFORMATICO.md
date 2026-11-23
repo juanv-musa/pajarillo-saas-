@@ -1,7 +1,7 @@
 # CENTRO DE INTERPRETACIÓN SANTUARIO IBÉRICO DE “EL PAJARILLO” (HUELMA, JAÉN)
 ## MANUAL TÉCNICO DE INSTALACIÓN Y DESPLIEGUE PARA EL ADMINISTRADOR / INFORMÁTICO
 **Versión:** Entrega Final Consolidada (Noviembre 2026)  
-**Entidad Titular:** Excmo. Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo  
+**Entidad Titular:** Excmo. Ayuntamiento de Huelma  
 **Repositorio GitHub:** [https://github.com/juanv-musa/pajarillo-saas-](https://github.com/juanv-musa/pajarillo-saas-)  
 **Web Demo / Producción GitHub Pages:** [https://juanv-musa.github.io/pajarillo-saas-/](https://juanv-musa.github.io/pajarillo-saas-/)  
 
