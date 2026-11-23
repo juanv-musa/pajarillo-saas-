@@ -1256,14 +1256,22 @@
 
             <form id="form-panel-edit" novalidate onsubmit="window.handlePanelFormSubmit(event)">
               <input type="hidden" id="panel-edit-id">
+              <input type="hidden" id="panel-edit-tag" value="visita">
 
-              <div class="admin-form-group">
-                <label>Categoría / Tipo de Punto</label>
-                <select id="panel-edit-tag" class="admin-select">
-                  <option value="escultura">Escultura e Iconografía</option>
-                  <option value="arquelogia">Yacimiento y Territorio</option>
-                  <option value="arquitectura">Arquitectura del Santuario</option>
-                </select>
+              <!-- Estado de Activación del Punto QR -->
+              <div style="background: #FFF8E7; border: 1.5px solid #E0B44C; padding: 12px 14px; border-radius: 8px; margin-bottom: 1.25rem; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                <div>
+                  <strong style="font-size: 0.92rem; color: #8C6200; display: block;">
+                    ⚡ Estado de Publicación del Punto QR
+                  </strong>
+                  <span style="font-size: 0.78rem; color: #66512C;">
+                    Activa o desactiva este punto para que aparezca o no a los visitantes en el recorrido.
+                  </span>
+                </div>
+                <label style="display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-weight: 700; font-size: 0.88rem; background: #fff; padding: 6px 14px; border-radius: 20px; border: 1.5px solid #D4AF37;">
+                  <input type="checkbox" id="panel-edit-active" checked style="width: 17px; height: 17px; cursor: pointer;" onchange="window.updatePanelActiveLabel(this.checked)">
+                  <span id="lbl-panel-active-status" style="color: #2E7D32;">🟢 Activo</span>
+                </label>
               </div>
 
               <!-- Idioma Español -->

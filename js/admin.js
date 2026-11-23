@@ -228,7 +228,7 @@ let siteConfigData = {
     hero_desc: "Descubre el excepcional monumento heroico oretano del siglo IV a.C., la emblemática escultura en caliza de la Cabeza de Lobo y el paisaje sagrado del río Jandulilla en Huelma, Jaén.",
     tel: "(+34) 953 39 00 10",
     email: "turismo@aytohuelma.es",
-    ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
+    ayto: "Ayuntamiento de Huelma",
     horario_atencion: "Lunes a Viernes de 9:00 a 14:00 h",
     horario_invierno: "Miércoles a Domingo: 10:00 - 14:00 | 16:30 - 19:00",
     horario_verano: "Miércoles a Domingo: 9:30 - 13:30 | 18:00 - 20:30",
@@ -410,13 +410,17 @@ function setupChangePassword() {
     try {
       const res = await fetch('./api/auth.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': adminCsrfToken
+        },
         credentials: 'same-origin',
         body: JSON.stringify({
           action: 'change_password',
           current_password: currentPass,
           new_password: newPass,
-          confirm_password: confirmPass
+          confirm_password: confirmPass,
+          csrf_token: adminCsrfToken
         })
       });
       const data = await res.json().catch(() => ({}));
@@ -581,8 +585,12 @@ window.deleteSystemUser = async function(username) {
   try {
     const res = await fetch('./api/auth.php', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'delete_user', username: username })
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': adminCsrfToken
+      },
+      credentials: 'same-origin',
+      body: JSON.stringify({ action: 'delete_user', username: username, csrf_token: adminCsrfToken })
     });
     const data = await res.json();
     if (res.ok && data.success) {
@@ -667,14 +675,19 @@ function setupUserManagement() {
       try {
         const res = await fetch('./api/auth.php', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': adminCsrfToken
+          },
+          credentials: 'same-origin',
           body: JSON.stringify({
             action: 'create_user',
             username: username,
             name: name,
             password: password,
             role: roleTitle,
-            permissions: permsPayload
+            permissions: permsPayload,
+            csrf_token: adminCsrfToken
           })
         });
         const data = await res.json();
@@ -1694,7 +1707,8 @@ function populatePanelSelector(selectedId = null) {
     <option value="new">➕ Crear Nuevo Punto QR...</option>
     ${panelsData.map(p => {
       const title = (p.content && p.content.es && p.content.es.title) || p.title || 'Punto';
-      return `<option value="${p.id}">Nº 0${p.id} — ${title}</option>`;
+      const statusSuffix = p.active === false ? ' [🔴 Inactivo]' : '';
+      return `<option value="${p.id}">Nº ${String(p.id).padStart(2, '0')} — ${title}${statusSuffix}</option>`;
     }).join('')}
   `;
   if (currentVal && (currentVal === 'new' || panelsData.some(p => String(p.id) === currentVal))) {
@@ -1705,6 +1719,39 @@ function populatePanelSelector(selectedId = null) {
     sel.value = 'new';
   }
 }
+
+window.updatePanelActiveLabel = function(isActive) {
+  const lbl = document.getElementById('lbl-panel-active-status');
+  if (lbl) {
+    lbl.innerHTML = isActive ? '🟢 Activo' : '🔴 Inactivo';
+    lbl.style.color = isActive ? '#2E7D32' : '#C62828';
+  }
+};
+
+window.togglePanelActive = async function(id) {
+  const panel = panelsData.find(p => String(p.id) === String(id));
+  if (!panel) return;
+  panel.active = !(panel.active !== false);
+  savePanelsDataSafely(panelsData);
+  window.dispatchEvent(new StorageEvent('storage', { key: 'pajarillo_panels' }));
+  renderPanelsList();
+  populatePanelSelector(id);
+
+  if (String(document.getElementById('panel-edit-id')?.value) === String(id)) {
+    const activeCheckbox = document.getElementById('panel-edit-active');
+    if (activeCheckbox) activeCheckbox.checked = panel.active;
+    window.updatePanelActiveLabel(panel.active);
+  }
+
+  try {
+    await fetch('./api/data.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'save_all_panels', panels: panelsData })
+    });
+  } catch (e) {}
+  showToast(`Punto Nº ${String(id).padStart(2, '0')} ${panel.active ? '🟢 activado' : '🔴 desactivado'}`);
+};
 
 window.onPanelSelectChange = function(val) {
   if (val === 'new') {
@@ -1726,15 +1773,19 @@ function renderPanelsList() {
     const title = (panel.content && panel.content.es && panel.content.es.title) || 'Punto';
     const safeTitle = title.replace(/'/g, "\\'");
     const img = panel.image || './assets/images/logo-pajarillo.png';
+    const isActive = panel.active !== false;
 
     li.innerHTML = `
       <div class="panel-drag-grip" title="Arrastrar para reordenar">⋮⋮</div>
       <img src="${img}" alt="${title}" class="panel-thumb-preview" onerror="this.src='./assets/images/logo-pajarillo.png'">
-      <div class="panel-admin-details">
-        <h4>Nº 0${panel.id} — ${title}</h4>
-        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'} · <strong>${panel.tag || 'General'}</strong>${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}${panel.external_url ? ' · <span style="background: rgba(30, 144, 255, 0.12); color: #0984e3; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🌐 ' + (panel.redirect_external ? 'Redirección QR' : 'Web Externa') + '</span>' : ''}</p>
+      <div class="panel-admin-details" style="${!isActive ? 'opacity: 0.65;' : ''}">
+        <h4>Nº ${String(panel.id).padStart(2, '0')} — ${title} ${!isActive ? '<span style="font-size: 0.72rem; color: #C62828; background: #FFEBEE; padding: 2px 6px; border-radius: 4px; font-weight: 700; margin-left: 6px;">Inactivo</span>' : ''}</h4>
+        <p>${(panel.content && panel.content.es && panel.content.es.subtitle) || 'Punto Interpretativo'}${panel.pdf || panel.pdf_url ? ' · <span style="background: rgba(169, 50, 38, 0.1); color: #a93226; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">📄 PDF</span>' : ''}${panel.external_url ? ' · <span style="background: rgba(30, 144, 255, 0.12); color: #0984e3; font-size: 0.72rem; padding: 2px 6px; border-radius: 4px; font-weight: 700;">🌐 ' + (panel.redirect_external ? 'Redirección QR' : 'Web Externa') + '</span>' : ''}</p>
       </div>
       <div class="panel-actions-group">
+        <button class="btn-admin" style="padding: 6px 10px; font-weight: 700; ${isActive ? 'background: #E8F5E9; color: #2E7D32; border: 1px solid #A5D6A7;' : 'background: #FFEBEE; color: #C62828; border: 1px solid #FFCDD2;'}" onclick="window.togglePanelActive(${panel.id})" title="${isActive ? 'Punto visible. Clic para desactivar' : 'Punto inactivo. Clic para activar'}">
+          ${isActive ? '🟢 Activo' : '🔴 Inactivo'}
+        </button>
         <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="openAdminQR(${panel.id}, '${safeTitle}')" title="Generar y Descargar QR">📱 QR</button>
         <a class="btn-admin btn-admin-outline" style="padding: 6px 10px; text-decoration: none;" href="punto.html?id=${panel.id}" target="_blank" title="Ver ficha específica en vivo">🔗 Ficha</a>
         <button class="btn-admin btn-admin-outline" style="padding: 6px 10px;" onclick="editPanel(${panel.id})" title="Editar">✏️</button>
@@ -1853,10 +1904,12 @@ window.handlePanelFormSubmit = async function(e) {
   const audioInput = (document.getElementById('panel-audio-file')?.value || '').trim();
   const videoInput = (document.getElementById('panel-video-url')?.value || '').trim();
   const currentImgVal = document.getElementById('panel-current-img-url')?.value || './assets/images/logo-pajarillo.png';
+  const activeVal = document.getElementById('panel-edit-active') ? document.getElementById('panel-edit-active').checked : true;
 
   const newPanel = {
     id: id,
-    tag: document.getElementById('panel-edit-tag')?.value || 'escultura',
+    active: activeVal,
+    tag: document.getElementById('panel-edit-tag')?.value || 'visita',
     image: currentImgVal,
     audio: audioInput || null,
     video: videoInput || null,
@@ -1959,7 +2012,13 @@ window.editPanel = function(id, doScroll = true) {
   if (sel) sel.value = String(panel.id);
 
   document.getElementById('panel-edit-id').value = panel.id;
-  document.getElementById('panel-edit-tag').value = panel.tag || 'escultura';
+  const tagEl = document.getElementById('panel-edit-tag');
+  if (tagEl) tagEl.value = panel.tag || 'visita';
+
+  const activeCheckbox = document.getElementById('panel-edit-active');
+  const isActive = panel.active !== false;
+  if (activeCheckbox) activeCheckbox.checked = isActive;
+  window.updatePanelActiveLabel(isActive);
   const esContent = (panel.content && panel.content.es) ? panel.content.es : {};
   const enContent = (panel.content && panel.content.en) ? panel.content.en : {};
   const frContent = (panel.content && panel.content.fr) ? panel.content.fr : {};
@@ -2038,6 +2097,9 @@ function resetPanelForm() {
   const sel = document.getElementById('panel-select-target');
   if (sel) sel.value = 'new';
   document.getElementById('panel-edit-id').value = '';
+  const activeCheckbox = document.getElementById('panel-edit-active');
+  if (activeCheckbox) activeCheckbox.checked = true;
+  window.updatePanelActiveLabel(true);
   document.getElementById('panel-current-img-url').value = '';
   document.getElementById('panel-video-url').value = '';
   document.getElementById('panel-img-preview-box').style.display = 'none';
@@ -4478,7 +4540,7 @@ const DEFAULT_LOCALES = {
     contacto_subtitle: "¿Tienes alguna duda o deseas organizar una visita escolar o de investigación? Escríbenos.",
     tel: "(+34) 953 39 00 10",
     email: "turismo@aytohuelma.es",
-    ayto: "Ayuntamiento de Huelma · Concejalía de Patrimonio y Turismo",
+    ayto: "Ayuntamiento de Huelma",
     horario_atencion: "Lunes a Viernes de 9:00 a 14:00 h",
     direccion: "Calle Cárcel, 2 · 23560 Huelma (Jaén)",
     footer_copy: "© 2026 Centro de Interpretación Santuario Ibérico de El Pajarillo. Ayuntamiento de Huelma. Todos los derechos reservados."
@@ -5201,7 +5263,7 @@ function populateFormWithLang(lang) {
   setVal('cnt-galeria-tab-recursos', c.galeria_tab_recursos || 'Recursos Digitales');
   setVal('cnt-galeria-tab-videos', c.galeria_tab_videos || 'Audiovisuales');
   setVal('cnt-3d-desc', c.desc_3d);
-  setVal('cnt-3d-url', c.url_3d || localStorage.getItem('pajarillo_3d_model_url') || 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed');
+  setVal('cnt-3d-url', c.url_3d || localStorage.getItem('pajarillo_3d_model_url') || '');
 
   if (lang === 'es') {
     setVal('gallery-cfg-title', c.galeria_title || 'Galería Multimedia y Recursos Digitales');
@@ -5644,22 +5706,44 @@ const INITIAL_GALLERY_ITEMS = [
     id: 7,
     type: '3d',
     title: {
-      es: 'Reconstrucción 3D Interactiva del Santuario y Escultura',
-      en: 'Interactive 3D Reconstruction of the Sanctuary & Sculpture',
-      fr: 'Restitution 3D Interactive du Sanctuaire et de la Sculpture'
+      es: 'Escultura Héroe de El Pajarillo',
+      en: 'Hero of El Pajarillo Sculpture',
+      fr: 'Sculpture du Héros d\'El Pajarillo'
     },
     category: {
       es: 'Modelo 3D',
       en: '3D Model',
       fr: 'Modèle 3D'
     },
-    full: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
-    thumb: './assets/images/logo-pajarillo.png',
-    file: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed',
+    full: 'https://sketchfab.com/models/1db32c3265824fe4a07ee68598f74197/embed?autostart=0&camera=0&preload=1&ui_theme=dark',
+    thumb: './assets/images/santuario_ilustracion.png',
+    file: 'https://sketchfab.com/models/1db32c3265824fe4a07ee68598f74197/embed?autostart=0&camera=0&preload=1&ui_theme=dark',
     desc: {
-      es: 'Modelo oficial en Sketchfab con controles orbitales y realidad virtual del santuario oretano.',
-      en: 'Official Sketchfab model with orbital orbit controls and VR exploration.',
-      fr: 'Modèle officiel Sketchfab avec commandes orbitales et réalité virtuelle du sanctuaire orétan.'
+      es: 'Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo con controles orbitales y realidad virtual.',
+      en: 'Explore the three-dimensional model of the Iberian sculpture and the heroic sanctuary of El Pajarillo with orbital controls and virtual reality.',
+      fr: 'Explorez le modèle tridimensionnel de la sculpture ibérique et du sanctuaire héroïque d\'El Pajarillo avec commandes orbitales et réalité virtuelle.'
+    }
+  },
+  {
+    id: 8,
+    type: '3d',
+    title: {
+      es: 'Escultura Lobo de El Pajarillo',
+      en: 'El Pajarillo Wolf Sculpture',
+      fr: 'Sculpture du Loup d\'El Pajarillo'
+    },
+    category: {
+      es: 'Modelo 3D',
+      en: '3D Model',
+      fr: 'Modèle 3D'
+    },
+    full: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark',
+    thumb: './assets/images/logo-pajarillo.png',
+    file: 'https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark',
+    desc: {
+      es: 'Explora el modelo tridimensional de la escultura ibérica y el santuario heroico de El Pajarillo con controles orbitales y realidad virtual.',
+      en: 'Explore the three-dimensional model of the Iberian sculpture and the heroic sanctuary of El Pajarillo con controles orbitales y realidad virtual.',
+      fr: 'Explorez le modèle tridimensionnel de la sculpture ibérique et du sanctuaire héroïque d\'El Pajarillo avec commandes orbitales et réalité virtuelle.'
     }
   }
 ];
@@ -6924,7 +7008,7 @@ window.restoreFullBackupFromFile = function(inputEl) {
   const file = inputEl && inputEl.files && inputEl.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = async function(e) {
     try {
       const data = JSON.parse(e.target.result);
       if (data.panels) localStorage.setItem('pajarillo_panels', JSON.stringify(data.panels));
@@ -6937,6 +7021,20 @@ window.restoreFullBackupFromFile = function(inputEl) {
       if (data.p0_screensaver_volume) localStorage.setItem('pajarillo_kiosk_p0_screensaver_volume', data.p0_screensaver_volume);
       if (data.p1_video) localStorage.setItem('pajarillo_kiosk_p1_video', data.p1_video);
       if (data.p1_screensaver) localStorage.setItem('pajarillo_kiosk_p1_screensaver_video', data.p1_screensaver);
+
+      // Sincronizar también con el backend del servidor oficial para persistencia permanente
+      try {
+        await fetch('./api/data.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'restore_full_backup',
+            backup: data
+          })
+        });
+      } catch (srvErr) {
+        console.warn('Persistencia en servidor no disponible o entorno estático:', srvErr);
+      }
 
       alert('✅ Copia de seguridad restaurada con éxito. La página se recargará ahora.');
       location.reload();

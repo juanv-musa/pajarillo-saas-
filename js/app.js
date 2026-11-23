@@ -151,7 +151,7 @@ async function syncLegalFooter() {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v5.0';
+  const CACHE_VERSION = 'v5.4';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -767,9 +767,10 @@ async function loadExhibitionPoints(i18n) {
     }
 
     const lang = i18n.currentLang || 'es';
+    const activePanels = panels.filter(p => p.active !== false);
 
-    // Renderizado limpio solicitado: Solo recuadro con la imagen y el título, con enlace a ficha específica
-    container.innerHTML = panels.map(panel => {
+    // Renderizado limpio: Solo los puntos QR activos, con imagen y título
+    container.innerHTML = activePanels.map(panel => {
       const content = (panel.content && (panel.content[lang] || panel.content.es)) || { title: 'Punto Interpretativo' };
       const img = panel.image || './assets/images/lobo.png';
 
@@ -1122,34 +1123,69 @@ function setupBookingForm(i18n) {
   // ──────────────────────────────────────────
   // Control Anti-Bot / CAPTCHA Dinámico
   // ──────────────────────────────────────────
+  // Control Anti-Bot / CAPTCHA Dinámico Reforzado
+  // ──────────────────────────────────────────
   let isServerCaptcha = false;
   let currentCaptchaExpected = null;
+  let currentCaptchaToken = '';
+  let formInitTime = Date.now();
 
   async function loadCaptcha() {
     const qEl = document.getElementById('captcha-question');
+    const wrapEl = document.getElementById('captcha-visual-wrap');
     const inputEl = document.getElementById('b-captcha');
-    if (!qEl) return;
+    const tokenEl = document.getElementById('b-captcha-token');
+    if (!wrapEl && !qEl) return;
     if (inputEl) inputEl.value = '';
 
     try {
       const res = await fetch('./api/data.php?entity=captcha&t=' + Date.now(), { credentials: 'same-origin' }).catch(() => null);
       if (res && res.ok) {
         const data = await res.json().catch(() => null);
-        if (data && data.success && data.question) {
-          qEl.textContent = data.question;
+        if (data && data.success) {
+          if (data.svg && wrapEl) {
+            wrapEl.innerHTML = data.svg;
+          } else if (qEl && data.question) {
+            qEl.textContent = data.question;
+          }
+          currentCaptchaToken = data.token || '';
+          if (tokenEl) tokenEl.value = currentCaptchaToken;
           isServerCaptcha = true;
-          currentCaptchaExpected = null; // Validación segura delegada al servidor mediante sesión
+          currentCaptchaExpected = null;
+          formInitTime = Date.now();
           return;
         }
       }
     } catch (e) {}
 
-    // Fallback matemático dinámico en cliente (entorno estático / GitHub Pages)
+    // Fallback dinámico en cliente (entorno estático / GitHub Pages)
     isServerCaptcha = false;
-    const n1 = Math.floor(Math.random() * 8) + 2;
-    const n2 = Math.floor(Math.random() * 9) + 1;
-    currentCaptchaExpected = n1 + n2;
-    qEl.textContent = `¿Cuánto es ${n1} + ${n2}?`;
+    currentCaptchaToken = 'client-' + Date.now();
+    if (tokenEl) tokenEl.value = currentCaptchaToken;
+    const mode = Math.floor(Math.random() * 3);
+    let qText = '';
+    if (mode === 0) {
+      const n1 = Math.floor(Math.random() * 8) + 3;
+      const n2 = Math.floor(Math.random() * 8) + 2;
+      currentCaptchaExpected = n1 + n2;
+      qText = `${n1} + ${n2} = ?`;
+    } else if (mode === 1) {
+      const n1 = Math.floor(Math.random() * 10) + 8;
+      const n2 = Math.floor(Math.random() * 6) + 2;
+      currentCaptchaExpected = n1 - n2;
+      qText = `${n1} - ${n2} = ?`;
+    } else {
+      const n1 = Math.floor(Math.random() * 4) + 2;
+      const n2 = Math.floor(Math.random() * 4) + 2;
+      currentCaptchaExpected = n1 * n2;
+      qText = `${n1} × ${n2} = ?`;
+    }
+    if (wrapEl) {
+      wrapEl.innerHTML = `<span style="display:inline-block; font-family:monospace; font-size:1.15rem; font-weight:700; color:#1B3828; background:#f0f5f1; padding:3px 10px; border-radius:4px; border:1px solid #d4ded6; letter-spacing:2px; user-select:none;">${qText}</span>`;
+    } else if (qEl) {
+      qEl.textContent = qText;
+    }
+    formInitTime = Date.now();
   }
 
   loadCaptcha();
@@ -1166,10 +1202,16 @@ function setupBookingForm(i18n) {
     e.preventDefault();
     if (errorBox) errorBox.style.display = 'none';
 
+    // Verificación 0: Tiempo de respuesta humano mínimo (detección anti-bot)
+    if (Date.now() - formInitTime < 2000) {
+      showBookingError('Envío instantáneo detectado como posible bot. Por favor, tómate un momento para revisar los datos introducidos.');
+      return;
+    }
+
     // Verificación 1: Campo trampa invisible (Honeypot)
     const hpVal = (document.getElementById('b-website-hp')?.value || '').trim();
     if (hpVal !== '') {
-      alert('Error en la verificación de seguridad.');
+      showBookingError('Error en la verificación de seguridad automática.');
       return;
     }
 
@@ -1188,43 +1230,78 @@ function setupBookingForm(i18n) {
       return;
     }
 
-    // Si opera en fallback estático (sin servidor PHP)
+    // Fallback estático
     if (!isServerCaptcha && currentCaptchaExpected !== null) {
       if (captchaVal !== currentCaptchaExpected) {
-        showBookingError('Control de seguridad anti-spam incorrecto. Por favor, resuelve la suma para verificar que eres una persona.');
+        showBookingError('Control de seguridad anti-spam incorrecto. Por favor, resuelve la operación matemática.');
         captchaInput?.focus();
         captchaInput?.select();
+        loadCaptcha();
         return;
       }
     }
 
-    // Verificación 3: Validación de campos en cliente
+    // Verificación 3: Validación exhaustiva de cada dato del usuario
+
+    // A) Nombre completo
     const nameVal = (document.getElementById('b-name')?.value || '').trim();
     if (nameVal.length < 3 || nameVal.length > 70) {
       showBookingError('El nombre completo debe tener entre 3 y 70 caracteres.');
       document.getElementById('b-name')?.focus();
       return;
     }
+    if (!/^[\p{L}\s\.\'\-]{3,70}$/u.test(nameVal)) {
+      showBookingError('El nombre solo puede contener letras y caracteres ortográficos válidos.');
+      document.getElementById('b-name')?.focus();
+      return;
+    }
+    if (/(.)\1{4,}/u.test(nameVal)) {
+      showBookingError('El nombre no parece válido. Evita secuencias de caracteres repetidos.');
+      document.getElementById('b-name')?.focus();
+      return;
+    }
+    if (/\b(http|https|www|seo|crypto|bitcoin|casino|viagra|loans?|free|test|prueba)\b/i.test(nameVal)) {
+      showBookingError('Nombre no permitido por el filtro de seguridad.');
+      document.getElementById('b-name')?.focus();
+      return;
+    }
 
+    // B) Correo electrónico
     const emailVal = (document.getElementById('b-email')?.value || '').trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailVal) || emailVal.length > 100) {
-      showBookingError('Por favor, introduce un correo electrónico válido.');
+    const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+    if (!emailRegex.test(emailVal) || emailVal.length < 6 || emailVal.length > 90) {
+      showBookingError('Por favor, introduce un correo electrónico válido con formato nombre@dominio.com');
+      document.getElementById('b-email')?.focus();
+      return;
+    }
+    const disposableDomains = ['mailinator.com', 'yopmail.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'trashmail.com', 'sharklasers.com'];
+    const emailDomain = emailVal.split('@')[1]?.toLowerCase();
+    if (disposableDomains.includes(emailDomain)) {
+      showBookingError('No se admiten correos electrónicos temporales o desechables.');
       document.getElementById('b-email')?.focus();
       return;
     }
 
+    // C) Teléfono de contacto
     const phoneVal = (document.getElementById('b-phone')?.value || '').trim();
-    const digitsOnly = phoneVal.replace(/\D/g, '');
-    if (digitsOnly.length < 7 || digitsOnly.length > 15) {
-      showBookingError('El número de teléfono debe tener un formato numérico válido (entre 7 y 15 dígitos).');
+    const cleanPhone = phoneVal.replace(/[^0-9+\s\-()]/g, '');
+    const digitsOnly = cleanPhone.replace(/\D/g, '');
+    if (digitsOnly.length < 8 || digitsOnly.length > 15) {
+      showBookingError('El número de teléfono debe tener un formato numérico válido (entre 8 y 15 dígitos).');
+      document.getElementById('b-phone')?.focus();
+      return;
+    }
+    const fakePhones = ['123456789', '987654321', '012345678', '000000000', '111111111', '222222222', '333333333', '444444444', '555555555', '666666666', '777777777', '888888888', '999999999'];
+    if (fakePhones.includes(digitsOnly) || /^(\d)\1{7,}$/.test(digitsOnly)) {
+      showBookingError('El número de teléfono introducido no parece válido.');
       document.getElementById('b-phone')?.focus();
       return;
     }
 
+    // D) Fecha de visita
     const dateVal = document.getElementById('b-date')?.value || '';
-    if (!dateVal) {
-      showBookingError('Por favor, selecciona una fecha para tu visita.');
+    if (!dateVal || !/^\d{4}-\d{2}-\d{2}$/.test(dateVal)) {
+      showBookingError('Por favor, selecciona una fecha válida para tu visita (AAAA-MM-DD).');
       document.getElementById('b-date')?.focus();
       return;
     }
@@ -1236,22 +1313,56 @@ function setupBookingForm(i18n) {
       document.getElementById('b-date')?.focus();
       return;
     }
+    const maxFuture = new Date();
+    maxFuture.setDate(maxFuture.getDate() + 180);
+    if (selectedDate > maxFuture) {
+      showBookingError('La fecha seleccionada no puede superar los 6 meses de antelación.');
+      document.getElementById('b-date')?.focus();
+      return;
+    }
+    // Lunes cerrado
     if (selectedDate.getDay() === 1) {
       showBookingError('El centro permanece cerrado los lunes por mantenimiento. Por favor, selecciona una fecha de martes a domingo.');
       document.getElementById('b-date')?.focus();
       return;
     }
+    // Festivos de cierre
+    const m = selectedDate.getMonth() + 1;
+    const d = selectedDate.getDate();
+    if ((m === 12 && d === 25) || (m === 1 && d === 1)) {
+      showBookingError('El centro permanece cerrado en festivos oficiales (25 de diciembre y 1 de enero).');
+      document.getElementById('b-date')?.focus();
+      return;
+    }
 
+    // E) Turno horario
+    const timeVal = document.getElementById('b-time')?.value || '10:30';
+    if (selectedDate.getDay() === 0) { // Domingo
+      const hour = parseInt(timeVal.split(':')[0], 10);
+      if (hour >= 15) {
+        showBookingError('Los domingos el centro abre solo en horario de mañana (hasta las 14:30 h). Elige un turno matinal.');
+        document.getElementById('b-time')?.focus();
+        return;
+      }
+    }
+
+    // F) Visitantes
     const peopleVal = parseInt(document.getElementById('b-people')?.value || '2', 10);
     if (isNaN(peopleVal) || peopleVal < 1 || peopleVal > 25) {
-      showBookingError('El número de visitantes debe ser entre 1 y 25 personas.');
+      showBookingError('El número de visitantes debe ser entre 1 y 25 personas. Para grupos mayores, contacta directamente con Turismo de Huelma.');
       document.getElementById('b-people')?.focus();
       return;
     }
 
+    // G) Observaciones
     const notesVal = (document.getElementById('b-notes')?.value || '').trim();
-    if (/https?:\/\/|www\./i.test(notesVal)) {
-      showBookingError('El campo de observaciones no puede incluir enlaces web ni URLs.');
+    if (/https?:\/\/|www\.|\.([a-z]{2,6})\b/i.test(notesVal)) {
+      showBookingError('El campo de observaciones no puede incluir enlaces web, dominios ni URLs.');
+      document.getElementById('b-notes')?.focus();
+      return;
+    }
+    if (/<\s*script|javascript:|onerror|onload|<iframe|<object|SELECT\s+.*FROM|INSERT\s+INTO|UPDATE\s+.*SET|DROP\s+TABLE/i.test(notesVal)) {
+      showBookingError('El texto de observaciones contiene caracteres o palabras no permitidas.');
       document.getElementById('b-notes')?.focus();
       return;
     }
@@ -1264,13 +1375,14 @@ function setupBookingForm(i18n) {
     const bookingData = {
       name: nameVal,
       email: emailVal,
-      phone: phoneVal,
+      phone: cleanPhone,
       date: dateVal,
-      time: document.getElementById('b-time')?.value || '11:00',
+      time: timeVal,
       people: peopleVal,
       lang: document.getElementById('b-lang')?.value || 'es',
       notes: notesVal.slice(0, 300),
       captcha: captchaVal,
+      captcha_token: currentCaptchaToken,
       website_hp: hpVal
     };
 

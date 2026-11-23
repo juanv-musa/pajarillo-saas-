@@ -56,8 +56,8 @@ export class I18nManager {
     // Sobrescribir con cambios guardados en el panel de administración (localStorage o servidor)
     try {
       let savedLocales = localStorage.getItem('pajarillo_locales');
-      // Purga estricta si contiene datos obsoletos de braille o código postal erróneo 23140
-      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales))) {
+      // Purga estricta si contiene datos obsoletos de braille, código postal erróneo o versión anterior
+      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales) || localStorage.getItem('pajarillo_app_v') !== 'v5.4')) {
         localStorage.removeItem('pajarillo_locales');
         savedLocales = null;
       }

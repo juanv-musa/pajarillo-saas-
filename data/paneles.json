@@ -3,322 +3,332 @@
     {
       "id": 1,
       "tag": "arquelogia",
-      "image": "./assets/images/lobo.png",
+      "image": "./uploads/pajarillo_20261120_162104_ea7787e2869e.png",
       "audio": null,
-      "video": "https://www.w3schools.com/html/mov_bbb.mp4",
+      "video": null,
+      "pdf": "./uploads/pajarillo_20261123_131946_ace077804a42.pdf",
+      "pdf_title": "TRIPTICO_CI EL PAJARILLO DIGITAL",
+      "external_url": "https://www.aytohuelma.es/cipajarillo/index.html",
+      "redirect_external": false,
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": true,
+      "content": {
+        "es": {
+          "title": "BIENVENIDA Y RECORRIDO",
+          "subtitle": "",
+          "description": "Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización."
+        },
+        "en": {
+          "title": "WELCOME AND TOUR",
+          "subtitle": "",
+          "description": "Carved from local white limestone over 2,400 years ago, the Wolf's Head is the masterpiece of Iberian peninsular sculptural art. It depicts a wild carnivore larger than life-size, with open jaws displaying fangs and finely carved teeth, expressive eyes, and ears laid back in an attitude of imminent attack. In the original monument, it formed part of the heroic combat scenery in which a young prince confronted the beast to consecrate his dynastic memory and his heroization."
+        },
+        "fr": {
+          "title": "BIENVENUE ET PARCOURS",
+          "subtitle": "",
+          "description": "Taillée dans du calcaire blanc local il y a plus de 2 400 ans, la Tête de Loup est le chef-d'œuvre de l'art sculptural ibérique péninsulaire. Elle représente un carnivore sauvage plus grand que nature, la gueule ouverte laissant apparaître des crocs et une dentition parfaitement ciselée, des yeux expressifs et les oreilles rabattues vers l'arrière dans une attitude d'attaque imminente. Dans le monument d'origine, elle faisait partie de la scénographie du combat héroïque au cours duquel un jeune prince affrontait la bête pour consacrer sa mémoire dynastique et son héroïsation."
+        }
+      },
+      "active": true
+    },
+    {
+      "id": 2,
+      "tag": "arquelogia",
+      "image": "./uploads/pajarillo_20261123_132129_277c8c7d0915.png",
+      "audio": null,
+      "video": null,
+      "pdf": null,
+      "pdf_title": null,
+      "external_url": "https://www.aytohuelma.es/recorrido-por-la-localidad/",
+      "redirect_external": false,
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "content": {
+        "es": {
+          "title": "HUELMA Y SU PATRIMONIO",
+          "subtitle": "",
+          "description": "Situada al sur de Jaén, en la antigua frontera entre Castilla y el reino nazarí, Huelma controló estratégicamente el valle del Jandulilla. Su casco antiguo (Conjunto Histórico-Artístico desde 1971) destaca por dos joyas monumentales: el Castillo de los Duques de Alburquerque (s. XVI, sobre origen islámico) y la Iglesia de la Inmaculada Concepción, obra clave del Renacimiento jiennense con intervención de Andrés de Vandelvira. Este legado se funde con un paisaje rural único, esculpido durante siglos entre olivares tradicionales y caminos históricos que forjan la identidad de la comarca."
+        },
+        "en": {
+          "title": "HUELMA AND ITS HERITAGE",
+          "subtitle": "",
+          "description": "Located south of Jaén, on the former border between Castile and the Nasrid Kingdom, Huelma strategically controlled the Jandulilla Valley. Its old town (declared a Historic-Artistic Site in 1971) stands out for two monumental landmarks: the Castle of the Dukes of Alburquerque (16th century, built over an earlier Islamic fortress) and the Church of the Immaculate Conception, a Renaissance masterpiece featuring work by Andrés de Vandelvira. This legacy blends seamlessly with a unique rural landscape, shaped over centuries by traditional olive groves and historic pathways that define the region's identity."
+        },
+        "fr": {
+          "title": "HUELMA ET SON PATRIMOINE",
+          "subtitle": "",
+          "description": "Située au sud de Jaén, sur l'ancienne frontière entre la Castille et le royaume nasride, Huelma contrôlait stratégiquement la vallée du Jandulilla. Sa vieille ville (déclarée Ensemble Historique et Artistique en 1971) se distingue par deux joyaux monumentaux : le château des Ducs d'Alburquerque (XVIe siècle, bâti sur une ancienne forteresse islamique) et l'église de l'Immaculée Conception, chef-d'œuvre de la Renaissance marqué par l'intervention d'Andrés de Vandelvira. Cet héritage se fond dans un paysage rural unique, façonné au fil des siècles par des oliveraies traditionnelles et des chemins historiques qui forgent l'identité de la région."
+        }
+      },
+      "active": true
+    },
+    {
+      "id": 3,
+      "tag": "arquelogia",
+      "image": "./uploads/pajarillo_20261123_132955_88bac5baea31.png",
+      "audio": null,
+      "video": null,
+      "pdf": null,
+      "pdf_title": null,
+      "external_url": "https://cismamagina.es/piedra-seca/",
+      "redirect_external": false,
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "content": {
+        "es": {
+          "title": "PIEDRA SOBRE PIEDRA",
+          "subtitle": "",
+          "description": "Durante siglos, las generaciones de Sierra Mágina moldearon el paisaje mediante la técnica de la piedra seca (Patrimonio Inmaterial de la UNESCO desde 2018): encajar caliza local sin mortero, sustentada solo por equilibrio y fricción. Con este ingenio levantaron bancales, linderos, chozos y pozos de nieve esenciales para la vida en la sierra. Esta tradición hunde sus raíces hace más de 2.000 años, cuando las comunidades iberas tallaron esta misma piedra para erigir el santuario de El Pajarillo y delimitar su territorio."
+        },
+        "en": {
+          "title": "STONE ON STONE",
+          "subtitle": "",
+          "description": "For centuries, generations in Sierra Mágina shaped the landscape using dry-stone walling (recognized as UNESCO Intangible Cultural Heritage in 2018)—fitting local limestone without mortar, held together purely by balance and friction. Through this craft, they built terraces, boundary walls, shepherd huts, and snow wells vital for mountain life. This mastery of stone dates back over 2,000 years, when Iberian communities carved this same local rock to build the sanctuary of El Pajarillo and mark their territorial borders."
+        },
+        "fr": {
+          "title": "PIERRE SUR PIERRE",
+          "subtitle": "",
+          "description": "Pendant des siècles, les générations de la Sierra Mágina ont façonné le paysage grâce à la technique de la pierre sèche (Patrimoine Culturel Immatériel de l'UNESCO depuis 2018) : un assemblage de calcaire local sans mortier, maintenu uniquement par l'équilibre et la friction. Ce savoir-faire a permis d'ériger terrasses, murets de délimitation, cabanes et puits à neige essentiels à la vie en montagne. Cette maîtrise de la pierre remonte à plus de 2 000 ans, lorsque les communautés ibères ont taillé cette même roche pour bâtir le sanctuaire d'El Pajarillo et marquer les limites de leur territoire."
+        }
+      },
+      "active": true
+    },
+    {
+      "id": 4,
+      "tag": "arquelogia",
+      "image": "./uploads/pajarillo_20261123_134548_b20353629472.png",
+      "audio": null,
+      "video": null,
+      "pdf": null,
+      "pdf_title": null,
+      "external_url": "https://jaenparaisointerior.es/los-iberos",
+      "redirect_external": false,
+      "has_image": true,
+      "has_audio": false,
+      "has_video": false,
+      "has_pdf": false,
+      "content": {
+        "es": {
+          "title": "LA SOCIEDAD IBERA",
+          "subtitle": "",
+          "description": "Lejos de ser un territorio unificado, el mundo ibero fue un conjunto diverso de pueblos con rasgos comunes asentados en el sur y este peninsular y el sur de Francia. En esta sociedad marcada por el origen de cada persona, una élite aristocrática controlaba las tierras, las rutas y el comercio mediterráneo, mientras las familias dependientes trabajaban el campo, la ganadería y la artesanía a cambio de protección. Hombres y mujeres participaban en la producción y los rituales comunitarios —sosteniendo ellas gran parte de la vida doméstica— y la infancia se integraba pronto en el trabajo diario."
+        },
+        "en": {
+          "title": "IBERIAN SOCIETY",
+          "subtitle": "",
+          "description": "Far from being a unified territory, the Iberian world was a diverse tapestry of peoples sharing common traits across the southern and eastern Iberian Peninsula and southern France. In a society defined by one's birthplace, an aristocratic elite controlled the land, mountain passes, and Mediterranean trade, while dependent families worked in agriculture, livestock, and crafts in exchange for protection. Both men and women participated in production and community rituals—with women sustaining much of domestic life—while children joined daily labor at an early age."
+        },
+        "fr": {
+          "title": "LA SOCIÉTÉ IBÈRE",
+          "subtitle": "",
+          "description": "Loin d'être un territoire unifié, le monde ibère formait un ensemble diversifié de peuples aux traits communs, établis dans le sud et l'est de la péninsule Ibérique ainsi que dans le sud de la France. Dans cette société marquée par le lieu de naissance, une élite aristocratique contrôlait les terres, les passages et le commerce méditerranéen, tandis que des familles dépendantes se consacraient à l'agriculture, l'élevage et l'artisanat en échange de protection. Hommes et femmes participaient à la production et aux rituels communautaires — les femmes assurant en outre l'essentiel de la vie domestique — et les enfants intégraient très tôt le travail quotidien."
+        }
+      },
+      "active": true
+    },
+    {
+      "id": 5,
+      "tag": "escultura",
+      "image": "./uploads/pajarillo_20261123_134604_a8390b2d8071.png",
+      "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
       "external_url": null,
       "redirect_external": false,
       "has_image": true,
       "has_audio": false,
-      "has_video": true,
-      "has_pdf": false,
-      "content": {
-        "es": {
-          "title": "BIENVENIDA Y RECORRIDO",
-          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
-          "description": "Tallada en caliza blanca local hace más de 2.400 años, la Cabeza de Lobo es la obra maestra del arte escultórico ibérico peninsular.Representa a un carnívoro salvaje de tamaño superior al natural, con las fauces abiertas mostrando colmillos y piezas dentales perfectamente labradas, ojos expresivos y orejas replegadas hacia atrás en actitud de ataque inminente.En el monumento original formaba parte de la escenografía del combate heroico en el que un joven príncipe se enfrentaba a la fiera para consagrar su memoria dinástica y su heroización."
-        },
-        "en": {
-          "title": "The Wolf's Head",
-          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
-          "description": "Carved from local white limestone over 2,400 years ago, the Wolf's Head represents a high watermark of ancient Iberian stone sculpture.Depicting a snarling wolf larger than life, with open jaws revealing intricately chiselled fangs, alert eyes, and folded ears in an aggressive stance.Originally positioned on the monument's summit terrace, it formed part of a mythic struggle where a noble youth faced the savage beast to achieve heroic apotheosis."
-        },
-        "fr": {
-          "title": "La Tête de Loup",
-          "subtitle": "Pieza cumbre del Santuario de El Pajarillo · S. IV a.C.",
-          "description": "Sculptée dans le calcaire il y a plus de 2 400 ans, la Tête de Loup constitue l'un des sommets de l'art ibérique antique.Elle figure un loup grandeur nature aux babines retroussées, dévoilant des crocs acérés et des oreilles dressées vers l'arrière dans una posture de combat.Elle incarnait l'adversaire mythique terrassé par le prince héroïsé pour légitimer son prestige divinisé."
-        }
-      }
-    },
-    {
-      "id": 2,
-      "tag": "arquelogia",
-      "image": "./assets/images/arqueologia.png",
-      "video": null,
-      "audio": null,
-      "pdf": null,
-      "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "El Monumento Heroico Escalonado",
-          "subtitle": "Estructura arquitectónica y ceremonial · Yacimiento",
-          "description": "<p>Las excavaciones arqueológicas sacaron a la luz una imponente estructura en gradas construida en una loma dominante sobre el curso del río Jandulilla.</p><p>El monumento medía más de 30 metros de longitud, organizado en tres terrazas sucesivas reforzadas con muros de mampostería y sillares. En la plataforma superior se emplazaba la escenografía escultórica completa.</p><p>Era un hito visual en el paisaje oretano que marcaba la frontera y consolidaba la memoria dinástica del clan gobernante.</p>"
-        },
-        "en": {
-          "title": "The Stepped Heroic Monument",
-          "subtitle": "Architectural and ceremonial sanctuary layout",
-          "description": "<p>Archaeological digs uncovered a monumental stepped terrace raised on a promontory overlooking the Jandulilla valley.</p><p>Measuring over 30 metres across three staggered platforms supported by stone ashlar revetments, the highest level hosted the heroic sculptural group.</p><p>It served as a sacred landmark signifying territorial authority and immortal aristocratic memory.</p>"
-        },
-        "fr": {
-          "title": "Le Monument Héroïque Étagé",
-          "subtitle": "Structure architecturale et cérémonielle du sanctuaire",
-          "description": "<p>Les fouilles ont mis au jour une vaste architecture étagée en terrasses dominant la plaine fluviale de la Jandulilla.</p><p>Bâti sur trois niveaux renforcés de murs en pierre de taille, le sommet accueillait le groupe sculpté de l'affrontement rituel.</p><p>Le sanctuaire marquait le paysage sacré et pérennisait la mémoire héroïque des élites régionales.</p>"
-        }
-      },
-      "has_image": true,
-      "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
-    },
-    {
-      "id": 3,
-      "tag": "arquelogia",
-      "image": "./assets/images/iltiraka.png",
-      "video": null,
-      "audio": null,
-      "pdf": null,
-      "pdf_title": null,
       "content": {
         "es": {
-          "title": "El Territorio de Iltiraka: Un valle que domesticar",
-          "subtitle": "Colonización ibérica del valle del río Jandulilla · S. IV a.n.e.",
-          "description": "<p>Hace 2.400 años, a comienzos del siglo IV a.n.e., el oppidum de Iltiraka (Úbeda la Vieja) puso los ojos en este valle salvaje (silva): bosque profundo poblado por lobos y seres indómitos.</p><p>Para incorporarlo a su dominio, la aristocracia ibera necesitaba legitimar su presencia mediante un héroe fundador. Fundó la Loma del Perro, controló los pasos hacia el sur y erigió en la cabecera del río el Santuario de El Pajarillo.</p><p>Así nació un territorio organizado como dominio sagrado de linaje (pagus).</p>"
+          "title": "LA EXCAVACIÓN DE 1994",
+          "subtitle": "",
+          "description": "Estas imágenes documentan la excavación arqueológica de urgencia realizada en 1994 en el Cortijo de El Pajarillo, impulsada tras el hallazgo fortuito de esculturas en labores agrícolas. A través de los trabajos de campo y la documentación estratigráfica y arquitectónica, el equipo arqueológico sacó a la luz un heroon ibero del siglo IV a.n.e. de valor excepcional, sentando las bases científicas para comprender su arquitectura, su función ritual y su posterior declaración como Bien de Interés Cultural."
         },
         "en": {
-          "title": "The Territory of Iltiraka: A Valley to Control",
-          "subtitle": "Iberian colonization of the Jandulilla River Valley · 4th c. BCE",
-          "description": "<p>2,400 years ago, at the start of the 4th century BCE, the oppidum of Iltiraka (Úbeda la Vieja) claimed this wild valley (silva): deep forest, realm of wolves and untamed forces.</p><p>To incorporate it, the Iberian aristocracy legitimized their control through a founding hero, founding Loma del Perro and raising the heroic sanctuary of El Pajarillo at the river headwaters.</p><p>Thus was born a cohesive territory governed by an aristocratic lineage (pagus).</p>"
+          "title": "THE 1994 EXCAVATION",
+          "subtitle": "",
+          "description": "These images document the emergency archaeological excavation carried out in 1994 at Cortijo de El Pajarillo, prompted by the accidental discovery of sculptures during agricultural work. Through fieldwork alongside stratigraphic and architectural documentation, the archaeological team brought to light an extraordinary 4th-century BCE Iberian heroon, laying the scientific foundation for understanding its architecture, ritual function, and later designation as an Asset of Cultural Interest."
         },
         "fr": {
-          "title": "Le Territoire d'Iltiraka : Une vallée à conquérir",
-          "subtitle": "Colonisation ibère de la vallée du Jandulilla · IVe s. av. J.-C.",
-          "description": "<p>Il y a 2 400 ans, l'oppidum d'Iltiraka (Úbeda la Vieja) jeta son dévolu sur cette vallée sauvage (silva), domaine indompté des bêtes et de la forêt.</p><p>Pour s'approprier ces terres, le lignage noble érigea le sanctuaire d'El Pajarillo en hommage à son héros fondateur et contrôla les voies d'accès méridionales.</p><p>C'est ainsi que la vallée devint le territorio consacré d'une aristocratie dominante (pagus).</p>"
+          "title": "LA FOUILLES DE 1994",
+          "subtitle": "",
+          "description": "Ces images documentent la fouille archéologique d'urgence menée en 1994 au Cortijo de El Pajarillo, déclenchée après la découverte fortuite de sculptures lors de travaux agricoles. Grâce au travail de terrain et à la documentation stratigraphique et architecturale, l'équipe archéologique a mis au jour un hérôon ibère exceptionnel du IVe siècle av. n. è., posant les bases scientifiques pour comprendre son architecture, sa fonction rituelle et son futur classement comme Bien d'Intérêt Culturel."
         }
       },
-      "has_image": true,
-      "has_audio": false,
-      "has_video": false,
-      "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
-    },
-    {
-      "id": 4,
-      "tag": "arquelogia",
-      "image": "./assets/images/santuario_ilustracion.png",
-      "video": null,
-      "audio": null,
-      "pdf": null,
-      "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "Un Paisaje Sagrado: El camino ritual y El Fontanar",
-          "subtitle": "Espacio ceremonial y sacralización territorial · Cultura Íbera",
-          "description": "<p>Iltiraka no solo ocupó el valle: lo consagró. A lo largo del cauce del río Jandulilla articuló dos grandes hitos sagrados: el Santuario Heroico de El Pajarillo y el monumento de El Fontanar, célebre por su escena escultórica de unión divina.</p><p>Ambos enclaves estaban conectados por un camino ritual procesional. Recorrerlo permitía rememorar el viaje mítico del héroe hacia el inframundo, protegiendo y sacralizando todo el valle.</p>"
-        },
-        "en": {
-          "title": "A Sacred Landscape: The Ritual Path & El Fontanar",
-          "subtitle": "Ceremonial space and territorial sanctification · Iberian Culture",
-          "description": "<p>Iltiraka did not merely conquer the valley: it sanctified it. Along the Jandulilla River it established two sacred landmarks: the Heroic Sanctuary of El Pajarillo and the El Fontanar monument, celebrated for its divine union scene.</p><p>Linked by a ceremonial procession path, traveling it commemorated the founding hero's otherworldly journey, binding the valley as consecrated lineage ground.</p>"
-        },
-        "fr": {
-          "title": "Un Paysage Sacré : Le chemin rituel et El Fontanar",
-          "subtitle": "Espace cérémoniel et sanctification territoriale · Culture Ibère",
-          "description": "<p>Iltiraka consacra la vallée en reliant deux sanctuaires majeurs : le monument héroïque d'El Pajarillo et le site d'El Fontanar, connu pour sa scène d'union divine.</p><p>Reliés par une voie rituelle, ce chemin permettait de revivre le voyage mythique du héros fondateur, sacralisant tout le bassin fluvial sous la tutelle du lignage.</p>"
-        }
-      },
-      "has_image": true,
-      "has_audio": false,
-      "has_video": false,
-      "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
-    },
-    {
-      "id": 5,
-      "tag": "escultura",
-      "image": "./assets/images/leon.png",
-      "video": null,
-      "audio": null,
-      "pdf": null,
-      "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "El Guerrero de la Falcata y los Leones Protectores",
-          "subtitle": "El ajuar escultórico y las excavaciones arqueológicas (1933–1994)",
-          "description": "<p>El conjunto escultórico descubierto en El Cortijo del Pajarillo incluía, junto a la Cabeza de Lobo, dos soberbios leones guardianes y la estatua de un guerrero aristócrata portando una falcata ibérica.</p><p>Hallados entre las obras de la carretera de Solera en 1933 y las labores agrícolas de 1993, dieron origen a la excavación de urgencia de 1994 por la Universidad de Jaén y al reconocimiento como Bien de Interés Cultural en 2006.</p>"
-        },
-        "en": {
-          "title": "The Falcata Warrior & The Protective Lions",
-          "subtitle": "Sculptural ensemble and archaeological recoveries (1933–1994)",
-          "description": "<p>The sculptural ensemble discovered at Cortijo del Pajarillo featured, alongside the Wolf's Head, two majestic guardian lions and an aristocratic warrior wielding an Iberian falcata.</p><p>Discovered between roadworks in 1933 and agricultural labors in 1993, they prompted the 1994 rescue excavation by the University of Jaén and BIC heritage status in 2006.</p>"
-        },
-        "fr": {
-          "title": "Le Guerrier à la Falcata et les Lions Protecteurs",
-          "subtitle": "Groupe sculptural et découvertes archéologiques (1933–1994)",
-          "description": "<p>L'ensemble sculptural de Cortijo del Pajarillo comprenait, avec la Tête de Loup, deux lions gardiens et la statue d'un guerrier noble armé d'une falcata ibérique.</p><p>Découverts en 1933 puis en 1993, ces vestiges ont conduit aux fouilles scientifiques d'urgence de 1994 par l'Université de Jaén et au classement Monument Historique (BIC) en 2006.</p>"
-        }
-      },
-      "has_image": true,
-      "has_audio": false,
-      "has_video": false,
-      "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "active": true
     },
     {
       "id": 6,
       "tag": "escultura",
-      "image": "./assets/images/lobo.png",
-      "video": null,
+      "image": "./uploads/pajarillo_20261123_134626_60d8dfeced05.png",
       "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "Los Grifos y Seres Alados del Santuario",
-          "subtitle": "Mitología orientalizante y guardianes míticos · S. IV a.C.",
-          "description": "<p>Junto a los leones y el lobo, el santuario incorporaba representaciones de criaturas aladas híbridas inspiradas en el repertorio mediterráneo e ibérico.</p><p>Los grifos actuaban como guardianes apotropaicos del umbral sagrado, impidiendo la entrada de espíritus malignos y acompañando al héroe difunto en su tránsito hacia la inmortalidad.</p>"
-        },
-        "en": {
-          "title": "The Griffins and Winged Guardians",
-          "subtitle": "Orientalizing mythology and mythic guardians · 4th c. BC",
-          "description": "<p>Alongside lions and the wolf, the sanctuary featured representations of winged hybrid creatures inspired by Mediterranean Iberian traditions.</p><p>Griffins acted as apotropaic guardians of the sacred boundary, protecting the monument and guiding the hero towards immortality.</p>"
-        },
-        "fr": {
-          "title": "Les Griffons et Créatures Ailées",
-          "subtitle": "Mythologie orientalisante et gardiens sacrés · IVe s. av. J.-C.",
-          "description": "<p>Aux côtés des lions et du loup, le sanctuaire intégrait des créatures ailées hybrides issues du répertoire méditerranéen ibérique.</p><p>Les griffons protégeaient l'espace sacré et veillaient sur l'apothéose du prince héroïsé.</p>"
-        }
-      },
+      "external_url": "https://www.juntadeandalucia.es/organismos/culturapatrimoniohistoricoydeporte/areas/cultura/bienes-culturales/catalogo-pha/consulta/detalle/003268005018",
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "EL CORTIJO DE EL PAJARILLO",
+          "subtitle": "",
+          "description": "El yacimiento toma su nombre del cortijo donde se ubica (vinculado por tradición oral a un antiguo pajar). Hace más de 2.400 años, la aristocracia ibera levantó aquí un heroon —un santuario monumental dedicado a un héroe fundador—, convirtiéndose en uno de los enclaves clave del Alto Guadalquivir. Tras los primeros indicios en 1933, el hallazgo fortuito de dos grandes esculturas en 1993 impulsó la excavación arqueológica de 1994. En 2006 fue declarado Bien de Interés Cultural (Zona Arqueológica), la máxima figura de protección patrimonial."
+        },
+        "en": {
+          "title": "CORTIJO DE EL PAJARILLO",
+          "subtitle": "",
+          "description": "The site takes its name from the rural estate (cortijo) where it stands, linked by oral tradition to an old haystack (pajar). Over 2,400 years ago, the Iberian aristocracy erected a heroon here—a monumental sanctuary dedicated to a founding hero—making it one of the most significant Iberian sites in the Upper Guadalquivir region. Following initial sculptural discoveries in 1933, the accidental unearthing of two large statues in 1993 led to a major excavation in 1994. In 2006, it was declared an Asset of Cultural Interest (Archaeological Zone), Spain's highest heritage protection status."
+        },
+        "fr": {
+          "title": "CORTIJO DE EL PAJARILLO",
+          "subtitle": "",
+          "description": "Le site tire son nom du domaine agricole (cortijo) où il se trouve, associé par la tradition orale à une ancienne grange à foin (pajar). Il y a plus de 2 400 ans, l'aristocratie ibère y a érigé un hérôon — un sanctuaire monumental dédié à un héros fondateur —, l'un des plus importants du Haut-Guadalquivir. Après de premiers indices en 1933, la découverte fortuite de deux grandes sculptures en 1993 a déclenché une fouille d'urgence en 1994. En 2006, le site a été déclaré Bien d'Intérêt Culturel (Zone Archéologique), la plus haute protection patrimoniale."
+        }
+      },
+      "active": true
     },
     {
       "id": 7,
       "tag": "arquelogia",
-      "image": "./assets/images/arqueologia.png",
-      "video": null,
+      "image": "./uploads/pajarillo_20261123_134641_3d36c18e2235.png",
       "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "La Falcata Ibérica y el Armamento Sagrado",
-          "subtitle": "Símbolo de poder militar y estatus aristocrático",
-          "description": "<p>La falcata es el arma más emblemática del guerrero íbero. Su hoja curvada de doble filo y empuñadura decorada con cabezas de caballo o ave conferían a su portador un rango nobiliario indiscutible.</p><p>En El Pajarillo, la falcata esculpida junto al héroe simboliza la victoria del orden civilizado frente al caos salvaje de la fiera indómita.</p>"
-        },
-        "en": {
-          "title": "The Iberian Falcata & Sacred Weaponry",
-          "subtitle": "Symbol of military prowess and aristocratic status",
-          "description": "<p>The falcata is the defining weapon of the ancient Iberian warrior. Its curved blade and decorated hilt signified high aristocratic nobility.</p><p>At El Pajarillo, the falcata borne by the sculptured warrior proclaims civilized order over untamed wilderness.</p>"
-        },
-        "fr": {
-          "title": "La Falcata Ibérique et les Armes Sacrées",
-          "subtitle": "Insigne de prestige aristocratique et de bravoure militaire",
-          "description": "<p>La falcata est l'arme la plus emblématique du guerrier ibère. Sa lame courbe et sa garde ouvragée marquaient le rang princier de son possesseur.</p><p>À El Pajarillo, la falcata sculptée symbolise le triomphe de la bravoure héroïque sur les forces sauvages.</p>"
-        }
-      },
+      "external_url": "https://revistas.ucm.es/index.php/CMPL/es/article/view/102416",
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "EL TERRITORIO DE ILTIRAKA",
+          "subtitle": "Símbolo de poder militar y estatus aristocrático",
+          "description": "A comienzos del siglo IV a.n.e., el oppidum de Iltiraka (Úbeda la Vieja) emprendió la expansión hacia el valle del Jandulilla, considerado entonces un territorio salvaje (silva) habitado por lobos y seres míticos fuera del control humano. Para legitimar esta apropiación bajo la figura de un héroe fundador, Iltiraka creó un nuevo asentamiento en la Loma del Perro, aseguró las rutas comerciales del sur y erigió un santuario en la cabecera del río, transformando así el valle en el dominio territorial de su linaje (pagus)."
+        },
+        "en": {
+          "title": "THE TERRITORY OF ILTIRAKA",
+          "subtitle": "Símbolo de poder militar y estatus aristocrático",
+          "description": "At the beginning of the 4th century BCE, the oppidum of Iltiraka (Úbeda la Vieja) set out to claim the Jandulilla River valley, then viewed as untamed wilderness (silva) inhabited by wolves and mythical creatures beyond human rule. To legitimize this expansion through the figure of a founding hero, Iltiraka established a new settlement at Loma del Perro, secured the southern trade routes, and built a sanctuary at the river's headwaters—transforming the valley into a lineage-controlled territory (pagus)."
+        },
+        "fr": {
+          "title": "LE TERRITOIRE D'ILTIRAKA",
+          "subtitle": "Símbolo de poder militar y estatus aristocrático",
+          "description": "Au début du IVe siècle av. n. è., l'oppidum d'Iltiraka (Úbeda la Vieja) entreprit de s'approprier la vallée du Jandulilla, perçue comme un territoire sauvage (silva) peuplé de loups et d'êtres fantastiques, hors de toute emprise humaine. Pour légitimer cette expansion par la figure d'un héros fondateur, Iltiraka fonda un nouvel établissement à la Loma del Perro, sécurisa les routes commerciales du sud et érigea un sanctuaire à la source du fleuve, transformant ainsi la vallée en domaine territorial de son lignage (pagus)."
+        }
+      },
+      "active": true
     },
     {
       "id": 8,
       "tag": "arquelogia",
-      "image": "./assets/images/iltiraka.png",
-      "video": null,
+      "image": "./uploads/pajarillo_20261123_134655_049cde590d4b.png",
       "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "La Loma del Perro: Control y Estrategia Territorial",
-          "subtitle": "Asentamiento fortificado y vigilancia del valle",
-          "description": "<p>Para articular el dominio del valle del Jandulilla, el oppidum de Iltiraka fundó el asentamiento satélite de la Loma del Perro.</p><p>Situado estratégicamente entre Úbeda y Jódar, este enclave permitía controlar visualmente las rutas de paso entre la Alta Andalucía y la costa, canalizando el comercio de metales y productos agrícolas.</p>"
-        },
-        "en": {
-          "title": "Loma del Perro: Strategic Territorial Control",
-          "subtitle": "Fortified outpost and valley surveillance",
-          "description": "<p>To consolidate rule over the Jandulilla valley, the oppidum of Iltiraka founded the satellite settlement of Loma del Perro.</p><p>Strategically positioned between Úbeda and Jódar, it guarded commercial transit routes between Upper Andalusia and the Mediterranean coast.</p>"
-        },
-        "fr": {
-          "title": "La Loma del Perro : Stratégie Territoriale",
-          "subtitle": "Établissement fortifié et surveillance des passages",
-          "description": "<p>Pour assurer le contrôle du bassin du Jandulilla, Iltiraka implanta le site fortifié de la Loma del Perro.</p><p>Ce promontoire stratégique sécurisait les corridors commerciaux reliant les gisements miniers et les zones agricoles.</p>"
-        }
-      },
+      "external_url": "https://www.europeana.eu/es/item/2020738/3DICONS_8165?lang=",
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "EL HEROON DE EL PAJARILLO",
+          "subtitle": "",
+          "description": "Erigido por las aristocracias iberas en el siglo IV a.n.e., este heroon —santuario dedicado a un héroe fundador para legitimar el dominio territorial— imitaba la arquitectura de un oppidum. Presidido por una torre de muros en talud coronada por el grupo escultórico del héroe enfrentándose al lobo, contaba con almacenes flanqueados por leones y se integraba en un paisaje sagrado junto al río Jandulilla y una pequeña laguna. Frente a la torre se concentraba el culto y las ofrendas, cuya materia orgánica ha sido confirmada por las analíticas de la Universidad de Jaén."
+        },
+        "en": {
+          "title": "THE HEROON OF EL PAJARILLO",
+          "subtitle": "",
+          "description": "Built by the Iberian aristocracy in the 4th century BCE, this heroon—a sanctuary dedicated to a founding hero to legitimize territorial rule—imitated the layout of an oppidum. Dominated by a sloped-wall tower crowned by the sculptural group of the hero confronting the wolf, the complex featured storage rooms flanked by lions and blended into a sacred landscape alongside the Jandulilla River and a small lagoon. In front of the tower lay the main ritual area, where analyses by the University of Jaén have identified organic remains from ancient offerings."
+        },
+        "fr": {
+          "title": "L'HÉRÔON D'EL PAJARILLO",
+          "subtitle": "",
+          "description": "Érigé par l'aristocratie ibère au IVe siècle av. n. è., cet hérôon — sanctuaire dédié à un héros fondateur afin de légitimer la domination territoriale — imitait la structure d'un oppidum. Dominé par une tour aux murs en talus couronnée du groupe sculpté du héros affrontant le loup, le complexe comprenait des entrepôts flanqués de lions et s'intégrait dans un paysage sacré auprès du fleuve Jandulilla et d'une petite lagune. Devant la tour se concentraient le culte et les offrandes, dont les restes organiques ont été confirmés par les analyses de l'Université de Jaén."
+        }
+      },
+      "active": true
     },
     {
       "id": 9,
       "tag": "arquelogia",
-      "image": "./assets/images/dibujando.png",
-      "video": null,
+      "image": "./uploads/pajarillo_20261123_134713_9b4ce828a7df.png",
       "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "Las Campañas Arqueológicas de 1994 y Protección BIC",
-          "subtitle": "Investigación científica y rescate patrimonial · Universidad de Jaén",
-          "description": "<p>Tras los hallazgos fortuitos de 1933 y 1993, la Universidad de Jaén y el Instituto Universitario de Arqueología Ibérica llevaron a cabo en 1994 la excavación de urgencia que desveló la monumentalidad del santuario.</p><p>Dirigida por los arqueólogos Manuel Molinos, Arturo Ruiz, Teresa Chapa y Juan Pereira, la intervención culminó en la declaración de Bien de Interés Cultural (BIC) en 2006.</p>"
-        },
-        "en": {
-          "title": "The 1994 Archaeological Excavation & BIC Heritage Status",
-          "subtitle": "Scientific research and monument preservation · University of Jaén",
-          "description": "<p>Following discoveries in 1933 and 1993, the University of Jaén and the Iberian Archaeology Institute conducted the 1994 rescue excavation that uncovered the sanctuary.</p><p>Directed by renowned archaeologists Molinos, Ruiz, Chapa, and Pereira, the site was declared a Heritage Site of Cultural Interest (BIC) in 2006.</p>"
-        },
-        "fr": {
-          "title": "Les Fouilles de 1994 et le Classement Monument Historique",
-          "subtitle": "Recherche archéologique de l'Université de Jaén",
-          "description": "<p>À la suite des découvertes de 1933 et 1993, l'Université de Jaén engagea en 1994 des fouilles d'urgence qui révélèrent l'ampleur exceptionnelle du sanctuaire.</p><p>Ces travaux remarquables ont abouti au classement du site en Bien d'Intérêt Culturel (BIC) en 2006.</p>"
-        }
-      },
+      "external_url": "https://sketchfab.com/El_Pajarillo",
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "LOS PROTAGONISTAS: EL HEROE Y EL LOBO",
+          "subtitle": "",
+          "description": "Inspirado en los grandes mitos mediterráneos, este conjunto escultórico narra la gesta de un héroe fundador —ataviado con túnica, falcata oculta y las cintas cruzadas de su alto rango— que somete a un descomunal lobo surgido de la maleza. A sus pies, un niño desnudo encarna a la víctima indefensa cuya salvación justifica la hazaña del príncipe. La escena principal está custodiada por una pareja de leones en el acceso y flanqueada por dos grifos, criaturas guardianas que subrayan el poder, la memoria dinástica y el carácter mítico y sobrenatural del relato."
+        },
+        "en": {
+          "title": "THE PROTAGONISTS: THE HERO AND THE WOLF",
+          "subtitle": "",
+          "description": "Inspired by great Mediterranean myths, this sculptural group recounts the feat of a founding hero—clad in a tunic, hiding a falcata sword beneath his cloak, and wearing the crossed chest straps of his high rank—subduing a colossal wolf emerging from the undergrowth. At their feet, a naked boy represents the defenseless victim whose rescue justifies the prince's intervention. The central scene is guarded by two lions at the stairway entrance and framed by a pair of griffins, mythical guardians that underscore the power, dynastic memory, and supernatural nature of the heroic deed."
+        },
+        "fr": {
+          "title": "LES PROTAGONISTES : LE HÉROS ET LE LOUP",
+          "subtitle": "",
+          "description": "Inspiré des grands mythes méditerranéens, cet ensemble sculpté narre l'exploit d'un héros fondateur — vêtu d'une tunique, dissimulant une falcata sous son manteau et portant les sangles croisées de son haut rang — qui soumet un loup colossal surgissant des fourrés. À leurs pieds, un enfant nu incarne la victime sans défense dont le sauvetage justifie l'intervention du prince. La scène centrale est gardée par deux lions à l'accès des escaliers et encadrée par un couple de griffons, créatures protectrices qui soulignent le pouvoir, la mémoire dynastique et le caractère mythique et surnaturel du récit."
+        }
+      },
+      "active": true
     },
     {
       "id": 10,
       "tag": "arquitectura",
-      "image": "./assets/images/santuario_ilustracion.png",
-      "video": null,
+      "image": "./uploads/pajarillo_20261123_134737_ea3944edb4a7.png",
       "audio": null,
+      "video": null,
       "pdf": null,
       "pdf_title": null,
-      "content": {
-        "es": {
-          "title": "El Centro de Interpretación y Reconstrucción Virtual",
-          "subtitle": "Museografía interactiva, divulgación y nuevas tecnologías",
-          "description": "<p>El Centro de Interpretación en Huelma acerca el Santuario Heroico de El Pajarillo a través de recursos audiovisuales inmersivos, réplicas escultóricas fidedignas y sistemas de mediación adaptados a todos los públicos.</p><p>Mediante esta plataforma webapp y los códigos QR de sala, el visitante puede explorar reconstrucciones virtuales en 3D, consultar fichas científicas y acceder a lecturas inclusivas en múltiples idiomas.</p>"
-        },
-        "en": {
-          "title": "The Interpretation Centre & 3D Virtual Reconstruction",
-          "subtitle": "Interactive museography and digital heritage mediation",
-          "description": "<p>The Huelma Interpretation Centre brings the Heroic Sanctuary to life through immersive media, sculptural replicas, and accessible museum mediation.</p><p>Through this webapp and exhibition QR codes, visitors can explore 3D digital reconstructions, scientific factsheets, and multilingual audioguides.</p>"
-        },
-        "fr": {
-          "title": "Le Centre d'Interprétation et Restitution 3D",
-          "subtitle": "Muséographie interactive et médiation numérique",
-          "description": "<p>Le Centre d'Interprétation d'Huelma valorise le sanctuaire grâce à des supports audiovisuels immersifs et des maquettes virtuelles 3D.</p><p>Scannez les codes QR en salle pour accéder aux fiches scientifiques, aux restitutions 3D et aux audioguides accessibles.</p>"
-        }
-      },
+      "external_url": "https://monedaiberica.org/v3/mint/104",
+      "redirect_external": false,
       "has_image": true,
       "has_audio": false,
       "has_video": false,
       "has_pdf": false,
-      "external_url": null,
-      "redirect_external": false
+      "content": {
+        "es": {
+          "title": "LA MEMORIA DE EL PAJARILLO",
+          "subtitle": "",
+          "description": "El santuario de El Pajarillo unió sociedad, paisaje y mito para legitimar el dominio territorial de Iltiraka a través de la imagen del héroe que somete al lobo. Aunque el monumento tuvo una vida breve y fue destruido hacia la segunda mitad del siglo IV a.n.e., su símbolo perduró en la memoria colectiva. Siglos después, ya en época romana, la ciudad de Iltiraka (Úbeda la Vieja) acuñó su única emisión monetaria conocida con una cabeza diademada en el anverso y el lobo como emblema en el reverso, demostrando que el recuerdo del mito fundador seguía vivo."
+        },
+        "en": {
+          "title": "THE MEMORY OF EL PAJARILLO",
+          "subtitle": "",
+          "description": "The sanctuary of El Pajarillo brought together society, landscape, and myth to legitimize Iltiraka's territorial rule through the image of the hero subduing the wolf. Although the monument was short-lived and destroyed in the second half of the 4th century BCE, its symbol endured in collective memory. Centuries later, during the Roman period, the city of Iltiraka (Úbeda la Vieja) minted its only known coinage—featuring a diademed head on the obverse and the wolf as its civic emblem on the reverse—proving that the memory of the founding myth remained alive."
+        },
+        "fr": {
+          "title": "LA MÉMOIRE D'EL PAJARILLO",
+          "subtitle": "",
+          "description": "Le sanctuaire d'El Pajarillo réunissait société, paysage et mythe pour légitimer la domination territoriale d'Iltiraka à travers l'image du héros soumettant le loup. Bien que le monument ait eu une existence brève et ait été détruit dans la seconde moitié du IVe siècle av. n. è., son symbole survécut dans la mémoire collective. Des siècles plus tard, à l'époque romaine, la cité d'Iltiraka (Úbeda la Vieja) frappa son unique émission monétaire connue — arborant une tête diadémée à l'avers et le loup comme emblème au revers —, preuve que le souvenir du mythe fondateur demeurait vivant."
+        }
+      },
+      "active": true
     },
     {
       "id": 11,
@@ -350,7 +360,8 @@
       "has_video": false,
       "has_pdf": false,
       "external_url": null,
-      "redirect_external": false
+      "redirect_external": false,
+      "active": false
     },
     {
       "id": 12,
@@ -382,7 +393,8 @@
       "has_video": false,
       "has_pdf": false,
       "external_url": null,
-      "redirect_external": false
+      "redirect_external": false,
+      "active": false
     },
     {
       "id": 13,
@@ -414,7 +426,8 @@
       "has_video": false,
       "has_pdf": false,
       "external_url": null,
-      "redirect_external": false
+      "redirect_external": false,
+      "active": false
     },
     {
       "id": 14,
@@ -446,7 +459,8 @@
       "has_video": false,
       "has_pdf": false,
       "external_url": null,
-      "redirect_external": false
+      "redirect_external": false,
+      "active": false
     },
     {
       "id": 15,
@@ -478,7 +492,8 @@
       "has_video": false,
       "has_pdf": false,
       "external_url": null,
-      "redirect_external": false
+      "redirect_external": false,
+      "active": false
     }
   ]
 }

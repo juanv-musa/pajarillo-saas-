@@ -157,32 +157,9 @@ export class GalleryManager {
       }
     } catch (e) {}
 
-    // Garantizar modelo 3D por defecto si la lista estuviera vacía
-    if (!Array.isArray(this.data.models3d) || this.data.models3d.length === 0) {
-      this.data.models3d = [
-        {
-          id: "model_santuario",
-          type: "3d",
-          title: {
-            es: "Santuario Heroico de El Pajarillo (Huelma, Jaén)",
-            en: "Heroic Sanctuary of El Pajarillo (Huelma, Jaén)",
-            fr: "Sanctuaire Héroïque d'El Pajarillo (Huelma, Jaén)"
-          },
-          category: {
-            es: "Monumento y Enclave",
-            en: "Monument & Site",
-            fr: "Monument et Site"
-          },
-          description: {
-            es: "Explora en 3D la reconstrucción volumétrica completa: gira en 360°, haz zoom y examina cada detalle del monumento escultórico.",
-            en: "Explore the complete volumetric 3D reconstruction: rotate 360°, zoom in, and examine every detail of the sculptural monument.",
-            fr: "Explorez la restitution volumétrique 3D complète : tournez à 360°, zoomez et examinez chaque détail du monument."
-          },
-          thumb: "./assets/images/santuario_ilustracion.png",
-          url: "https://sketchfab.com/models/402ba73cf7bd40ec9d5b03d17206387e/embed?autostart=0&camera=0&preload=1&ui_theme=dark",
-          sketchfabId: "402ba73cf7bd40ec9d5b03d17206387e"
-        }
-      ];
+    // Si no hay modelos 3D configurados, mantener la lista vacía (no inventar modelos por defecto)
+    if (!Array.isArray(this.data.models3d)) {
+      this.data.models3d = [];
     }
 
     // Comprobar si hay una URL 3D asignada directamente desde los ajustes CMS de la web

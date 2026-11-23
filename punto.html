@@ -27,7 +27,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <!-- Datos oficiales en memoria para soporte offline y protocolo file:// -->
-  <script src="./js/paneles-data.js"></script>
+  <script src="./js/paneles-data.js?v=5.5"></script>
 
   <!-- Analítica Oficial y Telemetría in situ -->
   <script type="module" src="./js/analytics.js?v=4.0"></script>
@@ -101,20 +101,22 @@
     .punto-hero-media {
       position: relative;
       width: 100%;
-      max-height: 480px;
-      overflow: hidden;
-      background: #1A1A18;
+      background: #141715;
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      padding: 0;
     }
 
     .punto-hero-img {
       width: 100%;
-      height: 100%;
-      max-height: 480px;
-      object-fit: cover;
+      height: auto;
+      max-height: 560px;
+      object-fit: contain;
       object-position: center;
+      display: block;
+      margin: 0 auto;
       transition: transform 0.5s ease;
     }
 
@@ -272,41 +274,46 @@
       margin-bottom: 1.2rem;
     }
 
-    /* Caja de Enlace Web Externo */
+    /* Enlace Web Externo Discreto */
     .punto-external-box {
       background: #F4F8F5;
-      border: 1.5px solid #2E7D32;
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 1.5rem 0;
-      text-align: center;
+      border: 1px solid #C8E6C9;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin: 1rem 0 1.5rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .punto-external-box h3 {
-      font-family: var(--font-heading);
+    .punto-external-box.hidden {
+      display: none !important;
+    }
+
+    .punto-external-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
       color: var(--c-primary);
-      font-size: 1.3rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .punto-external-box p {
-      font-size: 0.92rem;
-      color: var(--c-text-muted);
-      margin-bottom: 1rem;
+      font-weight: 500;
     }
 
     .btn-external-action {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: #2E7D32;
       color: white;
       text-decoration: none;
-      font-weight: 700;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 0.82rem;
       transition: background 0.2s;
+      white-space: nowrap;
     }
 
     .btn-external-action:hover {
@@ -472,8 +479,12 @@
       padding: 1rem;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     .modal-qr-punto.hidden {
-      display: none;
+      display: none !important;
     }
 
     .modal-qr-content {
@@ -520,7 +531,6 @@
         <img id="punto-image" src="./assets/images/lobo.png" alt="Cargando pieza..." class="punto-hero-img">
         <div class="punto-media-badges">
           <span class="badge-punto-id" id="punto-badge-num">Nº 01</span>
-          <span class="badge-punto-tag" id="punto-badge-tag">Escultura</span>
         </div>
       </div>
 
@@ -529,19 +539,24 @@
         <!-- Badges alternativos si no hay imagen -->
         <div id="punto-header-badges" class="punto-inline-badges hidden">
           <span class="badge-punto-id" id="punto-badge-num-alt">Nº 01</span>
-          <span class="badge-punto-tag" id="punto-badge-tag-alt">Punto de Visita</span>
+        </div>
+
+        <div id="punto-inactive-notice" class="hidden" style="background: #FFF3CD; border: 1.5px solid #FFEEBA; color: #856404; padding: 1rem 1.25rem; border-radius: 10px; margin-bottom: 1.5rem; text-align: center; font-size: 0.92rem;">
+          <strong>ℹ️ Punto de Visita no Activo</strong>
+          <div style="margin-top: 4px; color: #664d03;">Este punto del recorrido no se encuentra activo actualmente o está en proceso de actualización por el Centro de Interpretación.</div>
         </div>
 
         <h1 class="punto-title" id="punto-title">Cargando punto...</h1>
-        <div class="punto-subtitle" id="punto-subtitle">Santuario Heroico de El Pajarillo</div>
+        <div class="punto-subtitle" id="punto-subtitle" style="display: none;"></div>
 
         <!-- Enlace a Web Externa (Opcional) -->
         <div id="punto-external-card" class="punto-external-box hidden">
-          <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">🌐</div>
-          <h3 id="punto-external-title">Web Externa Vinculada</h3>
-          <p id="punto-external-desc">Este punto dispone de contenido ampliado o servicio en el portal oficial externo:</p>
+          <div class="punto-external-info">
+            <span style="font-size: 1.15rem;">🌐</span>
+            <span id="punto-external-desc">Portal oficial con información ampliada sobre este punto:</span>
+          </div>
           <a id="btn-punto-external" href="#" target="_blank" rel="noopener noreferrer" class="btn-external-action">
-            Visitar Sitio Web Oficial ↗
+            Sitio Web ↗
           </a>
         </div>
 
@@ -735,33 +750,45 @@
             } catch (e) {}
           }
 
-          // 2. Intentar API en vivo
-          if (!panelsList || panelsList.length === 0) {
-            let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
-            if (res && res.ok) {
-              const data = await res.json();
-              if (data.panels && data.panels.length > 0) panelsList = data.panels;
-            }
-          }
-
-          // 3. Fallback a JSON estático
+          // 2. Intentar JSON estático directo (100% compatible con cualquier servidor local o de producción)
           if (!panelsList || panelsList.length === 0) {
             try {
-              const resStatic = await fetch('./data/paneles.json?t=' + Date.now());
+              const resStatic = await fetch('./data/paneles.json?t=' + Date.now()).catch(() => null);
               if (resStatic && resStatic.ok) {
-                const data = await resStatic.json();
-                panelsList = data.panels || [];
+                const textStatic = await resStatic.text().catch(() => null);
+                if (textStatic && textStatic.trim().startsWith('{')) {
+                  const data = JSON.parse(textStatic);
+                  if (data && data.panels && data.panels.length > 0) panelsList = data.panels;
+                }
               }
             } catch (e) {}
           }
 
-          // 4. Fallback a datos en memoria (soporte total offline y protocolo file://)
-          if ((!panelsList || panelsList.length === 0) && window.PAJARILLO_DEFAULT_PANELS && window.PAJARILLO_DEFAULT_PANELS.panels) {
-            panelsList = window.PAJARILLO_DEFAULT_PANELS.panels;
+          // 3. Intentar API dinámica en vivo (servidor con soporte PHP activo)
+          if (!panelsList || panelsList.length === 0) {
+            try {
+              let res = await fetch('./api/data.php?entity=panels&t=' + Date.now()).catch(() => null);
+              if (res && res.ok) {
+                const text = await res.text().catch(() => null);
+                if (text && text.trim().startsWith('{')) {
+                  const data = JSON.parse(text);
+                  if (data && data.panels && data.panels.length > 0) panelsList = data.panels;
+                }
+              }
+            } catch (e) {}
+          }
+
+          // 4. Fallback a datos en memoria precargados (soporte total offline y protocolo file://)
+          if (!panelsList || panelsList.length === 0) {
+            if (window.PAJARILLO_DEFAULT_PANELS && window.PAJARILLO_DEFAULT_PANELS.panels) {
+              panelsList = window.PAJARILLO_DEFAULT_PANELS.panels;
+            } else if (window.DEFAULT_PANELES && window.DEFAULT_PANELES.length > 0) {
+              panelsList = window.DEFAULT_PANELES;
+            }
           }
 
           // Localizar el panel seleccionado
-          currentPanel = panelsList.find(p => p.id === targetId) || panelsList[0];
+          currentPanel = (panelsList && panelsList.length > 0) ? (panelsList.find(p => p.id === targetId) || panelsList[0]) : null;
           if (currentPanel) {
             renderPanelContent();
             renderTourNavigation();
@@ -775,6 +802,9 @@
                 detail: `Escaneo directo in situ Punto 0${currentPanel.id}: ${panelTitle}`
               });
             }
+          } else {
+            dom.title.textContent = 'Punto no encontrado';
+            dom.description.innerHTML = '<p>No se ha encontrado el punto interpretativo solicitado. <a href="index.html#recorrido">Volver al recorrido</a></p>';
           }
         } catch (err) {
           console.error('Error cargando ficha del punto:', err);
@@ -795,7 +825,7 @@
 
         const content = (currentPanel.content && (currentPanel.content[currentLang] || currentPanel.content.es)) || {};
         const title = content.title || 'Punto Interpretativo';
-        const subtitle = content.subtitle || 'Santuario Heroico de El Pajarillo';
+        const subtitle = content.subtitle || '';
         const descHtml = content.description || '<p>Sin descripción disponible.</p>';
 
         document.title = `${title} · Santuario Ibérico de El Pajarillo`;
@@ -807,34 +837,66 @@
         };
 
         dom.title.textContent = title;
-        dom.subtitle.textContent = subtitle;
+
+        // Subtítulo: solo mostrar si aporta cronología o detalle específico no redundante
+        const cleanSub = (subtitle || '').trim();
+        if (cleanSub && !cleanSub.toLowerCase().includes('santuario heroico') && !cleanSub.toLowerCase().includes('el pajarillo')) {
+          dom.subtitle.textContent = cleanSub;
+          dom.subtitle.style.display = 'block';
+        } else {
+          dom.subtitle.style.display = 'none';
+        }
+
         dom.description.innerHTML = formatRich(descHtml);
 
+        // Control de punto inactivo
+        const inactiveNotice = document.getElementById('punto-inactive-notice');
+        if (inactiveNotice) {
+          if (currentPanel.active === false) {
+            inactiveNotice.classList.remove('hidden');
+          } else {
+            inactiveNotice.classList.add('hidden');
+          }
+        }
+
         const badgeNumText = `Nº ${String(currentPanel.id).padStart(2, '0')}`;
-        const badgeTagText = currentPanel.tag || 'Exposición';
 
         // 2. Enlace a web externa si está configurada
         const extCard = document.getElementById('punto-external-card');
         const btnExt = document.getElementById('btn-punto-external');
-        if (currentPanel.external_url && currentPanel.external_url.trim() !== '') {
-          if (btnExt) btnExt.href = currentPanel.external_url;
-          if (extCard) extCard.classList.remove('hidden');
+        const extUrl = (currentPanel.external_url || '').trim();
+        if (extUrl && extUrl !== '#' && (extUrl.startsWith('http://') || extUrl.startsWith('https://'))) {
+          if (btnExt) {
+            btnExt.href = extUrl;
+            if (currentLang === 'en') {
+              btnExt.textContent = 'Website ↗';
+            } else if (currentLang === 'fr') {
+              btnExt.textContent = 'Site Web ↗';
+            } else {
+              btnExt.textContent = 'Sitio Web ↗';
+            }
+          }
+          if (extCard) {
+            extCard.classList.remove('hidden');
+            extCard.style.display = 'flex';
+          }
         } else {
-          if (extCard) extCard.classList.add('hidden');
+          if (extCard) {
+            extCard.classList.add('hidden');
+            extCard.style.display = 'none';
+          }
         }
 
         // 3. Imagen (Opcional)
         const heroMedia = document.getElementById('punto-hero-media');
         const headerBadges = document.getElementById('punto-header-badges');
         const badgeNumAlt = document.getElementById('punto-badge-num-alt');
-        const badgeTagAlt = document.getElementById('punto-badge-tag-alt');
 
         const hasImg = (currentPanel.has_image !== false) && currentPanel.image && currentPanel.image.trim() !== '';
         if (hasImg) {
           dom.image.src = currentPanel.image;
           dom.image.alt = title;
           dom.badgeNum.textContent = badgeNumText;
-          dom.badgeTag.textContent = badgeTagText;
           if (heroMedia) heroMedia.style.display = 'block';
           if (headerBadges) headerBadges.classList.add('hidden');
         } else {
@@ -842,7 +904,6 @@
           if (headerBadges) {
             headerBadges.classList.remove('hidden');
             if (badgeNumAlt) badgeNumAlt.textContent = badgeNumText;
-            if (badgeTagAlt) badgeTagAlt.textContent = badgeTagText;
           }
         }
 
@@ -885,12 +946,15 @@
         }
 
         // 6. Documentación PDF asociada (Opcional - solo si existe documento específico)
-        const hasPdf = (currentPanel.has_pdf !== false) && Boolean(currentPanel.pdf || currentPanel.pdf_url);
+        const rawPdf = (currentPanel.pdf || currentPanel.pdf_url || '').trim();
+        const hasPdf = (currentPanel.has_pdf !== false) && rawPdf !== '' && rawPdf !== '#' && !rawPdf.endsWith('null');
         if (hasPdf) {
-          const pdfUrl = currentPanel.pdf || currentPanel.pdf_url;
-          const defaultTitle = currentLang === 'en' ? 'Official Documentation (PDF)' : (currentLang === 'fr' ? 'Documentation Officielle (PDF)' : 'Documentación y Estudio en PDF');
+          const defaultTitle = currentLang === 'en' ? 'Official Documentation (PDF)' : (currentLang === 'fr' ? 'Documentation Officielle (PDF)' : 'Guía de Sala y Documentación PDF');
           dom.pdfTitle.textContent = currentPanel.pdf_title || defaultTitle;
-          dom.pdfLink.href = pdfUrl;
+          dom.pdfLink.href = rawPdf;
+          dom.pdfLink.setAttribute('href', rawPdf);
+          dom.pdfLink.setAttribute('target', '_blank');
+          dom.pdfLink.setAttribute('rel', 'noopener noreferrer');
 
           if (currentLang === 'en') {
             dom.pdfDesc.textContent = 'Download or view the official document associated with this sanctuary point.';
@@ -903,8 +967,11 @@
             dom.btnPdfText.textContent = 'Abrir / Descargar PDF';
           }
           dom.pdfContainer.classList.remove('hidden');
+          dom.pdfContainer.style.display = 'flex';
         } else {
           dom.pdfContainer.classList.add('hidden');
+          dom.pdfContainer.style.display = 'none';
+          dom.pdfLink.href = '#';
         }
 
         // Detener reproducción previa al cambiar de idioma o punto
@@ -914,14 +981,16 @@
       // Renderizar enlaces "Anterior" y "Siguiente"
       function renderTourNavigation() {
         if (!panelsList || panelsList.length <= 1) return;
+        const activeList = panelsList.filter(p => p.active !== false);
+        const listToUse = activeList.length > 0 ? activeList : panelsList;
 
-        const currentIndex = panelsList.findIndex(p => p.id === currentPanel.id);
-        const prevPanel = currentIndex > 0 ? panelsList[currentIndex - 1] : null;
-        const nextPanel = currentIndex < panelsList.length - 1 ? panelsList[currentIndex + 1] : null;
+        const currentIndex = listToUse.findIndex(p => p.id === currentPanel.id);
+        const prevPanel = currentIndex > 0 ? listToUse[currentIndex - 1] : null;
+        const nextPanel = (currentIndex >= 0 && currentIndex < listToUse.length - 1) ? listToUse[currentIndex + 1] : null;
 
         if (prevPanel) {
-          const prevContent = prevPanel.content[currentLang] || prevPanel.content.es;
-          dom.tourTitlePrev.textContent = prevContent.title;
+          const prevContent = (prevPanel.content && (prevPanel.content[currentLang] || prevPanel.content.es)) || {};
+          dom.tourTitlePrev.textContent = prevContent.title || `Punto ${prevPanel.id}`;
           dom.tourLinkPrev.href = `punto.html?id=${prevPanel.id}`;
           dom.tourLinkPrev.classList.remove('hidden');
         } else {
@@ -929,8 +998,8 @@
         }
 
         if (nextPanel) {
-          const nextContent = nextPanel.content[currentLang] || nextPanel.content.es;
-          dom.tourTitleNext.textContent = nextContent.title;
+          const nextContent = (nextPanel.content && (nextPanel.content[currentLang] || nextPanel.content.es)) || {};
+          dom.tourTitleNext.textContent = nextContent.title || `Punto ${nextPanel.id}`;
           dom.tourLinkNext.href = `punto.html?id=${nextPanel.id}`;
           dom.tourLinkNext.classList.remove('hidden');
         } else {

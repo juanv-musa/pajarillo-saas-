@@ -43,6 +43,27 @@ function saveUsers($users) {
     return @file_put_contents($usersFile, $encoded, LOCK_EX);
 }
 
+// Verificación estricta de protección CSRF para operaciones administrativas
+function verifyCsrfToken($inputData = null) {
+    if (empty($_SESSION['is_admin'])) {
+        http_response_code(401);
+        echo json_encode(['success' => false, 'error' => 'No autorizado. Se requiere sesión de administración.']);
+        exit;
+    }
+    if (!empty($_SESSION['csrf_token'])) {
+        $headers = function_exists('getallheaders') ? getallheaders() : [];
+        $token = $headers['X-CSRF-Token'] ?? $headers['x-csrf-token'] ?? ($_SERVER['HTTP_X_CSRF_TOKEN'] ?? '');
+        if (!$token && is_array($inputData) && isset($inputData['csrf_token'])) {
+            $token = $inputData['csrf_token'];
+        }
+        if (!$token || !hash_equals($_SESSION['csrf_token'], (string)$token)) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Petición rechazada: token de seguridad CSRF inválido o ausente.']);
+            exit;
+        }
+    }
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 
 // Verificar estado de sesión actual o listar usuarios
@@ -117,9 +138,10 @@ if ($method === 'POST') {
     }
 
     // ──────────────────────────────────────────
-    // 2. CAMBIO DE CONTRASEÑA (REQUIERE SESIÓN ACTIVA)
+    // 2. CAMBIO DE CONTRASEÑA (REQUIERE SESIÓN ACTIVA Y CSRF)
     // ──────────────────────────────────────────
     if (isset($data['action']) && $data['action'] === 'change_password') {
+        verifyCsrfToken($data);
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'No autorizado. Debes iniciar sesión para cambiar la contraseña.']);
@@ -129,7 +151,13 @@ if ($method === 'POST') {
         $currentPass = trim($data['current_password'] ?? '');
         $newPass = trim($data['new_password'] ?? '');
         $confirmPass = trim($data['confirm_password'] ?? '');
-        $currentUser = $_SESSION['admin_user'] ?? 'ayuntamiento';
+        $currentUser = $_SESSION['admin_user'] ?? '';
+
+        if (empty($currentUser)) {
+            http_response_code(401);
+            echo json_encode(['success' => false, 'error' => 'Usuario no identificado en sesión activa.']);
+            exit;
+        }
 
         if (empty($currentPass) || empty($newPass)) {
             http_response_code(400);
@@ -185,6 +213,7 @@ if ($method === 'POST') {
     // 3. CREAR / ACTUALIZAR USUARIO CON PERMISOS
     // ──────────────────────────────────────────
     if (isset($data['action']) && $data['action'] === 'create_user') {
+        verifyCsrfToken($data);
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'No autorizado.']);
@@ -242,6 +271,7 @@ if ($method === 'POST') {
     // 4. ELIMINAR USUARIO
     // ──────────────────────────────────────────
     if (isset($data['action']) && $data['action'] === 'delete_user') {
+        verifyCsrfToken($data);
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'No autorizado.']);

@@ -23,5 +23,6 @@ assets/videos/*_master.*
 
 # Paquetes y temporales locales
 *.zip
+*.textClipping
 backups/
 generate_canvas_ui.js

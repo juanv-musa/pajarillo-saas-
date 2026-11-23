@@ -80,6 +80,44 @@ function verifyCsrfToken($inputData = null) {
     }
 }
 
+// Clave fija para firma criptográfica HMAC de retos CAPTCHA
+define('CAPTCHA_HMAC_SECRET', 'cipajarillo_sec_captcha_hmac_2026_98d7f1e4a3c2');
+
+// Generador de CAPTCHA vectorial SVG protegido contra OCR y raspado DOM
+function generateCaptchaSvg($questionText) {
+    $width = 175;
+    $height = 42;
+    $noiseLines = '';
+    for ($i = 0; $i < 6; $i++) {
+        $x1 = random_int(0, $width);
+        $y1 = random_int(0, $height);
+        $x2 = random_int(0, $width);
+        $y2 = random_int(0, $height);
+        $col = sprintf('#%02x%02x%02x', random_int(170, 215), random_int(185, 220), random_int(175, 215));
+        $w = random_int(1, 2);
+        $noiseLines .= "<line x1=\"$x1\" y1=\"$y1\" x2=\"$x2\" y2=\"$y2\" stroke=\"$col\" stroke-width=\"$w\" />";
+    }
+    for ($i = 0; $i < 18; $i++) {
+        $cx = random_int(0, $width);
+        $cy = random_int(0, $height);
+        $r = random_int(1, 2);
+        $noiseLines .= "<circle cx=\"$cx\" cy=\"$cy\" r=\"$r\" fill=\"#cad6cc\" />";
+    }
+    
+    $len = mb_strlen($questionText, 'UTF-8');
+    $textSvg = '';
+    $x = 10;
+    for ($i = 0; $i < $len; $i++) {
+        $ch = mb_substr($questionText, $i, 1, 'UTF-8');
+        $rot = random_int(-9, 9);
+        $y = random_int(26, 29);
+        $chEsc = htmlspecialchars($ch, ENT_XML1, 'UTF-8');
+        $textSvg .= "<text x=\"$x\" y=\"$y\" font-family=\"monospace, sans-serif\" font-size=\"18\" font-weight=\"bold\" fill=\"#1B3828\" transform=\"rotate($rot, $x, $y)\">$chEsc</text>";
+        $x += ($ch === ' ' ? 7 : 11);
+    }
+    return "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"$width\" height=\"$height\" viewBox=\"0 0 $width $height\" style=\"display:block; user-select:none; background:#f0f5f1; border-radius:4px; border:1px solid #d4ded6;\">$noiseLines$textSvg</svg>";
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 $entity = $_GET['entity'] ?? 'panels'; // 'panels', 'agenda', 'bookings', 'config'
 
@@ -106,25 +144,61 @@ if ($method === 'GET') {
         }
         echo json_encode(readJson($reservasFile, ['bookings' => []]));
     } elseif ($entity === 'captcha') {
-        $ops = ['+', '-'];
-        $op = $ops[random_int(0, 1)];
-        if ($op === '+') {
-            $n1 = random_int(2, 9);
-            $n2 = random_int(1, 9);
+        // 1. Generador multi-operación (Suma, Resta, Multiplicación)
+        $mode = random_int(1, 3);
+        
+        if ($mode === 1) { // Suma
+            $n1 = random_int(3, 14);
+            $n2 = random_int(2, 9);
             $ans = $n1 + $n2;
-            $q = "¿Cuánto es $n1 + $n2?";
-        } else {
-            $n1 = random_int(6, 15);
-            $n2 = random_int(1, $n1 - 1);
+            $q = "$n1 + $n2 = ?";
+        } elseif ($mode === 2) { // Resta
+            $n1 = random_int(9, 22);
+            $n2 = random_int(2, $n1 - 2);
             $ans = $n1 - $n2;
-            $q = "¿Cuánto es $n1 - $n2?";
+            $q = "$n1 - $n2 = ?";
+        } else { // Multiplicación sencilla
+            $n1 = random_int(2, 5);
+            $n2 = random_int(2, 6);
+            $ans = $n1 * $n2;
+            $q = "$n1 × $n2 = ?";
         }
+
+        $now = time();
+        $nonce = bin2hex(random_bytes(10));
+        $ipHash = substr(hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') . CAPTCHA_HMAC_SECRET), 0, 10);
+        $hmacSig = hash_hmac('sha256', $ans . '|' . $now . '|' . $nonce . '|' . $ipHash, CAPTCHA_HMAC_SECRET);
+        $signedToken = $now . '.' . $nonce . '.' . $ipHash . '.' . $hmacSig;
+
+        // Registro de sesión para protección anti-replay
+        if (!isset($_SESSION['booking_captchas']) || !is_array($_SESSION['booking_captchas'])) {
+            $_SESSION['booking_captchas'] = [];
+        }
+        foreach ($_SESSION['booking_captchas'] as $tok => $data) {
+            if ($now - ($data['time'] ?? 0) > 600) {
+                unset($_SESSION['booking_captchas'][$tok]);
+            }
+        }
+        if (count($_SESSION['booking_captchas']) > 6) {
+            array_shift($_SESSION['booking_captchas']);
+        }
+        $_SESSION['booking_captchas'][$signedToken] = [
+            'result' => $ans,
+            'time' => $now,
+            'nonce' => $nonce
+        ];
+
+        // Compatibilidad hacia atrás
         $_SESSION['booking_captcha_result'] = $ans;
-        $_SESSION['booking_captcha_time'] = time();
+        $_SESSION['booking_captcha_time'] = $now;
+
+        $svg = generateCaptchaSvg($q);
 
         echo json_encode([
             'success' => true,
-            'question' => $q
+            'question' => "¿Cuánto es $q?",
+            'svg' => $svg,
+            'token' => $signedToken
         ]);
         exit;
     } else {
@@ -159,56 +233,114 @@ if ($method === 'POST') {
         $now = time();
         if (isset($_SESSION['last_booking_ts']) && ($now - $_SESSION['last_booking_ts'] < 10)) {
             http_response_code(429);
-            echo json_encode(['error' => 'Por favor, espera unos segundos antes de enviar otra solicitud de reserva.']);
+            echo json_encode(['error' => 'Por favor, espera al menos 10 segundos antes de enviar otra solicitud de reserva.']);
             exit;
         }
 
-        // 3. Verificación OBLIGATORIA y estricta del CAPTCHA anti-spam
-        if (!isset($_SESSION['booking_captcha_result']) || !isset($_SESSION['booking_captcha_time'])) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Sesión de seguridad no encontrada o expirada. Por favor, pulsa «Cambiar» o recarga la página.']);
-            exit;
-        }
-
-        // Detección de bots: envío inhumano en menos de 2 segundos desde que se generó el captcha
-        if ($now - $_SESSION['booking_captcha_time'] < 2) {
-            http_response_code(400);
-            echo json_encode(['error' => 'Envío demasiado rápido detectado como posible bot automatizado.']);
-            exit;
-        }
-
-        // Caducidad del captcha: máximo 15 minutos
-        if ($now - $_SESSION['booking_captcha_time'] > 900) {
-            unset($_SESSION['booking_captcha_result']);
-            unset($_SESSION['booking_captcha_time']);
-            http_response_code(400);
-            echo json_encode(['error' => 'El código de seguridad ha caducado. Por favor, pulsa «Cambiar» y resuelve la nueva operación.']);
+        // 3. Verificación OBLIGATORIA, criptográfica y estricta del CAPTCHA
+        if (isset($_SESSION['captcha_lockout_until']) && $now < $_SESSION['captcha_lockout_until']) {
+            $remain = $_SESSION['captcha_lockout_until'] - $now;
+            http_response_code(429);
+            echo json_encode(['error' => "Demasiados intentos erróneos del control anti-spam. Por favor, espera $remain segundos antes de volver a intentarlo."]);
             exit;
         }
 
         if (!isset($booking['captcha']) || trim((string)$booking['captcha']) === '') {
             http_response_code(400);
-            echo json_encode(['error' => 'Debes resolver la operación matemática de seguridad anti-spam.']);
+            echo json_encode(['error' => 'Debes resolver la operación de seguridad anti-spam.']);
             exit;
         }
-
         $userCaptcha = filter_var($booking['captcha'], FILTER_VALIDATE_INT);
-        $expectedCaptcha = (int)$_SESSION['booking_captcha_result'];
-
-        // Destruir el captcha inmediatamente para que sea de un solo uso (prevención de ataques replay)
-        unset($_SESSION['booking_captcha_result']);
-        unset($_SESSION['booking_captcha_time']);
-
-        if ($userCaptcha === false || $userCaptcha !== $expectedCaptcha) {
+        if ($userCaptcha === false) {
             http_response_code(400);
-            echo json_encode(['error' => 'El resultado del control de seguridad anti-spam es incorrecto.']);
+            echo json_encode(['error' => 'El valor introducido en el control anti-spam debe ser numérico.']);
             exit;
         }
+
+        $token = trim((string)($booking['captcha_token'] ?? ''));
+        $captchaVerified = false;
+        $tokenParts = explode('.', $token);
+
+        if (count($tokenParts) === 4) {
+            list($genTimeStr, $nonce, $tokenIpHash, $receivedSig) = $tokenParts;
+            $genTime = (int)$genTimeStr;
+            $currentIpHash = substr(hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') . CAPTCHA_HMAC_SECRET), 0, 10);
+
+            // A) Comprobación de vinculación por dirección IP
+            if (!hash_equals($tokenIpHash, $currentIpHash)) {
+                http_response_code(403);
+                echo json_encode(['error' => 'El control de seguridad no corresponde a este equipo o conexión.']);
+                exit;
+            }
+
+            // B) Detección de bots: envío inhumano instantáneo (< 2.5 s)
+            if ($now - $genTime < 2) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Envío instantáneo detectado como posible bot automatizado. Por favor, resuelve la operación manualmente.']);
+                exit;
+            }
+
+            // C) Caducidad máxima (10 minutos)
+            if ($now - $genTime > 600) {
+                http_response_code(400);
+                echo json_encode(['error' => 'El código de seguridad ha caducado por inactividad. Por favor, pulsa «Cambiar» para obtener uno nuevo.']);
+                exit;
+            }
+
+            // D) Protección anti-replay: el nonce nunca puede reutilizarse
+            if (!isset($_SESSION['used_captcha_nonces']) || !is_array($_SESSION['used_captcha_nonces'])) {
+                $_SESSION['used_captcha_nonces'] = [];
+            }
+            if (isset($_SESSION['used_captcha_nonces'][$nonce])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Este control de seguridad ya ha sido utilizado (ataque de repetición evitado). Pulsa «Cambiar» para resolver uno nuevo.']);
+                exit;
+            }
+            // Quemado inmediato de un solo uso
+            $_SESSION['used_captcha_nonces'][$nonce] = $now;
+            if (count($_SESSION['used_captcha_nonces']) > 50) {
+                array_shift($_SESSION['used_captcha_nonces']);
+            }
+            if (isset($_SESSION['booking_captchas'][$token])) {
+                unset($_SESSION['booking_captchas'][$token]);
+            }
+
+            // E) Verificación criptográfica HMAC en tiempo constante
+            $expectedSig = hash_hmac('sha256', $userCaptcha . '|' . $genTime . '|' . $nonce . '|' . $tokenIpHash, CAPTCHA_HMAC_SECRET);
+            if (hash_equals($expectedSig, $receivedSig)) {
+                $captchaVerified = true;
+            }
+        } elseif (isset($_SESSION['booking_captcha_result']) && isset($_SESSION['booking_captcha_time'])) {
+            // Fallback de sesión clásica
+            $expectedCaptcha = (int)$_SESSION['booking_captcha_result'];
+            $genTime = (int)$_SESSION['booking_captcha_time'];
+            unset($_SESSION['booking_captcha_result']);
+            unset($_SESSION['booking_captcha_time']);
+
+            if (($now - $genTime >= 2) && ($now - $genTime <= 600) && ($userCaptcha === $expectedCaptcha)) {
+                $captchaVerified = true;
+            }
+        }
+
+        if (!$captchaVerified) {
+            $_SESSION['captcha_fails'] = ($_SESSION['captcha_fails'] ?? 0) + 1;
+            if ($_SESSION['captcha_fails'] >= 5) {
+                $_SESSION['captcha_lockout_until'] = $now + 120; // Bloqueo temporal de 2 minutos
+            }
+            http_response_code(400);
+            echo json_encode(['error' => 'El resultado del control de seguridad anti-spam es incorrecto. Por favor, pulsa «Cambiar» y resuélvelo de nuevo.']);
+            exit;
+        }
+
+        // Éxito en validación de captcha: reiniciar contador de fallos
+        $_SESSION['captcha_fails'] = 0;
+        unset($_SESSION['captcha_lockout_until']);
 
         // 4. Validación exhaustiva y reforzada de cada dato introducido:
 
-        // A) Nombre completo
-        $name = trim(htmlspecialchars(strip_tags((string)($booking['name'] ?? '')), ENT_QUOTES, 'UTF-8'));
+        // A) Nombre completo:
+        $rawName = (string)($booking['name'] ?? '');
+        $name = trim(htmlspecialchars(strip_tags($rawName), ENT_QUOTES, 'UTF-8'));
         if (mb_strlen($name) < 3 || mb_strlen($name) > 70) {
             http_response_code(400);
             echo json_encode(['error' => 'El nombre completo debe tener entre 3 y 70 caracteres.']);
@@ -219,31 +351,62 @@ if ($method === 'POST') {
             echo json_encode(['error' => 'El nombre solo puede contener letras y caracteres ortográficos válidos.']);
             exit;
         }
+        if (preg_match('/(.)\1{4,}/u', $name)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El nombre introducido contiene secuencias repetidas no válidas.']);
+            exit;
+        }
+        if (preg_match('/\b(http|https|www|seo|crypto|bitcoin|casino|viagra|loans?|free|test|prueba)\b/i', $name)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Nombre rechazado por el filtro de seguridad.']);
+            exit;
+        }
 
-        // B) Correo electrónico
-        $email = trim(filter_var((string)($booking['email'] ?? ''), FILTER_SANITIZE_EMAIL));
-        if (strlen($email) < 6 || strlen($email) > 100 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        // B) Correo electrónico:
+        $rawEmail = (string)($booking['email'] ?? '');
+        $email = trim(filter_var($rawEmail, FILTER_SANITIZE_EMAIL));
+        if (strlen($email) < 6 || strlen($email) > 90 || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             http_response_code(400);
             echo json_encode(['error' => 'El correo electrónico introducido no tiene un formato válido.']);
             exit;
         }
-        if (strpos($email, "\r") !== false || strpos($email, "\n") !== false) {
+        if (!preg_match('/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/', $email)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Formato de correo no permitido.']);
+            echo json_encode(['error' => 'La estructura del correo electrónico no es válida.']);
+            exit;
+        }
+        if (strpos($email, "\r") !== false || strpos($email, "\n") !== false || strpos($email, "%0a") !== false || strpos($email, "%0d") !== false) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Formato de correo no permitido (caracteres de control detectados).']);
+            exit;
+        }
+        $emailParts = explode('@', $email);
+        $emailDomain = strtolower(end($emailParts));
+        $disposableDomains = ['mailinator.com', 'yopmail.com', 'tempmail.com', '10minutemail.com', 'guerrillamail.com', 'trashmail.com', 'sharklasers.com', 'throwawaymail.com', 'dispostable.com'];
+        if (in_array($emailDomain, $disposableDomains, true)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'No se admiten correos electrónicos temporales o desechables.']);
             exit;
         }
 
-        // C) Teléfono de contacto
+        // C) Teléfono de contacto:
         $rawPhone = trim((string)($booking['phone'] ?? ''));
         $cleanPhone = preg_replace('/[^0-9+\s\-()]/', '', $rawPhone);
-        $digitCount = strlen(preg_replace('/\D/', '', $cleanPhone));
-        if ($digitCount < 7 || $digitCount > 15 || !preg_match('/^(\+?[0-9]{1,4}[\s\-]?)?[0-9\s\-()]{7,20}$/', $cleanPhone)) {
+        $digitsOnly = preg_replace('/\D/', '', $cleanPhone);
+        $digitCount = strlen($digitsOnly);
+        if ($digitCount < 8 || $digitCount > 15 || !preg_match('/^(\+?[0-9]{1,4}[\s\-]?)?[0-9\s\-()]{7,20}$/', $cleanPhone)) {
             http_response_code(400);
-            echo json_encode(['error' => 'El número de teléfono debe tener un formato numérico válido (entre 7 y 15 dígitos).']);
+            echo json_encode(['error' => 'El número de teléfono debe tener un formato numérico válido (entre 8 y 15 dígitos).']);
+            exit;
+        }
+        $fakePhones = ['123456789', '987654321', '012345678', '000000000', '111111111', '222222222', '333333333', '444444444', '555555555', '666666666', '777777777', '888888888', '999999999'];
+        if (in_array($digitsOnly, $fakePhones, true) || preg_match('/^(\d)\1{7,}$/', $digitsOnly)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El número de teléfono introducido no parece válido.']);
             exit;
         }
 
-        // D) Fecha de visita
+        // D) Fecha de visita:
         $date = trim((string)($booking['date'] ?? ''));
         if (!preg_match('/^(\d{4})-(\d{2})-(\d{2})$/', $date, $matches)) {
             http_response_code(400);
@@ -258,7 +421,6 @@ if ($method === 'POST') {
             echo json_encode(['error' => 'La fecha seleccionada no existe en el calendario.']);
             exit;
         }
-
         $bookingTs = strtotime($date);
         $todayTs = strtotime(date('Y-m-d'));
         if ($bookingTs < $todayTs) {
@@ -278,17 +440,29 @@ if ($method === 'POST') {
             echo json_encode(['error' => 'El centro permanece cerrado los lunes por mantenimiento. Por favor, selecciona una fecha de martes a domingo.']);
             exit;
         }
+        // Cierres festivos anuales obligatorios
+        if (($month === 12 && $day === 25) || ($month === 1 && $day === 1)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El centro permanece cerrado en festivos oficiales (25 de diciembre y 1 de enero).']);
+            exit;
+        }
 
-        // E) Turno horario
-        $validTimes = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00'];
-        $time = trim(htmlspecialchars(strip_tags((string)($booking['time'] ?? '11:00')), ENT_QUOTES, 'UTF-8'));
+        // E) Turno horario:
+        $validTimes = ['09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '19:30', '20:00'];
+        $time = trim(htmlspecialchars(strip_tags((string)($booking['time'] ?? '10:30')), ENT_QUOTES, 'UTF-8'));
         if (!in_array($time, $validTimes, true)) {
             http_response_code(400);
             echo json_encode(['error' => 'El turno horario seleccionado no es válido.']);
             exit;
         }
+        // Domingos tarde cerrado: solo turnos de mañana hasta las 14:30
+        if ((int)date('N', $bookingTs) === 7 && (int)substr($time, 0, 2) >= 15) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Los domingos el centro abre solo en horario de mañana (hasta las 14:30 h). Elige un turno antes de las 14:00 h.']);
+            exit;
+        }
 
-        // F) Número de personas
+        // F) Número de personas:
         $people = filter_var($booking['people'] ?? null, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'max_range' => 25]]);
         if ($people === false) {
             http_response_code(400);
@@ -296,15 +470,20 @@ if ($method === 'POST') {
             exit;
         }
 
-        // G) Idioma
+        // G) Idioma:
         $rawLang = strtolower(trim((string)($booking['lang'] ?? 'es')));
         $lang = in_array($rawLang, ['es', 'en', 'fr'], true) ? $rawLang : 'es';
 
-        // H) Observaciones / Necesidades especiales
+        // H) Observaciones / Necesidades especiales:
         $rawNotes = (string)($booking['notes'] ?? '');
-        if (preg_match('/https?:\/\/|www\./i', $rawNotes)) {
+        if (preg_match('/https?:\/\/|www\.|\.([a-z]{2,6})\b/i', $rawNotes)) {
             http_response_code(400);
-            echo json_encode(['error' => 'El campo de observaciones no puede incluir enlaces web ni URLs.']);
+            echo json_encode(['error' => 'El campo de observaciones no puede incluir enlaces web, dominios ni URLs.']);
+            exit;
+        }
+        if (preg_match('/<\s*script|javascript:|onerror|onload|<iframe|<object|SELECT\s+.*FROM|INSERT\s+INTO|UPDATE\s+.*SET|DROP\s+TABLE/i', $rawNotes)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'El texto de observaciones contiene caracteres o palabras no permitidas.']);
             exit;
         }
         $notes = trim(htmlspecialchars(strip_tags($rawNotes), ENT_QUOTES, 'UTF-8'));
@@ -356,6 +535,50 @@ if ($method === 'POST') {
 
     verifyCsrfToken($input);
 
+    // Restaurar copia completa de seguridad (Backup total JSON)
+    if (isset($input['action']) && $input['action'] === 'restore_full_backup') {
+        $backup = $input['backup'] ?? [];
+        if (isset($backup['panels']) && is_array($backup['panels'])) {
+            writeJson($panelesFile, ['panels' => $backup['panels']]);
+        }
+        if (isset($backup['gallery'])) {
+            writeJson($galleryFile, $backup['gallery']);
+        }
+        if (isset($backup['locales']) && is_array($backup['locales'])) {
+            writeJson($localesFile, $backup['locales']);
+            foreach (['es', 'en', 'fr'] as $l) {
+                if (!empty($backup['locales'][$l])) {
+                    writeJson("../locales/{$l}.json", $backup['locales'][$l]);
+                }
+            }
+        }
+        if (isset($backup['kiosk_videos'])) {
+            writeJson('../data/kiosk_videos.json', $backup['kiosk_videos']);
+        }
+        if (isset($backup['agenda'])) {
+            $ag = is_array($backup['agenda']) ? (isset($backup['agenda']['activities']) ? $backup['agenda'] : ['activities' => $backup['agenda']]) : ['activities' => []];
+            writeJson($agendaFile, $ag);
+        }
+        if (isset($backup['legal'])) {
+            writeJson($legalFile, $backup['legal']);
+        }
+        echo json_encode(['success' => true, 'message' => 'Copia de seguridad restaurada correctamente en el servidor.']);
+        exit;
+    }
+
+    // Guardar / sincronizar todos los paneles a la vez
+    if (isset($input['action']) && $input['action'] === 'save_all_panels') {
+        if (!hasModulePermission('panels')) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para modificar paneles.']);
+            exit;
+        }
+        $panels = $input['panels'] ?? [];
+        writeJson($panelesFile, ['panels' => $panels]);
+        echo json_encode(['success' => true]);
+        exit;
+    }
+
     // Guardar configuración global del sitio (secciones y textos)
     if (isset($input['action']) && $input['action'] === 'save_config') {
         if (!hasModulePermission('sections') && !hasModulePermission('contents')) {
@@ -379,18 +602,14 @@ if ($method === 'POST') {
         $locales = $input['locales'] ?? [];
         writeJson($localesFile, $locales);
 
-        // Si incluye español, sincronizar claves clave en locales/es.json
-        if (isset($locales['es']) && is_array($locales['es'])) {
-            $esFile = '../locales/es.json';
-            $esData = readJson($esFile, []);
-            if (!isset($esData['galeria'])) $esData['galeria'] = [];
-            if (!empty($locales['es']['galeria_tab_fotos'])) $esData['galeria']['tab_fotos'] = $locales['es']['galeria_tab_fotos'];
-            if (!empty($locales['es']['galeria_tab_modelo3d'])) $esData['galeria']['tab_modelo3d'] = $locales['es']['galeria_tab_modelo3d'];
-            if (!empty($locales['es']['galeria_tab_recursos'])) $esData['galeria']['tab_recursos'] = $locales['es']['galeria_tab_recursos'];
-            if (!empty($locales['es']['galeria_tab_videos'])) $esData['galeria']['tab_videos'] = $locales['es']['galeria_tab_videos'];
-            if (!empty($locales['es']['galeria_title'])) $esData['galeria']['title'] = $locales['es']['galeria_title'];
-            if (!empty($locales['es']['galeria_subtitle'])) $esData['galeria']['subtitle'] = $locales['es']['galeria_subtitle'];
-            writeJson($esFile, $esData);
+        // Sincronizar todos los archivos de idiomas oficiales (es, en, fr)
+        foreach (['es', 'en', 'fr'] as $l) {
+            if (isset($locales[$l]) && is_array($locales[$l])) {
+                $langFile = "../locales/{$l}.json";
+                $langData = readJson($langFile, []);
+                $langData = array_merge($langData, $locales[$l]);
+                writeJson($langFile, $langData);
+            }
         }
 
         echo json_encode(['success' => true]);
