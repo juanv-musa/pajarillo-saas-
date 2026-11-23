@@ -612,7 +612,18 @@
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap;">
                   <div id="captcha-visual-wrap" style="display: inline-flex; align-items: center; min-width: 175px; min-height: 40px;">
                     <!-- Gráfico vectorial SVG anti-bot generado dinámicamente -->
-                    <strong id="captcha-question" style="font-size: 1.05rem; color: var(--c-primary-dark); font-family: monospace;">Cargando reto...</strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="175" height="40" viewBox="0 0 175 40" style="display:inline-block; vertical-align:middle; user-select:none; background:#f0f5f1; border-radius:4px; border:1px solid #d4ded6;">
+                      <line x1="8" y1="12" x2="165" y2="28" stroke="rgba(30,70,50,0.22)" stroke-width="1.5" />
+                      <line x1="20" y1="32" x2="155" y2="10" stroke="rgba(30,70,50,0.22)" stroke-width="1.5" />
+                      <circle cx="35" cy="18" r="1.5" fill="rgba(30,70,50,0.15)" />
+                      <circle cx="85" cy="12" r="1.5" fill="rgba(30,70,50,0.15)" />
+                      <circle cx="140" cy="26" r="1.5" fill="rgba(30,70,50,0.15)" />
+                      <text x="14" y="27" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(-3, 14, 27)">7</text>
+                      <text x="32" y="25" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(2, 32, 25)">+</text>
+                      <text x="50" y="28" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(-2, 50, 28)">5</text>
+                      <text x="68" y="26" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(3, 68, 26)">=</text>
+                      <text x="86" y="27" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(-1, 86, 27)">?</text>
+                    </svg>
                   </div>
                   <input type="number" id="b-captcha" class="form-input" required placeholder="Resultado numérico" style="max-width: 190px; font-weight: 700; font-size: 1.05rem; text-align: center;" autocomplete="off">
                 </div>
@@ -859,6 +870,6 @@
   </div>
 
   <!-- Lógica Principal -->
-  <script type="module" src="./js/app.js?v=5.5"></script>
+  <script type="module" src="./js/app.js?v=5.6"></script>
 </body>
 </html>

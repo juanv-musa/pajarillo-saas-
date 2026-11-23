@@ -21,7 +21,16 @@ const initApp = async () => {
     console.error('Error inicializando i18n:', err);
   }
 
-  // 2. Inicializar Widget de Accesibilidad Universal (INMEDIATO e INDEPENDIENTE)
+  // 2. Interacciones de UI inmediatas (sin bloquear por llamadas de red)
+  try { setupHeaderScroll(); } catch(e) {}
+  try { setupMobileNav(); } catch(e) {}
+  try { setupHistoryTabs(); } catch(e) {}
+  try { setupBookingForm(i18n); } catch(e) { console.error('Error setupBookingForm:', e); }
+  try { setupQrModal(); } catch(e) {}
+  try { setupCookieConsentBanner(); } catch(e) {}
+  try { setupHeroCarousel(i18n); } catch(e) {}
+
+  // 3. Inicializar Widget de Accesibilidad Universal (INMEDIATO e INDEPENDIENTE)
   try {
     const accessibility = new AccessibilityWidget(i18n);
     accessibility.init();
@@ -30,7 +39,7 @@ const initApp = async () => {
     console.error('Error inicializando Accesibilidad:', err);
   }
 
-  // 3. Inicializar Módulos Dinámicos de forma desacoplada
+  // 4. Inicializar Módulos Dinámicos de forma desacoplada
   let agenda = null;
   try {
     agenda = new AgendaManager(i18n);
@@ -48,7 +57,7 @@ const initApp = async () => {
     console.warn('Error inicializando Galería:', err);
   }
 
-  // 4. Cargar Puntos de Visita y Paneles
+  // 5. Cargar Puntos de Visita y Paneles
   try {
     await loadExhibitionPoints(i18n);
     if (i18n) {
@@ -59,15 +68,6 @@ const initApp = async () => {
   } catch (err) {
     console.warn('Error cargando puntos:', err);
   }
-
-  // 5. Setup Interacciones de UI
-  try { setupHeaderScroll(); } catch(e) {}
-  try { setupMobileNav(); } catch(e) {}
-  try { setupHistoryTabs(); } catch(e) {}
-  try { setupHeroCarousel(i18n); } catch(e) {}
-  try { setupBookingForm(i18n); } catch(e) {}
-  try { setupQrModal(); } catch(e) {}
-  try { setupCookieConsentBanner(); } catch(e) {}
 
   // 6. Cargar y Aplicar Configuración de Secciones y Textos del CMS
   try {
@@ -1126,8 +1126,8 @@ function setupBookingForm(i18n) {
   // Control Anti-Bot / CAPTCHA Dinámico Reforzado
   // ──────────────────────────────────────────
   let isServerCaptcha = false;
-  let currentCaptchaExpected = null;
-  let currentCaptchaToken = '';
+  let currentCaptchaExpected = 12;
+  let currentCaptchaToken = 'client-' + Date.now();
   let formInitTime = Date.now();
 
   function createVisualCaptchaSvg(qText) {
@@ -1158,38 +1158,9 @@ function setupBookingForm(i18n) {
     return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:inline-block; vertical-align:middle; user-select:none; background:#f0f5f1; border-radius:4px; border:1px solid #d4ded6;">${noise}${textSvg}</svg>`;
   }
 
-  async function loadCaptcha() {
-    const qEl = document.getElementById('captcha-question');
+  function generateClientCaptcha() {
     const wrapEl = document.getElementById('captcha-visual-wrap');
-    const inputEl = document.getElementById('b-captcha');
     const tokenEl = document.getElementById('b-captcha-token');
-    if (!wrapEl && !qEl) return;
-    if (inputEl) inputEl.value = '';
-
-    try {
-      const res = await fetch('./api/data.php?entity=captcha&t=' + Date.now(), { credentials: 'same-origin' }).catch(() => null);
-      if (res && res.ok) {
-        const text = await res.text().catch(() => null);
-        if (text && text.trim().startsWith('{')) {
-          const data = JSON.parse(text);
-          if (data && data.success) {
-            if (data.svg && wrapEl) {
-              wrapEl.innerHTML = data.svg;
-            } else if (qEl && data.question) {
-              qEl.textContent = data.question;
-            }
-            currentCaptchaToken = data.token || '';
-            if (tokenEl) tokenEl.value = currentCaptchaToken;
-            isServerCaptcha = true;
-            currentCaptchaExpected = null;
-            formInitTime = Date.now();
-            return;
-          }
-        }
-      }
-    } catch (e) {}
-
-    // Fallback dinámico en cliente (entorno estático / GitHub Pages)
     isServerCaptcha = false;
     currentCaptchaToken = 'client-' + Date.now();
     if (tokenEl) tokenEl.value = currentCaptchaToken;
@@ -1213,10 +1184,39 @@ function setupBookingForm(i18n) {
     }
     if (wrapEl) {
       wrapEl.innerHTML = createVisualCaptchaSvg(qText);
-    } else if (qEl) {
-      qEl.textContent = qText;
     }
     formInitTime = Date.now();
+  }
+
+  async function loadCaptcha() {
+    const wrapEl = document.getElementById('captcha-visual-wrap');
+    const inputEl = document.getElementById('b-captcha');
+    const tokenEl = document.getElementById('b-captcha-token');
+    if (inputEl) inputEl.value = '';
+
+    // 1. Mostrar de forma síncrona e instantánea el reto gráfico aleatorio (0ms latencia)
+    generateClientCaptcha();
+
+    // 2. Si hay backend PHP disponible, actualizar a reto firmado con HMAC SHA-256
+    try {
+      const res = await fetch('./api/data.php?entity=captcha&t=' + Date.now(), { credentials: 'same-origin' }).catch(() => null);
+      if (res && res.ok) {
+        const text = await res.text().catch(() => null);
+        if (text && text.trim().startsWith('{')) {
+          const data = JSON.parse(text);
+          if (data && data.success) {
+            if (data.svg && wrapEl) {
+              wrapEl.innerHTML = data.svg;
+            }
+            currentCaptchaToken = data.token || '';
+            if (tokenEl) tokenEl.value = currentCaptchaToken;
+            isServerCaptcha = true;
+            currentCaptchaExpected = null;
+            formInitTime = Date.now();
+          }
+        }
+      }
+    } catch (e) {}
   }
 
   loadCaptcha();
