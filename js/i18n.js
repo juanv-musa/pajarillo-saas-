@@ -57,7 +57,7 @@ export class I18nManager {
     try {
       let savedLocales = localStorage.getItem('pajarillo_locales');
       // Purga estricta si contiene datos obsoletos de braille, código postal erróneo o versión anterior
-      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales) || localStorage.getItem('pajarillo_app_v') !== 'v5.4')) {
+      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales) || localStorage.getItem('pajarillo_app_v') !== 'v5.5')) {
         localStorage.removeItem('pajarillo_locales');
         savedLocales = null;
       }

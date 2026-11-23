@@ -151,7 +151,7 @@ async function syncLegalFooter() {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v5.4';
+  const CACHE_VERSION = 'v5.5';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -1130,6 +1130,34 @@ function setupBookingForm(i18n) {
   let currentCaptchaToken = '';
   let formInitTime = Date.now();
 
+  function createVisualCaptchaSvg(qText) {
+    const width = 175;
+    const height = 40;
+    let noise = '';
+    for (let i = 0; i < 6; i++) {
+      const x1 = Math.floor(Math.random() * width);
+      const y1 = Math.floor(Math.random() * height);
+      const x2 = Math.floor(Math.random() * width);
+      const y2 = Math.floor(Math.random() * height);
+      noise += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="rgba(30,70,50,0.22)" stroke-width="1.5" />`;
+    }
+    for (let i = 0; i < 16; i++) {
+      const cx = Math.floor(Math.random() * width);
+      const cy = Math.floor(Math.random() * height);
+      noise += `<circle cx="${cx}" cy="${cy}" r="1.5" fill="rgba(30,70,50,0.15)" />`;
+    }
+    let textSvg = '';
+    let x = 12;
+    for (let i = 0; i < qText.length; i++) {
+      const ch = qText[i];
+      const rot = Math.floor(Math.random() * 16) - 8;
+      const y = Math.floor(Math.random() * 4) + 26;
+      textSvg += `<text x="${x}" y="${y}" font-family="monospace, sans-serif" font-size="18" font-weight="bold" fill="#1B3828" transform="rotate(${rot}, ${x}, ${y})">${ch}</text>`;
+      x += (ch === ' ' ? 7 : 11);
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" style="display:inline-block; vertical-align:middle; user-select:none; background:#f0f5f1; border-radius:4px; border:1px solid #d4ded6;">${noise}${textSvg}</svg>`;
+  }
+
   async function loadCaptcha() {
     const qEl = document.getElementById('captcha-question');
     const wrapEl = document.getElementById('captcha-visual-wrap');
@@ -1141,19 +1169,22 @@ function setupBookingForm(i18n) {
     try {
       const res = await fetch('./api/data.php?entity=captcha&t=' + Date.now(), { credentials: 'same-origin' }).catch(() => null);
       if (res && res.ok) {
-        const data = await res.json().catch(() => null);
-        if (data && data.success) {
-          if (data.svg && wrapEl) {
-            wrapEl.innerHTML = data.svg;
-          } else if (qEl && data.question) {
-            qEl.textContent = data.question;
+        const text = await res.text().catch(() => null);
+        if (text && text.trim().startsWith('{')) {
+          const data = JSON.parse(text);
+          if (data && data.success) {
+            if (data.svg && wrapEl) {
+              wrapEl.innerHTML = data.svg;
+            } else if (qEl && data.question) {
+              qEl.textContent = data.question;
+            }
+            currentCaptchaToken = data.token || '';
+            if (tokenEl) tokenEl.value = currentCaptchaToken;
+            isServerCaptcha = true;
+            currentCaptchaExpected = null;
+            formInitTime = Date.now();
+            return;
           }
-          currentCaptchaToken = data.token || '';
-          if (tokenEl) tokenEl.value = currentCaptchaToken;
-          isServerCaptcha = true;
-          currentCaptchaExpected = null;
-          formInitTime = Date.now();
-          return;
         }
       }
     } catch (e) {}
@@ -1181,7 +1212,7 @@ function setupBookingForm(i18n) {
       qText = `${n1} × ${n2} = ?`;
     }
     if (wrapEl) {
-      wrapEl.innerHTML = `<span style="display:inline-block; font-family:monospace; font-size:1.15rem; font-weight:700; color:#1B3828; background:#f0f5f1; padding:3px 10px; border-radius:4px; border:1px solid #d4ded6; letter-spacing:2px; user-select:none;">${qText}</span>`;
+      wrapEl.innerHTML = createVisualCaptchaSvg(qText);
     } else if (qEl) {
       qEl.textContent = qText;
     }
