@@ -22,10 +22,18 @@ session_start();
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
-// Verificar sesión de administración estricta
+// Verificar sesión de administración estricta y permiso de subida
 if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
     http_response_code(401);
     echo json_encode(['error' => 'No autorizado. Se requiere sesión de administración.']);
+    exit;
+}
+
+$uploadAllowedPerms = ['all', 'panels', 'gallery', 'agenda', 'contents', 'kiosco'];
+$userPerms = $_SESSION['admin_permissions'] ?? [];
+if (($_SESSION['admin_user'] ?? '') !== 'admin' && empty(array_intersect($userPerms, $uploadAllowedPerms))) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Permisos insuficientes para subir archivos al servidor.']);
     exit;
 }
 

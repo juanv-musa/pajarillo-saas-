@@ -3,7 +3,7 @@
  * Centro de Interpretación Santuario Ibérico de "El Pajarillo"
  */
 
-import { I18nManager } from './i18n.js?v=5.0';
+import { I18nManager } from './i18n.js?v=5.7';
 import { AgendaManager } from './agenda.js?v=5.0';
 import { GalleryManager } from './gallery.js?v=4.5';
 import { AccessibilityWidget } from './accessibility.js';
@@ -151,7 +151,7 @@ async function syncLegalFooter() {
    Configuración de Secciones y Textos (CMS)
    ═══════════════════════════════════════════ */
 async function initSiteConfig() {
-  const CACHE_VERSION = 'v5.5';
+  const CACHE_VERSION = 'v5.7';
   if (localStorage.getItem('pajarillo_app_v') !== CACHE_VERSION) {
     localStorage.removeItem('pajarillo_site_config');
     localStorage.removeItem('pajarillo_locales');
@@ -1281,7 +1281,7 @@ function setupBookingForm(i18n) {
       document.getElementById('b-name')?.focus();
       return;
     }
-    if (!/^[\p{L}\s\.\'\-]{3,70}$/u.test(nameVal)) {
+    if (!/^[\p{L}\s.'-]{3,70}$/u.test(nameVal)) {
       showBookingError('El nombre solo puede contener letras y caracteres ortográficos válidos.');
       document.getElementById('b-name')?.focus();
       return;

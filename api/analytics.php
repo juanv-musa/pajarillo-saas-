@@ -98,11 +98,17 @@ if ($method === 'POST') {
 
     $type = $payload['type'];
 
-    // Restablecer analíticas a cero (exige sesión administrativa y CSRF)
+    // Restablecer analíticas a cero (exige administrador total y CSRF)
     if ($type === 'reset_all') {
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        $currentPerms = $_SESSION['admin_permissions'] ?? [];
+        if (!in_array('all', $currentPerms, true) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
+            http_response_code(403);
+            echo json_encode(['error' => 'Permisos insuficientes para restablecer estadísticas.']);
             exit;
         }
         verifyCsrfToken($payload);
@@ -121,11 +127,17 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Sincronización analítica desde administración (exige sesión administrativa y CSRF)
+    // Sincronización analítica desde administración (exige administrador total y CSRF)
     if ($type === 'sync_analytics' && !empty($payload['data'])) {
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['error' => 'No autorizado']);
+            exit;
+        }
+        $currentPerms = $_SESSION['admin_permissions'] ?? [];
+        if (!in_array('all', $currentPerms, true) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
+            http_response_code(403);
+            echo json_encode(['error' => 'Permisos insuficientes para sincronizar estadísticas.']);
             exit;
         }
         verifyCsrfToken($payload);

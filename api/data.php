@@ -29,6 +29,55 @@ $configFile = '../data/site_config.json';
 $localesFile = '../data/locales.json';
 $galleryFile = '../data/gallery.json';
 $legalFile = '../data/legal.json';
+$captchaNoncesFile = '../data/captcha_nonces.json';
+
+function safeStrlen($str) {
+    return function_exists('mb_strlen') ? mb_strlen($str, 'UTF-8') : strlen($str);
+}
+
+function safeSubstr($str, $start, $length = null) {
+    if (function_exists('mb_substr')) {
+        return $length === null ? mb_substr($str, $start, null, 'UTF-8') : mb_substr($str, $start, $length, 'UTF-8');
+    }
+    return $length === null ? substr($str, $start) : substr($str, $start, $length);
+}
+
+// Registro atómico y global de nonces de CAPTCHA consumidos (impide reutilización entre sesiones distintas)
+function consumeCaptchaNonceGlobal($nonce, $now, $ttl = 900) {
+    global $captchaNoncesFile;
+    $fp = @fopen($captchaNoncesFile, 'c+');
+    if (!$fp) {
+        return true; // Si no hay permiso de escritura en disco, la comprobación de sesión ya protege
+    }
+    if (!flock($fp, LOCK_EX)) {
+        fclose($fp);
+        return false;
+    }
+    $raw = stream_get_contents($fp);
+    $used = $raw ? json_decode($raw, true) : [];
+    if (!is_array($used)) {
+        $used = [];
+    }
+    // Purgar nonces expirados
+    foreach ($used as $k => $ts) {
+        if ($now - (int)$ts > $ttl) {
+            unset($used[$k]);
+        }
+    }
+    if (isset($used[$nonce])) {
+        flock($fp, LOCK_UN);
+        fclose($fp);
+        return false;
+    }
+    $used[$nonce] = $now;
+    rewind($fp);
+    ftruncate($fp, 0);
+    fwrite($fp, json_encode($used));
+    fflush($fp);
+    flock($fp, LOCK_UN);
+    fclose($fp);
+    return true;
+}
 
 // Helper para leer archivo
 function readJson($filepath, $default = []) {
@@ -55,12 +104,22 @@ function writeJson($filepath, $data) {
     return true;
 }
 
-// Verificación de permisos modulares por usuario/rol
+// Verificación de permisos modulares por usuario/rol (fail-closed)
 function hasModulePermission($module) {
     if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) return false;
-    $perms = $_SESSION['admin_permissions'] ?? ['all'];
-    if (in_array('all', $perms)) return true;
-    return in_array($module, $perms);
+    if (($_SESSION['admin_user'] ?? '') === 'admin') return true;
+    $perms = $_SESSION['admin_permissions'] ?? [];
+    if (!is_array($perms)) return false;
+    if (in_array('all', $perms, true)) return true;
+    return in_array($module, $perms, true);
+}
+
+// Verificación estricta de administrador con acceso total
+function isFullAdmin() {
+    if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) return false;
+    if (($_SESSION['admin_user'] ?? '') === 'admin') return true;
+    $perms = $_SESSION['admin_permissions'] ?? [];
+    return is_array($perms) && in_array('all', $perms, true);
 }
 
 // Verificación de protección CSRF para acciones administrativas
@@ -104,11 +163,11 @@ function generateCaptchaSvg($questionText) {
         $noiseLines .= "<circle cx=\"$cx\" cy=\"$cy\" r=\"$r\" fill=\"#cad6cc\" />";
     }
     
-    $len = mb_strlen($questionText, 'UTF-8');
+    $len = safeStrlen($questionText);
     $textSvg = '';
     $x = 10;
     for ($i = 0; $i < $len; $i++) {
-        $ch = mb_substr($questionText, $i, 1, 'UTF-8');
+        $ch = safeSubstr($questionText, $i, 1);
         $rot = random_int(-9, 9);
         $y = random_int(26, 29);
         $chEsc = htmlspecialchars($ch, ENT_XML1, 'UTF-8');
@@ -266,58 +325,55 @@ if ($method === 'POST') {
             $genTime = (int)$genTimeStr;
             $currentIpHash = substr(hash('sha256', ($_SERVER['REMOTE_ADDR'] ?? '127.0.0.1') . CAPTCHA_HMAC_SECRET), 0, 10);
 
-            // A) Comprobación de vinculación por dirección IP
+            // A) Vinculación estricta a la sesión actual (impide reutilizar retos generados en otra sesión)
+            if (empty($_SESSION['booking_captchas']) || !isset($_SESSION['booking_captchas'][$token])) {
+                http_response_code(400);
+                echo json_encode(['error' => 'El desafío de seguridad no pertenece a esta sesión o ya fue utilizado. Pulsa «Cambiar» para obtener uno nuevo.']);
+                exit;
+            }
+            $sessionChallenge = $_SESSION['booking_captchas'][$token];
+            // Quemado inmediato en sesión (un solo uso, incluso si falla)
+            unset($_SESSION['booking_captchas'][$token]);
+            unset($_SESSION['booking_captcha_result'], $_SESSION['booking_captcha_time']);
+
+            // B) Comprobación de vinculación por dirección IP
             if (!hash_equals($tokenIpHash, $currentIpHash)) {
                 http_response_code(403);
                 echo json_encode(['error' => 'El control de seguridad no corresponde a este equipo o conexión.']);
                 exit;
             }
 
-            // B) Detección de bots: envío inhumano instantáneo (< 2.5 s)
+            // C) Detección de bots: envío inhumano instantáneo (< 2 s)
             if ($now - $genTime < 2) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Envío instantáneo detectado como posible bot automatizado. Por favor, resuelve la operación manualmente.']);
                 exit;
             }
 
-            // C) Caducidad máxima (10 minutos)
+            // D) Caducidad máxima (10 minutos)
             if ($now - $genTime > 600) {
                 http_response_code(400);
                 echo json_encode(['error' => 'El código de seguridad ha caducado por inactividad. Por favor, pulsa «Cambiar» para obtener uno nuevo.']);
                 exit;
             }
 
-            // D) Protección anti-replay: el nonce nunca puede reutilizarse
+            // E) Protección anti-replay global entre sesiones + sesión local
             if (!isset($_SESSION['used_captcha_nonces']) || !is_array($_SESSION['used_captcha_nonces'])) {
                 $_SESSION['used_captcha_nonces'] = [];
             }
-            if (isset($_SESSION['used_captcha_nonces'][$nonce])) {
+            if (isset($_SESSION['used_captcha_nonces'][$nonce]) || !consumeCaptchaNonceGlobal($nonce, $now, 900)) {
                 http_response_code(400);
                 echo json_encode(['error' => 'Este control de seguridad ya ha sido utilizado (ataque de repetición evitado). Pulsa «Cambiar» para resolver uno nuevo.']);
                 exit;
             }
-            // Quemado inmediato de un solo uso
             $_SESSION['used_captcha_nonces'][$nonce] = $now;
             if (count($_SESSION['used_captcha_nonces']) > 50) {
                 array_shift($_SESSION['used_captcha_nonces']);
             }
-            if (isset($_SESSION['booking_captchas'][$token])) {
-                unset($_SESSION['booking_captchas'][$token]);
-            }
 
-            // E) Verificación criptográfica HMAC en tiempo constante
+            // F) Verificación criptográfica HMAC en tiempo constante + coincidencia con reto en sesión
             $expectedSig = hash_hmac('sha256', $userCaptcha . '|' . $genTime . '|' . $nonce . '|' . $tokenIpHash, CAPTCHA_HMAC_SECRET);
-            if (hash_equals($expectedSig, $receivedSig)) {
-                $captchaVerified = true;
-            }
-        } elseif (isset($_SESSION['booking_captcha_result']) && isset($_SESSION['booking_captcha_time'])) {
-            // Fallback de sesión clásica
-            $expectedCaptcha = (int)$_SESSION['booking_captcha_result'];
-            $genTime = (int)$_SESSION['booking_captcha_time'];
-            unset($_SESSION['booking_captcha_result']);
-            unset($_SESSION['booking_captcha_time']);
-
-            if (($now - $genTime >= 2) && ($now - $genTime <= 600) && ($userCaptcha === $expectedCaptcha)) {
+            if (hash_equals($expectedSig, $receivedSig) && (int)($sessionChallenge['result'] ?? -999999) === (int)$userCaptcha) {
                 $captchaVerified = true;
             }
         }
@@ -341,7 +397,7 @@ if ($method === 'POST') {
         // A) Nombre completo:
         $rawName = (string)($booking['name'] ?? '');
         $name = trim(htmlspecialchars(strip_tags($rawName), ENT_QUOTES, 'UTF-8'));
-        if (mb_strlen($name) < 3 || mb_strlen($name) > 70) {
+        if (safeStrlen($name) < 3 || safeStrlen($name) > 70) {
             http_response_code(400);
             echo json_encode(['error' => 'El nombre completo debe tener entre 3 y 70 caracteres.']);
             exit;
@@ -487,8 +543,8 @@ if ($method === 'POST') {
             exit;
         }
         $notes = trim(htmlspecialchars(strip_tags($rawNotes), ENT_QUOTES, 'UTF-8'));
-        if (mb_strlen($notes) > 300) {
-            $notes = mb_substr($notes, 0, 300);
+        if (safeStrlen($notes) > 300) {
+            $notes = safeSubstr($notes, 0, 300);
         }
 
         // 5. Asignación de ID anti-colisión y código de localizador
@@ -535,8 +591,13 @@ if ($method === 'POST') {
 
     verifyCsrfToken($input);
 
-    // Restaurar copia completa de seguridad (Backup total JSON)
+    // Restaurar copia completa de seguridad (Backup total JSON - SOLO ADMINISTRADOR TOTAL)
     if (isset($input['action']) && $input['action'] === 'restore_full_backup') {
+        if (!isFullAdmin()) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes: solo un administrador con acceso total puede restaurar una copia de seguridad completa.']);
+            exit;
+        }
         $backup = $input['backup'] ?? [];
         if (isset($backup['panels']) && is_array($backup['panels'])) {
             writeJson($panelesFile, ['panels' => $backup['panels']]);
@@ -545,15 +606,16 @@ if ($method === 'POST') {
             writeJson($galleryFile, $backup['gallery']);
         }
         if (isset($backup['locales']) && is_array($backup['locales'])) {
+            // Guardar únicamente en data/locales.json (NO sobrescribir los diccionarios UI anidados locales/{es,en,fr}.json)
             writeJson($localesFile, $backup['locales']);
-            foreach (['es', 'en', 'fr'] as $l) {
-                if (!empty($backup['locales'][$l])) {
-                    writeJson("../locales/{$l}.json", $backup['locales'][$l]);
-                }
-            }
         }
         if (isset($backup['kiosk_videos'])) {
             writeJson('../data/kiosk_videos.json', $backup['kiosk_videos']);
+            if (is_array($backup['kiosk_videos'])) {
+                $gData = readJson($galleryFile, ['media' => [], 'resources' => [], 'videos' => []]);
+                $gData['videos'] = isset($backup['kiosk_videos']['videos']) ? $backup['kiosk_videos']['videos'] : $backup['kiosk_videos'];
+                writeJson($galleryFile, $gData);
+            }
         }
         if (isset($backup['agenda'])) {
             $ag = is_array($backup['agenda']) ? (isset($backup['agenda']['activities']) ? $backup['agenda'] : ['activities' => $backup['agenda']]) : ['activities' => []];
@@ -561,6 +623,9 @@ if ($method === 'POST') {
         }
         if (isset($backup['legal'])) {
             writeJson($legalFile, $backup['legal']);
+        }
+        if (isset($backup['site_config']) && is_array($backup['site_config'])) {
+            writeJson($configFile, $backup['site_config']);
         }
         echo json_encode(['success' => true, 'message' => 'Copia de seguridad restaurada correctamente en el servidor.']);
         exit;
@@ -592,7 +657,7 @@ if ($method === 'POST') {
         exit;
     }
 
-    // Guardar traducciones / textos multilingüe en el servidor
+    // Guardar traducciones / textos multilingüe del CMS en el servidor (sin contaminar los diccionarios UI anidados locales/*.json)
     if (isset($input['action']) && $input['action'] === 'save_locales') {
         if (!hasModulePermission('contents')) {
             http_response_code(403);
@@ -601,16 +666,6 @@ if ($method === 'POST') {
         }
         $locales = $input['locales'] ?? [];
         writeJson($localesFile, $locales);
-
-        // Sincronizar todos los archivos de idiomas oficiales (es, en, fr)
-        foreach (['es', 'en', 'fr'] as $l) {
-            if (isset($locales[$l]) && is_array($locales[$l])) {
-                $langFile = "../locales/{$l}.json";
-                $langData = readJson($langFile, []);
-                $langData = array_merge($langData, $locales[$l]);
-                writeJson($langFile, $langData);
-            }
-        }
 
         echo json_encode(['success' => true]);
         exit;
@@ -628,7 +683,9 @@ if ($method === 'POST') {
             $galleryData['videos'] = $input['videos'] ?? [];
         } elseif ($input['action'] === 'delete_kiosk_video') {
             $delId = $input['id'] ?? '';
-            $galleryData['videos'] = array_values(array_filter($galleryData['videos'] ?? [], fn($v) => ($v['id'] ?? '') !== $delId));
+            $galleryData['videos'] = array_values(array_filter($galleryData['videos'] ?? [], function($v) use ($delId) {
+                return ($v['id'] ?? '') !== $delId;
+            }));
         }
         writeJson($galleryFile, $galleryData);
         echo json_encode(['success' => true, 'videos' => $galleryData['videos']]);
@@ -876,7 +933,7 @@ if ($method === 'DELETE') {
             exit;
         }
         $data = readJson($agendaFile, ['activities' => []]);
-        $data['activities'] = array_values(array_filter($data['activities'], fn($a) => $a['id'] != $id));
+        $data['activities'] = array_values(array_filter($data['activities'], function($a) use ($id) { return $a['id'] != $id; }));
         writeJson($agendaFile, $data);
     } elseif ($type === 'booking') {
         if (!hasModulePermission('bookings')) {
@@ -885,7 +942,7 @@ if ($method === 'DELETE') {
             exit;
         }
         $data = readJson($reservasFile, ['bookings' => []]);
-        $data['bookings'] = array_values(array_filter($data['bookings'], fn($b) => $b['id'] != $id));
+        $data['bookings'] = array_values(array_filter($data['bookings'], function($b) use ($id) { return $b['id'] != $id; }));
         writeJson($reservasFile, $data);
     } else {
         if (!hasModulePermission('panels')) {
@@ -894,7 +951,7 @@ if ($method === 'DELETE') {
             exit;
         }
         $data = readJson($panelesFile, ['panels' => []]);
-        $data['panels'] = array_values(array_filter($data['panels'], fn($p) => $p['id'] != $id));
+        $data['panels'] = array_values(array_filter($data['panels'], function($p) use ($id) { return $p['id'] != $id; }));
         writeJson($panelesFile, $data);
     }
 

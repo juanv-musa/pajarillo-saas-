@@ -1,11 +1,11 @@
 # Protección de Datos Sensibles y RGPD · Santuario de El Pajarillo
-# Denegar acceso HTTP directo a bases de datos con información sensible o de gestión.
-# Permitir lectura directa de los contenidos públicos requeridos por la plataforma web.
+# Política segura por defecto: denegar acceso HTTP directo a cualquier JSON
+# salvo los contenidos públicos explícitamente autorizados.
 
 Options -Indexes
 
-# 1. Bloquear acceso HTTP directo a archivos privados y confidenciales (RGPD y autenticación)
-<FilesMatch "(?i)^(reservas|users|analytics)\.json$">
+# 1. Bloquear acceso HTTP directo por defecto a archivos privados y confidenciales
+<FilesMatch "(?i)\.(json|bak|log|lock)$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -15,7 +15,7 @@ Options -Indexes
     </IfModule>
 </FilesMatch>
 
-# 2. Permitir lectura de contenidos públicos consumidos por la WebApp cliente
+# 2. Permitir exclusivamente lectura de contenidos públicos consumidos por la WebApp cliente
 <FilesMatch "(?i)^(paneles|locales|gallery|agenda|legal|kiosk_videos|site_config)\.json$">
     <IfModule mod_authz_core.c>
         Require all granted

@@ -414,19 +414,23 @@
       padding-top: 1.75rem;
       border-top: 1px solid var(--c-border, #E4DECE);
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 1rem;
     }
 
     @media (max-width: 600px) {
       .tour-nav-bar {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
       }
     }
 
     .tour-nav-link {
       display: flex;
       flex-direction: column;
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
       padding: 1rem 1.25rem;
       background: var(--c-stone, #EFECE4);
       border-radius: 10px;
@@ -458,12 +462,17 @@
 
     .tour-nav-title {
       font-family: var(--font-condensed, 'Cinzel', serif);
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 700;
+      line-height: 1.3;
       color: var(--c-primary, #384F3E);
-      white-space: nowrap;
+      white-space: normal;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     /* Modal QR para compartir */
@@ -549,17 +558,6 @@
         <h1 class="punto-title" id="punto-title">Cargando punto...</h1>
         <div class="punto-subtitle" id="punto-subtitle" style="display: none;"></div>
 
-        <!-- Enlace a Web Externa (Opcional) -->
-        <div id="punto-external-card" class="punto-external-box hidden">
-          <div class="punto-external-info">
-            <span style="font-size: 1.15rem;">🌐</span>
-            <span id="punto-external-desc">Portal oficial con información ampliada sobre este punto:</span>
-          </div>
-          <a id="btn-punto-external" href="#" target="_blank" rel="noopener noreferrer" class="btn-external-action">
-            Sitio Web ↗
-          </a>
-        </div>
-
         <!-- Reproductor de Audioguía Oficial (Opcional) -->
         <div class="audioguide-widget" id="punto-audioguide-widget">
           <div class="audioguide-header">
@@ -597,6 +595,17 @@
         <!-- Descripción Histórica Completa -->
         <div class="punto-desc-text" id="punto-description">
           <p>Cargando información del punto interpretativo...</p>
+        </div>
+
+        <!-- Enlace a Web Externa (Opcional, después del texto principal) -->
+        <div id="punto-external-card" class="punto-external-box hidden" style="margin-top: 1.75rem;">
+          <div class="punto-external-info">
+            <span style="font-size: 1.15rem;">🌐</span>
+            <span id="punto-external-desc">Para saber más</span>
+          </div>
+          <a id="btn-punto-external" href="#" target="_blank" rel="noopener noreferrer" class="btn-external-action">
+            Sitio Web ↗
+          </a>
         </div>
 
         <!-- Documentación PDF / Dossier Descargable (Opcional) -->
@@ -863,9 +872,19 @@
 
         // 2. Enlace a web externa si está configurada
         const extCard = document.getElementById('punto-external-card');
+        const extDesc = document.getElementById('punto-external-desc');
         const btnExt = document.getElementById('btn-punto-external');
         const extUrl = (currentPanel.external_url || '').trim();
         if (extUrl && extUrl !== '#' && (extUrl.startsWith('http://') || extUrl.startsWith('https://'))) {
+          if (extDesc) {
+            if (currentLang === 'en') {
+              extDesc.textContent = 'Learn more';
+            } else if (currentLang === 'fr') {
+              extDesc.textContent = 'En savoir plus';
+            } else {
+              extDesc.textContent = 'Para saber más';
+            }
+          }
           if (btnExt) {
             btnExt.href = extUrl;
             if (currentLang === 'en') {

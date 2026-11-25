@@ -4,7 +4,20 @@
  * Incluye respaldo en memoria inmediato (offline y file://) y sincronización dinámica.
  */
 
-import { DEFAULT_LOCALES } from './locales-data.js?v=5.0';
+import { DEFAULT_LOCALES } from './locales-data.js?v=5.7';
+
+function deepMergeTranslations(target, source) {
+  if (!source || typeof source !== 'object' || Array.isArray(source)) return target;
+  const out = Array.isArray(target) ? [...target] : { ...(target || {}) };
+  for (const [k, v] of Object.entries(source)) {
+    if (v && typeof v === 'object' && !Array.isArray(v) && out[k] && typeof out[k] === 'object' && !Array.isArray(out[k])) {
+      out[k] = deepMergeTranslations(out[k], v);
+    } else if (v !== undefined) {
+      out[k] = v;
+    }
+  }
+  return out;
+}
 
 const CRITICAL_FALLBACKS = {
   'agenda.filtro_todos': { es: 'Todas', en: 'All Events', fr: 'Toutes' },
@@ -47,8 +60,8 @@ export class I18nManager {
       const res = await fetch(`./locales/${lang}.json?t=${Date.now()}`).catch(() => null);
       if (res && res.ok) {
         const remote = await res.json();
-        if (remote && typeof remote === 'object') {
-          this.translations[lang] = { ...this.translations[lang], ...remote };
+        if (remote && typeof remote === 'object' && remote.nav && remote.hero) {
+          this.translations[lang] = deepMergeTranslations(this.translations[lang], remote);
         }
       }
     } catch (err) {}
@@ -57,7 +70,7 @@ export class I18nManager {
     try {
       let savedLocales = localStorage.getItem('pajarillo_locales');
       // Purga estricta si contiene datos obsoletos de braille, código postal erróneo o versión anterior
-      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales) || localStorage.getItem('pajarillo_app_v') !== 'v5.5')) {
+      if (savedLocales && (savedLocales.includes('23140') || /braille/i.test(savedLocales) || localStorage.getItem('pajarillo_app_v') !== 'v5.7')) {
         localStorage.removeItem('pajarillo_locales');
         savedLocales = null;
       }

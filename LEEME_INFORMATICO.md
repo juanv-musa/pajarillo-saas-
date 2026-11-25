@@ -156,7 +156,32 @@ Esto genera un archivo JSON con todos los datos y textos del centro para restaur
 
 ---
 
-### 8. AUDITORÍA TÉCNICA Y RESOLUCIÓN DE INCIDENCIAS DE SEGURIDAD (ENTREGA CONSOLIDADA)
+### 8. AUDITORÍA TÉCNICA Y RESOLUCIÓN DE INCIDENCIAS DE SEGURIDAD (ENTREGA FINAL 25/11/2026)
+En esta entrega definitiva se han subsanado y verificado las siguientes incidencias finales reportadas en la auditoría técnica y pruebas de producción:
+
+1. **Control estricto de permisos de administración (`api/data.php`, `api/auth.php`, `api/analytics.php`, `api/upload.php`):**
+   * `restore_full_backup` exige ahora verificación estricta `isFullAdmin()` (permiso `'all'`), bloqueando con `403 Forbidden` cualquier intento desde cuentas con permisos limitados (p. ej. `actividades`).
+   * Se han reforzado igualmente en modo *fail-closed* los endpoints `get_users`, `reset_all`, `sync_analytics` y la subida de archivos (`api/upload.php`).
+
+2. **Refuerzo anti-replay del CAPTCHA entre sesiones diferentes (`api/data.php`, `data/.htaccess`):**
+   * Cada reto CAPTCHA queda vinculado obligatoriamente a la sesión emisora (`$_SESSION['booking_captchas'][$token]`) y se quema inmediatamente en el primer intento, eliminando cualquier ruta alternativa de fallback.
+   * Adicionalmente, se mantiene un registro atómico global en servidor (`data/captcha_nonces.json` con bloqueo exclusivo `LOCK_EX` y purga automática) que impide reutilizar un mismo desafío desde sesiones PHP distintas.
+   * `data/.htaccess` aplica ahora denegación por defecto a todo archivo `.json` salvo la lista blanca explícita de contenidos públicos.
+
+3. **Integridad de traducciones multilingües (`locales/{es,en,fr}.json`, `js/locales-data.js`, `js/i18n.js`, `api/data.php`):**
+   * Restaurada la estructura anidada completa (134 claves UI en ES, EN y FR, sincronizada con los contenidos actuales del CMS).
+   * Corregidos `save_locales` y `restore_full_backup` en `api/data.php` para que jamás vuelvan a sobrescribir los diccionarios de interfaz `locales/*.json` con claves planas del CMS (`data/locales.json`).
+   * Implementada fusión profunda (*deep merge*) en `js/i18n.js`.
+
+4. **Corrección de compatibilidad JavaScript, PHP, fichas QR y pie de página (`js/app.js`, `index.html`, `legal.html`, `punto.html`, `api/data.php`):**
+   * Corregido error de escape en expresión regular Unicode (`js/app.js`) que bloqueaba la ejecución de los módulos interactivos en navegadores modernos (idiomas, galería, 3D, agenda y widget de accesibilidad).
+   * Ocultados por defecto en HTML y JS los enlaces no aprobados aún (`Recorrido` y `Carta de Calidad y Servicios`) hasta su activación en el CMS.
+   * Mejoradas las fichas QR (`punto.html`): bloque de enlace web simplificado (*«Para saber más» / «Sitio Web»* en ES/EN/FR) y reubicado tras el texto principal, y corregido el desbordamiento de títulos largos en los botones inferiores *Anterior / Siguiente*.
+   * Eliminada dependencia estricta de `php-mbstring` y sintaxis arrow function PHP 7.4+ en `api/data.php` para máxima compatibilidad en servidor.
+
+---
+
+### 8b. HISTÓRICO DE SUBSANACIONES ANTERIORES (ENTREGA CONSOLIDADA)
 En esta última entrega se han implementado y verificado las siguientes soluciones específicas a los puntos requeridos por la auditoría informática:
 
 1. **Seguridad de contraseñas (Sin credenciales en código):**

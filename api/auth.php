@@ -68,11 +68,17 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // Verificar estado de sesión actual o listar usuarios
 if ($method === 'GET') {
-    // Listar usuarios (solo accesible para gestores con sesión activa)
+    // Listar usuarios (solo accesible para administradores con permisos totales)
     if (isset($_GET['action']) && $_GET['action'] === 'get_users') {
         if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
             http_response_code(401);
             echo json_encode(['success' => false, 'error' => 'No autorizado']);
+            exit;
+        }
+        $currentPerms = $_SESSION['admin_permissions'] ?? [];
+        if (!in_array('all', $currentPerms, true) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para consultar usuarios.']);
             exit;
         }
         $users = getUsers();
@@ -221,8 +227,8 @@ if ($method === 'POST') {
         }
 
         // Solo usuarios con permisos 'all' o 'admin' pueden gestionar usuarios
-        $currentPerms = $_SESSION['admin_permissions'] ?? ['all'];
-        if (!in_array('all', $currentPerms) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
+        $currentPerms = $_SESSION['admin_permissions'] ?? [];
+        if (!in_array('all', $currentPerms, true) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
             http_response_code(403);
             echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para gestionar usuarios.']);
             exit;
@@ -278,8 +284,8 @@ if ($method === 'POST') {
             exit;
         }
 
-        $currentPerms = $_SESSION['admin_permissions'] ?? ['all'];
-        if (!in_array('all', $currentPerms) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
+        $currentPerms = $_SESSION['admin_permissions'] ?? [];
+        if (!in_array('all', $currentPerms, true) && ($_SESSION['admin_user'] ?? '') !== 'admin') {
             http_response_code(403);
             echo json_encode(['success' => false, 'error' => 'Permisos insuficientes para eliminar usuarios.']);
             exit;
